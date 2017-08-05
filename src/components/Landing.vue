@@ -3,11 +3,20 @@
     <div class="landing-upper d-flex">
     </div>
   
-    <div class="landing-lower d-flex">
-      <vuetable ref="vuetable"
-      :css="css"
+    <div class="landing-lower d-flex flex-column justify-content-start align-items-center">
+      <vuetable ref="vuetable"      
       api-url="https://vuetable.ratiw.net/api/users"
-      :fields="['name', 'email', 'birthdate', 'address.line1', 'address.line2', 'address.zipcode']"></vuetable>
+      pagination-path=""
+      @vuetable:pagination-data="onPaginationData"
+      :css="css"
+      :per-page="7"
+      :fields="['name', 'email', 'birthdate', 'address.line1', 'address.line2', 'address.zipcode']">
+      </vuetable>
+  
+      <div class="d-flex justify-content-center align-items-center pagination-container">
+        <vuetable-pagination-info class="mx-auto" ref="paginationInfo"></vuetable-pagination-info>
+        <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -29,6 +38,12 @@ export default {
         handleIcon: 'grey sidebar icon',
       },
     };
+  },
+  methods: {
+    onPaginationData(paginationData) {
+      this.$refs.pagination.setPaginationData(paginationData);
+      this.$refs.paginationInfo.setPaginationData(paginationData);
+    },
   },
 };
 </script>
@@ -68,8 +83,12 @@ export default {
   text-align: center;
 }
 
-.data-table thead  {
-  background-color: rgba(0,0,0,0.82);
+.data-table thead {
+  background-color: rgba(0, 0, 0, 0.82);
   color: white;
+}
+
+.pagination-container {
+  width: 100%;
 }
 </style>
