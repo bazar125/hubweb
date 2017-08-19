@@ -3,8 +3,9 @@
     <div class="landing-upper d-flex">
     </div>
   
+    <!-- <div class="landing-lower d-flex flex-column justify-content-start align-items-center"> -->
     <div class="landing-lower d-flex flex-column justify-content-start align-items-center">
-      <my-vuetable api-url="https://vuetable.ratiw.net/api/users" :fields="fields" :sort-order="sortOrder" :append-params="moreParams" detail-row-component="my-detail-row">
+      <my-vuetable api-url="https://vuetable.ratiw.net/api/users" :fields="fields" :sort-order="sortOrder" :append-params="moreParams" :per-page="7" detail-row-component="my-detail-row">
         <template slot="actions" scope="props">
           <div class="custom-actions">
             <button class="btn btn-default btn-sm" @click="onAction('view-item', props.rowData, props.rowIndex)">
@@ -122,6 +123,9 @@ export default {
 </style>
 
 <style>
+.vuetable-pagination .page-item {
+  cursor: pointer;
+}
 /* .data-table thead tr th {
   text-align: center;
 }

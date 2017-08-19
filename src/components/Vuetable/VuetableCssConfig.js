@@ -7,10 +7,10 @@ export default {
     renderIcon: classes => `<span class="${classes.join(' ')}"></span>`,
   },
   paginationInfo: {
-    infoClass: 'pull-left',
+    infoClass: 'float-left',
   },
   pagination: {
-    wrapperClass: 'pagination pull-right',
+    wrapperClass: 'pagination float-right',
     activeClass: 'btn-primary',
     disabledClass: 'disabled',
     pageClass: 'btn btn-border',

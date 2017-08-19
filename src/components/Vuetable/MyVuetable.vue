@@ -80,7 +80,7 @@ export default {
             apiUrl: this.apiUrl,
             fields: this.fields,
             paginationPath: '',
-            perPage: 10,
+            perPage: 6,
             multiSort: true,
             sortOrder: this.sortOrder,
             appendParams: this.appendParams,
@@ -98,12 +98,13 @@ export default {
     renderPagination(h) {
       return h(
         'div',
+        // { class: { 'vuetable-pagination': true } },
         { class: { 'vuetable-pagination': true } },
         [
           h('vuetable-pagination-info', { ref: 'paginationInfo', props: { css: this.css.paginationInfo } }),
           h('vuetable-pagination-bootstrap', {
             ref: 'pagination',
-            class: { 'pull-right': true },
+            class: { 'float-right': true },
             props: {
             },
             on: {
