@@ -4,45 +4,72 @@
     </div>
   
     <div class="landing-lower d-flex flex-column justify-content-start align-items-center">
-      <vuetable ref="vuetable"      
-      api-url="https://vuetable.ratiw.net/api/users"
-      pagination-path=""
-      @vuetable:pagination-data="onPaginationData"
-      :css="css"
-      :per-page="7"
-      :fields="['name', 'email', 'birthdate', 'address.line1', 'address.line2', 'address.zipcode']">
-      </vuetable>
+      <my-vuetable api-url="https://vuetable.ratiw.net/api/users" :fields="fields" :sort-order="sortOrder" :append-params="moreParams" detail-row-component="my-detail-row">
+        <template slot="actions" scope="props">
+          <div class="custom-actions">
+            <button class="btn btn-default btn-sm" @click="onAction('view-item', props.rowData, props.rowIndex)">
+              <span class="glyphicon glyphicon-zoom-in"></span>
+            </button>
+            <button class="btn btn-default btn-sm" @click="onAction('edit-item', props.rowData, props.rowIndex)">
+              <i class="glyphicon glyphicon-pencil"></i>
+            </button>
+            <button class="btn btn-default btn-sm" @click="onAction('delete-item', props.rowData, props.rowIndex)">
+              <i class="glyphicon glyphicon-trash"></i>
+            </button>
+          </div>
+        </template>
+      </my-vuetable>
   
-      <div class="d-flex justify-content-center align-items-center pagination-container">
-        <vuetable-pagination-info class="mx-auto" ref="paginationInfo"></vuetable-pagination-info>
-        <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
-      </div>
+      <!-- <vuetable ref="vuetable"      
+          api-url="https://vuetable.ratiw.net/api/users"
+          pagination-path=""
+          @vuetable:pagination-data="onPaginationData"
+          :css="css"
+          :per-page="7"
+          :fields="['name', 'email', 'birthdate', 'address.line1', 'address.line2', 'address.zipcode']">
+          </vuetable>
+      
+          <div class="d-flex justify-content-end align-items-center pagination-container">
+            <vuetable-pagination-info class="custom-pagination-info" ref="paginationInfo"></vuetable-pagination-info>
+            <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
+          </div> -->
     </div>
   </div>
 </template>
 
 <script>
+import FieldDefs from '@/components/Vuetable/FieldDefs';
+import MyVuetable from '@/components/Vuetable/MyVuetable';
+
 export default {
   name: 'Landing',
   components: {
+    MyVuetable,
   },
   data() {
     return {
-      css: {
-        tableClass: 'table table-striped table-bordered data-table',
-        titleClass: 'thead-inverse',
-        loadingClass: 'loading',
-        ascendingIcon: 'blue chevron up icon',
-        descendingIcon: 'blue chevron down icon',
-        detailRowClass: 'vuetable-detail-row',
-        handleIcon: 'grey sidebar icon',
-      },
+      fields: FieldDefs,
+      sortOrder: [
+        {
+          field: 'email',
+          sortField: 'email',
+          direction: 'asc',
+        },
+      ],
+      moreParams: {},
     };
   },
   methods: {
     onPaginationData(paginationData) {
       this.$refs.pagination.setPaginationData(paginationData);
       this.$refs.paginationInfo.setPaginationData(paginationData);
+    },
+    onChangePage() {
+
+    },
+    onAction(action, data, index) {
+      return `${action}${data}${index}`;
+      // console.log('slot action: ' + action, data.name, index)
     },
   },
 };
@@ -76,10 +103,26 @@ export default {
   padding-right: 15px;
   flex: 0.4;
 }
+/* 
+.custom-pagination-info {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+} */
+
+.filter-bar {
+  padding: 8px;
+}
+.pagination {
+  margin-top: 0px;
+}
+
 </style>
 
 <style>
-.data-table thead tr th {
+/* .data-table thead tr th {
   text-align: center;
 }
 
@@ -90,5 +133,6 @@ export default {
 
 .pagination-container {
   width: 100%;
-}
+  position: relative;
+} */
 </style>

@@ -21,19 +21,20 @@ export default {
     return {
       links: [
         {
+          // path: 'drivers',
           path: '',
           name: 'Drivers',
         },
         {
-          path: 'how',
+          path: 'vehicles',
           name: 'Vehicles',
         },
         {
-          path: 'downloads',
+          path: 'reports',
           name: 'Reports',
         },
         {
-          path: 'store',
+          path: 'settings',
           name: 'Settings',
         },
         {
