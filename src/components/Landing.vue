@@ -10,6 +10,7 @@
           <div class="custom-actions">
             <button class="btn btn-default btn-sm" @click="onAction('view-item', props.rowData, props.rowIndex)">
               <span class="glyphicon glyphicon-zoom-in"></span>
+              <!-- <icon name="zoom"></icon> -->
             </button>
             <button class="btn btn-default btn-sm" @click="onAction('edit-item', props.rowData, props.rowIndex)">
               <i class="glyphicon glyphicon-pencil"></i>

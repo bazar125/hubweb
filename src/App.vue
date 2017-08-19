@@ -39,4 +39,12 @@ export default {
   /* nav: 67px, footer: 40px */
   height: calc(100vh - 107px);
 }
+
+.form-control {
+  font-family: 'Open Sans', sans-serif;
+}
+
+button, input, optgroup, select, textarea {
+  font-family: 'Open Sans', sans-serif;
+}
 </style>
