@@ -63,7 +63,7 @@ export default {
         class: { container: true },
       },
       [
-        h('filter-bar'),
+        // h('filter-bar'),
         this.renderVuetable(h),
         this.renderPagination(h),
       ],
@@ -154,3 +154,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.vuetable-pagination-info {
+  height: 33px;
+  line-height: 33px;
+}
+</style>

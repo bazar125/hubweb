@@ -57,7 +57,7 @@ export default [
   // },
   {
     name: '__slot:actions',
-    title: 'Slot Actions',
+    title: 'Actions',
     titleClass: 'text-center',
     dataClass: 'text-center',
   },

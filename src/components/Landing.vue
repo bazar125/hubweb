@@ -8,15 +8,14 @@
       <my-vuetable api-url="https://vuetable.ratiw.net/api/users" :fields="fields" :sort-order="sortOrder" :append-params="moreParams" :per-page="7" detail-row-component="my-detail-row">
         <template slot="actions" scope="props">
           <div class="custom-actions">
-            <button class="btn btn-default btn-sm" @click="onAction('view-item', props.rowData, props.rowIndex)">
-              <span class="glyphicon glyphicon-zoom-in"></span>
-              <!-- <icon name="zoom"></icon> -->
+            <button class="btn btn-outline-primary btn-sm" @click="onAction('view-item', props.rowData, props.rowIndex)">
+              <icon name="search-plus"></icon>
             </button>
-            <button class="btn btn-default btn-sm" @click="onAction('edit-item', props.rowData, props.rowIndex)">
-              <i class="glyphicon glyphicon-pencil"></i>
+            <button class="btn btn-outline-primary btn-sm" @click="onAction('edit-item', props.rowData, props.rowIndex)">
+              <icon name="pencil"></icon>
             </button>
-            <button class="btn btn-default btn-sm" @click="onAction('delete-item', props.rowData, props.rowIndex)">
-              <i class="glyphicon glyphicon-trash"></i>
+            <button class="btn btn-outline-danger btn-sm" @click="onAction('delete-item', props.rowData, props.rowIndex)">
+              <icon name="trash"></icon>
             </button>
           </div>
         </template>
@@ -85,13 +84,13 @@ export default {
 
 .landing-upper {
   overflow: hidden;
-  background-color: yellowgreen;
-  flex: 0.2;
+  background-color: rosybrown;
+  flex: 0.15;
 }
 
 .landing-lower {
   overflow: hidden;
-  flex: 0.8;
+  flex: 0.85;
   padding: 20px;
 }
 

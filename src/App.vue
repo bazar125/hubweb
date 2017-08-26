@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <navbar></navbar>
-    <div class="app-root-container">
+    <div class="app-root-container d-flex">
+      <sidenav></sidenav>
       <router-view></router-view>
     </div>
     <slick-footer></slick-footer>
@@ -11,12 +12,14 @@
 <script>
 import Navbar from '@/components/Navbar';
 import SlickFooter from '@/components/SlickFooter';
+import Sidenav from '@/components/Sidenav';
 
 export default {
   name: 'app',
   components: {
     Navbar,
     SlickFooter,
+    Sidenav,
   },
 };
 </script>
