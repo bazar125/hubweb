@@ -47,14 +47,17 @@ export default {
 
 <style scoped>
 .custom-sidenav {
-  background-color: green;
   width: 150px;
   min-width: 150px;
+  z-index: 99;
+  /* box-shadow: 10px 0 2px -2px rgba(0,0,0,0.1);
+  box-shadow: -60px 0px 100px -90px #000000, 60px 0px 100px -90px #000000; */
+  box-shadow: 4px 0px 8px -2px rgba(0,0,0,0.1);
 }
 
 .nav-button {
   background-color: transparent;
-  color: white;
+  color: rgba(0,0,0,0.87);
   text-align: center;
   padding: 10px 20px  ; 
   font-size: 14px;
@@ -67,11 +70,13 @@ export default {
 }
 
 .nav-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  /* background-color: rgba(255, 255, 255, 0.1); */
+  background-color: rgba(223, 144, 184, 0.1);
 }
 
 .nav-button.router-link-active {
-  background-color: rgba(255, 255, 255, 0.18);
+  /* background-color: rgba(255, 255, 255, 0.18); */
+  background-color: rgba(223, 144, 184, 0.38);
   font-weight: 600;
 }
 
