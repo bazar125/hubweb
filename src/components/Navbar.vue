@@ -2,6 +2,9 @@
   <div class="custom-navbar d-flex justify-content-start align-items-center">
     <img class="logo" src="../assets/kastelea_logo.png"></img>
     <span class="title-text">Kaduna State Traffic and Environmental Enforcement Agency</span>
+    <b-button size="sm" class="ml-auto btn-login">
+      Log Out
+    </b-button>
   </div>
 </template>
 
@@ -27,8 +30,7 @@ export default {
 }
 
 .logo {
-  /* height: 100%; */
-  height: 60px;
+  height: 100%;
   width: 150px;
   /* padding-top: 2px;
   padding-bottom: 2px; */
@@ -40,5 +42,17 @@ export default {
 .title-text {
   font-size: 25px;
   font-weight: 300;
+}
+
+.btn-login {
+  background-color: #DF90B8;
+  border-color: #DF90B8;
+  color: white;
+  border-radius: 0px;
+  font-weight: 600;
+  font-size: 13px;
+  width: 90px;
+  padding: 6px 0px;
+  cursor: pointer;
 }
 </style>

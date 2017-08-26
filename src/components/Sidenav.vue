@@ -3,10 +3,6 @@
     <router-link v-for="(link, index) in links" :key="link.path" :to="link.path" tag="div" class="nav-button">
       {{link.name}}
     </router-link>
-
-    <b-button size="sm" class="mt-auto btn-login">
-      Log Out
-    </b-button>
   </div>
 </template>
 
@@ -78,19 +74,6 @@ export default {
   /* background-color: rgba(255, 255, 255, 0.18); */
   background-color: rgba(223, 144, 184, 0.38);
   font-weight: 600;
-}
-
-.btn-login {
-  background-color: #DF90B8;
-  border-color: #DF90B8;
-  color: white;
-  border-radius: 0px;
-  font-weight: 600;
-  font-size: 13px;
-  width: 90px;
-  padding: 6px 0px;
-  cursor: pointer;
-  margin-bottom: 10px;
 }
 
 </style>
