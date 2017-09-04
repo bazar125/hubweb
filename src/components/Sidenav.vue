@@ -16,19 +16,19 @@ export default {
       links: [
         {
           // path: 'drivers',
-          path: '',
+          path: '/',
           name: 'Personnel',
         },
         {
-          path: 'database',
+          path: '/database',
           name: 'Database',
         },
         {
-          path: 'citations',
+          path: '/citations',
           name: 'Citations',
         },
         {
-          path: 'settings',
+          path: '/settings',
           name: 'Settings',
         },
       ],
@@ -66,7 +66,7 @@ export default {
   background-color: rgba(223, 144, 184, 0.1);
 }
 
-.nav-button.router-link-active {
+.nav-button.router-link-exact-active {
   /* background-color: rgba(255, 255, 255, 0.18); */
   background-color: rgba(223, 144, 184, 0.38);
   font-weight: 600;

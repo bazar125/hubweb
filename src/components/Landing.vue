@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import FieldDefs from '@/components/Vuetable/FieldDefs';
+import CitationFieldDefs from '@/components/Vuetable/CitationFieldDefs';
 import MyVuetable from '@/components/Vuetable/MyVuetable';
 
 export default {
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      fields: FieldDefs,
+      fields: CitationFieldDefs,
       sortOrder: [
         {
           field: 'email',

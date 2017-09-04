@@ -15,9 +15,20 @@ import Icon from 'vue-awesome/components/Icon';
 
 import DetailRow from '@/components/Vuetable/DetailRow';
 
+import * as Firebase from 'firebase';
+
 import Vue from 'vue';
 import App from './App';
 import router from './router';
+
+const config = {
+  apiKey: 'AIzaSyD5XSex8F-5VHZtQ8io0T9BFf8O3zg9yZg',
+  authDomain: 'motohub-498b8.firebaseapp.com',
+  databaseURL: 'https://motohub-498b8.firebaseio.com',
+  projectId: 'motohub-498b8',
+  storageBucket: 'motohub-498b8.appspot.com',
+  messagingSenderId: '328926125851',
+};
 
 Vue.use(BootstrapVue);
 // Vue.component('vuetable', Vuetable);
@@ -31,10 +42,32 @@ Vue.component('my-detail-row', DetailRow);
 
 Vue.config.productionTip = false;
 
+router.beforeEach((to, from, next) => {
+  Firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      // this.$router.push('/');
+      next('/');
+    } else {
+      // this.$router.push('/login');
+      next('/login');
+    }
+  });
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
   components: { App },
+  created() {
+    Firebase.initializeApp(config);
+    // firebase.auth().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     this.$router.push('/')
+    //   } else {
+    //     this.$router.push('/login')
+    //   }
+    // });
+  },
 });
