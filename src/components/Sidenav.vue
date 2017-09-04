@@ -17,23 +17,19 @@ export default {
         {
           // path: 'drivers',
           path: '',
-          name: 'Drivers',
+          name: 'Personnel',
         },
         {
-          path: 'vehicles',
-          name: 'Vehicles',
+          path: 'database',
+          name: 'Database',
         },
         {
-          path: 'reports',
-          name: 'Reports',
+          path: 'citations',
+          name: 'Citations',
         },
         {
           path: 'settings',
           name: 'Settings',
-        },
-        {
-          path: 'contact',
-          name: 'Contact',
         },
       ],
     };

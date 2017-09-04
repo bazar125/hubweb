@@ -11,29 +11,15 @@
             <button class="btn btn-outline-primary btn-sm" @click="onAction('view-item', props.rowData, props.rowIndex)">
               <icon name="search-plus"></icon>
             </button>
-            <button class="btn btn-outline-primary btn-sm" @click="onAction('edit-item', props.rowData, props.rowIndex)">
+            <!-- <button class="btn btn-outline-primary btn-sm" @click="onAction('edit-item', props.rowData, props.rowIndex)">
               <icon name="pencil"></icon>
             </button>
             <button class="btn btn-outline-danger btn-sm" @click="onAction('delete-item', props.rowData, props.rowIndex)">
-              <icon name="trash"></icon>
+              <icon name="trash"></icon> -->
             </button>
           </div>
         </template>
       </my-vuetable>
-  
-      <!-- <vuetable ref="vuetable"      
-          api-url="https://vuetable.ratiw.net/api/users"
-          pagination-path=""
-          @vuetable:pagination-data="onPaginationData"
-          :css="css"
-          :per-page="7"
-          :fields="['name', 'email', 'birthdate', 'address.line1', 'address.line2', 'address.zipcode']">
-          </vuetable>
-      
-          <div class="d-flex justify-content-end align-items-center pagination-container">
-            <vuetable-pagination-info class="custom-pagination-info" ref="paginationInfo"></vuetable-pagination-info>
-            <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
-          </div> -->
     </div>
   </div>
 </template>
@@ -80,6 +66,8 @@ export default {
 <style scoped>
 .landing {
   height: 100%;
+  /* Sidenav width: 150px */
+  width: calc(100% - 150px);
 }
 
 .landing-upper {
