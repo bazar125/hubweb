@@ -49,20 +49,22 @@ export default [
     dataClass: 'text-center custom-table-cell',
     // callback: 'allcap',
   },
+
   {
-    name: 'gender',
-    sortField: 'gender',
+    name: 'name',
+    sortField: 'name',
     titleClass: 'text-center',
     dataClass: 'text-center custom-table-cell',
-    callback: 'genderLabel',
+    // callback: 'allcap',
   },
   {
-    name: 'salary',
-    sortField: 'salary',
+    name: 'registration',
+    sortField: 'registration',
     titleClass: 'text-center',
-    dataClass: 'text-right',
-    callback: 'formatNumber',
+    dataClass: 'text-center custom-table-cell',
+    // callback: 'allcap',
   },
+
   // {
   //   name: '__component:custom-actions',
   //   title: 'Actions',

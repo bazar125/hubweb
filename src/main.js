@@ -50,6 +50,8 @@ router.beforeEach((to, from, next) => {
     console.log('redirecting to login');
     next('/login');
     // } else if (!requiresAuth && currentUser) {
+  } else if (to.path === '/login' && currentUser) {
+    next('/');
   } else {
     console.log('default fall-through');
     next();

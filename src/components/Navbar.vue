@@ -2,13 +2,15 @@
   <div class="custom-navbar d-flex justify-content-start align-items-center">
     <img class="logo" src="../assets/kastelea_logo.png"></img>
     <span class="title-text">Kaduna State Traffic and Environmental Enforcement Agency</span>
-    <b-button size="sm" class="ml-auto btn-login">
+    <b-button @click="logout()" size="sm" class="ml-auto btn-login">
       Log Out
     </b-button>
   </div>
 </template>
 
 <script>
+import * as Firebase from 'firebase';
+
 export default {
   name: 'Navbar',
   components: {
@@ -16,6 +18,13 @@ export default {
   data() {
     return {
     };
+  },
+  methods: {
+    logout() {
+      Firebase.auth().signOut().then(() => {
+        this.$router.push('/login');
+      });
+    },
   },
 };
 </script>
