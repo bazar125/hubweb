@@ -49,6 +49,9 @@ export default {
       }
 
       Firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        .then(() => {
+          this.$router.push('/');
+        })
         .catch((error) => {
           // Handle Errors here.
           const errorCode = error.code;
