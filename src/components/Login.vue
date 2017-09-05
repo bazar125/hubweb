@@ -2,28 +2,32 @@
   <div class="login d-flex flex-column justify-content-center align-items-center">
     <div class="login-card">
       <img class="img-logo" src="../assets/motohub_logo.png"></img>
-      <b-input-group>
-        <b-form-input v-model="email" type="email" placeholder="Email"></b-form-input>
-        <!-- Attach Right button -->
-        <!-- <b-input-group-button slot="right">
-            <b-dropdown text="Dropdown" variant="success">
-              <b-dropdown-item>Action</b-dropdown-item>
-              <b-dropdown-item>Action</b-dropdown-item>
-            </b-dropdown>
-          </b-input-group-button> -->
-      </b-input-group>
+      <form @submit="login()">
+        <b-input-group>
+          <b-form-input v-model="email" type="email" placeholder="Email"></b-form-input>
+          <!-- Attach Right button -->
+          <!-- <b-input-group-button slot="right">
+              <b-dropdown text="Dropdown" variant="success">
+                <b-dropdown-item>Action</b-dropdown-item>
+                <b-dropdown-item>Action</b-dropdown-item>
+              </b-dropdown>
+            </b-input-group-button> -->
+        </b-input-group>
 
-      <b-input-group id="password">
-        <b-form-input v-model="password" type="password" placeholder="Password"></b-form-input>
-      </b-input-group>
+        <b-input-group id="password">
+          <b-form-input v-model="password" type="password" placeholder="Password"></b-form-input>
+        </b-input-group>
 
-      <div class="error-container">
-        <span class="error-text" v-if="error">{{error}}</span>
-      </div>
+        <div class="error-container">
+          <span class="error-text" v-if="error">{{error}}</span>
+        </div>
 
-      <b-button id="login" class="btn-login" @click="login()">
-        Login
-      </b-button>
+        <b-button id="login" class="btn-login" @click="login()">
+          Login
+        </b-button>
+
+        <input type="submit" style="display:none"/>
+      </form>
     </div>
   </div>
 </template>
