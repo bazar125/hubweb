@@ -43,15 +43,17 @@ Vue.component('my-detail-row', DetailRow);
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
-  Firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      // this.$router.push('/');
-      next('/');
-    } else {
-      // this.$router.push('/login');
-      next('/login');
-    }
-  });
+  const currentUser = Firebase.auth().currentUser;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth && !currentUser) {
+    console.log('redirecting to login');
+    next('/login');
+    // } else if (!requiresAuth && currentUser) {
+  } else {
+    console.log('default fall-through');
+    next();
+  }
 });
 
 /* eslint-disable no-new */
@@ -62,12 +64,10 @@ new Vue({
   components: { App },
   created() {
     Firebase.initializeApp(config);
-    // firebase.auth().onAuthStateChanged((user) => {
-    //   if (user) {
-    //     this.$router.push('/')
-    //   } else {
-    //     this.$router.push('/login')
-    //   }
-    // });
+    Firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        this.$router.push('/login');
+      }
+    });
   },
 });

@@ -5,7 +5,7 @@
   
     <!-- <div class="landing-lower d-flex flex-column justify-content-start align-items-center"> -->
     <div class="landing-lower d-flex flex-column justify-content-start align-items-center">
-      <my-vuetable api-url="https://vuetable.ratiw.net/api/users" :fields="fields" :sort-order="sortOrder" :append-params="moreParams" :per-page="7" detail-row-component="my-detail-row">
+      <my-vuetable :api-mode="false" :data="data" :fields="fields" :sort-order="sortOrder" :append-params="moreParams" :per-page="7" detail-row-component="my-detail-row">
         <template slot="actions" scope="props">
           <div class="custom-actions">
             <button class="btn btn-outline-primary btn-sm" @click="onAction('view-item', props.rowData, props.rowIndex)">

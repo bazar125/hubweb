@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <navbar></navbar>
+    <navbar v-if="showNavigation"></navbar>
     <div class="app-root-container d-flex">
-      <sidenav></sidenav>
+      <sidenav v-if="showNavigation"></sidenav>
       <router-view></router-view>
     </div>
-    <slick-footer></slick-footer>
+    <slick-footer v-if="showNavigation"></slick-footer>
   </div>
 </template>
 
@@ -14,12 +14,31 @@ import Navbar from '@/components/Navbar';
 import SlickFooter from '@/components/SlickFooter';
 import Sidenav from '@/components/Sidenav';
 
+import * as Firebase from 'firebase';
+
 export default {
   name: 'app',
   components: {
     Navbar,
     SlickFooter,
     Sidenav,
+  },
+  data() {
+    return {
+      showNavigation: true,
+    };
+  },
+  created() {
+    Firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log('Hiding app navigation');
+        this.showNavigation = true;
+        // this.$router.push('/');
+      } else {
+        console.log('Showing app navigation');
+        this.showNavigation = false;
+      }
+    });
   },
 };
 </script>
@@ -47,7 +66,11 @@ export default {
   font-family: 'Open Sans', sans-serif;
 }
 
-button, input, optgroup, select, textarea {
+button,
+input,
+optgroup,
+select,
+textarea {
   font-family: 'Open Sans', sans-serif;
 }
 </style>
