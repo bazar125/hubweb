@@ -7,14 +7,15 @@ const ELASTIC_INDEX = 'motohub';
 export default class FlashlightSearch {
   constructor() {
     const svc = this;
-    const database = Firebase.database();
-
+    // const database = Firebase.database();
     svc.mapping = {};
 
-    svc.search = (type, qquery, from = -1, size = -1) => {
-      const query = qquery;
+    svc.search = (type, queryBody, from = -1, size = -1) => {
+      const database = Firebase.database();
+      const query = {};
       query.index = ELASTIC_INDEX;
       query.type = type;
+      query.body = queryBody;
 
       if (from >= 0 && size >= 0) {
         query.from = from;
@@ -24,7 +25,7 @@ export default class FlashlightSearch {
       const ref = database.ref().child('search');
       const key = ref.child('request').push(query).key;
 
-      // console.log('search', key, query);
+      console.log('search', key, query);
 
       return new Promise((resolve, reject) => {
         const func = (snap) => {

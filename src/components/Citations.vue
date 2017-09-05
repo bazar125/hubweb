@@ -2,7 +2,7 @@
   <div class="citations d-flex flex-column">
     <div class="citations-upper d-flex">
     </div>
-  
+
     <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
       <my-vuetable :api-mode="false" :data="data" :fields="fields" :sort-order="sortOrder" :append-params="moreParams" :per-page="7" detail-row-component="my-detail-row">
         <template slot="actions" scope="props">
@@ -11,10 +11,10 @@
               <icon name="search-plus"></icon>
             </button>
             <!-- <button class="btn btn-outline-primary btn-sm" @click="onAction('edit-item', props.rowData, props.rowIndex)">
-              <icon name="pencil"></icon>
-            </button>
-            <button class="btn btn-outline-danger btn-sm" @click="onAction('delete-item', props.rowData, props.rowIndex)">
-              <icon name="trash"></icon> -->
+                <icon name="pencil"></icon>
+              </button>
+              <button class="btn btn-outline-danger btn-sm" @click="onAction('delete-item', props.rowData, props.rowIndex)">
+                <icon name="trash"></icon> -->
             </button>
           </div>
         </template>
@@ -27,6 +27,8 @@
 import FlashlightSearch from '@/services/FlashlightSearch';
 import CitationFieldDefs from '@/components/Vuetable/CitationFieldDefs';
 import MyVuetable from '@/components/Vuetable/MyVuetable';
+
+const flashlightSearch = new FlashlightSearch();
 
 export default {
   name: 'Citations',
@@ -52,14 +54,36 @@ export default {
   },
   methods: {
     initialize() {
-
+      /*
+"body": [
+                    "query": [
+                        "bool": [
+                            "must": [
+                                [ "match_phrase_prefix": [ "firstName": searchTokens[0]] ],
+                                [ "match_phrase_prefix": [ "lastName": searchTokens[1]] ]
+                            ]
+                        ]
+                    ]
+      */
+      const query = {
+        body: {
+          query: {
+            match_all: {},
+          },
+        },
+      };
+      // const from = 1;
+      // const size = 1;
+      flashlightSearch.search('citation', query)
+        .then((hits) => {
+          console.log(hits);
+        });
     },
     onPaginationData(paginationData) {
       this.$refs.pagination.setPaginationData(paginationData);
       this.$refs.paginationInfo.setPaginationData(paginationData);
     },
     onChangePage() {
-
     },
     onAction(action, data, index) {
       return `${action}${data}${index}`;
@@ -89,6 +113,7 @@ export default {
   padding: 20px;
 }
 
+
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -101,10 +126,10 @@ export default {
 .filter-bar {
   padding: 8px;
 }
+
 .pagination {
   margin-top: 0px;
 }
-
 </style>
 
 <style>
@@ -115,6 +140,8 @@ export default {
 .custom-table-cell {
   cursor: pointer;
 }
+
+
 /* .data-table thead tr th {
   text-align: center;
 }
