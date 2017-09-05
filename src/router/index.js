@@ -12,9 +12,7 @@ export default new Router({
       path: '/',
       name: 'Landing',
       component: Landing,
-      meta: {
-        requiresAuth: true,
-      },
+      meta: { requiresAuth: true },
     },
     {
       path: '/login',
@@ -25,9 +23,7 @@ export default new Router({
       path: '/citations',
       name: 'Citations',
       component: Citations,
-      meta: {
-        requiresAuth: true,
-      },
+      meta: { requiresAuth: true },
     },
   ],
 });

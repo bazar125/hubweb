@@ -7,11 +7,11 @@
           <b-form-input v-model="email" type="email" placeholder="Email"></b-form-input>
           <!-- Attach Right button -->
           <!-- <b-input-group-button slot="right">
-              <b-dropdown text="Dropdown" variant="success">
-                <b-dropdown-item>Action</b-dropdown-item>
-                <b-dropdown-item>Action</b-dropdown-item>
-              </b-dropdown>
-            </b-input-group-button> -->
+                  <b-dropdown text="Dropdown" variant="success">
+                    <b-dropdown-item>Action</b-dropdown-item>
+                    <b-dropdown-item>Action</b-dropdown-item>
+                  </b-dropdown>
+                </b-input-group-button> -->
         </b-input-group>
 
         <b-input-group id="password">
@@ -26,7 +26,7 @@
           Login
         </b-button>
 
-        <input type="submit" style="display:none"/>
+        <input type="submit" style="display:none" />
       </form>
     </div>
   </div>
@@ -46,6 +46,13 @@ export default {
       error: '',
     };
   },
+  created() {
+    Firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$router.push('/');
+      }
+    });
+  },
   methods: {
     login() {
       if (!this.email || !this.password) {
@@ -53,9 +60,6 @@ export default {
       }
 
       Firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        .then(() => {
-          this.$router.push('/');
-        })
         .catch((error) => {
           // Handle Errors here.
           const errorCode = error.code;
@@ -113,7 +117,7 @@ export default {
 }
 
 .error-container {
-   margin-top: 10px;
+  margin-top: 10px;
 }
 
 .error-text {

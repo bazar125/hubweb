@@ -43,19 +43,28 @@ Vue.component('my-detail-row', DetailRow);
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
-  const currentUser = Firebase.auth().currentUser;
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  console.log(`${to.fullPath} requiresAuth: ${requiresAuth}`);
+  Firebase.auth().onAuthStateChanged((user) => {
+    if (requiresAuth && !user) {
+      console.log('main.js going to login');
+      next({ path: '/login' });
+    } else if (to.fullPath === '/login' && user) {
+      next(false);
+    } else {
+      next();
+    }
+  });
+  // const currentUser = Firebase.auth().currentUser;
+  // const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-  if (requiresAuth && !currentUser) {
-    console.log('redirecting to login');
-    next('/login');
-    // } else if (!requiresAuth && currentUser) {
-  } else if (to.path === '/login' && currentUser) {
-    next('/');
-  } else {
-    console.log('default fall-through');
-    next();
-  }
+  // if (requiresAuth && !currentUser) {
+  //   next({ path: '/login' });
+  //   // } else if (to.path === '/login' && currentUser) {
+  //   //   next({ path: '/' });
+  // } else {
+  //   next();
+  // }
 });
 
 /* eslint-disable no-new */
@@ -68,6 +77,7 @@ new Vue({
     Firebase.initializeApp(config);
     Firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
+        console.log('main.js going to login');
         this.$router.push('/login');
       }
     });

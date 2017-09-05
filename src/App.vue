@@ -31,11 +31,8 @@ export default {
   created() {
     Firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log('Hiding app navigation');
         this.showNavigation = true;
-        // this.$router.push('/');
       } else {
-        console.log('Showing app navigation');
         this.showNavigation = false;
       }
     });
