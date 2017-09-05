@@ -4,49 +4,79 @@
     </div>
 
     <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
-      <my-vuetable :api-mode="false" :data="data" :fields="fields" :sort-order="sortOrder" :append-params="moreParams" :per-page="7" detail-row-component="my-detail-row">
-        <template slot="actions" scope="props">
-          <div class="custom-actions">
-            <button class="btn btn-outline-primary btn-sm" @click="onAction('view-item', props.rowData, props.rowIndex)">
-              <icon name="search-plus"></icon>
-            </button>
-            <!-- <button class="btn btn-outline-primary btn-sm" @click="onAction('edit-item', props.rowData, props.rowIndex)">
-                <icon name="pencil"></icon>
+      <!-- <my-vuetable :api-mode="false" :data="data" :data-total="dataTotal" :data-manager="dataManager" :fields="fields" :sort-order="sortOrder" :append-params="moreParams" :per-page="7" detail-row-component="my-detail-row">
+          <template slot="actions" scope="props">
+            <div class="custom-actions">
+              <button class="btn btn-outline-primary btn-sm" @click="onAction('view-item', props.rowData, props.rowIndex)">
+                <icon name="search-plus"></icon>
               </button>
-              <button class="btn btn-outline-danger btn-sm" @click="onAction('delete-item', props.rowData, props.rowIndex)">
-                <icon name="trash"></icon> -->
-            </button>
-          </div>
-        </template>
-      </my-vuetable>
+            </div>
+          </template>
+        </my-vuetable> -->
+      <vue-good-table class="custom-table" :perPage="7" :columns="columns" :rows="rows" :paginate="true" :lineNumbers="true" />
     </div>
   </div>
 </template>
 
 <script>
 import FlashlightSearch from '@/services/FlashlightSearch';
-import CitationFieldDefs from '@/components/Vuetable/CitationFieldDefs';
-import MyVuetable from '@/components/Vuetable/MyVuetable';
+// import CitationFieldDefs from '@/components/Vuetable/CitationFieldDefs';
+// import MyVuetable from '@/components/Vuetable/MyVuetable';
 
 const flashlightSearch = new FlashlightSearch();
 
 export default {
   name: 'Citations',
   components: {
-    MyVuetable,
+    // MyVuetable,
   },
   data() {
     return {
-      fields: CitationFieldDefs,
-      sortOrder: [
+      columns: [
         {
-          field: 'email',
-          sortField: 'email',
-          direction: 'asc',
+          label: 'Name',
+          field: 'name',
+          // filterable: true,
+        },
+        {
+          label: 'Age',
+          field: 'age',
+          type: 'number',
+          html: false,
+        },
+        {
+          label: 'Created On',
+          field: 'createdAt',
+          type: 'date',
+          inputFormat: 'YYYYMMDD',
+          outputFormat: 'MMM Do YY',
+        },
+        {
+          label: 'Percent',
+          field: 'score',
+          type: 'percentage',
+          html: false,
         },
       ],
-      moreParams: {},
-      data: {},
+      rows: [
+        { id: 1, name: 'John', age: 20, createdAt: '201-10-31:9:35 am', score: 0.03343 },
+        { id: 2, name: 'Jane', age: 24, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 3, name: 'Susan', age: 16, createdAt: '2011-10-30', score: 0.03343 },
+        { id: 4, name: 'Chris', age: 55, createdAt: '2011-10-11', score: 0.03343 },
+        { id: 5, name: 'Dan', age: 40, createdAt: '2011-10-21', score: 0.03343 },
+        { id: 6, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 7, name: 'Jane', age: 24, createdAt: '20111031' },
+        { id: 8, name: 'Susan', age: 16, createdAt: '2013-10-31', score: 0.03343 },
+        { id: 9, name: 'Chris', age: 55, createdAt: '2012-10-31', score: 0.03343 },
+        { id: 10, name: 'Dan', age: 40, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 11, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 12, name: 'Jane', age: 24, createdAt: '2011-07-31', score: 0.03343 },
+        { id: 13, name: 'Susan', age: 16, createdAt: '2017-02-28', score: 0.03343 },
+        { id: 14, name: 'Chris', age: 55, createdAt: '', score: 0.03343 },
+        { id: 15, name: 'Dan', age: 40, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 19, name: 'Chris', age: 55, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 20, name: 'Dan', age: 40, createdAt: '2011-10-31', score: 0.03343 },
+      ],
     };
   },
   mounted() {
@@ -66,18 +96,16 @@ export default {
                     ]
       */
       const query = {
-        body: {
-          query: {
-            match_all: {},
-          },
+        query: {
+          match_all: { boost: 1.0 },
         },
       };
       // const from = 1;
       // const size = 1;
-      flashlightSearch.search('citation', query)
-        .then((hits) => {
-          console.log(hits);
-        });
+      flashlightSearch.search('citation', query).then((dat) => {
+        console.log(dat);
+        console.log(this.data);
+      });
     },
     onPaginationData(paginationData) {
       this.$refs.pagination.setPaginationData(paginationData);
@@ -88,6 +116,39 @@ export default {
     onAction(action, data, index) {
       return `${action}${data}${index}`;
       // console.log('slot action: ' + action, data.name, index)
+    },
+    dataManager(sortOrder, pag) {
+      console.log('dataManager: ', sortOrder, pag);
+      const data = this.data.data;
+      // account for search filter
+      // if (this.searchFor) {
+      //   // the text should be case insensitive
+      //   let txt = new RegExp(this.searchFor, 'i');
+
+      //   // search on name, email, and nickname
+      //   data = _.filter(data, function(item) {
+      //     return item.name.search(txt) >= 0 ||
+      // item.email.search(txt) >= 0 || item.nickname.search(txt) >= 0
+      //   });
+      // }
+
+      // sortOrder can be empty, so we have to check for that as well
+      // if (sortOrder.length > 0) {
+      //   data = _.orderBy(data, sortOrder[0].sortField, sortOrder[0].direction);
+      // }
+
+      // since the filter might affect the total number of records
+      // we can ask Vuetable to recalculate the pagination for us
+      // by calling makePagination()
+      const pagination = this.$refs.vuetable.makePagination(data.length);
+
+      return {
+        links: {
+          pagination,
+        },
+        data: this.data.data,
+        // data: _.slice(data, pagination.from - 1, pagination.to),
+      };
     },
   },
 };
@@ -113,7 +174,6 @@ export default {
   padding: 20px;
 }
 
-
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -130,6 +190,10 @@ export default {
 .pagination {
   margin-top: 0px;
 }
+
+.custom-table {
+  width: 100%;
+}
 </style>
 
 <style>
@@ -141,6 +205,9 @@ export default {
   cursor: pointer;
 }
 
+.citations-lower .table-footer {
+  margin-bottom: 0px !important;
+}
 
 /* .data-table thead tr th {
   text-align: center;

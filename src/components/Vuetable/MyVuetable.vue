@@ -23,8 +23,16 @@ export default {
     VuetablePaginationBootstrap,
   },
   props: {
-    apiUrl: {
-      type: String,
+    // apiUrl: {
+    //   type: String,
+    //   required: true,
+    // },
+    data: {
+      type: Object,
+      required: true,
+    },
+    dataTotal: {
+      type: Number,
       required: true,
     },
     fields: {
@@ -69,18 +77,33 @@ export default {
       ],
     );
   },
+  // watch: {
+  //   data: (newData) => {
+  //     console.log('Aaaaaaa');
+  //     this.$refs.vuetable.setData(newData);
+  //   },
+  //   dataTotal: () => {
+  //     console.log('bbbbbbb');
+  //   },
+  // },
   methods: {
     // render related functions
     renderVuetable(h) {
+      console.log('eeeeeeeee');
+      console.log(this.data);
+      console.log(this.dataTotal);
       return h(
         'vuetable',
         {
           ref: 'vuetable',
           props: {
-            apiUrl: this.apiUrl,
+            // apiUrl: this.apiUrl,
+            apiMode: false,
+            data: this.data,
+            dataTotal: this.dataTotal,
             fields: this.fields,
-            paginationPath: '',
-            perPage: 6,
+            // paginationPath: '',
+            perPage: 7,
             multiSort: true,
             sortOrder: this.sortOrder,
             appendParams: this.appendParams,
