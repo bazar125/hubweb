@@ -1,16 +1,18 @@
 
 import * as Firebase from 'firebase';
 
-const ELASTIC_INDEX = 'motohub'
+const ELASTIC_INDEX = 'motohub';
 
-export class FlashlightSearch {
+/* eslint-disable no-underscore-dangle */
+export default class FlashlightSearch {
   constructor() {
     const svc = this;
     const database = Firebase.database();
 
     svc.mapping = {};
 
-    svc.search = (type, query, from = -1, size = -1) => {
+    svc.search = (type, qquery, from = -1, size = -1) => {
+      const query = qquery;
       query.index = ELASTIC_INDEX;
       query.type = type;
 
@@ -22,10 +24,10 @@ export class FlashlightSearch {
       const ref = database.ref().child('search');
       const key = ref.child('request').push(query).key;
 
-      console.log('search', key, query);
+      // console.log('search', key, query);
 
-      return $q((resolve, reject) => {
-        const func = snap => {
+      return new Promise((resolve, reject) => {
+        const func = (snap) => {
           if (!snap.exists()) {
             return;
           }
@@ -36,9 +38,9 @@ export class FlashlightSearch {
           snap.ref.remove();
 
           if (!dat) {
-            $log.error('FlashlightSearch dat is null');
+            // $log.error('FlashlightSearch dat is null');
             const val = snap.val();
-            $log.error(val.error);
+            // $log.error(val.error);
             reject(val.error);
 
             return;
@@ -46,10 +48,10 @@ export class FlashlightSearch {
           // flatten dat.hits and remove Elasticsearch metadata
           const flattenedHits = [];
           if (dat.hits) {
-            for (const hit of dat.hits) {
+            for (let i = 0; i < dat.hits.length; i += 1) {
+              const hit = dat.hits[i];
               const flattenedHit = hit._source;
               flattenedHit.$id = hit._id;
-
               flattenedHits.push(flattenedHit);
             }
           }
@@ -65,7 +67,7 @@ export class FlashlightSearch {
 
     svc.searchSimple = (type, simpleQuery, from, size) => {
       const queryObj = {
-        q: simpleQuery
+        q: simpleQuery,
       };
 
       return svc.search(type, queryObj, from, size);

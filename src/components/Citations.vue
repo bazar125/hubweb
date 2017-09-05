@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import FlashlightSearch from '@/services/FlashlightSearch';
 import CitationFieldDefs from '@/components/Vuetable/CitationFieldDefs';
 import MyVuetable from '@/components/Vuetable/MyVuetable';
 
@@ -46,7 +47,13 @@ export default {
       data: {},
     };
   },
+  mounted() {
+    this.initialize();
+  },
   methods: {
+    initialize() {
+
+    },
     onPaginationData(paginationData) {
       this.$refs.pagination.setPaginationData(paginationData);
       this.$refs.paginationInfo.setPaginationData(paginationData);
