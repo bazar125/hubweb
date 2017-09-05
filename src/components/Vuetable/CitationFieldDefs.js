@@ -51,15 +51,17 @@ export default [
   },
 
   {
-    name: 'name',
-    sortField: 'name',
+    title: 'Name',
+    name: 'driverName',
+    sortField: 'driverName',
     titleClass: 'text-center',
     dataClass: 'text-center custom-table-cell',
     // callback: 'allcap',
   },
   {
-    name: 'registration',
-    sortField: 'registration',
+    title: 'Plate',
+    name: 'vehicleRegistration',
+    sortField: 'vehicleRegistration',
     titleClass: 'text-center',
     dataClass: 'text-center custom-table-cell',
     // callback: 'allcap',
