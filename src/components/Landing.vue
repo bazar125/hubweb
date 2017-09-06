@@ -5,59 +5,64 @@
   
     <!-- <div class="landing-lower d-flex flex-column justify-content-start align-items-center"> -->
     <div class="landing-lower d-flex flex-column justify-content-start align-items-center">
-      <my-vuetable :api-mode="false" :data="data" :fields="fields" :sort-order="sortOrder" :append-params="moreParams" :per-page="7" detail-row-component="my-detail-row">
-        <template slot="actions" scope="props">
-          <div class="custom-actions">
-            <button class="btn btn-outline-primary btn-sm" @click="onAction('view-item', props.rowData, props.rowIndex)">
-              <icon name="search-plus"></icon>
-            </button>
-            <!-- <button class="btn btn-outline-primary btn-sm" @click="onAction('edit-item', props.rowData, props.rowIndex)">
-              <icon name="pencil"></icon>
-            </button>
-            <button class="btn btn-outline-danger btn-sm" @click="onAction('delete-item', props.rowData, props.rowIndex)">
-              <icon name="trash"></icon> -->
-            </button>
-          </div>
-        </template>
-      </my-vuetable>
+      <vue-good-table class="custom-table" :perPage="7" :columns="columns" :rows="rows" :paginate="true" :lineNumbers="true" />
     </div>
   </div>
 </template>
 
 <script>
-import CitationFieldDefs from '@/components/Vuetable/CitationFieldDefs';
-import MyVuetable from '@/components/Vuetable/MyVuetable';
-
 export default {
   name: 'Landing',
   components: {
-    MyVuetable,
   },
   data() {
     return {
-      fields: CitationFieldDefs,
-      sortOrder: [
+      columns: [
         {
-          field: 'email',
-          sortField: 'email',
-          direction: 'asc',
+          label: 'Name',
+          field: 'name',
+          // filterable: true,
+        },
+        {
+          label: 'Age',
+          field: 'age',
+          type: 'number',
+          html: false,
+        },
+        {
+          label: 'Created On',
+          field: 'createdAt',
+          type: 'date',
+          inputFormat: 'YYYYMMDD',
+          outputFormat: 'MMM Do YY',
+        },
+        {
+          label: 'Percent',
+          field: 'score',
+          type: 'percentage',
+          html: false,
         },
       ],
-      moreParams: {},
+      rows: [
+        { id: 1, name: 'John', age: 20, createdAt: '201-10-31:9:35 am', score: 0.03343 },
+        { id: 2, name: 'Jane', age: 24, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 3, name: 'Susan', age: 16, createdAt: '2011-10-30', score: 0.03343 },
+        { id: 4, name: 'Chris', age: 55, createdAt: '2011-10-11', score: 0.03343 },
+        { id: 5, name: 'Dan', age: 40, createdAt: '2011-10-21', score: 0.03343 },
+        { id: 6, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 7, name: 'Jane', age: 24, createdAt: '20111031' },
+        { id: 8, name: 'Susan', age: 16, createdAt: '2013-10-31', score: 0.03343 },
+        { id: 9, name: 'Chris', age: 55, createdAt: '2012-10-31', score: 0.03343 },
+        { id: 10, name: 'Dan', age: 40, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 11, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 12, name: 'Jane', age: 24, createdAt: '2011-07-31', score: 0.03343 },
+        { id: 13, name: 'Susan', age: 16, createdAt: '2017-02-28', score: 0.03343 },
+        { id: 14, name: 'Chris', age: 55, createdAt: '', score: 0.03343 },
+        { id: 15, name: 'Dan', age: 40, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 19, name: 'Chris', age: 55, createdAt: '2011-10-31', score: 0.03343 },
+        { id: 20, name: 'Dan', age: 40, createdAt: '2011-10-31', score: 0.03343 },
+      ],
     };
-  },
-  methods: {
-    onPaginationData(paginationData) {
-      this.$refs.pagination.setPaginationData(paginationData);
-      this.$refs.paginationInfo.setPaginationData(paginationData);
-    },
-    onChangePage() {
-
-    },
-    onAction(action, data, index) {
-      return `${action}${data}${index}`;
-      // console.log('slot action: ' + action, data.name, index)
-    },
   },
 };
 </script>
@@ -106,6 +111,10 @@ export default {
 }
 .pagination {
   margin-top: 0px;
+}
+
+.custom-table {
+  width: 100%;
 }
 
 </style>
