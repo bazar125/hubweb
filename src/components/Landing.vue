@@ -2,10 +2,8 @@
   <div class="landing d-flex flex-column">
     <div class="landing-upper d-flex">
     </div>
-  
-    <!-- <div class="landing-lower d-flex flex-column justify-content-start align-items-center"> -->
+    
     <div class="landing-lower d-flex flex-column justify-content-start align-items-center">
-      <vue-good-table class="custom-table" :perPage="7" :columns="columns" :rows="rows" :paginate="true" :lineNumbers="true" />
     </div>
   </div>
 </template>

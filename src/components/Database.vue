@@ -1,11 +1,17 @@
 <template>
-  <div class="citations d-flex flex-column">
-    <div class="citations-upper d-flex justify-content-start align-items-center">
+  <div class="database d-flex flex-column">
+    <div class="database-upper d-flex justify-content-start align-items-center">
       <b-form-input class="search-input" size="sm" v-model="searchFilter" placeholder="Type to Search" />
     </div>
 
-    <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter"></datatable>
+    <div class="database-lower d-flex flex-column justify-content-start align-items-center">
+      <div class="container-drivers d-flex justify-content-center align-items-center">
+        <datatable class="driver-table" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields" :search-filter="searchFilter"></datatable>
+      </div>
+
+      <div class="container-vehicles d-flex justify-content-center align-items-center">
+        <datatable @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter"></datatable>
+      </div>
     </div>
   </div>
 </template>
@@ -14,7 +20,8 @@
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 
-const pageLoader = new TablePageLoader('vehicle');
+const vehiclePageLoader = new TablePageLoader('vehicle');
+const driverPageLoader = new TablePageLoader('driver');
 
 /* eslint-disable no-underscore-dangle */
 export default {
@@ -24,16 +31,24 @@ export default {
   },
   data() {
     return {
-      items: [],
-      fields: {
-        date: { label: 'Date', sortable: true, class: 'text-center vertical-middle' },
-        time: { label: 'Time', sortable: true, class: 'text-center vertical-middle' },
-        paymentReference: { label: 'Reference', sortable: true, class: 'text-center vertical-middle' },
-        completionStatus: { label: 'Status', sortable: true, class: 'text-center vertical-middle' },
-        fineAmount: { label: 'Fine', sortable: true, class: 'text-center vertical-middle' },
-        driverName: { label: 'Name', sortable: true, class: 'text-center vertical-middle' },
-        vehicleRegistration: { label: 'Plate', sortable: true, class: 'text-center vertical-middle' },
+      vehicleItems: [],
+      driverItems: [],
+      vehicleFields: {
+        currentPlate: { label: 'Plate', sortable: true, class: 'text-center vertical-middle' },
+        manufacturer: { label: 'Manufacturer', sortable: true, class: 'text-center vertical-middle' },
+        model: { label: 'Model', sortable: true, class: 'text-center vertical-middle' },
+        color: { label: 'Color', sortable: true, class: 'text-center vertical-middle' },
+        yearOfManufacture: { label: 'Year of Manufacture', sortable: true, class: 'text-center vertical-middle' },
+        motExpiry: { label: 'MOT Expiry', sortable: true, class: 'text-center vertical-middle' },
         actions: { label: 'Actions', class: 'text-center vertical-middle' },
+        // body: { label: 'Date', sortable: true, class: 'text-center vertical-middle' },
+        // countryOfOrigin:
+        // { label: 'Reference', sortable: true, class: 'text-center vertical-middle' },
+        // cylinderCapacity:
+        // { label: 'Fine', sortable: true, class: 'text-center vertical-middle' },
+        // dateOfFirstRegistration:
+        // { label: 'Name', sortable: true, class: 'text-center vertical-middle' },
+        // engineNumber: { label: 'Plate', sortable: true, class: 'text-center vertical-middle' },
         // citationCode:
         // citationDescription:
         // coords
@@ -46,7 +61,18 @@ export default {
         // additionalPenalty:
         // { label: 'Person age', sortable: true, class: 'text-center vertical-middle' },
       },
-      totalRows: 0,
+      driverFields: {
+        firstName: { label: 'First Name', sortable: true, class: 'text-center vertical-middle' },
+        lastName: { label: 'Last Name', sortable: true, class: 'text-center vertical-middle' },
+        dob: { label: 'Date of Birth', sortable: true, class: 'text-center vertical-middle' },
+        gender: { label: 'Gender', sortable: true, class: 'text-center vertical-middle' },
+        height: { label: 'Height', sortable: true, class: 'text-center vertical-middle' },
+        licenseExpiry: { label: 'License Expiry', sortable: true, class: 'text-center vertical-middle' },
+        citationPoints: { label: 'Points', sortable: true, class: 'text-center vertical-middle' },
+        actions: { label: 'Actions', class: 'text-center vertical-middle' },
+      },
+      vehicleTotalRows: 0,
+      driverTotalRows: 0,
       perPage: 10,
       searchFilter: '',
     };
@@ -56,15 +82,25 @@ export default {
   },
   methods: {
     initialize() {
-      pageLoader.load(1).then((page) => {
-        this.items = page.items;
-        this.totalRows = page.totalRows;
+      vehiclePageLoader.load(1).then((page) => {
+        this.vehicleItems = page.items;
+        this.vehicelTotalRows = page.totalRows;
+      });
+
+      driverPageLoader.load(1).then((page) => {
+        this.driverItems = page.items;
+        this.driverTotalRows = page.totalRows;
       });
     },
     pageChanged(newPage) {
-      pageLoader.load(newPage).then((page) => {
-        this.items = page.items;
-        this.totalRows = page.totalRows;
+      vehiclePageLoader.load(newPage).then((page) => {
+        this.vehicleItems = page.items;
+        this.vehicelTotalRows = page.totalRows;
+      });
+
+      driverPageLoader.load(newPage).then((page) => {
+        this.driverItems = page.items;
+        this.driverTotalRows = page.totalRows;
       });
     },
   },
@@ -72,13 +108,13 @@ export default {
 </script>
 
 <style scoped>
-.citations {
+.database {
   height: 100%;
   /* Sidenav width: 150px */
   width: calc(100% - 150px);
 }
 
-.citations-upper {
+.database-upper {
   overflow: hidden;
   flex: 0.1;
   padding-left: 20px;
@@ -86,29 +122,32 @@ export default {
   border-bottom: 1px solid #ececec;
 }
 
-.citations-lower {
+.database-lower {
   overflow: hidden;
   flex: 0.9;
   padding: 20px;
+}
+
+.container-drivers {
+  width: 100%;
+}
+
+.container-vehicles {
+  width: 100%;
 }
 
 .datatable {
   width: 100%;
 }
 
+.driver-table {
+  margin-bottom: 10px;
+}
+
 .search-input {
   width: 150px;
   /* height: 40px; */
 }
-
-/* 
-.custom-pagination-info {
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-} */
 
 .filter-bar {
   padding: 8px;
@@ -124,36 +163,11 @@ export default {
 </style>
 
 <style>
-.vuetable-pagination .page-item {
-  cursor: pointer;
-}
-
 .custom-table-cell {
   cursor: pointer;
 }
 
-.citations-lower .table-footer {
+.database-lower .table-footer {
   margin-bottom: 0px !important;
 }
-
-
-
-
-
-
-
-
-/* .data-table thead tr th {
-  text-align: center;
-}
-
-.data-table thead {
-  background-color: rgba(0, 0, 0, 0.82);
-  color: white;
-}
-
-.pagination-container {
-  width: 100%;
-  position: relative;
-} */
 </style>
