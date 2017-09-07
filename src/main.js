@@ -6,8 +6,6 @@ import 'vue-awesome/icons';
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 import Icon from 'vue-awesome/components/Icon';
 
-import DetailRow from '@/components/Vuetable/DetailRow';
-
 import * as Firebase from 'firebase';
 
 import Vue from 'vue';

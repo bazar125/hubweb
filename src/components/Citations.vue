@@ -1,10 +1,11 @@
 <template>
   <div class="citations d-flex flex-column">
-    <div class="citations-upper d-flex">
+    <div class="citations-upper d-flex justify-content-start align-items-center">
+      <b-form-input class="search-input" size="sm" v-model="filter" placeholder="Type to Search" />
     </div>
 
     <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable></datatable>
+      <datatable :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields"></datatable>
     </div>
   </div>
 </template>
@@ -22,7 +23,30 @@ export default {
   },
   data() {
     return {
-      
+      items: [],
+      fields: {
+        date: { label: 'Date', sortable: true, class: 'text-center vertical-middle' },
+        time: { label: 'Time', sortable: true, class: 'text-center vertical-middle' },
+        paymentReference: { label: 'Reference', sortable: true, class: 'text-center vertical-middle' },
+        completionStatus: { label: 'Status', sortable: true, class: 'text-center vertical-middle' },
+        fineAmount: { label: 'Fine', sortable: true, class: 'text-center vertical-middle' },
+        driverName: { label: 'Name', sortable: true, class: 'text-center vertical-middle' },
+        vehicleRegistration: { label: 'Plate', sortable: true, class: 'text-center vertical-middle' },
+        actions: { label: 'Actions' },
+      },
+      totalRows: 0,
+      perPage: 10,
+      // citationCode:
+      // citationDescription:
+      // coords
+      // lat:
+      // lng:
+      // identity:
+      // issuingOfficers: {}
+      // location: {},
+      // timestamp:
+      // additionalPenalty:
+      // { label: 'Person age', sortable: true, class: 'text-center vertical-middle' },
     };
   },
   mounted() {
@@ -32,14 +56,14 @@ export default {
     initialize() {
       /*
 "body": [
-                    "query": [
-                        "bool": [
-                            "must": [
-                                [ "match_phrase_prefix": [ "firstName": searchTokens[0]] ],
-                                [ "match_phrase_prefix": [ "lastName": searchTokens[1]] ]
-                            ]
-                        ]
-                    ]
+  "query": [
+      "bool": [
+          "must": [
+              [ "match_phrase_prefix": [ "firstName": searchTokens[0]] ],
+              [ "match_phrase_prefix": [ "lastName": searchTokens[1]] ]
+          ]
+      ]
+  ]
       */
       const query = {
         query: {
@@ -48,9 +72,21 @@ export default {
       };
       // const from = 1;
       // const size = 1;
+      /* eslint-disable no-underscore-dangle */
       flashlightSearch.search('citation', query).then((dat) => {
         console.log(dat);
-        console.log(this.data);
+        for (let i = 0; i < dat.hits.length; i += 1) {
+          const hit = dat.hits[i];
+          if (hit.completionStatus === 'Payment Due') {
+            hit._rowVariant = 'danger';
+          } else if (hit.completionStatus === 'Unconfirmed') {
+            hit._rowVariant = 'alert';
+          }
+          console.log(hit._rowVariant);
+        }
+        this.items = dat.hits;
+        console.log(this.items);
+        // this.totalRows = dat.
       });
     },
   },
@@ -67,21 +103,25 @@ export default {
 .citations-upper {
   overflow: hidden;
   background-color: rosybrown;
-  flex: 0.15;
+  flex: 0.1;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .citations-lower {
   overflow: hidden;
-  flex: 0.85;
+  flex: 0.9;
   padding: 20px;
 }
 
+.datatable {
+  width: 100%;
+}
 
-
-
-
-
-
+.search-input {
+  width: 150px;
+  /* height: 40px; */
+}
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -116,12 +156,6 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
-
-
-
-
-
-
 
 /* .data-table thead tr th {
   text-align: center;
