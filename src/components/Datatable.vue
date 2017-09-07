@@ -83,6 +83,14 @@ export default {
   vertical-align: middle !important;
 }
 
+.table-alert {
+  background-color: #fcf8e3;
+}
+
+.table-danger {
+  background-color: #f2dede;
+}
+
 .datatable .table th,
 .table td {
   padding: 0.25rem 0.75rem;
