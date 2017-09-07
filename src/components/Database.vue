@@ -24,6 +24,31 @@ const vehiclePageLoader = new TablePageLoader('vehicle');
 const driverPageLoader = new TablePageLoader('driver');
 
 /* eslint-disable no-underscore-dangle */
+function processVehicles(items) {
+  const now = Date.now();
+  for (let i = 0; i < items.length; i += 1) {
+    const row = items[i];
+    const motExpiry = Date.parse(row.motExpiry);
+    if (now > motExpiry) {
+      row._rowVariant = 'danger';
+    }
+  }
+  return items;
+}
+
+function processDrivers(items) {
+  const now = Date.now();
+  for (let i = 0; i < items.length; i += 1) {
+    const row = items[i];
+    const licenseExpiry = Date.parse(row.licenseExpiry);
+    if (now > licenseExpiry || row.citationPoints > 0) {
+      row._rowVariant = 'danger';
+    }
+  }
+  return items;
+}
+
+/* eslint-disable no-underscore-dangle */
 export default {
   name: 'Database',
   components: {
@@ -41,25 +66,6 @@ export default {
         yearOfManufacture: { label: 'Year of Manufacture', sortable: true, class: 'text-center vertical-middle' },
         motExpiry: { label: 'MOT Expiry', sortable: true, class: 'text-center vertical-middle' },
         actions: { label: 'Actions', class: 'text-center vertical-middle' },
-        // body: { label: 'Date', sortable: true, class: 'text-center vertical-middle' },
-        // countryOfOrigin:
-        // { label: 'Reference', sortable: true, class: 'text-center vertical-middle' },
-        // cylinderCapacity:
-        // { label: 'Fine', sortable: true, class: 'text-center vertical-middle' },
-        // dateOfFirstRegistration:
-        // { label: 'Name', sortable: true, class: 'text-center vertical-middle' },
-        // engineNumber: { label: 'Plate', sortable: true, class: 'text-center vertical-middle' },
-        // citationCode:
-        // citationDescription:
-        // coords
-        // lat:
-        // lng:
-        // identity:
-        // issuingOfficers: {}
-        // location: {},
-        // timestamp:
-        // additionalPenalty:
-        // { label: 'Person age', sortable: true, class: 'text-center vertical-middle' },
       },
       driverFields: {
         firstName: { label: 'First Name', sortable: true, class: 'text-center vertical-middle' },
@@ -83,45 +89,25 @@ export default {
   methods: {
     initialize() {
       vehiclePageLoader.load(1).then((page) => {
-        this.vehicleItems = page.items;
+        this.vehicleItems = processVehicles(page.items);
         this.vehicelTotalRows = page.totalRows;
       });
 
       driverPageLoader.load(1).then((page) => {
-        this.driverItems = page.items;
+        this.driverItems = processDrivers(page.items);
         this.driverTotalRows = page.totalRows;
       });
     },
     pageChanged(newPage) {
       vehiclePageLoader.load(newPage).then((page) => {
-        this.vehicleItems = this.processVehicles(page.items);
+        this.vehicleItems = processVehicles(page.items);
         this.vehicelTotalRows = page.totalRows;
       });
 
       driverPageLoader.load(newPage).then((page) => {
-        this.driverItems = this.processDrivers(page.items);
+        this.driverItems = processDrivers(page.items);
         this.driverTotalRows = page.totalRows;
       });
-    },
-    processVehicles(items) {
-      const now = Date();
-      for (let i = 0; i < items.length; i += 1) {
-        const row = items[i];
-        const motExpiry = Date.parse(row.motExpiry);
-        if (now > motExpiry) {
-          row._rowVariant = 'danger';
-        }
-      }
-    },
-    processDriver(items) {
-      const now = Date();
-      for (let i = 0; i < items.length; i += 1) {
-        const row = items[i];
-        const licenseExpiry = Date.parse(row.licenseExpiry);
-        if (now > licenseExpiry || row.citationPoints > 0) {
-          row._rowVariant = 'danger';
-        }
-      }
     },
   },
 };

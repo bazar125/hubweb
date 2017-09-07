@@ -14,7 +14,6 @@ import FlashlightSearch from '@/services/FlashlightSearch';
       */
 
 const flashlightSearch = new FlashlightSearch();
-/* eslint-disable no-underscore-dangle */
 export default class TablePageLoader {
   constructor(type) {
     this.type = type;
