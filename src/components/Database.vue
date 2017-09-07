@@ -94,14 +94,34 @@ export default {
     },
     pageChanged(newPage) {
       vehiclePageLoader.load(newPage).then((page) => {
-        this.vehicleItems = page.items;
+        this.vehicleItems = this.processVehicles(page.items);
         this.vehicelTotalRows = page.totalRows;
       });
 
       driverPageLoader.load(newPage).then((page) => {
-        this.driverItems = page.items;
+        this.driverItems = this.processDrivers(page.items);
         this.driverTotalRows = page.totalRows;
       });
+    },
+    processVehicles(items) {
+      const now = Date();
+      for (let i = 0; i < items.length; i += 1) {
+        const row = items[i];
+        const motExpiry = Date.parse(row.motExpiry);
+        if (now > motExpiry) {
+          row._rowVariant = 'danger';
+        }
+      }
+    },
+    processDriver(items) {
+      const now = Date();
+      for (let i = 0; i < items.length; i += 1) {
+        const row = items[i];
+        const licenseExpiry = Date.parse(row.licenseExpiry);
+        if (now > licenseExpiry || row.citationPoints > 0) {
+          row._rowVariant = 'danger';
+        }
+      }
     },
   },
 };

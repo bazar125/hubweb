@@ -33,22 +33,7 @@ export default class TablePageLoader {
       };
 
       return flashlightSearch.search(this.type, query, from, size)
-        .then((dat) => {
-          console.log(dat);
-          for (let i = 0; i < dat.hits.length; i += 1) {
-            const hit = dat.hits[i];
-            // TODO: Extract this part for when refactoring
-            if (hit.completionStatus === 'Payment Due') {
-              hit._rowVariant = 'danger';
-            } else if (hit.completionStatus === 'Unconfirmed') {
-              hit._rowVariant = 'alert';
-            }
-          }
-          return {
-            items: dat.hits,
-            totalRows: dat.total,
-          };
-        });
+        .then(dat => ({ items: dat.hits, totalRows: dat.total }));
     };
   }
 }

@@ -57,15 +57,25 @@ export default {
   methods: {
     initialize() {
       pageLoader.load(1).then((page) => {
-        this.items = page.items;
+        this.items = this.processRows(page.items);
         this.totalRows = page.totalRows;
       });
     },
     pageChanged(newPage) {
       pageLoader.load(newPage).then((page) => {
-        this.items = page.items;
+        this.items = this.processRows(page.items);
         this.totalRows = page.totalRows;
       });
+    },
+    processRows(items) {
+      for (let i = 0; i < items.length; i += 1) {
+        const row = items[i];
+        if (row.completionStatus === 'Payment Due') {
+          row._rowVariant = 'danger';
+        } else if (row.completionStatus === 'Unconfirmed') {
+          row._rowVariant = 'alert';
+        }
+      }
     },
   },
 };
@@ -101,6 +111,8 @@ export default {
   /* height: 40px; */
 }
 
+
+
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -135,6 +147,8 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
+
+
 
 
 
