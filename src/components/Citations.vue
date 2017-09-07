@@ -32,7 +32,7 @@ export default {
         fineAmount: { label: 'Fine', sortable: true, class: 'text-center vertical-middle' },
         driverName: { label: 'Name', sortable: true, class: 'text-center vertical-middle' },
         vehicleRegistration: { label: 'Plate', sortable: true, class: 'text-center vertical-middle' },
-        actions: { label: 'Actions' },
+        actions: { label: 'Actions', class: 'text-center vertical-middle' },
       },
       totalRows: 0,
       perPage: 10,
@@ -82,10 +82,9 @@ export default {
           } else if (hit.completionStatus === 'Unconfirmed') {
             hit._rowVariant = 'alert';
           }
-          console.log(hit._rowVariant);
         }
         this.items = dat.hits;
-        console.log(this.items);
+        this.totalRows = dat.total;
         // this.totalRows = dat.
       });
     },

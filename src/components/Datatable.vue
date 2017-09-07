@@ -76,11 +76,16 @@ export default {
   font-size: 12px;
   font-weight: 300;
 }
+
 </style>
 
 <style>
+.datatable .btn {
+  cursor: pointer;
+}
 .vertical-middle {
   vertical-align: middle !important;
+  padding-right: 10px !important;
 }
 
 .table-alert {
