@@ -2,7 +2,7 @@
   <div class="datatable d-flex flex-column justify-content-start align-items-center">
 
     <!-- <b-table bordered hover show-empty :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered"> -->
-    <b-table bordered hover show-empty :items="items" :fields="fields" :per-page="perPage" :filter="searchFilter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered">
+    <b-table class="custom-table" bordered hover show-empty :items="items" :fields="fields" :per-page="perPage" :filter="searchFilter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered">
       <!-- <template slot="name" scope="row">{{row.value.first}} {{row.value.last}}</template>
         <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
       <template slot="actions" scope="row">
@@ -65,6 +65,9 @@ export default {
 </script>
 
 <style scoped>
+.custom-table {
+  margin-bottom: auto;
+}
 .container-pagination {
   width: 100%;
 }

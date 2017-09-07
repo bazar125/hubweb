@@ -5,12 +5,12 @@
     </div>
 
     <div class="database-lower d-flex flex-column justify-content-start align-items-center">
-      <div class="container-drivers d-flex justify-content-center align-items-center">
+      <div class="container-drivers d-flex flex-column justify-content-center align-items-center">
         <datatable class="driver-table" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields" :search-filter="searchFilter"></datatable>
       </div>
 
-      <div class="container-vehicles d-flex justify-content-center align-items-center">
-        <datatable @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter"></datatable>
+      <div class="container-vehicles d-flex flex-column justify-content-center align-items-center">
+        <datatable class="vehicle-table" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter"></datatable>
       </div>
     </div>
   </div>
@@ -79,7 +79,7 @@ export default {
       },
       vehicleTotalRows: 0,
       driverTotalRows: 0,
-      perPage: 10,
+      perPage: 4,
       searchFilter: '',
     };
   },
@@ -136,10 +136,12 @@ export default {
 
 .container-drivers {
   width: 100%;
+  flex: 0.5;
 }
 
 .container-vehicles {
   width: 100%;
+  flex: 0.5;
 }
 
 .datatable {
@@ -147,7 +149,12 @@ export default {
 }
 
 .driver-table {
+  flex: 1;
   margin-bottom: 10px;
+}
+
+.vehicle-table {
+  flex: 1;
 }
 
 .search-input {
