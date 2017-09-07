@@ -1,7 +1,8 @@
 <template>
   <div class="datatable d-flex flex-column justify-content-start align-items-center">
 
-    <b-table bordered hover show-empty :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered">
+    <!-- <b-table bordered hover show-empty :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered"> -->
+    <b-table bordered hover show-empty :items="items" :fields="fields" :per-page="perPage" :filter="searchFilter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered">
       <!-- <template slot="name" scope="row">{{row.value.first}} {{row.value.last}}</template>
         <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
       <template slot="actions" scope="row">
@@ -14,7 +15,7 @@
       <!-- <span class="txt-rows-per-page">Rows Per Page</span>
       <b-form-select class="rows-per-page" size="sm" :options="pageOptions" v-model="perPage" />
       <b-button size="sm" :disabled="!sortBy" @click="sortBy = null">Clear Sort</b-button> -->
-      <b-pagination class="custom-pagination" :total-rows="totalRows" :per-page="perPage" v-model="currentPage" />
+      <b-pagination @input="paginationChanged" class="custom-pagination" :total-rows="totalRows" :per-page="perPage" v-model="currentPage" />
     </div>
 
     <!-- Details modal -->
@@ -28,7 +29,7 @@
 <script>
 export default {
   name: 'Datatable',
-  props: ['perPage', 'items', 'fields', 'totalRows'],
+  props: ['perPage', 'items', 'fields', 'totalRows', 'searchFilter'],
   components: {
   },
   data() {
@@ -55,6 +56,9 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    paginationChanged(page) {
+      this.$emit('page-changed', page);
     },
   },
 };

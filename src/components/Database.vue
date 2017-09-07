@@ -14,11 +14,11 @@
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 
-const pageLoader = new TablePageLoader('citation');
+const pageLoader = new TablePageLoader('vehicle');
 
 /* eslint-disable no-underscore-dangle */
 export default {
-  name: 'Citations',
+  name: 'Database',
   components: {
     Datatable,
   },
