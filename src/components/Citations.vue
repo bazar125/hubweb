@@ -5,7 +5,7 @@
     </div>
 
     <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter"></datatable>
+      <datatable title="Citations" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter"></datatable>
     </div>
   </div>
 </template>
@@ -26,10 +26,10 @@ export default {
     return {
       items: [],
       fields: {
+        completionStatus: { label: 'Status', sortable: true, class: 'text-center vertical-middle' },
         date: { label: 'Date', sortable: true, class: 'text-center vertical-middle' },
         time: { label: 'Time', sortable: true, class: 'text-center vertical-middle' },
         paymentReference: { label: 'Reference', sortable: true, class: 'text-center vertical-middle' },
-        completionStatus: { label: 'Status', sortable: true, class: 'text-center vertical-middle' },
         fineAmount: { label: 'Fine', sortable: true, class: 'text-center vertical-middle' },
         driverName: { label: 'Name', sortable: true, class: 'text-center vertical-middle' },
         vehicleRegistration: { label: 'Plate', sortable: true, class: 'text-center vertical-middle' },
@@ -71,11 +71,18 @@ export default {
       for (let i = 0; i < items.length; i += 1) {
         const row = items[i];
         if (row.completionStatus === 'Payment Due') {
-          row._rowVariant = 'danger';
+          row._dirtyClass = 'danger';
+          row._cellVariants = {
+            completionStatus: 'danger',
+          };
         } else if (row.completionStatus === 'Unconfirmed') {
-          row._rowVariant = 'alert';
+          row._dirtyClass = 'alert';
+          row._cellVariants = {
+            completionStatus: 'alert',
+          };
         }
       }
+      return items;
     },
   },
 };
@@ -113,6 +120,9 @@ export default {
 
 
 
+
+
+
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -147,6 +157,9 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
+
+
+
 
 
 

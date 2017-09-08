@@ -6,11 +6,11 @@
 
     <div class="database-lower d-flex flex-column justify-content-start align-items-center">
       <div class="container-drivers d-flex flex-column justify-content-center align-items-center">
-        <datatable class="driver-table" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields" :search-filter="searchFilter"></datatable>
+        <datatable title="Drivers" class="driver-table" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields" :search-filter="searchFilter"></datatable>
       </div>
 
       <div class="container-vehicles d-flex flex-column justify-content-center align-items-center">
-        <datatable class="vehicle-table" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter"></datatable>
+        <datatable title="Vehicles" class="vehicle-table" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter"></datatable>
       </div>
     </div>
   </div>
@@ -30,7 +30,10 @@ function processVehicles(items) {
     const row = items[i];
     const motExpiry = Date.parse(row.motExpiry);
     if (now > motExpiry) {
-      row._rowVariant = 'danger';
+      row._dirtyClass = 'danger';
+      row._cellVariants = {
+        motExpiry: 'danger',
+      };
     }
   }
   return items;
@@ -41,8 +44,17 @@ function processDrivers(items) {
   for (let i = 0; i < items.length; i += 1) {
     const row = items[i];
     const licenseExpiry = Date.parse(row.licenseExpiry);
-    if (now > licenseExpiry || row.citationPoints > 0) {
-      row._rowVariant = 'danger';
+    if (now > licenseExpiry) {
+      row._dirtyClass = 'danger';
+      row._cellVariants = {
+        licenseExpiry: 'danger',
+      };
+    }
+    if (row.citationPoints > 0) {
+      row._dirtyClass = 'danger';
+      row._cellVariants = {
+        citationPoints: 'danger',
+      };
     }
   }
   return items;

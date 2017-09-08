@@ -1,22 +1,23 @@
 <template>
   <div class="datatable d-flex flex-column justify-content-start align-items-center">
 
+    <div class="container-pagination d-flex justify-content-end align-items-center">
+      <!-- <span class="txt-rows-per-page">Rows Per Page</span>
+        <b-form-select class="rows-per-page" size="sm" :options="pageOptions" v-model="perPage" />
+        <b-button size="sm" :disabled="!sortBy" @click="sortBy = null">Clear Sort</b-button> -->
+      <span class="title mr-auto">{{title ? title : ''}}</span>
+      <b-pagination @input="paginationChanged" class="custom-pagination" :total-rows="totalRows" :per-page="perPage" v-model="currentPage" />
+    </div>
+
     <!-- <b-table bordered hover show-empty :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered"> -->
     <b-table class="custom-table" bordered hover show-empty :items="items" :fields="fields" :per-page="perPage" :filter="searchFilter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered">
       <!-- <template slot="name" scope="row">{{row.value.first}} {{row.value.last}}</template>
-        <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
+          <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
       <template slot="actions" scope="row">
         <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
-        <b-btn size="sm" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
+        <b-btn size="sm" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert '}" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
       </template>
-    </b-table>  
-
-    <div class="container-pagination d-flex justify-content-end align-items-center">
-      <!-- <span class="txt-rows-per-page">Rows Per Page</span>
-      <b-form-select class="rows-per-page" size="sm" :options="pageOptions" v-model="perPage" />
-      <b-button size="sm" :disabled="!sortBy" @click="sortBy = null">Clear Sort</b-button> -->
-      <b-pagination @input="paginationChanged" class="custom-pagination" :total-rows="totalRows" :per-page="perPage" v-model="currentPage" />
-    </div>
+    </b-table>
 
     <!-- Details modal -->
     <b-modal id="modal1" @hide="resetModal" ok-only>
@@ -29,7 +30,7 @@
 <script>
 export default {
   name: 'Datatable',
-  props: ['perPage', 'items', 'fields', 'totalRows', 'searchFilter'],
+  props: ['perPage', 'items', 'fields', 'totalRows', 'searchFilter', 'title'],
   components: {
   },
   data() {
@@ -65,42 +66,52 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  font-size: 22px;
+  font-weight: 300;
+}
 .custom-table {
   margin-bottom: auto;
 }
+
 .container-pagination {
   width: 100%;
+  margin-bottom: 10px;
 }
+
 .custom-pagination {
   margin-bottom: 0px;
   margin-left: 20px;
 }
+
 .rows-per-page {
   margin-bottom: 0px;
   width: 20px;
 }
+
 .txt-rows-per-page {
   font-size: 12px;
   font-weight: 300;
 }
-
 </style>
 
 <style>
 .datatable .btn {
   cursor: pointer;
 }
+
 .vertical-middle {
   vertical-align: middle !important;
   padding-right: 10px !important;
 }
 
 .table-alert {
-  background-color: #fcf8e3;
+  background-color: #f0ad4e;
 }
 
 .table-danger {
-  background-color: #f2dede;
+  background-color: #d9534f;
+  color: white;
 }
 
 .datatable .table th,
