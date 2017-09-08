@@ -106,7 +106,7 @@ export default {
 .citations-lower {
   overflow: hidden;
   flex: 0.9;
-  padding: 20px;
+  padding: 10px 20px;
 }
 
 .datatable {
