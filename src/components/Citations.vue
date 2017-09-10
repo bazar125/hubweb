@@ -5,7 +5,12 @@
     </div>
 
     <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable title="Citations" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter"></datatable>
+      <datatable title="Citations" modalId="citationModal" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
+        <template slot="modal" scope="props">
+            <h4 class="my-1 py-1" slot="modal-header">{{ props.modalDetails.data.paymentReference }}</h4>
+            <pre>{{ props.modalDetails.data }}</pre>
+        </template>
+      </datatable>
     </div>
   </div>
 </template>
@@ -119,10 +124,6 @@ export default {
 }
 
 
-
-
-
-
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -157,6 +158,7 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
+
 
 
 

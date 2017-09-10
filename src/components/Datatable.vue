@@ -3,8 +3,8 @@
 
     <div class="container-pagination d-flex justify-content-end align-items-center">
       <!-- <span class="txt-rows-per-page">Rows Per Page</span>
-        <b-form-select class="rows-per-page" size="sm" :options="pageOptions" v-model="perPage" />
-        <b-button size="sm" :disabled="!sortBy" @click="sortBy = null">Clear Sort</b-button> -->
+          <b-form-select class="rows-per-page" size="sm" :options="pageOptions" v-model="perPage" />
+          <b-button size="sm" :disabled="!sortBy" @click="sortBy = null">Clear Sort</b-button> -->
       <span class="title mr-auto">{{title ? title : ''}}</span>
       <b-pagination @input="paginationChanged" class="custom-pagination" :total-rows="totalRows" :per-page="perPage" v-model="currentPage" />
     </div>
@@ -12,25 +12,24 @@
     <!-- <b-table bordered hover show-empty :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered"> -->
     <b-table class="custom-table" bordered hover show-empty :items="items" :fields="fields" :per-page="perPage" :filter="searchFilter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered">
       <!-- <template slot="name" scope="row">{{row.value.first}} {{row.value.last}}</template>
-          <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
+            <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
       <template slot="actions" scope="row">
         <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
-        <b-btn size="sm" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert '}" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
+        <b-btn size="sm" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert'}" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
       </template>
     </b-table>
 
-    <!-- Details modal -->
-    <b-modal id="modal1" @hide="resetModal" ok-only>
-      <h4 class="my-1 py-1" slot="modal-header">{{ modalDetails.data.paymentReference }}</h4>
-      <pre>{{ modalDetails.data }}</pre>
+    <b-modal :id="modalId" @hide="resetModal" ok-only>
+      <slot name="modal" :modalDetails="modalDetails"></slot>
     </b-modal>
+    
   </div>
 </template>
 
 <script>
 export default {
   name: 'Datatable',
-  props: ['perPage', 'items', 'fields', 'totalRows', 'searchFilter', 'title'],
+  props: ['perPage', 'items', 'fields', 'totalRows', 'searchFilter', 'title', 'modalId'],
   components: {
   },
   data() {
@@ -47,7 +46,7 @@ export default {
     details(item, index, button) {
       this.modalDetails.data = JSON.stringify(item, null, 2);
       this.modalDetails.index = index;
-      this.$root.$emit('show::modal', 'modal1', button);
+      this.$root.$emit('show::modal', this.modalId, button);
     },
     resetModal() {
       this.modalDetails.data = '';
@@ -70,6 +69,7 @@ export default {
   font-size: 22px;
   font-weight: 300;
 }
+
 .custom-table {
   margin-bottom: auto;
 }

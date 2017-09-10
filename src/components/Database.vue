@@ -6,11 +6,21 @@
 
     <div class="database-lower d-flex flex-column justify-content-start align-items-center">
       <div class="container-drivers d-flex flex-column justify-content-center align-items-center">
-        <datatable title="Drivers" class="driver-table" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields" :search-filter="searchFilter"></datatable>
+        <datatable title="Drivers" modalId="driverModal" class="driver-table" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields" :search-filter="searchFilter">
+          <template slot="modal" scope="props">
+            <h4 class="my-1 py-1" slot="modal-header">{{ props.modalDetails.data.paymentReference }}</h4>
+            <pre>{{ props.modalDetails.data }}</pre>
+          </template>
+        </datatable>
       </div>
 
       <div class="container-vehicles d-flex flex-column justify-content-center align-items-center">
-        <datatable title="Vehicles" class="vehicle-table" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter"></datatable>
+        <datatable title="Vehicles" modalId="vehicleModal" class="vehicle-table" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter">
+          <template slot="modal" scope="props">
+            <h4 class="my-1 py-1" slot="modal-header">{{ props.modalDetails.data.paymentReference }}</h4>
+            <pre>{{ props.modalDetails.data }}</pre>
+          </template>
+        </datatable>
       </div>
     </div>
   </div>
