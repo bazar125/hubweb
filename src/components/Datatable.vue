@@ -19,17 +19,16 @@
       </template>
     </b-table>
 
-    <b-modal :id="modalId" @hide="resetModal" ok-only>
+    <b-modal :title="modalTitle" :id="modalId" @hide="resetModal" ok-only>
       <slot name="modal" :data="modalDetails.data"></slot>
-    </b-modal>
-    
+    </b-modal>    
   </div>
 </template>
 
 <script>
 export default {
   name: 'Datatable',
-  props: ['perPage', 'items', 'fields', 'totalRows', 'searchFilter', 'title', 'modalId'],
+  props: ['perPage', 'items', 'fields', 'totalRows', 'searchFilter', 'title', 'modalId', 'modalTitle'],
   components: {
   },
   data() {
@@ -44,7 +43,8 @@ export default {
   },
   methods: {
     details(item, index, button) {
-      this.modalDetails.data = JSON.stringify(item, null, 2);
+      // this.modalDetails.data = JSON.stringify(item, null, 2);
+      this.modalDetails.data = item;
       this.modalDetails.index = index;
       this.$root.$emit('show::modal', this.modalId, button);
     },
@@ -117,5 +117,14 @@ export default {
 .datatable .table th,
 .table td {
   padding: 0.25rem 0.75rem;
+}
+
+.modal-header {
+  padding: 5px 10px;
+}
+
+.modal-header > h5 {
+  font-size: 16px;
+  font-weight: 600px;
 }
 </style>

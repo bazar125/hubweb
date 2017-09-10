@@ -5,20 +5,18 @@
     </div>
 
     <div class="database-lower d-flex flex-column justify-content-start align-items-center">
-      <div class="container-drivers d-flex flex-column justify-content-center align-items-center">
-        <datatable title="Drivers" modalId="driverModal" class="driver-table" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields" :search-filter="searchFilter">
+      <div class="container-vehicles d-flex flex-column justify-content-center align-items-center">
+        <datatable title="Vehicles" modalId="vehicleModal" modalTitle="Vehicle" class="vehicle-table" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields" :search-filter="searchFilter">
           <template slot="modal" scope="props">
-            <h4 class="my-1 py-1" slot="modal-header">{{ props.data.paymentReference }}</h4>
-            <pre>{{ props.data }}</pre>
+            <vehicle-modal :data="props.data"></vehicle-modal>
           </template>
         </datatable>
       </div>
 
-      <div class="container-vehicles d-flex flex-column justify-content-center align-items-center">
-        <datatable title="Vehicles" modalId="vehicleModal" class="vehicle-table" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter">
+      <div class="container-drivers d-flex flex-column justify-content-center align-items-center">
+        <datatable title="Drivers" modalId="driverModal" modalTitle="Driver" class="driver-table" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter">
           <template slot="modal" scope="props">
-            <h4 class="my-1 py-1" slot="modal-header">{{ props.data.paymentReference }}</h4>
-            <pre>{{ props.data }}</pre>
+            <driver-modal :data="props.data"></driver-modal>
           </template>
         </datatable>
       </div>
@@ -29,6 +27,8 @@
 <script>
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
+import VehicleModal from '@/components/VehicleModal';
+import DriverModal from '@/components/DriverModal';
 
 const vehiclePageLoader = new TablePageLoader('vehicle');
 const driverPageLoader = new TablePageLoader('driver');
@@ -75,6 +75,8 @@ export default {
   name: 'Database',
   components: {
     Datatable,
+    VehicleModal,
+    DriverModal,
   },
   data() {
     return {
