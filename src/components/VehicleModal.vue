@@ -33,7 +33,7 @@
         <modal-data-row label="Date of First Reg." :text="data.dateOfFirstRegistration"></modal-data-row>
         <modal-data-row label="Import Date" :text="data.importDate"></modal-data-row>
         <modal-data-row label="Fuel Type" :text="data.fuelType"></modal-data-row>
-        <modal-data-row label="Odometer History" :text="data.odometerHistory.join(', ')"></modal-data-row>
+        <modal-data-row label="Odometer History" :text="data.odometerHistory ? data.odometerHistory.join(', ') : ''"></modal-data-row>
       </div>
 
       <div class="data-container d-flex flex-column justify-content-start align-items-center" style="flex: 1;">
@@ -68,8 +68,11 @@ export default {
     data(newValue) {
       const now = Date.now();
       const motExpiry = Date.parse(newValue.motExpiry);
+      console.log(`aaa ${now}, ${motExpiry}`);
       if (now > motExpiry) {
         this.alertText = 'Vehicle MOT has expired';
+      } else {
+        this.alertText = '';
       }
     },
   },
@@ -111,8 +114,8 @@ export default {
 }
 
 .alert-icon {
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   margin-right: 15px;
 }
 
