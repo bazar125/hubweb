@@ -7,8 +7,8 @@
     <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
       <datatable title="Citations" modalId="citationModal" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
         <template slot="modal" scope="props">
-            <h4 class="my-1 py-1" slot="modal-header">{{ props.modalDetails.data.paymentReference }}</h4>
-            <pre>{{ props.modalDetails.data }}</pre>
+            <h4 class="my-1 py-1" slot="modal-header">{{ props.data.paymentReference }}</h4>
+            <pre>{{ props.data }}</pre>
         </template>
       </datatable>
     </div>

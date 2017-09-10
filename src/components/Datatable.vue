@@ -20,7 +20,7 @@
     </b-table>
 
     <b-modal :id="modalId" @hide="resetModal" ok-only>
-      <slot name="modal" :modalDetails="modalDetails"></slot>
+      <slot name="modal" :data="modalDetails.data"></slot>
     </b-modal>
     
   </div>
