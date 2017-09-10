@@ -4,19 +4,20 @@
       <img class="img-main" :src="data.image"></img>
 
       <div class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
-        <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
+        <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
           <span class="alert-title mr-auto">Notices</span>
-          <b-btn size="sm" class="btn-primary" style="margin-right: 10px;">Details</b-btn>
-          <b-btn size="sm" class="btn-primary">Audit History</b-btn>
+          <b-btn size="sm" class="btn-action" style="margin-right: 10px;">Details</b-btn>
+          <b-btn size="sm" class="btn-action">Audit History</b-btn>
         </div>
-        <div class="d-flex justify-content-start align-items-center" style="flex: 1;">
-          <icon name="check-circle-o" class="alert-icon" :class="{'icon-success': !alertText, 'icon-error': alertText}"></icon>
+        <div class="d-flex justify-content-start align-items-center" style="flex: 1; padding: 5px; width: 100%;">
+          <icon v-if="!alertText" name="check-circle-o" class="alert-icon icon-success"></icon>
+          <icon v-if="alertText" name="exclamation-triangle" class="alert-icon icon-error"></icon>
           <span class="alert-text">{{alertText ? alertText : 'This vehicle has no new notices'}}</span>
         </div>
       </div>
     </div>
 
-    <div class="data-root-container d-flex justify-content-start align-items-center">
+    <div class="data-root-container d-flex justify-content-start align-items-start">
       <div class="data-container d-flex flex-column justify-content-start align-items-center" style="flex: 1;">
         <modal-data-row label="Current Plate" :text="data.currentPlate"></modal-data-row>
         <modal-data-row label="Manufacturer" :text="data.manufacturer"></modal-data-row>
@@ -78,10 +79,14 @@ export default {
 <style scoped>
 .image-container {
   width: 100%;
+  border: 1px solid #ececec;
+  border-radius: 4px;
 }
 
 .data-root-container {
   width: 100%;
+  height: 100%;
+  margin-top: 10px;
 }
 
 .data-container .modal-data-row {
@@ -89,12 +94,11 @@ export default {
 }
 
 .img-main {
-  margin-right: 10px;
+  margin-right: 5px;
   width: 125px;
   height: 100px;
   object-fit: cover;
   object-position: center center;
-  border: 1px solid #ececec;
 }
 
 .alert-title {
@@ -118,5 +122,21 @@ export default {
 
 .icon-error {
   color: #ef3135;
+}
+
+.btn-action {
+  background-color: #0275d8;
+  border-color: #0275d8;
+  color: white;
+  font-size: 13px;
+  transition: 0.4s;
+}
+
+.btn-action:hover {
+  /* background-color: #1893fd; */
+  /* border-color: #1893fd; */
+  background-color: #01559e;
+  border-color: #01559e;
+  transition: 0.4s;
 }
 </style>
