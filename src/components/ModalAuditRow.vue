@@ -11,7 +11,12 @@
       <span class="ml-auto data-timeago">{{data.timeAgo}}</span>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center">
+    <div class="inner-container d-flex flex-column justify-content-center align-items-start">
+      <div class="container-justification d-flex flex-column justify-content-start align-items-start">
+        <span class="data-label">Justification</span>
+        <span class="data-text">{{data.justification}}</span>
+      </div>
+
       <div v-for="action in data.actions" :key="action.description" class="container-action d-flex justify-content-start align-items-center">
         <div class="container-description d-flex flex-column justify-content-start align-items-start">
           <span class="data-label">Description</span>
@@ -46,13 +51,15 @@ export default {
 <style scoped>
 .modal-audit-row {
   width: 100%;
-  /* margin-bottom: 5px; */
-  border-bottom: 1px solid #ececec;
-  padding-bottom: 10px;
   padding-top: 10px;
 }
 
-.modal-audit-row > * {
+.modal-audit-row:not(:last-child) {
+  border-bottom: 1px solid #ececec;
+  padding-bottom: 10px;
+}
+
+.modal-audit-row>* {
   width: 100%;
 }
 
@@ -85,7 +92,7 @@ export default {
   margin-right: 10px;
 }
 
-.container-action {
+.inner-container {
   padding: 10px;
 }
 
@@ -98,7 +105,7 @@ export default {
   margin-right: 20px;
 }
 
-.container-old-value > * {
+.container-old-value>* {
   width: 100%;
 }
 
@@ -106,8 +113,12 @@ export default {
   width: 100px;
 }
 
-.container-new-value > * {
+.container-new-value>* {
   width: 100%;
 }
 
+.container-justification {
+  width: 100%;
+  margin-bottom: 5px;
+}
 </style>
