@@ -24,13 +24,13 @@ function processItems(items) {
   for (let i = 0; i < items.length; i += 1) {
     const item = items[i];
     if (item.type === 'edit') {
-      item.label = 'Edit attribute';
+      item.label = 'Edited attribute';
       // } else if(item.type === 'delete') {
       //   item.label = 'Edit attribute';
     } else if (item.type === 'addPoint') {
-      item.label = 'Add citation point';
+      item.label = 'Added citation point';
     } else if (item.type === 'deletePoint') {
-      item.label = 'Delete citation point';
+      item.label = 'Deleted citation point';
     }
     item.timeAgo = moment(item.timestamp).fromNow();
   }

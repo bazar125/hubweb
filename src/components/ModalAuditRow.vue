@@ -17,7 +17,8 @@
         <span class="data-text">{{data.justification}}</span>
       </div>
 
-      <div v-for="action in data.actions" :key="action.description" class="container-action d-flex justify-content-start align-items-center">
+      <div v-for="action in data.actions" :key="action.description"
+        class="container-action d-flex justify-content-start align-items-center">
         <div class="container-description d-flex flex-column justify-content-start align-items-start">
           <span class="data-label">Description</span>
           <span class="data-text">{{action.description}}</span>
@@ -119,6 +120,12 @@ export default {
 
 .container-justification {
   width: 100%;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ececec;
+}
+
+.container-action {
   margin-bottom: 5px;
 }
 </style>
