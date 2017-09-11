@@ -6,7 +6,7 @@
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
         <span class="alert-title mr-auto">Notices</span>
         <b-btn @click="clickEdit()" id="btnEdit" size="sm" class="btn-disabled" style="margin-right: 10px;">Edit</b-btn>
-        <b-btn @click="clickAuditHistory()" id="btnAuditHistory" size="sm" class="btn-action">{{btnTitle}}</b-btn>
+        <b-btn @click="clickAuditHistory()" id="btnAuditHistory" size="sm" class="btn-action" :class="{'btn-show-details': btnTitle === 'Show Details'}">{{btnTitle}}</b-btn>
       </div>
       <div class="d-flex justify-content-start align-items-center" style="flex: 1; padding: 5px; width: 100%;">
         <icon v-if="!alertText" name="check-circle-o" class="alert-icon icon-success"></icon>
@@ -136,6 +136,17 @@ export default {
   background-color: #01559e;
   border-color: #01559e;
   transition: 0.4s;
+}
+
+.btn-show-details {
+  background-color: #5bc0de !important;
+  border-color: #5bc0de !important;
+  transition: 0.4s;
+}
+
+.btn-show-details:hover {
+  background-color: #2badd4 !important;
+  border-color: #2badd4 !important;
 }
 
 .btn-disabled {
