@@ -5,8 +5,8 @@
     <div class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
         <span class="alert-title mr-auto">Notices</span>
-        <b-btn id="btnEdit" size="sm" class="btn-disabled" style="margin-right: 10px;">Edit</b-btn>
-        <b-btn size="sm" class="btn-action">Audit History</b-btn>
+        <b-btn @click="clickEdit()" id="btnEdit" size="sm" class="btn-disabled" style="margin-right: 10px;">Edit</b-btn>
+        <b-btn @click="clickAuditHistory()" id="btnAuditHistory" size="sm" class="btn-action">{{btnTitle}}</b-btn>
       </div>
       <div class="d-flex justify-content-start align-items-center" style="flex: 1; padding: 5px; width: 100%;">
         <icon v-if="!alertText" name="check-circle-o" class="alert-icon icon-success"></icon>
@@ -33,8 +33,6 @@ function validateDriver(val) {
   const now = Date.now();
   const licenseExpiry = Date.parse(val.licenseExpiry);
   const citationPoints = val.citationPoints;
-  console.log(licenseExpiry);
-  console.log(citationPoints);
   if (now > licenseExpiry && citationPoints > 0) {
     this.alertText = 'Driver license has expired, driver has citation points';
   } else if (now > licenseExpiry) {
@@ -54,7 +52,21 @@ export default {
   data() {
     return {
       alertText: '',
+      btnTitle: 'Audit History',
     };
+  },
+  methods: {
+    clickAuditHistory() {
+      if (this.btnTitle === 'Audit History') {
+        this.btnTitle = 'Show Details';
+      } else {
+        this.btnTitle = 'Audit History';
+      }
+      this.$emit('clickAuditHistory');
+    },
+    clickEdit() {
+      // this.$emit('clickEdit');
+    },
   },
   watch: {
     data(newValue) {
@@ -97,9 +109,9 @@ export default {
 }
 
 .alert-icon {
-  height: 25px;
-  width: 25px;
-  margin-right: 15px;
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
 }
 
 .icon-success {

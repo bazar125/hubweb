@@ -18,10 +18,11 @@ export default class TablePageLoader {
   constructor(type) {
     this.type = type;
 
-    this.load = (page) => {
-      console.log(`loadPage ${page}`);
+    this.load = (page, queryObj) => {
+      console.log(`loadPage ${page}, ${queryObj}`);
       const size = 10;
       const from = (page - 1) * size;
+
       const query = {
         sort: [
           { timestamp: 'desc' },
@@ -30,6 +31,10 @@ export default class TablePageLoader {
           match_all: { boost: 1.0 },
         },
       };
+
+      if (queryObj) {
+        query.query = queryObj;
+      }
 
       return flashlightSearch.search(this.type, query, from, size)
         .then(dat => ({ items: dat.hits, totalRows: dat.total }));
