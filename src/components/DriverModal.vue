@@ -1,14 +1,12 @@
 <template>
   <div class="driver-modal d-flex flex-column justify-content-center align-items-start">
-    <modal-image-section @clickEdit="toggleEdit()" @clickAuditHistory="toggleAudit()" type="driver" :data="data"></modal-image-section>
+    <modal-image-section :editBtnTitle="editBtnTitle" :auditBtnTitle="auditBtnTitle" @clickEdit="toggleEdit()" @clickAuditHistory="toggleAudit()" type="driver" :data="data"></modal-image-section>
 
     <div v-if="showAudit" class="audit-root-container d-flex justify-content-start align-items-start">
       <modal-audit-section record-type="driver" :data="data"></modal-audit-section>
     </div>
     <div v-else-if="showEdit" class="edit-root-container d-flex justify-content-start align-items-start">
-      <div class="edit-row d-flex justify-content-start align-items-center">
-        <json-editor :onChange="onChange" :json="json"></json-editor>
-      </div>
+      <modal-edit-section :data="data"></modal-edit-section>
     </div>
     <div v-else class="data-root-container d-flex justify-content-start align-items-start">
       <div class="data-container d-flex flex-column justify-content-start align-items-center" style="flex: 1;">
@@ -41,6 +39,7 @@
 <script>
 import ModalImageSection from '@/components/ModalImageSection';
 import ModalAuditSection from '@/components/ModalAuditSection';
+import ModalEditSection from '@/components/ModalEditSection';
 import ModalDataRow from '@/components/ModalDataRow';
 
 export default {
@@ -49,22 +48,39 @@ export default {
   components: {
     ModalImageSection,
     ModalAuditSection,
+    ModalEditSection,
     ModalDataRow,
   },
   data() {
     return {
       showAudit: false,
       showEdit: false,
+      auditBtnTitle: 'Audit History',
+      editBtnTitle: 'Edit',
     };
   },
   methods: {
     toggleAudit() {
       this.showAudit = !this.showAudit;
       this.showEdit = false;
+
+      if (this.showAudit) {
+        this.auditBtnTitle = 'Show Details';
+      } else {
+        this.auditBtnTitle = 'Audit History';
+      }
+      this.editBtnTitle = 'Edit';
     },
     toggleEdit() {
       this.showEdit = !this.showEdit;
       this.showAudit = false;
+
+      if (this.showEdit) {
+        this.editBtnTitle = 'Back';
+      } else {
+        this.editBtnTitle = 'Edit';
+      }
+      this.auditBtnTitle = 'Audit History';
     },
     onChange(newJson) {
       console.log(newJson);

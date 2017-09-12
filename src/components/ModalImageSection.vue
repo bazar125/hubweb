@@ -5,8 +5,8 @@
     <div class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
         <span class="alert-title mr-auto">Notices</span>
-        <b-btn @click="clickEdit()" id="btnEdit" size="sm" class="btn-disabled" style="margin-right: 10px;">Edit</b-btn>
-        <b-btn @click="clickAuditHistory()" id="btnAuditHistory" size="sm" class="btn-action" :class="{'btn-show-details': btnTitle === 'Show Details'}">{{btnTitle}}</b-btn>
+        <b-btn @click="$emit('clickEdit');" id="btnEdit" size="sm" class="btn-action" style="margin-right: 10px;" :class="{'btn-cancel': editBtnTitle === 'Back'}">{{editBtnTitle}}</b-btn>
+        <b-btn @click="$emit('clickAuditHistory');" id="btnAuditHistory" size="sm" class="btn-action" :class="{'btn-show-details': auditBtnTitle === 'Show Details'}">{{auditBtnTitle}}</b-btn>
       </div>
       <div class="d-flex justify-content-start align-items-center" style="flex: 1; padding: 5px; width: 100%;">
         <icon v-if="!alertText" name="check-circle-o" class="alert-icon icon-success"></icon>
@@ -46,27 +46,13 @@ function validateDriver(val) {
 
 export default {
   name: 'ModalImageSection',
-  props: ['data', 'type'],
+  props: ['data', 'type', 'auditBtnTitle', 'editBtnTitle'],
   components: {
   },
   data() {
     return {
       alertText: '',
-      btnTitle: 'Audit History',
     };
-  },
-  methods: {
-    clickAuditHistory() {
-      if (this.btnTitle === 'Audit History') {
-        this.btnTitle = 'Show Details';
-      } else {
-        this.btnTitle = 'Audit History';
-      }
-      this.$emit('clickAuditHistory');
-    },
-    clickEdit() {
-      // this.$emit('clickEdit');
-    },
   },
   watch: {
     data(newValue) {
@@ -147,6 +133,17 @@ export default {
 .btn-show-details:hover {
   background-color: #2badd4 !important;
   border-color: #2badd4 !important;
+}
+
+.btn-cancel {
+  background-color: #f0ad4e !important;
+  border-color: #f0ad4e !important;
+  transition: 0.4s;
+}
+
+.btn-cancel:hover {
+  background-color: #cb7e11 !important;
+  border-color: #cb7e11 !important;
 }
 
 .btn-disabled {

@@ -3,6 +3,7 @@
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'vue-awesome/icons';
+import 'jsoneditor/dist/jsoneditor.min.css';
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 import Icon from 'vue-awesome/components/Icon';
 
