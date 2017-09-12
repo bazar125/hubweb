@@ -102,12 +102,12 @@ export default {
 
 .nav-button:hover {
   /* background-color: rgba(255, 255, 255, 0.1); */
-  background-color: rgba(223, 144, 184, 0.1);
+  background-color: rgba(137, 146, 198, 0.1);
 }
 
 .nav-button.router-link-exact-active {
   /* background-color: rgba(255, 255, 255, 0.18); */
-  border: 1px solid rgba(223, 144, 184);
+  border: 1px solid #8992C6;
   font-weight: 600;
   font-size: 13px;
 }
@@ -118,5 +118,9 @@ export default {
   margin-right: 10px;
   object-fit: cover;
   object-position: center center;
+}
+
+.nav-button.router-link-exact-active .nav-icon {
+  color: #8992C6;
 }
 </style>
