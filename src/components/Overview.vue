@@ -1,19 +1,27 @@
 <template>
   <div class="overview d-flex flex-column">
-    <div class="overview-upper d-flex justify-content-start align-items-center">
-      <b-form-input class="search-input" size="sm" v-model="searchFilter" placeholder="Type to Search" />
-    </div>
+    <div class="map-container d-flex flex-column justify-content-start align-items-center">
+      <div class="map-overlay d-flex justify-content-start align-items-center">
+        <icon name="check-circle-o" class="icon-status color-green"></icon>
+        <span class="txt-status">All systems are functioning normally</span>
 
-    <div class="overview-lower d-flex flex-column justify-content-start align-items-center">
-      <v-map :zoom=13 :center="[47.413220, -1.219482]">
+        <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
+        <span class="txt-status">No pending notifications</span>
+
+        <icon name="clock-o" class="ml-auto icon-clock"></icon>
+        <clock class="custom-clock" :blink="true" :displaySeconds="false" />
+      </div>
+
+      <v-map ref="map" :zoom="8" :center="[10.3080, 7.0142]">
         <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-        <v-marker :lat-lng="[47.413220, -1.219482]"></v-marker>
+        <v-marker :lat-lng="[10.3080, 7.0142]"></v-marker>
       </v-map>
     </div>
   </div>
 </template>
 
 <script>
+import Clock from 'vue-digital-clock';
 import TablePageLoader from '@/services/TablePageLoader';
 
 const pageLoader = new TablePageLoader('citation');
@@ -22,6 +30,7 @@ const pageLoader = new TablePageLoader('citation');
 export default {
   name: 'Overview',
   components: {
+    Clock,
   },
   data() {
     return {
@@ -71,18 +80,25 @@ export default {
   width: calc(100% - 150px);
 }
 
-.overview-upper {
+.map-container {
+  position: relative;
   overflow: hidden;
-  flex: 0.1;
-  padding-left: 20px;
-  padding-right: 20px;
-  border-bottom: 1px solid #ececec;
+  /* flex: 0.9; */
+  flex: 1.0;
+  /* padding: 10px 20px; */
 }
 
-.overview-lower {
+.map-overlay {
+  position: absolute;
   overflow: hidden;
-  flex: 0.9;
-  padding: 10px 20px;
+  top: 0;
+  width: 100%;
+  padding-left: 80px;
+  padding-right: 20px;
+  border-bottom: 1px solid #ececec;
+  color: white;
+  background-color: rgba(0,0,0,.7);
+  z-index: 999;
 }
 
 .search-input {
@@ -112,19 +128,30 @@ export default {
   margin-bottom: 0px !important;
 }
 
+.icon-status {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+}
+
+.icon-clock {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.color-green {
+  color: #00B76F;
+}
+
+.custom-clock {
+  font-size: 20px;
+}
 
 
+/* red is ef3135 */
 
-
-
-
-
-
-
-
-
-
-
+.txt-status {}
 
 
 /* .data-table thead tr th {

@@ -57,7 +57,7 @@ export default {
   background-color: #DF90B8;
   border-color: #DF90B8;
   color: white;
-  border-radius: 0px;
+  border-radius: 4px;
   font-weight: 600;
   font-size: 13px;
   width: 90px;

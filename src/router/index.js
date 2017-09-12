@@ -4,6 +4,7 @@ import Landing from '@/components/Landing';
 import Citations from '@/components/Citations';
 import Database from '@/components/Database';
 import Login from '@/components/Login';
+import Overview from '@/components/Overview';
 
 Vue.use(Router);
 
@@ -11,7 +12,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Landing',
+      name: 'Overview',
+      component: Overview,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/personnel',
+      name: 'Personnel',
       component: Landing,
       meta: { requiresAuth: true },
     },
