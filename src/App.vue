@@ -4,7 +4,7 @@
     <div class="app-root-container d-flex">
       <sidenav v-if="showNavigation"></sidenav>
       <router-view></router-view>
-      <activity-stream></activity-stream>
+      <activity-stream v-if="showNavigation"></activity-stream>
     </div>
     <slick-footer v-if="showNavigation"></slick-footer>
   </div>

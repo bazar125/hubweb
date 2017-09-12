@@ -17,7 +17,7 @@ export default {
         {
           // path: 'drivers',
           path: '/',
-          name: 'Personnel',
+          name: 'Overview',
         },
         {
           path: '/database',
@@ -26,6 +26,10 @@ export default {
         {
           path: '/citations',
           name: 'Citations',
+        },
+        {
+          path: '/personnel',
+          name: 'Personnel',
         },
         {
           path: '/settings',

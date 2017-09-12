@@ -1,7 +1,7 @@
 <template>
   <div class="activity-stream d-flex flex-column justify-content-start align-items-center">
     <span class="master-title">Activity Stream</span>
-    <div v-for="activity in activities" :key="activity" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
+    <div v-for="activity in activities" :key="activity.$id" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
       <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
         <icon name="pencil-square" class="icon-small"></icon>
         <span class="txt-title">{{activity.location ? 'New Citation' : 'New Collision'}}</span>
@@ -22,10 +22,21 @@
 
 <script>
 import * as Firebase from 'firebase';
-import TablePageLoader from '@/services/TablePageLoader';
+// import TablePageLoader from '@/services/TablePageLoader';
 
-const pageLoader = new TablePageLoader('citation,collision');
-const ref = Firebase.database().ref();
+// const pageLoader = new TablePageLoader('citation,collision');
+
+// function loadActivity() {
+//   this.lastTimestamp = (new Date()).getTime();
+//   pageLoader.load(1).then((page) => {
+//     for (let i = 0; i < page.items.length; i += 1) {
+//       const item = page.items[i];
+//       item.typeDescription = item.location ? 'citation' : 'collision';
+//     }
+//     this.activities = page.items;
+//     this.totalRows = page.totalRows;
+//   });
+// }
 
 export default {
   name: 'ActivityStream',
@@ -34,28 +45,36 @@ export default {
   data() {
     return {
       activities: [],
+      lastTimestamp: 0,
     };
   },
   mounted() {
-    pageLoader.load(1).then((page) => {
-      // this.activities = this.processRows(page.items);
-      this.activities = page.items;
-      this.totalRows = page.totalRows;
-    });
+    // loadActivity.bind(this)();
 
-    ref.child('citations').on('child_added').then(() => {
-      pageLoader.load(1).then((page) => {
-        this.activities = this.processRows(page.items);
-        this.totalRows = page.totalRows;
+    const ref = Firebase.database().ref();
+    ref.child('citations').orderByChild('timestamp').limitToLast(10)
+      .on('child_added', (snap) => {
+        const val = snap.val();
+        // const timestamp = val.timestamp;
+        val.typeDescription = 'citation';
+        this.activities.unshift(val);
       });
-    });
 
-    ref.child('collisions').on('child_added').then(() => {
-      pageLoader.load(1).then((page) => {
-        this.activities = this.processRows(page.items);
-        this.totalRows = page.totalRows;
+    ref.child('collisions').orderByChild('timestamp').limitToLast(10)
+      .on('child_added', (snap) => {
+        const val = snap.val();
+        // const timestamp = val.timestamp;
+        val.typeDescription = 'collision';
+        this.activities.unshift(val);
       });
-    });
+
+    // ref.child('collisions').on('child_added', () => {
+    //   this.lastTimestamp = (new Date).getTime();
+    //   pageLoader.load(1).then((page) => {
+    //     this.activities = this.processRows(page.items);
+    //     this.totalRows = page.totalRows;
+    //   });
+    // });
   },
 };
 </script>
@@ -91,6 +110,13 @@ export default {
   padding: 8px;
   border-bottom: 1px solid #DF90B8;
 }
+
+
+
+
+
+
+
 
 /* .activity-stream-row:not(:last-child) {
   border-bottom: 1px solid #ececec;
