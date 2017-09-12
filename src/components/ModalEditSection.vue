@@ -6,11 +6,24 @@
       <span class="txt-readonly">This is a write-protected record, and may only be edited by an administrator.</span>
     </div>
     <div ref="jsoneditor" style="width: 100%; height: 300px;"></div>
+
+    <div v-if="name && name === 'driver'" class="edit-point-container d-flex justify-content-start align-items-center">
+      <span class="label-editpoints">Current Citation Points</span>
+      <span class="txt-editpoints">{{data.citationPoints}}</span>
+
+      <span class="ml-auto label-editpoints">New Citation Points</span>
+      <b-form-input class="input-points" v-model="newPoints" size="sm" type="number" min="0" max="5" placeholder="Points"></b-form-input>
+
+      <b-btn @click="saveCitationPoints()" id="btnEdit" size="sm" style="margin-left: 10px;" class="ml-auto btn-action" :class="{'btn-cancel': editBtnTitle === 'Back'}">Save</b-btn>
+    </div>
   </div>
 </template>
 
 <script>
 import JSONEditor from 'jsoneditor';
+// import * as Firebase from 'firebase';
+
+// const ref = Firebase.database().ref();
 
 export default {
   name: 'ModalEditSection',
@@ -25,7 +38,13 @@ export default {
       },
       dataClone: {},
       editor: {},
+      newPoints: '',
     };
+  },
+  methods: {
+    saveCitationPoints() {
+
+    },
   },
   mounted() {
     this.dataClone = JSON.parse(JSON.stringify(this.data));
@@ -46,6 +65,7 @@ export default {
     };
     this.editor = new JSONEditor(this.$refs.jsoneditor, options);
     this.editor.set(this.data);
+    this.newPoints = this.data.citationPoints;
   },
   watch: {
     data(newValue) {
@@ -77,5 +97,39 @@ export default {
 .txt-readonly {
   font-weight: 500;
   font-size: 10px;
+}
+
+.title-editpoints {
+  font-weight: 600;
+}
+
+.label-editpoints {
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.edit-point-container {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.input-points {
+  width: 100px;
+}
+
+.btn-action {
+  background-color: #0275d8;
+  border-color: #0275d8;
+  color: white;
+  font-size: 13px;
+  transition: 0.4s;
+}
+
+.btn-action:hover {
+  /* background-color: #1893fd; */
+  /* border-color: #1893fd; */
+  background-color: #01559e;
+  border-color: #01559e;
+  transition: 0.4s;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="image-container d-flex justify-content-start align-items-center">
-    <img class="img-main" :src="data.image"></img>
+    <img class="img-main" :src="data.image ? data.image : ''"></img>
 
     <div class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">

@@ -1,5 +1,5 @@
 <template>
-  <base-modal class="vehicle-modal d-flex flex-column justify-content-center align-items-start" type="vehicle" :data="data">
+  <base-modal class="citation-modal d-flex flex-column justify-content-center align-items-start" type="citation" :data="data">
     <template slot="main" scope="props">
       <div class="data-container d-flex flex-column justify-content-start align-items-center">
         <modal-data-row label="Current Plate" :text="props.data.currentPlate"></modal-data-row>
@@ -35,7 +35,7 @@ import BaseModal from '@/components/BaseModal';
 import ModalDataRow from '@/components/ModalDataRow';
 
 export default {
-  name: 'VehicleModal',
+  name: 'CitationModal',
   props: ['data'],
   components: {
     BaseModal,

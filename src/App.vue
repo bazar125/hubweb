@@ -4,6 +4,7 @@
     <div class="app-root-container d-flex">
       <sidenav v-if="showNavigation"></sidenav>
       <router-view></router-view>
+      <activity-stream></activity-stream>
     </div>
     <slick-footer v-if="showNavigation"></slick-footer>
   </div>
@@ -13,6 +14,7 @@
 import Navbar from '@/components/Navbar';
 import SlickFooter from '@/components/SlickFooter';
 import Sidenav from '@/components/Sidenav';
+import ActivityStream from '@/components/ActivityStream';
 
 import * as Firebase from 'firebase';
 
@@ -22,6 +24,7 @@ export default {
     Navbar,
     SlickFooter,
     Sidenav,
+    ActivityStream,
   },
   data() {
     return {
