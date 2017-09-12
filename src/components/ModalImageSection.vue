@@ -4,7 +4,7 @@
 
     <div class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
-        <span class="alert-title mr-auto">Notices</span>
+        <span class="alert-title mr-auto">Alerts</span>
         <b-btn @click="$emit('clickEdit');" id="btnEdit" size="sm" class="btn-action" style="margin-right: 10px;" :class="{'btn-cancel': editBtnTitle === 'Back'}">{{editBtnTitle}}</b-btn>
         <b-btn @click="$emit('clickAuditHistory');" id="btnAuditHistory" size="sm" class="btn-action" :class="{'btn-show-details': auditBtnTitle === 'Show Details'}">{{auditBtnTitle}}</b-btn>
       </div>

@@ -6,7 +6,7 @@
       <modal-audit-section record-type="driver" :data="data"></modal-audit-section>
     </div>
     <div v-else-if="showEdit" class="edit-root-container d-flex justify-content-start align-items-start">
-      <modal-edit-section :data="data"></modal-edit-section>
+      <modal-edit-section name="driver" :data="data"></modal-edit-section>
     </div>
     <div v-else class="data-root-container d-flex justify-content-start align-items-start">
       <div class="data-container d-flex flex-column justify-content-start align-items-center" style="flex: 1;">
@@ -109,6 +109,5 @@ export default {
 .edit-root-container {
   width: 100%;
   height: 100%;
-  margin-top: 10px;
 }
 </style>
