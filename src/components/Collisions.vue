@@ -5,10 +5,9 @@
     </div>
 
     <div class="collisions-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable title="Collisions" modalId="collisionModal" modalTitle="Collisions" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
+      <datatable title="Collisions" modalId="collisionModal" modalTitle="Collision" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
         <template slot="modal" scope="props">
-            <h4 class="my-1 py-1" slot="modal-header">{{ props.data.paymentReference }}</h4>
-            <pre>{{ props.data }}</pre>
+          <collision-modal :data="props.data"></collision-modal>
         </template>
       </datatable>
     </div>
@@ -19,6 +18,7 @@
 import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
+import CollisionModal from '@/components/CollisionModal';
 
 const pageLoader = new TablePageLoader('collision');
 
@@ -28,18 +28,20 @@ export default {
   components: {
     TableSearch,
     Datatable,
+    CollisionModal,
   },
   data() {
     return {
       items: [],
       fields: {
-        completionStatus: { label: 'Status', sortable: true, class: 'text-center vertical-middle' },
+        reference: { label: 'Reference', sortable: true, class: 'text-center vertical-middle' },
         date: { label: 'Date', sortable: true, class: 'text-center vertical-middle' },
         time: { label: 'Time', sortable: true, class: 'text-center vertical-middle' },
-        paymentReference: { label: 'Reference', sortable: true, class: 'text-center vertical-middle' },
-        fineAmount: { label: 'Fine', sortable: true, class: 'text-center vertical-middle' },
-        driverName: { label: 'Name', sortable: true, class: 'text-center vertical-middle' },
-        vehicleRegistration: { label: 'Plate', sortable: true, class: 'text-center vertical-middle' },
+        address: { label: 'Address', sortable: true, class: 'text-center vertical-middle' },
+        description: { label: 'Description', sortable: true, class: 'text-center vertical-middle' },
+        attendingOfficer: { label: 'Attending Officer', sortable: true, class: 'text-center vertical-middle' },
+        allDrivers: { label: 'Drivers', sortable: true, class: 'text-center vertical-middle' },
+        allVehicles: { label: 'Vehicles', sortable: true, class: 'text-center vertical-middle' },
         actions: { label: 'Actions', class: 'text-center vertical-middle' },
       },
       totalRows: 0,
@@ -64,20 +66,34 @@ export default {
       });
     },
     processRows(items) {
-    //   for (let i = 0; i < items.length; i += 1) {
-    //     const row = items[i];
-    //     if (row.completionStatus === 'Payment Due') {
-    //       row._dirtyClass = 'danger';
-    //       row._cellVariants = {
-    //         completionStatus: 'danger',
-    //       };
-    //     } else if (row.completionStatus === 'Unconfirmed') {
-    //       row._dirtyClass = 'alert';
-    //       row._cellVariants = {
-    //         completionStatus: 'alert',
-    //       };
-    //     }
-    //   }
+      for (let i = 0; i < items.length; i += 1) {
+        const row = items[i];
+
+        row.allDrivers = [];
+        for (let j = 0; j < row.drivers.length; j += 1) {
+          const driver = row.drivers[j];
+          row.allDrivers.push(driver.name);
+        }
+        row.allDrivers = row.allDrivers.join(', ');
+
+        row.allVehicles = [];
+        for (let j = 0; j < row.vehicles.length; j += 1) {
+          const vehicle = row.vehicles[j];
+          row.allVehicles.push(vehicle.plate);
+        }
+        row.allVehicles = row.allVehicles.join(', ');
+      }
+      // if (row.completionStatus === 'Payment Due') {
+      //   row._dirtyClass = 'danger';
+      //   row._cellVariants = {
+      //     completionStatus: 'danger',
+      //   };
+      // } else if (row.completionStatus === 'Unconfirmed') {
+      //   row._dirtyClass = 'alert';
+      //   row._cellVariants = {
+      //     completionStatus: 'alert',
+      //   };
+      // }
       return items;
     },
   },

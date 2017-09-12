@@ -1,5 +1,6 @@
 <template>
-  <div class="slick-footer">
+  <div class="slick-footer d-flex justify-content-start align-items-center">
+    <span class="ml-auto copyright-text">Copyright © 2017 MotoHub. All rights reserved.</span>
   </div>
 </template>
 
@@ -21,5 +22,11 @@ export default {
 .slick-footer {
   background-color: #3D4A8B;
   height: 40px;
+}
+
+.copyright-text {
+  font-size: 8px;
+  color: white;
+  margin-right: 10px;
 }
 </style>

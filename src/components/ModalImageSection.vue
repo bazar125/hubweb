@@ -1,11 +1,11 @@
 <template>
   <div class="image-container d-flex justify-content-start align-items-center">
-    <img class="img-main" :src="data.image ? data.image : ''"></img>
+    <img class="img-main" :src="data.image ? data.image : photoPlaceholder"></img>
 
     <div class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
         <span class="alert-title mr-auto">Alerts</span>
-        <b-btn @click="$emit('clickEdit');" id="btnEdit" size="sm" class="btn-action" style="margin-right: 10px;" :class="{'btn-cancel': editBtnTitle === 'Back'}">{{editBtnTitle}}</b-btn>
+        <b-btn @click="$emit('clickEdit');" id="btnEdit" size="sm" class="btn-action" style="margin-right: 10px;" :class="{'btn-cancel': editBtnTitle === 'Back', 'btn-delete': editBtnTitle === 'Delete'}">{{editBtnTitle}}</b-btn>
         <b-btn @click="$emit('clickAuditHistory');" id="btnAuditHistory" size="sm" class="btn-action" :class="{'btn-show-details': auditBtnTitle === 'Show Details'}">{{auditBtnTitle}}</b-btn>
       </div>
       <div class="d-flex justify-content-start align-items-center" style="flex: 1; padding: 5px; width: 100%;">
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 function validateVehicle(val) {
   const now = Date.now();
@@ -52,6 +53,7 @@ export default {
   data() {
     return {
       alertText: '',
+      photoPlaceholder: PhotoPlaceholder,
     };
   },
   watch: {
@@ -133,6 +135,7 @@ export default {
 .btn-show-details:hover {
   background-color: #2badd4 !important;
   border-color: #2badd4 !important;
+  transition: 0.4s;
 }
 
 .btn-cancel {
@@ -144,6 +147,19 @@ export default {
 .btn-cancel:hover {
   background-color: #cb7e11 !important;
   border-color: #cb7e11 !important;
+  transition: 0.4s;
+}
+
+.btn-delete {
+  background-color: #ef3135 !important;
+  border-color: #ef3135 !important;
+  transition: 0.4s;
+}
+
+.btn-delete:hover {
+  background-color: #ef3135 !important;
+  border-color: #ef3135 !important;
+  transition: 0.4s;
 }
 
 .btn-disabled {

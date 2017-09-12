@@ -5,10 +5,9 @@
     </div>
 
     <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable title="Citations" modalId="citationModal" modalTitle="Citations" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
+      <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
         <template slot="modal" scope="props">
-            <h4 class="my-1 py-1" slot="modal-header">{{ props.data.paymentReference }}</h4>
-            <pre>{{ props.data }}</pre>
+          <citation-modal :data="props.data"></citation-modal>
         </template>
       </datatable>
     </div>
@@ -19,6 +18,7 @@
 import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
+import CitationModal from '@/components/CitationModal';
 
 const pageLoader = new TablePageLoader('citation');
 
@@ -28,6 +28,7 @@ export default {
   components: {
     TableSearch,
     Datatable,
+    CitationModal,
   },
   data() {
     return {
@@ -41,17 +42,6 @@ export default {
         driverName: { label: 'Name', sortable: true, class: 'text-center vertical-middle' },
         vehicleRegistration: { label: 'Plate', sortable: true, class: 'text-center vertical-middle' },
         actions: { label: 'Actions', class: 'text-center vertical-middle' },
-        // citationCode:
-        // citationDescription:
-        // coords
-        // lat:
-        // lng:
-        // identity:
-        // issuingOfficers: {}
-        // location: {},
-        // timestamp:
-        // additionalPenalty:
-        // { label: 'Person age', sortable: true, class: 'text-center vertical-middle' },
       },
       totalRows: 0,
       perPage: 10,
@@ -126,6 +116,7 @@ export default {
 }
 
 
+
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -160,6 +151,7 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
+
 
 
 

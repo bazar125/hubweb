@@ -2,7 +2,8 @@
   <div class="custom-navbar d-flex justify-content-start align-items-center">
     <img class="logo" src="../assets/kastelea_logo.png"></img>
     <span class="title-text">Kaduna State Traffic and Environmental Enforcement Agency</span>
-    <b-button @click="logout()" size="sm" class="ml-auto btn-login">
+    <img class="ml-auto img-avatar" src="../assets/user_placeholder.jpg"></img>
+    <b-button @click="logout()" size="sm" class="btn-login">
       Log Out
     </b-button>
   </div>
@@ -63,5 +64,19 @@ export default {
   width: 90px;
   padding: 6px 0px;
   cursor: pointer;
+  transition: 0.4s;
+}
+
+.btn-login:hover {
+  background-color: #d4689f;
+  border-color: #d4689f;
+  transition: 0.4s;
+}
+
+.img-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 10px;
 }
 </style>

@@ -32,7 +32,7 @@ export default {
       showAudit: false,
       showEdit: false,
       auditBtnTitle: 'Audit History',
-      editBtnTitle: 'Edit',
+      editBtnTitle: this.type === 'citation' ? 'Delete' : 'Edit',
     };
   },
   methods: {
@@ -45,7 +45,11 @@ export default {
       } else {
         this.auditBtnTitle = 'Audit History';
       }
-      this.editBtnTitle = 'Edit';
+      if (this.type === 'citation') {
+        this.editBtnTitle = 'Delete';
+      } else {
+        this.editBtnTitle = 'Edit';
+      }
     },
     toggleEdit() {
       this.showEdit = !this.showEdit;
@@ -53,6 +57,8 @@ export default {
 
       if (this.showEdit) {
         this.editBtnTitle = 'Back';
+      } else if (this.type === 'citation') {
+        this.editBtnTitle = 'Delete';
       } else {
         this.editBtnTitle = 'Edit';
       }
