@@ -14,9 +14,12 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "@asymmetrik/leaflet-d3": "^3.1.0",
     "accounting": "^0.4.1",
     "bootstrap": "^4.0.0-alpha.6",
     "bootstrap-vue": "^0.18.0",
+    "d3": "^4.10.2",
+    "d3-hexbin": "^0.2.2",
     "firebase": "^4.3.0",
     "jsoneditor": "^5.9.5",
     "leaflet": "^1.2.0",

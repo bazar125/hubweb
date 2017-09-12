@@ -12,7 +12,7 @@
       </div>
       <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
         <icon name="clock-o" class="icon-small" style="margin-right: 7px;"></icon>
-        <span class="txt-timeago">2 hours ago</span>
+        <span class="txt-timeago">{{activity.timeAgo}}</span>
         <b-btn class="ml-auto btn-primary btn-view" size="sm">View</b-btn>
       </div>
     </div>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import * as Firebase from 'firebase';
 // import TablePageLoader from '@/services/TablePageLoader';
 
@@ -57,6 +58,7 @@ export default {
         const val = snap.val();
         // const timestamp = val.timestamp;
         val.typeDescription = 'citation';
+        val.timeAgo = moment(val.timestamp).fromNow();
         this.activities.unshift(val);
       });
 
@@ -65,6 +67,7 @@ export default {
         const val = snap.val();
         // const timestamp = val.timestamp;
         val.typeDescription = 'collision';
+        val.timeAgo = moment(val.timestamp).fromNow();
         this.activities.unshift(val);
       });
 
@@ -83,7 +86,7 @@ export default {
 .activity-stream {
   width: 200px;
   min-width: 200px;
-  z-index: 99;
+  z-index: 999;
   box-shadow: 4px 8px 8px 2px rgba(0, 0, 0, 0.3);
   overflow-y: auto;
 }

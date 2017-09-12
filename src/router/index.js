@@ -12,7 +12,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Overview',
+      name: 'Map',
       component: Overview,
       meta: { requiresAuth: true },
     },
