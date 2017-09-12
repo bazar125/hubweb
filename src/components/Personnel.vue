@@ -1,14 +1,14 @@
 <template>
   <div class="personnel d-flex flex-column">
     <div class="personnel-upper d-flex justify-content-start align-items-center">
-      <b-form-input class="search-input" size="sm" v-model="searchFilter" placeholder="Type to Search" />
+      <table-search v-model="searchFilter"></table-search>
     </div>
 
     <div class="personnel-lower d-flex flex-column justify-content-start align-items-center">
       <datatable title="Personnel" modalId="personnelModal" modalTitle="Personnel" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
         <template slot="modal" scope="props">
-            <h4 class="my-1 py-1" slot="modal-header">{{ props.data.paymentReference }}</h4>
-            <pre>{{ props.data }}</pre>
+          <h4 class="my-1 py-1" slot="modal-header">{{ props.data.paymentReference }}</h4>
+          <pre>{{ props.data }}</pre>
         </template>
       </datatable>
     </div>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 
@@ -25,6 +26,7 @@ const pageLoader = new TablePageLoader('personnel');
 export default {
   name: 'Personnel',
   components: {
+    TableSearch,
     Datatable,
   },
   data() {
@@ -55,20 +57,20 @@ export default {
       });
     },
     processRows(items) {
-    //   for (let i = 0; i < items.length; i += 1) {
-    //     const row = items[i];
-    //     if (row.completionStatus === 'Payment Due') {
-    //       row._dirtyClass = 'danger';
-    //       row._cellVariants = {
-    //         completionStatus: 'danger',
-    //       };
-    //     } else if (row.completionStatus === 'Unconfirmed') {
-    //       row._dirtyClass = 'alert';
-    //       row._cellVariants = {
-    //         completionStatus: 'alert',
-    //       };
-    //     }
-    //   }
+      //   for (let i = 0; i < items.length; i += 1) {
+      //     const row = items[i];
+      //     if (row.completionStatus === 'Payment Due') {
+      //       row._dirtyClass = 'danger';
+      //       row._cellVariants = {
+      //         completionStatus: 'danger',
+      //       };
+      //     } else if (row.completionStatus === 'Unconfirmed') {
+      //       row._dirtyClass = 'alert';
+      //       row._cellVariants = {
+      //         completionStatus: 'alert',
+      //       };
+      //     }
+      //   }
       return items;
     },
   },
@@ -87,7 +89,7 @@ export default {
   flex: 0.1;
   padding-left: 20px;
   padding-right: 20px;
-  border-bottom: 1px solid #ececec;
+  background-color: #455a64;
 }
 
 .personnel-lower {

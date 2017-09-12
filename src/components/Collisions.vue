@@ -1,7 +1,7 @@
 <template>
   <div class="collisions d-flex flex-column">
     <div class="collisions-upper d-flex justify-content-start align-items-center">
-      <b-form-input class="search-input" size="sm" v-model="searchFilter" placeholder="Type to Search" />
+      <table-search v-model="searchFilter"></table-search>
     </div>
 
     <div class="collisions-lower d-flex flex-column justify-content-start align-items-center">
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 
@@ -25,6 +26,7 @@ const pageLoader = new TablePageLoader('collision');
 export default {
   name: 'Collisions',
   components: {
+    TableSearch,
     Datatable,
   },
   data() {
@@ -94,7 +96,7 @@ export default {
   flex: 0.1;
   padding-left: 20px;
   padding-right: 20px;
-  border-bottom: 1px solid #ececec;
+  background-color: #455a64;
 }
 
 .collisions-lower {

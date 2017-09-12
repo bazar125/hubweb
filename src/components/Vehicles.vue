@@ -1,9 +1,8 @@
 <template>
   <div class="vehicles d-flex flex-column">
     <div class="vehicles-upper d-flex justify-content-start align-items-center">
-      <b-form-input class="search-input" size="sm" v-model="searchFilter" placeholder="Type to Search" />
+      <table-search v-model="searchFilter"></table-search>
     </div>
-
     <div class="vehicles-lower d-flex flex-column justify-content-start align-items-center">
       <div class="container-vehicles d-flex flex-column justify-content-center align-items-center">
         <datatable title="Vehicles" modalId="vehicleModal" modalTitle="Vehicle" class="vehicle-table" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields" :search-filter="searchFilter">
@@ -17,6 +16,7 @@
 </template>
 
 <script>
+import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import VehicleModal from '@/components/VehicleModal';
@@ -45,6 +45,7 @@ export default {
   components: {
     Datatable,
     VehicleModal,
+    TableSearch,
   },
   data() {
     return {
@@ -95,7 +96,7 @@ export default {
   flex: 0.1;
   padding-left: 20px;
   padding-right: 20px;
-  border-bottom: 1px solid #ececec;
+  background-color: #455a64;
 }
 
 .vehicles-lower {

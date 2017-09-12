@@ -382,7 +382,7 @@ export default {
       // const paused = false;
       const update = () => {
         const latlng = [d3.randomNormal(this.center[0], 1)(), d3.randomNormal(this.center[0], 1)()];
-        console.log(latlng);
+        // console.log(latlng);
         this.pingLayer.ping(latlng, (Math.random() > 0.5) ? 'red' : 'blue');
         setTimeout(update, 100 + (Math.random() * 400));
       };

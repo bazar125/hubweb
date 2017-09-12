@@ -1,9 +1,8 @@
 <template>
   <div class="drivers d-flex flex-column">
     <div class="drivers-upper d-flex justify-content-start align-items-center">
-      <b-form-input class="search-input" size="sm" v-model="searchFilter" placeholder="Type to Search" />
+      <table-search v-model="searchFilter"></table-search>
     </div>
-
     <div class="drivers-lower d-flex flex-column justify-content-start align-items-center">
       <div class="container-drivers d-flex flex-column justify-content-center align-items-center">
         <datatable title="Drivers" modalId="driverModal" modalTitle="Driver" class="driver-table" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter">
@@ -17,6 +16,7 @@
 </template>
 
 <script>
+import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import DriverModal from '@/components/DriverModal';
@@ -51,6 +51,7 @@ export default {
   components: {
     Datatable,
     DriverModal,
+    TableSearch,
   },
   data() {
     return {
@@ -102,7 +103,7 @@ export default {
   flex: 0.1;
   padding-left: 20px;
   padding-right: 20px;
-  border-bottom: 1px solid #ececec;
+  background-color: #455a64;
 }
 
 .drivers-lower {
@@ -123,11 +124,6 @@ export default {
 .driver-table {
   flex: 1;
   margin-bottom: 10px;
-}
-
-.search-input {
-  width: 150px;
-  /* height: 40px; */
 }
 
 .filter-bar {
