@@ -20,20 +20,23 @@
       </div>
     </template>
     <!-- <div v-if="name && name === 'driver'" class="edit-point-container d-flex justify-content-start align-items-center">
-                        <span class="label-editpoints">Current Citation Points</span>
-                        <span class="txt-editpoints">{{data.citationPoints}}</span>
+                                                                          <span class="label-editpoints">Current Citation Points</span>
+                                                                          <span class="txt-editpoints">{{data.citationPoints}}</span>
 
-                        <span class="ml-auto label-editpoints">New Citation Points</span>
-                        <b-form-input class="input-points" v-model="newPoints" size="sm" type="number" min="0" max="5" placeholder="Points"></b-form-input>
+                                                                          <span class="ml-auto label-editpoints">New Citation Points</span>
+                                                                          <b-form-input class="input-points" v-model="newPoints" size="sm" type="number" min="0" max="5" placeholder="Points"></b-form-input>
 
-                        <b-btn @click="saveCitationPoints()" id="btnEdit" size="sm" style="margin-left: 10px;" class="ml-auto btn-action" :class="{'btn-cancel': editBtnTitle === 'Back'}">Save</b-btn>
-                      </div> -->
+                                                                          <b-btn @click="saveCitationPoints()" id="btnEdit" size="sm" style="margin-left: 10px;" class="ml-auto btn-action" :class="{'btn-cancel': editBtnTitle === 'Back'}">Save</b-btn>
+                                                                        </div> -->
   </div>
 </template>
 
 <script>
 import JSONEditor from 'jsoneditor';
-// import * as Firebase from 'firebase';
+import * as Firebase from 'firebase';
+import TablePageLoader from '@/services/TablePageLoader';
+
+const driverLoader = new TablePageLoader('driver');
 
 export default {
   name: 'ModalEditSection',
@@ -58,10 +61,52 @@ export default {
         return;
       }
 
-      // const ref = Firebase.database().ref();
-      console.log('delete citation');
-      console.log(this.data.$id);
-      this.$root.$emit('hide::modal', `${this.name}Modal`);
+      const ref = Firebase.database().ref();
+      const unsub = Firebase.auth().onAuthStateChanged((fbUser) => {
+        ref.child(`users/${fbUser.uid}`).once('value').then((snap) => {
+          const user = snap.val();
+          /* eslint-disable no-underscore-dangle */
+          const driverQuery = {
+            bool: {
+              must: [
+                {
+                  term: { _id: this.data.driverId },
+                },
+              ],
+            },
+          };
+
+          driverLoader.load(1, driverQuery).then((page) => {
+            const driver = page.items[0];
+
+            const auditKey = ref.child('auditHistory').push().key;
+            const auditRecord = {
+              justification: this.deleteJustification,
+              recordId: this.data.$id,
+              recordType: 'deletePoint',
+              timestamp: Firebase.database.ServerValue.TIMESTAMP,
+              type: 'citation',
+              userEmail: user.email,
+              userId: fbUser.uid,
+              userName: `${user.firstName} ${user.lastName}`,
+            };
+
+            let points = parseInt(driver.citationPoints, 10);
+            if (points > 1) {
+              points -= 1;
+            }
+
+            const updates = {};
+            updates[`/auditHistory/${auditKey}`] = auditRecord;
+            updates[`/citations/${this.data.$id}`] = null;
+            updates[`/drivers/${driver.$id}/citationPoints`] = points;
+            ref.update(updates).then(() => {
+              this.$root.$emit('hide::modal', `${this.name}Modal`);
+              unsub();
+            });
+          });
+        });
+      });
     },
   },
   mounted() {

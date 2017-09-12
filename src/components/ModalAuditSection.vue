@@ -50,8 +50,6 @@ function loadAudit() {
     },
   };
   pageLoader.load(1, this.auditQuery).then((page) => {
-    console.log('rhistory resulst');
-    console.log(page);
     processItems(page.items);
     this.auditHistory = page.items;
     this.totalAuditItems = page.totalRows;

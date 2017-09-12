@@ -5,7 +5,7 @@
     </div>
 
     <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
+      <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @resetModal="resetModal()" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
         <template slot="modal" scope="props">
           <citation-modal :data="props.data"></citation-modal>
         </template>
@@ -46,6 +46,7 @@ export default {
       totalRows: 0,
       perPage: 10,
       searchFilter: '',
+      currentPage: 1,
     };
   },
   mounted() {
@@ -53,12 +54,14 @@ export default {
   },
   methods: {
     initialize() {
+      this.currentPage = 1;
       pageLoader.load(1).then((page) => {
         this.items = this.processRows(page.items);
         this.totalRows = page.totalRows;
       });
     },
     pageChanged(newPage) {
+      this.currentPage = newPage;
       pageLoader.load(newPage).then((page) => {
         this.items = this.processRows(page.items);
         this.totalRows = page.totalRows;
@@ -80,6 +83,9 @@ export default {
         }
       }
       return items;
+    },
+    resetModal() {
+      this.pageChanged(this.currentPage);
     },
   },
 };
@@ -117,6 +123,7 @@ export default {
 
 
 
+
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -151,6 +158,7 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
+
 
 
 

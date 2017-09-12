@@ -51,6 +51,7 @@ export default {
     resetModal() {
       this.modalDetails.data = '';
       this.modalDetails.index = '';
+      this.$emit('resetModal');
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
