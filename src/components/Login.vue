@@ -1,5 +1,6 @@
 <template>
   <div class="login d-flex flex-column justify-content-center align-items-center">
+    <video-bg class="custom-video-bg" :sources="[videoBg]" img="demo/assets/bg.jpg"></video-bg>
     <div class="login-card">
       <img class="img-logo" src="../assets/motohub_logo.png"></img>
       <form @submit="login()">
@@ -7,11 +8,11 @@
           <b-form-input v-model="email" type="email" placeholder="Email"></b-form-input>
           <!-- Attach Right button -->
           <!-- <b-input-group-button slot="right">
-                  <b-dropdown text="Dropdown" variant="success">
-                    <b-dropdown-item>Action</b-dropdown-item>
-                    <b-dropdown-item>Action</b-dropdown-item>
-                  </b-dropdown>
-                </b-input-group-button> -->
+                      <b-dropdown text="Dropdown" variant="success">
+                        <b-dropdown-item>Action</b-dropdown-item>
+                        <b-dropdown-item>Action</b-dropdown-item>
+                      </b-dropdown>
+                    </b-input-group-button> -->
         </b-input-group>
 
         <b-input-group id="password">
@@ -34,6 +35,7 @@
 
 <script>
 import * as Firebase from 'firebase';
+import VideoBg from '../assets/videobg.mp4';
 
 export default {
   name: 'Login',
@@ -44,6 +46,7 @@ export default {
       email: '',
       password: '',
       error: '',
+      videoBg: VideoBg,
     };
   },
   created() {
@@ -80,6 +83,7 @@ export default {
 .login {
   height: 100%;
   width: 100%;
+  position: relative;
 }
 
 #password {
@@ -124,5 +128,13 @@ export default {
   font-weight: 500;
   font-size: 12px;
   color: #ef3135;
+}
+
+.custom-video-bg {
+  position: absolute;
+  width: 100%;
+  height: 780px !important;
+  opacity: 0.6;
+  z-index: -2;
 }
 </style>
