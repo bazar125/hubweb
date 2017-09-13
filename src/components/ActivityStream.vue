@@ -5,7 +5,7 @@
       <div v-for="(activity, index) in activities" :key="activity.$id" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
         <div class="container-title d-flex justify-content-start align-items-center">
           <icon :name="activity.location ? 'book' : 'fire' " class="icon-large"></icon>
-          <span class="txt-title" :class="{'outline-blue': activity.location, 'outline-red': !activity.location}">{{activity.location ? 'New Citation' : 'New Collision'}}</span>
+          <span class="txt-title" :class="{'outline-blue': activity.location, 'outline-red': !activity.location}">{{activity.location ? 'Citation' : 'Collision'}}</span>
         </div>
         <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
           <icon name="location-arrow" class="icon-small"></icon>

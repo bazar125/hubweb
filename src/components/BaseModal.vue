@@ -99,7 +99,22 @@ export default {
 </style>
 
 <style>
+.modal-header {
+  padding: 5px 10px;
+}
+
+.modal-header > h5 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.modal-footer {
+  padding: 5px 10px;
+}
+
 .modal-footer .btn {
+  padding: 5px 10px;
+  font-size: 14px;
   cursor: pointer;
 }
 </style>
