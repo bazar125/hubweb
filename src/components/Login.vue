@@ -114,7 +114,8 @@ export default {
 
 .img-logo {
   margin-bottom: 20px;
-  width: 350px;
+  /* width: 350px; */
+  width: 125px;
   height: auto;
   object-fit: cover;
   object-position: center center;
