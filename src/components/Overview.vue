@@ -1,5 +1,11 @@
 <template>
   <div class="overview d-flex flex-column">
+    <div class="stats-container d-flex justify-content-start align-items-center">
+      <stats-widget type="Citations" icon="book" :value="statCitations"></stats-widget>
+      <stats-widget type="Collisions" icon="fire" :value="statCollisions"></stats-widget>
+      <stats-widget type="Notifications" icon="exclamation" :value="statNotifications"></stats-widget>
+    </div>
+
     <div class="map-container d-flex flex-column justify-content-start align-items-center">
       <div class="map-overlay d-flex justify-content-start align-items-center">
         <icon name="check-circle-o" class="icon-status color-green"></icon>
@@ -28,9 +34,11 @@
 
 <script>
 import Clock from 'vue-digital-clock';
-import TablePageLoader from '@/services/TablePageLoader';
 import L from 'leaflet';
 import * as d3 from 'd3';
+
+import TablePageLoader from '@/services/TablePageLoader';
+import StatsWidget from '@/components/StatsWidget';
 
 const pageLoader = new TablePageLoader('citation');
 
@@ -359,11 +367,15 @@ export default {
   name: 'Overview',
   components: {
     Clock,
+    StatsWidget,
   },
   data() {
     return {
       pingLayer: {},
       center: [10.3080, 7.0142],
+      statCitations: 314,
+      statCollisions: 214,
+      statNotifications: 34,
     };
   },
   mounted() {
@@ -430,9 +442,13 @@ export default {
 .map-container {
   position: relative;
   overflow: hidden;
-  /* flex: 0.9; */
-  flex: 1.0;
+  flex: 0.9;
   /* padding: 10px 20px; */
+}
+
+.stats-container {
+  flex: 0.1;
+  background-color: #ececec;
 }
 
 .map-overlay {
@@ -496,13 +512,6 @@ export default {
   padding: 3px 0px;
 }
 
-
-
-
-
-
-
-
 circle.ping {
   stroke: #000;
   stroke-width: 1px;
@@ -524,32 +533,8 @@ circle.blue {
   color: steelblue;
 }
 
-
 /* red is ef3135 */
+.txt-status {
 
-.txt-status {}
-
-
-
-
-
-
-
-
-
-
-
-/* .data-table thead tr th {
-  text-align: center;
 }
-
-.data-table thead {
-  background-color: rgba(0, 0, 0, 0.82);
-  color: white;
-}
-
-.pagination-container {
-  width: 100%;
-  position: relative;
-} */
 </style>
