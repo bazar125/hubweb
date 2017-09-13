@@ -36,7 +36,7 @@ export default {
 
       },
       totalRows: 0,
-      perPage: 10,
+      perPage: 15,
       searchFilter: '',
     };
   },

@@ -34,17 +34,17 @@ export default {
     return {
       items: [],
       fields: {
-        completionStatus: { label: 'Status', sortable: true, class: 'text-center vertical-middle' },
-        date: { label: 'Date', sortable: true, class: 'text-center vertical-middle' },
-        time: { label: 'Time', sortable: true, class: 'text-center vertical-middle' },
-        paymentReference: { label: 'Reference', sortable: true, class: 'text-center vertical-middle' },
-        fineAmount: { label: 'Fine', sortable: true, class: 'text-center vertical-middle' },
-        driverName: { label: 'Name', sortable: true, class: 'text-center vertical-middle' },
-        vehicleRegistration: { label: 'Plate', sortable: true, class: 'text-center vertical-middle' },
-        actions: { label: 'Actions', class: 'text-center vertical-middle' },
+        completionStatus: { label: 'Status', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        date: { label: 'Date', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        time: { label: 'Time', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        paymentReference: { label: 'Reference', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        fineAmount: { label: 'Fine', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        driverName: { label: 'Name', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        vehicleRegistration: { label: 'Plate', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        actions: { label: 'Actions', class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
       },
       totalRows: 0,
-      perPage: 10,
+      perPage: 15,
       searchFilter: '',
       currentPage: 1,
     };
@@ -125,6 +125,9 @@ export default {
 
 
 
+
+
+
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -159,6 +162,9 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
+
+
+
 
 
 

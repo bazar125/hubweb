@@ -15,7 +15,7 @@
             <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
       <template slot="actions" scope="row">
         <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
-        <b-btn size="sm" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert'}" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
+        <b-btn size="sm" class="btn-action" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert'}" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
       </template>
     </b-table>
 
@@ -94,6 +94,12 @@ export default {
   font-size: 12px;
   font-weight: 300;
 }
+
+.btn-action {
+  font-size: 9px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
 </style>
 
 <style>
@@ -104,6 +110,10 @@ export default {
 .vertical-middle {
   vertical-align: middle !important;
   padding-right: 10px !important;
+}
+
+.custom-datatable-cell {
+  font-size: 10px;
 }
 
 .table-alert {

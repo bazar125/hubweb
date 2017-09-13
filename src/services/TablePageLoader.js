@@ -15,13 +15,13 @@ import FlashlightSearch from '@/services/FlashlightSearch';
 
 const flashlightSearch = new FlashlightSearch();
 export default class TablePageLoader {
-  constructor(type) {
+  constructor(type, size = 15) {
     this.type = type;
+    this.size = size;
 
     this.load = (page, queryObj) => {
       console.log(`loadPage ${page}, ${queryObj}`);
-      const size = 10;
-      const from = (page - 1) * size;
+      const from = (page - 1) * this.size;
 
       const query = {
         sort: [
@@ -36,7 +36,7 @@ export default class TablePageLoader {
         query.query = queryObj;
       }
 
-      return flashlightSearch.search(this.type, query, from, size)
+      return flashlightSearch.search(this.type, query, from, this.size)
         .then(dat => ({ items: dat.hits, totalRows: dat.total }));
     };
   }
