@@ -2,7 +2,7 @@
   <div class="activity-stream d-flex flex-column justify-content-start align-items-center">
     <span class="master-title">Activity Stream</span>
     <div class="activity-stream-inner d-flex flex-column justify-content-start align-items-center">
-      <div v-for="activity in activities" :key="activity.$id" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
+      <div v-for="(activity, index) in activities" :key="activity.$id" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
         <div class="container-title d-flex justify-content-start align-items-center">
           <icon :name="activity.location ? 'book' : 'fire' " class="icon-large"></icon>
           <span class="txt-title" :class="{'outline-blue': activity.location, 'outline-red': !activity.location}">{{activity.location ? 'New Citation' : 'New Collision'}}</span>
@@ -15,7 +15,16 @@
           <icon name="clock-o" class="icon-small" style="margin-right: 5px;"></icon>
           <span class="txt-timeago">{{activity.timeAgo}}</span>
         </div>
-        <b-btn :class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn>
+        
+        <b-btn @click.stop="showModal(activity, index, $event.target)":class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn>
+
+        <b-modal title="Citation" :id="`citationModal${index}`" ok-only>
+          <citation-modal :data="activity"></citation-modal>
+        </b-modal>
+
+        <b-modal title="Collision" :id="`collisionModal${index}`" ok-only>
+          <collision-modal :data="activity"></collision-modal>
+        </b-modal>
       </div>
     </div>
   </div>
@@ -24,6 +33,8 @@
 <script>
 import moment from 'moment';
 import * as Firebase from 'firebase';
+import CitationModal from '@/components/CitationModal';
+import CollisionModal from '@/components/CollisionModal';
 // import TablePageLoader from '@/services/TablePageLoader';
 
 // const pageLoader = new TablePageLoader('citation,collision');
@@ -43,6 +54,8 @@ import * as Firebase from 'firebase';
 export default {
   name: 'ActivityStream',
   components: {
+    CitationModal,
+    CollisionModal,
   },
   data() {
     return {
@@ -79,6 +92,16 @@ export default {
     //     this.totalRows = page.totalRows;
     //   });
     // });
+  },
+  methods: {
+    showModal(activity, index, sender) {
+      const isCitation = activity.location;
+      if (isCitation) {
+        this.$root.$emit('show::modal', `citationModal${index}`, sender);
+      } else {
+        this.$root.$emit('show::modal', `collisionModal${index}`, sender);
+      }
+    },
   },
 };
 </script>
@@ -176,7 +199,9 @@ export default {
   animation: blinker 1s linear infinite;
 }
 
-@keyframes blinker {  
-  50% { opacity: 0; }
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
 </style>

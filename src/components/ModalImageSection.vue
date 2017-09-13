@@ -116,6 +116,7 @@ export default {
   color: white;
   font-size: 13px;
   transition: 0.4s;
+  cursor: pointer;
 }
 
 .btn-action:hover {

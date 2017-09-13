@@ -19,15 +19,6 @@
         </b-btn>
       </div>
     </template>
-    <!-- <div v-if="name && name === 'driver'" class="edit-point-container d-flex justify-content-start align-items-center">
-                                                                          <span class="label-editpoints">Current Citation Points</span>
-                                                                          <span class="txt-editpoints">{{data.citationPoints}}</span>
-
-                                                                          <span class="ml-auto label-editpoints">New Citation Points</span>
-                                                                          <b-form-input class="input-points" v-model="newPoints" size="sm" type="number" min="0" max="5" placeholder="Points"></b-form-input>
-
-                                                                          <b-btn @click="saveCitationPoints()" id="btnEdit" size="sm" style="margin-left: 10px;" class="ml-auto btn-action" :class="{'btn-cancel': editBtnTitle === 'Back'}">Save</b-btn>
-                                                                        </div> -->
   </div>
 </template>
 

@@ -97,3 +97,9 @@ export default {
   height: 100%;
 }
 </style>
+
+<style>
+.modal-footer .btn {
+  cursor: pointer;
+}
+</style>
