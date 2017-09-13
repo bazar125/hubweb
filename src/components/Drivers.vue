@@ -100,7 +100,7 @@ export default {
 
 .drivers-upper {
   overflow: hidden;
-  flex: 0.1;
+  height: 52px;
   padding-left: 20px;
   padding-right: 20px;
   background-color: #455a64;
@@ -108,7 +108,7 @@ export default {
 
 .drivers-lower {
   overflow: hidden;
-  flex: 0.9;
+  flex: 1;
   padding: 10px 20px;
 }
 
