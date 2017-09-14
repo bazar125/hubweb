@@ -13,11 +13,11 @@
             class="btn-primary btn-view" size="sm">View</b-btn>
         </div>
         <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
-          <icon name="location-arrow" class="icon-small"></icon>
+          <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon>
           <span class="txt-address">{{activity.location ? activity.location : (activity.address ? activity.address : 'Unknown address') }}</span>
         </div>
         <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 5px;">
-          <icon name="clock-o" class="icon-small" style="margin-right: 3px;"></icon>
+          <icon name="clock-o" class="icon-small"></icon>
           <span class="txt-timeago">{{activity.timeAgo}}</span>
         </div>
 
@@ -149,16 +149,19 @@ export default {
 }
 
 .txt-address {
-  font-size: 8px;
+  font-size: 9px;
   width: 100%;
   text-align: start;
+  /* white-space: nowrap;
+  text-overflow: ellipsis; */
+  padding-right: 5px;
 }
 
 .activity-stream-row {
   width: 100%;
   background-color: white;
   box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.3);
-  border-radius: 4px;
+  /* border-radius: 4px; */
   /* padding: 8px; */
   /* border-bottom: 1px solid #DF90B8; */
   /* border-bottom: 1px solid #ececec; */
@@ -171,6 +174,7 @@ export default {
 .icon-title {
   height: 14px !important;
   margin-left: 5px;
+  margin-right: 5px !important;
 }
 
 .btn-view {
@@ -187,7 +191,7 @@ export default {
 .icon-small {
   width: 20px;
   height: 12px;
-  margin-right: 5px;
+  margin-right: 0px;
 }
 
 .bg-red {
@@ -224,8 +228,8 @@ export default {
   /* padding-right: 20px; */
   /* padding: 5px; */
   margin-bottom: 5px;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+  /* border-top-left-radius: 4px;
+  border-top-right-radius: 4px; */
 }
 
 .blink-title {
