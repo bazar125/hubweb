@@ -19,7 +19,6 @@ import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import CitationModal from '@/components/CitationModal';
-
 import * as Firebase from 'firebase';
 
 const pageLoader = new TablePageLoader('citation');
@@ -51,7 +50,7 @@ export default {
       perPage: 13,
       searchFilter: '',
       currentPage: 1,
-      unsub: {},
+      unsub: null,
     };
   },
   mounted() {

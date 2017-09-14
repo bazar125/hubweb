@@ -20,8 +20,11 @@ import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import VehicleModal from '@/components/VehicleModal';
+import * as Firebase from 'firebase';
 
 const vehiclePageLoader = new TablePageLoader('vehicle');
+vehiclePageLoader.setSortBy('_uid');
+const REFRESH_DELAY = 4000;
 
 /* eslint-disable no-underscore-dangle */
 function processVehicles(items) {
@@ -62,6 +65,8 @@ export default {
       vehicleTotalRows: 0,
       perPage: 13,
       searchFilter: '',
+      currentPage: 1,
+      unsub: null,
     };
   },
   mounted() {
@@ -69,12 +74,25 @@ export default {
   },
   methods: {
     initialize() {
+      this.currentPage = 1;
       vehiclePageLoader.load(1).then((page) => {
         this.vehicleItems = processVehicles(page.items);
         this.vehicelTotalRows = page.totalRows;
       });
+
+      if (this.unsub) {
+        this.unsub();
+      }
+
+      const ref = Firebase.database().ref();
+      this.unsub = ref.child('vehicles').on('value', () => {
+        setTimeout(() => {
+          this.pageChanged(this.currentPage);
+        }, REFRESH_DELAY);
+      });
     },
     pageChanged(newPage) {
+      this.currentPage = newPage;
       vehiclePageLoader.load(newPage).then((page) => {
         this.vehicleItems = processVehicles(page.items);
         this.vehicelTotalRows = page.totalRows;

@@ -24,6 +24,7 @@ import * as Firebase from 'firebase';
 
 const REFRESH_DELAY = 4000;
 const driverPageLoader = new TablePageLoader('driver');
+driverPageLoader.setSortBy('_uid');
 
 /* eslint-disable no-underscore-dangle */
 function processDrivers(items) {

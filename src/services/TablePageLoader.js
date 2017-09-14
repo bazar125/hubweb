@@ -18,14 +18,19 @@ export default class TablePageLoader {
   constructor(type, size = 13) {
     this.type = type;
     this.size = size;
+    this.sortBy = 'timestamp';
 
     this.load = (page, queryObj) => {
       console.log(`loadPage ${page}, ${queryObj}`);
       const from = (page - 1) * this.size;
 
+      const sortObj = {};
+      sortObj[this.sortBy] = 'desc';
       const query = {
         sort: [
-          { timestamp: 'desc' },
+          sortObj,
+          // { timestamp: 'desc' },
+          // { timestamp: 'asc' },
         ],
         query: {
           match_all: { boost: 1.0 },
@@ -38,6 +43,10 @@ export default class TablePageLoader {
 
       return flashlightSearch.search(this.type, query, from, this.size)
         .then(dat => ({ items: dat.hits, totalRows: dat.total }));
+    };
+
+    this.setSortBy = (sortBy) => {
+      this.sortBy = sortBy;
     };
   }
 }

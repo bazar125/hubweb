@@ -19,9 +19,11 @@ import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import CollisionModal from '@/components/CollisionModal';
+import * as Firebase from 'firebase';
 
 const pageLoader = new TablePageLoader('collision');
 const MAPS_API_KEY = 'AIzaSyD5XSex8F-5VHZtQ8io0T9BFf8O3zg9yZg';
+const REFRESH_DELAY = 4000;
 
 /* eslint-disable no-underscore-dangle */
 export default {
@@ -48,6 +50,8 @@ export default {
       totalRows: 0,
       perPage: 13,
       searchFilter: '',
+      currentPage: 1,
+      unsub: null,
     };
   },
   mounted() {
@@ -55,12 +59,25 @@ export default {
   },
   methods: {
     initialize() {
+      this.currentPage = 1;
       pageLoader.load(1).then((page) => {
         this.items = this.processRows(page.items);
         this.totalRows = page.totalRows;
       });
+
+      if (this.unsub) {
+        this.unsub();
+      }
+
+      const ref = Firebase.database().ref();
+      this.unsub = ref.child('collisions').on('value', () => {
+        setTimeout(() => {
+          this.pageChanged(this.currentPage);
+        }, REFRESH_DELAY);
+      });
     },
     pageChanged(newPage) {
+      this.currentPage = newPage;
       pageLoader.load(newPage).then((page) => {
         this.items = this.processRows(page.items);
         this.totalRows = page.totalRows;
