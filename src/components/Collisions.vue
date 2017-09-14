@@ -21,6 +21,7 @@ import Datatable from '@/components/Datatable';
 import CollisionModal from '@/components/CollisionModal';
 
 const pageLoader = new TablePageLoader('collision');
+const MAPS_API_KEY = 'AIzaSyD5XSex8F-5VHZtQ8io0T9BFf8O3zg9yZg';
 
 /* eslint-disable no-underscore-dangle */
 export default {
@@ -82,6 +83,15 @@ export default {
           row.allVehicles.push(vehicle.plate);
         }
         row.allVehicles = row.allVehicles.join(', ');
+
+        const lat = row.coords ? row.coords.lat : 10.3080;
+        const lng = row.coords ? row.coords.lng : 7.0142;
+        const width = 200;
+        const height = 200;
+
+        row.image = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=${width}x${height}&maptype=roadmap
+&markers=color:blue%7Clabel:S%7C${lat},${lng}
+&key=${MAPS_API_KEY}`;
       }
       // if (row.completionStatus === 'Payment Due') {
       //   row._dirtyClass = 'danger';

@@ -4,11 +4,11 @@
 
     <div class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
-        <span class="alert-title mr-auto">Alerts</span>
-        <b-btn @click="$emit('clickEdit');" id="btnEdit" size="sm" class="btn-action" style="margin-right: 10px;" :class="{'btn-cancel': editBtnTitle === 'Back', 'btn-delete': editBtnTitle === 'Delete'}">{{editBtnTitle}}</b-btn>
-        <b-btn @click="$emit('clickAuditHistory');" id="btnAuditHistory" size="sm" class="btn-action" :class="{'btn-show-details': auditBtnTitle === 'Details'}">{{auditBtnTitle}}</b-btn>
+        <span v-if="type === 'driver' || type === 'vehicle'" class="alert-title mr-auto">Alerts</span>
+        <b-btn v-if="type !== 'collision' "@click="$emit('clickEdit');" id="btnEdit" size="sm" class="btn-action" style="margin-right: 10px;" :class="{'btn-cancel': editBtnTitle === 'Back', 'btn-delete': editBtnTitle === 'Delete', 'ml-auto': type === 'citation'}">{{editBtnTitle}}</b-btn>
+        <b-btn v-if="type === 'driver' || type === 'vehicle'" @click="$emit('clickAuditHistory');" id="btnAuditHistory" size="sm" class="btn-action" :class="{'btn-show-details': auditBtnTitle === 'Details'}">{{auditBtnTitle}}</b-btn>
       </div>
-      <div class="d-flex justify-content-start align-items-center" style="flex: 1; padding: 5px; width: 100%;">
+      <div v-if="type === 'driver' || type === 'vehicle'" class="d-flex justify-content-start align-items-center" style="flex: 1; padding: 5px; width: 100%;">
         <icon v-if="!alertText" name="check-circle-o" class="alert-icon icon-success"></icon>
         <icon v-else name="exclamation-triangle" class="alert-icon icon-error"></icon>
         <span class="alert-text">{{alertText ? alertText : `This ${type} has no new notices`}}</span>
