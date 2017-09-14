@@ -138,10 +138,9 @@ export default {
 }
 
 .table-success {
-  /* background-color: #5cb85c; */
-  background-color: transparent;
-  
-  /* color: white; */
+  background-color: #5cb85c;
+  color: white;
+  /* background-color: transparent; */
 }
 
 .datatable .table th,

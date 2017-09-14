@@ -82,6 +82,10 @@ export default {
   flex: 1;
 }
 
+.data-container {
+  padding-right: 5px;
+}
+
 .data-container .modal-data-row {
   flex: 1;
 }
