@@ -20,7 +20,7 @@
         </div>
 
         <div v-if="!activity.location" class="d-flex justify-content-start align-items-center" style="width: 100%;">
-            <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
+          <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
         </div>
 
         <b-modal title="Citation" :id="`citationModal${index}`" ok-only>
@@ -93,6 +93,15 @@ export default {
         }
         val.$id = snap.key;
         this.activities.unshift(val);
+        this.activities = this.activities.sort((a, b) => {
+          if (a.timestamp > b.timestamp) {
+            return -1;
+          }
+          if (b.timestamp > a.timestamp) {
+            return 1;
+          }
+          return 0;
+        });
 
         setTimeout(() => {
           val.$animate = false;
@@ -118,7 +127,16 @@ export default {
         val.image = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=${width}x${height}&maptype=roadmap
 &markers=color:blue%7Clabel:S%7C${lat},${lng}
 &key=${MAPS_API_KEY}`;
-        this.activities.unshift(val);
+        // this.activities.unshift(val);
+        this.activities = this.activities.sort((a, b) => {
+          if (a.timestamp > b.timestamp) {
+            return -1;
+          }
+          if (b.timestamp > a.timestamp) {
+            return 1;
+          }
+          return 0;
+        });
 
         setTimeout(() => {
           val.$animate = false;
