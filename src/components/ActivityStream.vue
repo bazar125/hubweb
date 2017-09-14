@@ -215,13 +215,13 @@ export default {
 }
 
 .btn-view {
-  font-size: 12px;
+  font-size: 11px;
   cursor: pointer;
   /* border-color: #DF90B8; */
   color: white;
   background-color: transparent;
   line-height: 1;
-  padding: 2px 20px;
+  padding: 1px 20px;
   margin-right: 5px;
 }
 

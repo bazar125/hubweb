@@ -2,7 +2,8 @@
   <div class="custom-navbar d-flex justify-content-start align-items-center">
     <img class="logo" src="../assets/kastelea_logo.png"></img>
     <span class="title-text">Kaduna State Traffic and Environmental Enforcement Agency</span>
-    <img class="ml-auto img-avatar" src="../assets/user_placeholder.jpg"></img>
+    <!-- <img class="ml-auto img-avatar" src="../assets/user_placeholder.jpg"></img> -->
+    <img class="ml-auto img-avatar" src="../assets/user_avatar.jpg"></img>
     <b-button @click="logout()" size="sm" class="btn-login">
       Log Out
     </b-button>
