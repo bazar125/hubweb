@@ -83,9 +83,9 @@ export default {
             {
               match_phrase_prefix: { address: newValue },
             },
-            // {
-            //   match_phrase_prefix: { reference: newValue },
-            // },
+            {
+              match_phrase_prefix: { reference: newValue },
+            },
           ],
         },
       };
