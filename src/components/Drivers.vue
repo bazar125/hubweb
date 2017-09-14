@@ -20,7 +20,9 @@ import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import DriverModal from '@/components/DriverModal';
+import * as Firebase from 'firebase';
 
+const REFRESH_DELAY = 4000;
 const driverPageLoader = new TablePageLoader('driver');
 
 /* eslint-disable no-underscore-dangle */
@@ -69,6 +71,8 @@ export default {
       driverTotalRows: 0,
       perPage: 13,
       searchFilter: '',
+      currentPage: 1,
+      unsub: null,
     };
   },
   mounted() {
@@ -76,12 +80,25 @@ export default {
   },
   methods: {
     initialize() {
+      this.currentPage = 1;
       driverPageLoader.load(1).then((page) => {
         this.driverItems = processDrivers(page.items);
         this.driverTotalRows = page.totalRows;
       });
+
+      if (this.unsub) {
+        this.unsub();
+      }
+
+      const ref = Firebase.database().ref();
+      this.unsub = ref.child('drivers').on('value', () => {
+        setTimeout(() => {
+          this.pageChanged(this.currentPage);
+        }, REFRESH_DELAY);
+      });
     },
     pageChanged(newPage) {
+      this.currentPage = newPage;
       driverPageLoader.load(newPage).then((page) => {
         this.driverItems = processDrivers(page.items);
         this.driverTotalRows = page.totalRows;

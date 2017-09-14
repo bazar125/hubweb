@@ -17,7 +17,7 @@
       </div>
 
       <div class="data-container d-flex flex-column justify-content-start align-items-center">
-        <modal-data-row label="Issuing Officers" :text="props.data.issuingOfficers.join(', ')"></modal-data-row>
+        <modal-data-row label="Issuing Officers" :text="props.data.issuingOfficers ? props.data.issuingOfficers.join(', ') : ''"></modal-data-row>
         <modal-data-row label="Payment Reference" :text="props.data.paymentReference"></modal-data-row>
         <modal-data-row label="Completion Status" :text="props.data.completionStatus"></modal-data-row>
       </div>

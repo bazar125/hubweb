@@ -20,7 +20,10 @@ import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import CitationModal from '@/components/CitationModal';
 
+import * as Firebase from 'firebase';
+
 const pageLoader = new TablePageLoader('citation');
+const REFRESH_DELAY = 4000;
 const MAPS_API_KEY = 'AIzaSyD5XSex8F-5VHZtQ8io0T9BFf8O3zg9yZg';
 
 /* eslint-disable no-underscore-dangle */
@@ -48,6 +51,7 @@ export default {
       perPage: 13,
       searchFilter: '',
       currentPage: 1,
+      unsub: {},
     };
   },
   mounted() {
@@ -59,6 +63,17 @@ export default {
       pageLoader.load(1).then((page) => {
         this.items = this.processRows(page.items);
         this.totalRows = page.totalRows;
+      });
+
+      if (this.unsub) {
+        this.unsub();
+      }
+
+      const ref = Firebase.database().ref();
+      this.unsub = ref.child('citations').on('value', () => {
+        setTimeout(() => {
+          this.pageChanged(this.currentPage);
+        }, REFRESH_DELAY);
       });
     },
     pageChanged(newPage) {
@@ -144,6 +159,7 @@ export default {
 
 
 
+
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -178,6 +194,7 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
+
 
 
 
