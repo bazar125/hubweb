@@ -56,12 +56,12 @@ export default {
           // icon: IconCitations,
           icon: 'fire',
         },
-        {
-          path: '/personnel',
-          name: 'Personnel',
-          // icon: IconPersonnel,
-          icon: 'users',
-        },
+        // {
+        //   path: '/personnel',
+        //   name: 'Personnel',
+        //   // icon: IconPersonnel,
+        //   icon: 'users',
+        // },
         {
           path: '/settings',
           name: 'Settings',

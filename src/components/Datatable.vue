@@ -113,8 +113,12 @@ export default {
 }
 
 .custom-datatable-cell {
-  font-size: 10px;
+  font-size: 11px;
 }
+
+/* .custom-datatable-action-cell {
+  padding: 0px;
+} */
 
 .table-alert {
   background-color: #f0ad4e;

@@ -6,7 +6,7 @@
     <div class="activity-stream-inner d-flex flex-column justify-content-start align-items-center">
       <div v-for="(activity, index) in activities" :key="activity.$id" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
         <div :class="{'bg-blue': activity.location, 'bg-red': !activity.location}" class="container-title d-flex justify-content-start align-items-center">
-          <icon :name="activity.location ? 'book' : 'fire' " class="icon-title icon-small"></icon>
+          <icon :name="activity.location ? 'book' : 'fire' " class="icon-small icon-title"></icon>
           <span class="txt-title">{{activity.location ? 'Citation' : 'Collision'}}</span>
           <b-btn @click.stop="showModal(activity, index, $event.target)"
             :class="{'btn-blue': activity.location, 'btn-red': !activity.location}"
@@ -17,7 +17,7 @@
           <span class="txt-address">{{activity.location ? activity.location : (activity.address ? activity.address : 'Unknown address') }}</span>
         </div>
         <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 5px;">
-          <icon name="clock-o" class="icon-small"></icon>
+          <icon name="clock-o" class="icon-small" style="margin-right: 3px;"></icon>
           <span class="txt-timeago">{{activity.timeAgo}}</span>
         </div>
 
@@ -129,7 +129,7 @@ export default {
 
 .txt-title {
   font-weight: 600;
-  font-size: 11px;
+  font-size: 12px;
   width: 100%;
   text-align: start;
   line-height: 1;
@@ -169,6 +169,7 @@ export default {
 }
 
 .icon-title {
+  height: 14px !important;
   margin-left: 5px;
 }
 
@@ -179,7 +180,7 @@ export default {
   color: white;
   background-color: transparent;
   line-height: 1;
-  padding: 1px 15px;
+  padding: 2px 15px;
   margin-right: 5px;
 }
 
@@ -223,7 +224,8 @@ export default {
   /* padding-right: 20px; */
   /* padding: 5px; */
   margin-bottom: 5px;
-  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 .blink-title {

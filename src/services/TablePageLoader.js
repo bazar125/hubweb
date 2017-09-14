@@ -15,7 +15,7 @@ import FlashlightSearch from '@/services/FlashlightSearch';
 
 const flashlightSearch = new FlashlightSearch();
 export default class TablePageLoader {
-  constructor(type, size = 15) {
+  constructor(type, size = 13) {
     this.type = type;
     this.size = size;
 

@@ -44,7 +44,7 @@ export default {
         actions: { label: 'Actions', class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
       },
       totalRows: 0,
-      perPage: 15,
+      perPage: 13,
       searchFilter: '',
       currentPage: 1,
     };
