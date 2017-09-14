@@ -6,7 +6,7 @@
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
         <span class="alert-title mr-auto">Alerts</span>
         <b-btn @click="$emit('clickEdit');" id="btnEdit" size="sm" class="btn-action" style="margin-right: 10px;" :class="{'btn-cancel': editBtnTitle === 'Back', 'btn-delete': editBtnTitle === 'Delete'}">{{editBtnTitle}}</b-btn>
-        <b-btn @click="$emit('clickAuditHistory');" id="btnAuditHistory" size="sm" class="btn-action" :class="{'btn-show-details': auditBtnTitle === 'Show Details'}">{{auditBtnTitle}}</b-btn>
+        <b-btn @click="$emit('clickAuditHistory');" id="btnAuditHistory" size="sm" class="btn-action" :class="{'btn-show-details': auditBtnTitle === 'Details'}">{{auditBtnTitle}}</b-btn>
       </div>
       <div class="d-flex justify-content-start align-items-center" style="flex: 1; padding: 5px; width: 100%;">
         <icon v-if="!alertText" name="check-circle-o" class="alert-icon icon-success"></icon>

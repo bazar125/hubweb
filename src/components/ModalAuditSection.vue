@@ -1,10 +1,10 @@
 <template>
   <div class="audit-section-root d-flex flex-column justify-content-start align-items-start">
-    <span class="audit-title">Audit History</span>
+    <span class="audit-title">History</span>
 
     <div v-if="!auditHistory || auditHistory.length === 0" class="no-audit-container d-flex justify-content-center align-items-center">
       <icon name="history" class="no-data-icon"></icon>
-      <span class="no-data-text">No audit history available for this record</span>
+      <span class="no-data-text">No history available for this record</span>
     </div>
     <div v-else class="audit-row-container d-flex flex-column justify-content-start align-items-center">
       <modal-audit-row v-for="audit in auditHistory" :key="audit" :data="audit"></modal-audit-row>
