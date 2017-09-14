@@ -5,7 +5,7 @@
     </div>
 
     <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @resetModal="resetModal()" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
+      <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @resetModal="resetModal()" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields">
         <template slot="modal" scope="props">
           <citation-modal :data="props.data"></citation-modal>
         </template>
@@ -22,6 +22,7 @@ import CitationModal from '@/components/CitationModal';
 import * as Firebase from 'firebase';
 
 const pageLoader = new TablePageLoader('citation');
+const DEBOUNCE_DELAY = 200;
 const REFRESH_DELAY = 4000;
 const MAPS_API_KEY = 'AIzaSyD5XSex8F-5VHZtQ8io0T9BFf8O3zg9yZg';
 
@@ -51,14 +52,50 @@ export default {
       searchFilter: '',
       currentPage: 1,
       unsub: null,
+      searchQuery: null,
     };
   },
   mounted() {
     this.initialize();
   },
+  watch: {
+    searchFilter(newValue) {
+      if (!newValue) {
+        this.searchFilter = '';
+        this.searchQuery = null;
+        this.debounce(() => {
+          this.pageChanged(1);
+        }, DEBOUNCE_DELAY).bind(this)();
+
+        return;
+      }
+
+      this.searchQuery = {
+        bool: {
+          should: [
+            {
+              match_phrase_prefix: { driverName: newValue },
+            },
+            {
+              match_phrase_prefix: { vehicleRegistration: newValue },
+            },
+            {
+              match_phrase_prefix: { paymentReference: newValue },
+            },
+          ],
+        },
+      };
+
+      this.debounce(() => {
+        this.pageChanged(this.currentPage);
+      }, DEBOUNCE_DELAY).bind(this)();
+    },
+  },
   methods: {
     initialize() {
       this.currentPage = 1;
+      this.searchFilter = '';
+      this.searchQuery = null;
       pageLoader.load(1).then((page) => {
         this.items = this.processRows(page.items);
         this.totalRows = page.totalRows;
@@ -77,7 +114,7 @@ export default {
     },
     pageChanged(newPage) {
       this.currentPage = newPage;
-      pageLoader.load(newPage).then((page) => {
+      pageLoader.load(newPage, this.searchQuery).then((page) => {
         this.items = this.processRows(page.items);
         this.totalRows = page.totalRows;
       });
@@ -115,6 +152,19 @@ export default {
     },
     resetModal() {
       this.pageChanged(this.currentPage);
+    },
+    debounce(callback, wait, context = this) {
+      let timeout = null;
+      let callbackArgs = null;
+
+      const later = () => callback.apply(context, callbackArgs);
+
+      /* eslint-disable prefer-rest-params */
+      return () => {
+        callbackArgs = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
     },
   },
 };
@@ -159,6 +209,19 @@ export default {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -193,6 +256,19 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

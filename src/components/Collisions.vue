@@ -5,7 +5,7 @@
     </div>
 
     <div class="collisions-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable title="Collisions" modalId="collisionModal" modalTitle="Collision" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields" :search-filter="searchFilter">
+      <datatable title="Collisions" modalId="collisionModal" modalTitle="Collision" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields">
         <template slot="modal" scope="props">
           <collision-modal :data="props.data"></collision-modal>
         </template>
@@ -23,6 +23,7 @@ import * as Firebase from 'firebase';
 
 const pageLoader = new TablePageLoader('collision');
 const MAPS_API_KEY = 'AIzaSyD5XSex8F-5VHZtQ8io0T9BFf8O3zg9yZg';
+const DEBOUNCE_DELAY = 200;
 const REFRESH_DELAY = 4000;
 
 /* eslint-disable no-underscore-dangle */
@@ -52,10 +53,47 @@ export default {
       searchFilter: '',
       currentPage: 1,
       unsub: null,
+      searchQuery: null,
     };
   },
   mounted() {
     this.initialize();
+  },
+  watch: {
+    searchFilter(newValue) {
+      if (!newValue) {
+        this.searchFilter = '';
+        this.searchQuery = null;
+        this.debounce(() => {
+          this.pageChanged(1);
+        }, DEBOUNCE_DELAY).bind(this)();
+
+        return;
+      }
+
+      // const parsedInt = parseInt(newValue, 10);
+      // let refInt = parsedInt;
+      // if (!refInt) {
+      //   refInt = 0;
+      // }
+
+      this.searchQuery = {
+        bool: {
+          should: [
+            {
+              match_phrase_prefix: { address: newValue },
+            },
+            // {
+            //   match_phrase_prefix: { reference: newValue },
+            // },
+          ],
+        },
+      };
+
+      this.debounce(() => {
+        this.pageChanged(this.currentPage);
+      }, DEBOUNCE_DELAY).bind(this)();
+    },
   },
   methods: {
     initialize() {
@@ -78,7 +116,7 @@ export default {
     },
     pageChanged(newPage) {
       this.currentPage = newPage;
-      pageLoader.load(newPage).then((page) => {
+      pageLoader.load(newPage, this.searchQuery).then((page) => {
         this.items = this.processRows(page.items);
         this.totalRows = page.totalRows;
       });
@@ -122,6 +160,19 @@ export default {
       //   };
       // }
       return items;
+    },
+    debounce(callback, wait, context = this) {
+      let timeout = null;
+      let callbackArgs = null;
+
+      const later = () => callback.apply(context, callbackArgs);
+
+      /* eslint-disable prefer-rest-params */
+      return () => {
+        callbackArgs = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
     },
   },
 };
