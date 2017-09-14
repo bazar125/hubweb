@@ -127,7 +127,7 @@ export default {
         val.image = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=${width}x${height}&maptype=roadmap
 &markers=color:blue%7Clabel:S%7C${lat},${lng}
 &key=${MAPS_API_KEY}`;
-        // this.activities.unshift(val);
+        this.activities.unshift(val);
         this.activities = this.activities.sort((a, b) => {
           if (a.timestamp > b.timestamp) {
             return -1;
