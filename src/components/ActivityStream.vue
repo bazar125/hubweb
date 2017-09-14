@@ -5,12 +5,10 @@
     </div>
     <div class="activity-stream-inner d-flex flex-column justify-content-start align-items-center">
       <div v-for="(activity, index) in activities" :key="activity.$id" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
-        <div :class="{'bg-blue': activity.location, 'bg-red': !activity.location}" class="container-title d-flex justify-content-start align-items-center">
+        <div :class="{'bg-blue': activity.location, 'bg-red': !activity.location, 'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center">
           <icon :name="activity.location ? 'book' : 'fire' " class="icon-small icon-title"></icon>
           <span class="txt-title">{{activity.location ? 'Citation' : 'Collision'}}</span>
-          <b-btn @click.stop="showModal(activity, index, $event.target)"
-            :class="{'btn-blue': activity.location, 'btn-red': !activity.location}"
-            class="btn-primary btn-view" size="sm">View</b-btn>
+          <b-btn @click.stop="showModal(activity, index, $event.target)" :class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn>
         </div>
         <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
           <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon>
@@ -54,6 +52,11 @@ import CollisionModal from '@/components/CollisionModal';
 //   });
 // }
 
+// Wait this time after initializing before applying the blink animation to new activities
+const BLINK_WAIT_DURATION = 6000;
+// Duration of blink animation
+const BLINK_DURATION = 3000;
+
 export default {
   name: 'ActivityStream',
   components: {
@@ -64,6 +67,7 @@ export default {
     return {
       activities: [],
       lastTimestamp: 0,
+      initialLoadTime: new Date().getTime(),
     };
   },
   mounted() {
@@ -76,7 +80,15 @@ export default {
         // const timestamp = val.timestamp;
         val.typeDescription = 'citation';
         val.timeAgo = moment(val.timestamp).fromNow();
+        if (new Date().getTime() - this.initialLoadTime > BLINK_WAIT_DURATION) {
+          val.$animate = true;
+        }
+
         this.activities.unshift(val);
+
+        setTimeout(() => {
+          val.$animate = false;
+        }, BLINK_DURATION);
       });
 
     ref.child('collisions').orderByChild('timestamp').limitToLast(10)
@@ -85,7 +97,14 @@ export default {
         // const timestamp = val.timestamp;
         val.typeDescription = 'collision';
         val.timeAgo = moment(val.timestamp).fromNow();
+        if (new Date().getTime() - this.initialLoadTime > BLINK_WAIT_DURATION) {
+          val.$animate = true;
+        }
         this.activities.unshift(val);
+
+        setTimeout(() => {
+          val.$animate = false;
+        }, BLINK_DURATION);
       });
 
     // ref.child('collisions').on('child_added', () => {
@@ -160,7 +179,7 @@ export default {
 .activity-stream-row {
   width: 100%;
   background-color: white;
-  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.3);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
   /* border-radius: 4px; */
   /* padding: 8px; */
   /* border-bottom: 1px solid #DF90B8; */

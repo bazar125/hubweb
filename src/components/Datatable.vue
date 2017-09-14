@@ -15,7 +15,7 @@
             <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
       <template slot="actions" scope="row">
         <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
-        <b-btn size="sm" class="btn-action" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert'}" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
+        <b-btn size="sm" class="btn-action" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert', 'btn-success': row.item._dirtyClass === 'success'}" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
       </template>
     </b-table>
 
@@ -100,6 +100,11 @@ export default {
   padding-top: 2px;
   padding-bottom: 2px;
 }
+
+.datatable .btn-warning {
+  background-color: #1565c0;
+  border-color: #1565c0;
+}
 </style>
 
 <style>
@@ -121,12 +126,22 @@ export default {
 } */
 
 .table-alert {
-  background-color: #f0ad4e;
+  /* background-color: #f0ad4e; */
+  background-color: #1565c0;
+  color: white;
 }
 
 .table-danger {
   background-color: #d9534f;
+  /* background-color: #1565c0;; */
   color: white;
+}
+
+.table-success {
+  /* background-color: #5cb85c; */
+  background-color: transparent;
+  
+  /* color: white; */
 }
 
 .datatable .table th,

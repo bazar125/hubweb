@@ -414,15 +414,20 @@ export default {
     processRows(items) {
       for (let i = 0; i < items.length; i += 1) {
         const row = items[i];
-        if (row.completionStatus === 'Payment Due') {
+        if (row.completionStatus === 'Overdue') {
           row._dirtyClass = 'danger';
           row._cellVariants = {
             completionStatus: 'danger',
           };
-        } else if (row.completionStatus === 'Unconfirmed') {
+        } else if (row.completionStatus === 'Awaiting Payment') {
           row._dirtyClass = 'alert';
           row._cellVariants = {
             completionStatus: 'alert',
+          };
+        } else if (row.completionStatus === 'Paid') {
+          row._dirtyClass = 'success';
+          row._cellVariants = {
+            completionStatus: 'success',
           };
         }
       }
