@@ -19,6 +19,10 @@
           <span class="txt-timeago">{{activity.timeAgo}}</span>
         </div>
 
+        <div v-if="!activity.location" class="d-flex justify-content-start align-items-center" style="width: 100%;">
+            <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
+        </div>
+
         <b-modal title="Citation" :id="`citationModal${index}`" ok-only>
           <citation-modal :data="activity"></citation-modal>
         </b-modal>
@@ -36,6 +40,7 @@ import moment from 'moment';
 import * as Firebase from 'firebase';
 import CitationModal from '@/components/CitationModal';
 import CollisionModal from '@/components/CollisionModal';
+import PhotoPlaceholder from '../assets/photo_placeholder.png';
 // import TablePageLoader from '@/services/TablePageLoader';
 
 // const pageLoader = new TablePageLoader('citation,collision');
@@ -51,6 +56,8 @@ import CollisionModal from '@/components/CollisionModal';
 //     this.totalRows = page.totalRows;
 //   });
 // }
+
+const MAPS_API_KEY = 'AIzaSyD5XSex8F-5VHZtQ8io0T9BFf8O3zg9yZg';
 
 // Wait this time after initializing before applying the blink animation to new activities
 const BLINK_WAIT_DURATION = 6000;
@@ -68,6 +75,7 @@ export default {
       activities: [],
       lastTimestamp: 0,
       initialLoadTime: new Date().getTime(),
+      photoPlaceholder: PhotoPlaceholder,
     };
   },
   mounted() {
@@ -83,7 +91,7 @@ export default {
         if (new Date().getTime() - this.initialLoadTime > BLINK_WAIT_DURATION) {
           val.$animate = true;
         }
-
+        val.$id = snap.key;
         this.activities.unshift(val);
 
         setTimeout(() => {
@@ -100,6 +108,16 @@ export default {
         if (new Date().getTime() - this.initialLoadTime > BLINK_WAIT_DURATION) {
           val.$animate = true;
         }
+        val.$id = snap.key;
+
+        const lat = val.coords ? val.coords.lat : 10.3080;
+        const lng = val.coords ? val.coords.lng : 7.0142;
+        const width = 400;
+        const height = 200;
+        const zoom = 12;
+        val.image = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=${width}x${height}&maptype=roadmap
+&markers=color:blue%7Clabel:S%7C${lat},${lng}
+&key=${MAPS_API_KEY}`;
         this.activities.unshift(val);
 
         setTimeout(() => {
@@ -197,13 +215,13 @@ export default {
 }
 
 .btn-view {
-  font-size: 9px;
+  font-size: 12px;
   cursor: pointer;
   /* border-color: #DF90B8; */
   color: white;
   background-color: transparent;
   line-height: 1;
-  padding: 2px 15px;
+  padding: 2px 20px;
   margin-right: 5px;
 }
 
@@ -259,5 +277,12 @@ export default {
   50% {
     opacity: 0;
   }
+}
+
+.img-collision {
+  width: 100%;
+  height: 70px;
+  object-fit: cover;
+  object-position: center center;
 }
 </style>

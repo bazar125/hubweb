@@ -1,14 +1,162 @@
 <template>
   <div class="modal-edit-section d-flex flex-column justify-content-start align-items-start">
     <!-- <json-editor :onChange="onChange" :json="json"></json-editor> -->
-    <template v-if="name !== 'citation'">
-      <div class="container-readonly d-flex justify-content-start align-items-center">
-        <icon name="lock" class="icon-readonly"></icon>
-        <span class="txt-readonly">This is a write-protected record, and may only be edited by an administrator.</span>
+    <template v-if="name === 'driver'">
+      <div class="root-input-container d-flex flex-column justify-content-center align-items-center">
+        <div class="d-flex justify-content-center align-items-start" style="width: 100%;">
+          <div class="container-input d-flex flex-column justify-content-center align-items-center">
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">First Name</span>
+              <b-form-input v-model="data.firstName" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Last Name</span>
+              <b-form-input v-model="data.lastName" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Gender</span>
+              <b-form-input v-model="data.gender" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Height</span>
+              <b-form-input v-model="data.height" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Date of Birth</span>
+              <b-form-input v-model="data.dob" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Registered Address</span>
+              <b-form-input v-model="data.registeredAddresses[0]" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+          </div>
+
+          <div class="container-input d-flex flex-column justify-content-center align-items-center">
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Email</span>
+              <b-form-input v-model="data.email" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Phone</span>
+              <b-form-input v-model="data.phone" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">License Class</span>
+              <b-form-input v-model="data.licenseClass" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">License Type</span>
+              <b-form-input v-model="data.licenseType" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">License Expiry</span>
+              <b-form-input v-model="data.licenseExpiry" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">License Date of First Issue</span>
+              <b-form-input v-model="data.licenseDateOfFirstIssue" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+
+          </div>
+        </div>
+
+        <b-btn @click="saveDriver()" id="btnSave" size="sm" style="margin-top: 20px;" class="btn-action">
+          <div class="d-flex justify-content-center align-items-center">
+            <icon class="icon-confirm" name="floppy-o"></icon>
+            <span>Save Changes</span>
+          </div>
+        </b-btn>
       </div>
-      <div ref="jsoneditor" style="width: 100%; height: 300px;"></div>
     </template>
-    <template v-else>
+
+    <template v-if="name === 'vehicle'">
+      <div class="root-input-container d-flex flex-column justify-content-center align-items-center">
+        <div class="d-flex justify-content-center align-items-start" style="width: 100%;">
+          <div class="container-input d-flex flex-column justify-content-center align-items-center">
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Body</span>
+              <b-form-input v-model="data.body" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Color</span>
+              <b-form-input v-model="data.color" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Country of Origin</span>
+              <b-form-input v-model="data.countryOfOrigin" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Cylinder Capacity</span>
+              <b-form-input v-model="data.cylinderCapacity" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Date of First Registration</span>
+              <b-form-input v-model="data.dateOfFirstRegistration" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Engine Number</span>
+              <b-form-input v-model="data.engineNumber" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Year of Manufacture</span>
+              <b-form-input v-model="data.yearOfManufacture" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Registration State</span>
+              <b-form-input v-model="data.registrationState" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+          </div>
+
+          <div class="container-input d-flex flex-column justify-content-center align-items-center">
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Fuel Type</span>
+              <b-form-input v-model="data.fuelType" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Import Date</span>
+              <b-form-input v-model="data.importDate" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Manufacturer</span>
+              <b-form-input v-model="data.manufacturer" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">Model</span>
+              <b-form-input v-model="data.model" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">MOT Expiry</span>
+              <b-form-input v-model="data.motExpiry" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">PIN</span>
+              <b-form-input v-model="data.pin" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+            <div class="input-edit-container d-flex flex-column justify-content-start align-items-start">
+              <span class="input-label">VIN</span>
+              <b-form-input v-model="data.vin" class="input-edit" size="sm" type="text" :formatter="format"></b-form-input>
+            </div>
+
+          </div>
+        </div>
+
+        <b-btn @click="saveVehicle()" id="btnSave" size="sm" style="margin-top: 20px;" class="btn-action">
+          <div class="d-flex justify-content-center align-items-center">
+            <icon class="icon-confirm" name="floppy-o"></icon>
+            <span>Save Changes</span>
+          </div>
+        </b-btn>
+      </div>
+    </template>
+
+    <template v-else-if="name === 'vehicle'">
+      <div class="container-input d-flex justify-content-center align-items-center">
+        <b-form-input v-model="txtAsd" size="sm" type="text" placeholder="Enter your name" :formatter="format"></b-form-input>
+      </div>
+    </template>
+    <!-- <template v-else-if="name !== 'collision'">
+                                    </template> -->
+    <template v-else-if="name === 'citation'">
       <div class="container-delete d-flex flex-column justify-content-start align-items-center">
         <textarea class="form-control input-justification" v-model="deleteJustification" placeholder="Provide a justification" rows="3"></textarea>
         <b-btn @click="deleteCitation()" :class="{'btn-disabled': !deleteJustification}" id="btnDelete" size="sm" style="margin-top: 10px;" class="btn-confirm">
@@ -97,6 +245,56 @@ export default {
             });
           });
         });
+      });
+    },
+    saveDriver() {
+      if (!this.data.$id) {
+        return;
+      }
+
+      const ref = Firebase.database().ref();
+      const updates = {};
+      updates[`/drivers/${this.data.$id}/firstName`] = this.data.firstName;
+      updates[`/drivers/${this.data.$id}/lastName`] = this.data.lastName;
+      updates[`/drivers/${this.data.$id}/gender`] = this.data.gender;
+      updates[`/drivers/${this.data.$id}/height`] = this.data.height;
+      updates[`/drivers/${this.data.$id}/dob`] = this.data.dob;
+      updates[`/drivers/${this.data.$id}/registeredAddresses/0`] = this.data.registeredAddresses[0];
+      updates[`/drivers/${this.data.$id}/email`] = this.data.email;
+      updates[`/drivers/${this.data.$id}/phone`] = this.data.phone;
+      updates[`/drivers/${this.data.$id}/licenseClass`] = this.data.licenseClass;
+      updates[`/drivers/${this.data.$id}/licenseType`] = this.data.licenseType;
+      updates[`/drivers/${this.data.$id}/licenseExpiry`] = this.data.licenseExpiry;
+      updates[`/drivers/${this.data.$id}/licenseDateOfFirstIssue`] = this.data.licenseDateOfFirstIssue;
+
+      ref.update(updates).then(() => {
+        this.$root.$emit('hide::modal', `${this.name}Modal`);
+      });
+    },
+    saveVehicle() {
+      if (!this.data.$id) {
+        return;
+      }
+
+      const ref = Firebase.database().ref();
+      const updates = {};
+      updates[`/vehicles/${this.data.$id}/body`] = this.data.body;
+      updates[`/vehicles/${this.data.$id}/color`] = this.data.color;
+      updates[`/vehicles/${this.data.$id}/countryOfOrigin`] = this.data.countryOfOrigin;
+      updates[`/vehicles/${this.data.$id}/cylinderCapacity`] = this.data.cylinderCapacity;
+      updates[`/vehicles/${this.data.$id}/dateOfFirstRegistration`] = this.data.dateOfFirstRegistration;
+      updates[`/vehicles/${this.data.$id}/engineNumber`] = this.data.engineNumber;
+      updates[`/vehicles/${this.data.$id}/fuelType`] = this.data.fuelType;
+      updates[`/vehicles/${this.data.$id}/importDate`] = this.data.importDate;
+      updates[`/vehicles/${this.data.$id}/manufacturer`] = this.data.manufacturer;
+      updates[`/vehicles/${this.data.$id}/motExpiry`] = this.data.motExpiry;
+      updates[`/vehicles/${this.data.$id}/pin`] = this.data.pin;
+      updates[`/vehicles/${this.data.$id}/registrationState`] = this.data.registrationState;
+      updates[`/vehicles/${this.data.$id}/vin`] = this.data.vin;
+      updates[`/vehicles/${this.data.$id}/yearOfManufacture`] = this.data.yearOfManufacture;
+
+      ref.update(updates).then(() => {
+        this.$root.$emit('hide::modal', `${this.name}Modal`);
       });
     },
   },
@@ -220,5 +418,27 @@ export default {
 
 .icon-confirm {
   margin-right: 8px;
+}
+
+.root-input-container {
+  width: 100%;
+}
+
+.container-input {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.input-edit-container {
+  width: 200px;
+}
+
+.input-edit {
+  font-size: 12px;
+}
+
+.input-label {
+  font-size: 12px;
+  font-weight: 600;
 }
 </style>
