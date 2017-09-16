@@ -1,8 +1,8 @@
 <template>
   <div class="image-container d-flex justify-content-start align-items-center">
-    <img class="img-main" :src="data.image ? data.image : photoPlaceholder"></img>
+    <img :class="{'img-full': type === 'citation' || type === 'collision'}" class="img-main" :src="data.image ? data.image : photoPlaceholder"></img>
 
-    <div class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
+    <div v-if="type !== 'citation' && type !== 'collision'" class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
         <span v-if="type === 'driver' || type === 'vehicle'" class="alert-title mr-auto">Alerts</span>
         <b-btn v-if="type !== 'collision' "@click="$emit('clickEdit');" id="btnEdit" size="sm" class="btn-action" style="margin-right: 10px;" :class="{'btn-cancel': editBtnTitle === 'Back', 'btn-delete': editBtnTitle === 'Delete', 'ml-auto': type === 'citation'}">{{editBtnTitle}}</b-btn>
@@ -85,6 +85,11 @@ export default {
   height: 100px;
   object-fit: cover;
   object-position: center center;
+}
+
+.img-full {
+  margin-right: 0px;
+  flex: 1;
 }
 
 .alert-title {

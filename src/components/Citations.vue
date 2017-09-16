@@ -19,12 +19,12 @@ import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import CitationModal from '@/components/CitationModal';
+import ModelFactory from '@/services/ModelFactory';
 import * as Firebase from 'firebase';
 
 const pageLoader = new TablePageLoader('citation');
 const DEBOUNCE_DELAY = 200;
 const REFRESH_DELAY = 4000;
-const MAPS_API_KEY = 'AIzaSyD5XSex8F-5VHZtQ8io0T9BFf8O3zg9yZg';
 
 /* eslint-disable no-underscore-dangle */
 export default {
@@ -122,6 +122,8 @@ export default {
     processRows(items) {
       for (let i = 0; i < items.length; i += 1) {
         const row = items[i];
+        ModelFactory.citation(row);
+
         if (row.completionStatus === 'Overdue') {
           row._dirtyClass = 'danger';
           row._cellVariants = {
@@ -138,16 +140,8 @@ export default {
             completionStatus: 'success',
           };
         }
-
-        const lat = row.coords ? row.coords.lat : 10.3080;
-        const lng = row.coords ? row.coords.lng : 7.0142;
-        const width = 200;
-        const height = 200;
-
-        row.image = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=${width}x${height}&maptype=roadmap
-&markers=color:blue%7Clabel:S%7C${lat},${lng}
-&key=${MAPS_API_KEY}`;
       }
+
       return items;
     },
     resetModal() {
@@ -222,6 +216,7 @@ export default {
 
 
 
+
 /* 
 .custom-pagination-info {
   position: absolute;
@@ -256,6 +251,7 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
+
 
 
 

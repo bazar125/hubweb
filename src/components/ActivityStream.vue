@@ -19,7 +19,7 @@
           <span class="txt-timeago">{{activity.timeAgo}}</span>
         </div>
 
-        <div v-if="!activity.location" class="d-flex justify-content-start align-items-center" style="width: 100%;">
+        <div v-if="!activity.location" class="d-flex justify-content-start align-items-center" style="width: 100%; overflow: hidden;">
           <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
         </div>
 
@@ -36,33 +36,14 @@
 </template>
 
 <script>
-import moment from 'moment';
 import * as Firebase from 'firebase';
 import CitationModal from '@/components/CitationModal';
 import CollisionModal from '@/components/CollisionModal';
+import ModelFactory from '@/services/ModelFactory';
 import PhotoPlaceholder from '../assets/photo_placeholder.png';
-// import TablePageLoader from '@/services/TablePageLoader';
 
-// const pageLoader = new TablePageLoader('citation,collision');
-
-// function loadActivity() {
-//   this.lastTimestamp = (new Date()).getTime();
-//   pageLoader.load(1).then((page) => {
-//     for (let i = 0; i < page.items.length; i += 1) {
-//       const item = page.items[i];
-//       item.typeDescription = item.location ? 'citation' : 'collision';
-//     }
-//     this.activities = page.items;
-//     this.totalRows = page.totalRows;
-//   });
-// }
-
-const MAPS_API_KEY = 'AIzaSyD5XSex8F-5VHZtQ8io0T9BFf8O3zg9yZg';
-
-// Wait this time after initializing before applying the blink animation to new activities
+// Wait this time after initialLoadTime before applying the blink animation to new activities
 const BLINK_WAIT_DURATION = 6000;
-// Duration of blink animation
-const BLINK_DURATION = 3000;
 
 export default {
   name: 'ActivityStream',
@@ -86,59 +67,27 @@ export default {
     },
   },
   mounted() {
-    // loadActivity.bind(this)();
-
     const ref = Firebase.database().ref();
+
     ref.child('citations').orderByChild('timestamp').limitToLast(10)
       .on('child_added', (snap) => {
-        const val = snap.val();
-        // const timestamp = val.timestamp;
-        val.typeDescription = 'citation';
-        val.timeAgo = moment(val.timestamp).fromNow();
+        let animate = false;
         if (new Date().getTime() - this.initialLoadTime > BLINK_WAIT_DURATION) {
-          val.$animate = true;
+          animate = true;
         }
-        val.$id = snap.key;
-        this.citations.push(val);
-
-        setTimeout(() => {
-          val.$animate = false;
-        }, BLINK_DURATION);
+        const citation = ModelFactory.citation(snap, animate);
+        this.citations.push(citation);
       });
 
     ref.child('collisions').orderByChild('timestamp').limitToLast(10)
       .on('child_added', (snap) => {
-        const val = snap.val();
-        // const timestamp = val.timestamp;
-        val.typeDescription = 'collision';
-        val.timeAgo = moment(val.timestamp).fromNow();
+        let animate = false;
         if (new Date().getTime() - this.initialLoadTime > BLINK_WAIT_DURATION) {
-          val.$animate = true;
+          animate = true;
         }
-        val.$id = snap.key;
-
-        const lat = val.coords ? val.coords.lat : 10.3080;
-        const lng = val.coords ? val.coords.lng : 7.0142;
-        const width = 400;
-        const height = 200;
-        const zoom = 12;
-        val.image = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=${width}x${height}&maptype=roadmap
-&markers=color:blue%7Clabel:S%7C${lat},${lng}
-&key=${MAPS_API_KEY}`;
-        this.collisions.push(val);
-
-        setTimeout(() => {
-          val.$animate = false;
-        }, BLINK_DURATION);
+        const collision = ModelFactory.collision(snap, animate);
+        this.collisions.push(collision);
       });
-
-    // ref.child('collisions').on('child_added', () => {
-    //   this.lastTimestamp = (new Date).getTime();
-    //   pageLoader.load(1).then((page) => {
-    //     this.activities = this.processRows(page.items);
-    //     this.totalRows = page.totalRows;
-    //   });
-    // });
   },
   methods: {
     showModal(activity, index, sender) {
@@ -287,9 +236,11 @@ export default {
 }
 
 .img-collision {
-  width: 100%;
+  /* width: 100%; */
+  min-width: 400px;
   height: 70px;
   object-fit: cover;
-  object-position: center center;
+  /* object-position: center center; */
+  object-position: -100px -20px;
 }
 </style>

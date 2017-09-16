@@ -19,10 +19,10 @@ import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import CollisionModal from '@/components/CollisionModal';
+import ModelFactory from '@/services/ModelFactory';
 import * as Firebase from 'firebase';
 
 const pageLoader = new TablePageLoader('collision');
-const MAPS_API_KEY = 'AIzaSyD5XSex8F-5VHZtQ8io0T9BFf8O3zg9yZg';
 const DEBOUNCE_DELAY = 200;
 const REFRESH_DELAY = 4000;
 
@@ -124,29 +124,7 @@ export default {
     processRows(items) {
       for (let i = 0; i < items.length; i += 1) {
         const row = items[i];
-
-        row.allDrivers = [];
-        for (let j = 0; j < row.drivers.length; j += 1) {
-          const driver = row.drivers[j];
-          row.allDrivers.push(driver.name);
-        }
-        row.allDrivers = row.allDrivers.join(', ');
-
-        row.allVehicles = [];
-        for (let j = 0; j < row.vehicles.length; j += 1) {
-          const vehicle = row.vehicles[j];
-          row.allVehicles.push(vehicle.plate);
-        }
-        row.allVehicles = row.allVehicles.join(', ');
-
-        const lat = row.coords ? row.coords.lat : 10.3080;
-        const lng = row.coords ? row.coords.lng : 7.0142;
-        const width = 200;
-        const height = 200;
-
-        row.image = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=${width}x${height}&maptype=roadmap
-&markers=color:blue%7Clabel:S%7C${lat},${lng}
-&key=${MAPS_API_KEY}`;
+        ModelFactory.collision(row);
       }
       // if (row.completionStatus === 'Payment Due') {
       //   row._dirtyClass = 'danger';
