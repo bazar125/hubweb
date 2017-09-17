@@ -3,7 +3,7 @@
     <div class="master-container d-flex justify-content-center align-items-center">
       <span class="master-title">Activity Stream</span>
     </div>
-    <div class="activity-stream-inner d-flex flex-column justify-content-start align-items-center">
+    <div class="activity-stream-inner">
       <div v-for="(activity, index) in activities" :key="activity.$id" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
         <div :class="{'bg-blue': activity.location, 'bg-red': !activity.location, 'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center">
           <icon :name="activity.location ? 'book' : 'fire' " class="icon-small icon-title"></icon>
