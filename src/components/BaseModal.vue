@@ -74,7 +74,6 @@ export default {
 <style scoped>
 .data-root-container {
   width: 100%;
-  height: 100%;
   margin-top: 10px;
 }
 
@@ -92,13 +91,11 @@ export default {
 
 .audit-root-container {
   width: 100%;
-  height: 100%;
   margin-top: 10px;
 }
 
 .edit-root-container {
   width: 100%;
-  height: 100%;
 }
 </style>
 

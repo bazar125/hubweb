@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-audit-row d-flex flex-column justify-content-start align-items-start">
+  <div class="modal-audit-row">
     <div class="d-flex justify-content-start align-items-start">
       <icon v-if="data && data.type === 'edit'" name="pencil-square" class="row-icon"></icon>
       <icon v-else-if="data && data.type === 'delete'" name="times-circle" class="row-icon"></icon>
@@ -16,6 +16,7 @@
     </div>
 
     <div class="inner-container d-flex flex-column justify-content-center align-items-start">
+    <!-- <div class="inner-container"> -->
       <div class="container-justification d-flex flex-column justify-content-start align-items-start">
         <span class="data-label">Justification</span>
         <span class="data-text">{{data.justification}}</span>
