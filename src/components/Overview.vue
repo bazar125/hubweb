@@ -447,12 +447,11 @@ export default {
 .map-container {
   position: relative;
   overflow: hidden;
-  flex: 0.9;
+  flex: 1;
   /* padding: 10px 20px; */
 }
 
 .stats-container {
-  flex: 0.1;
   background-color: #ececec;
 }
 

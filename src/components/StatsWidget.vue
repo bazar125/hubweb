@@ -32,7 +32,11 @@ export default {
   padding-left: 10px;
   padding-bottom: 10px;
   padding-top: 10px;
-  flex: 0.33;
+  flex: 1;
+}
+
+.stats-widget:last-child {
+  padding-right: 10px;
 }
 
 .stats-card {
