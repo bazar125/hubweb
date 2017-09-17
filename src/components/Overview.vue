@@ -24,9 +24,9 @@
         <clock class="custom-clock" :blink="true" :displaySeconds="false" />
       </div>
 
-      <v-map ref="map" :zoom="8" :center="center">
+      <v-map class="live-map" ref="map" :zoom="8" :center="center">
         <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-        <v-marker :lat-lng="center"></v-marker>
+        <!-- <v-marker :lat-lng="center"></v-marker> -->
       </v-map>
     </div>
   </div>
@@ -540,5 +540,9 @@ circle.blue {
 /* red is ef3135 */
 .txt-status {
 
+}
+
+.live-map {
+  flex: 1;
 }
 </style>
