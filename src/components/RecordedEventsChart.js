@@ -14,6 +14,7 @@ export default Pie.extend({
           data: [20, 40],
         },
       ],
-    }, { responsive: true, maintainAspectRatio: false });
+    // }, { responsive: true, maintainAspectRatio: false });
+    }, { responsive: false, maintainAspectRatio: false });
   },
 });

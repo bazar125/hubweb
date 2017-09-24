@@ -11,6 +11,7 @@ export default Line.extend({
           data: [40, 39, 10, 40, 39, 80, 40],
         },
       ],
-    }, { responsive: true, maintainAspectRatio: false });
+    // }, { responsive: true, maintainAspectRatio: false });
+    }, { responsive: false, maintainAspectRatio: false });
   },
 });
