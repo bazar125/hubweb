@@ -8,6 +8,7 @@ import Vehicles from '@/components/Vehicles';
 import Citations from '@/components/Citations';
 import Collisions from '@/components/Collisions';
 import Personnel from '@/components/Personnel';
+import Reports from '@/components/Reports';
 import Settings from '@/components/Settings';
 
 Vue.use(Router);
@@ -48,6 +49,12 @@ export default new Router({
       path: '/personnel',
       name: 'Personnel',
       component: Personnel,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/reports',
+      name: 'Reports',
+      component: Reports,
       meta: { requiresAuth: true },
     },
     {
