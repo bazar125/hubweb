@@ -11,7 +11,9 @@ export default {
     if (animate) {
       val.$animate = true;
     }
-    val.$id = snap.key;
+    if (snap.key) {
+      val.$id = snap.key;
+    }
 
     const lat = val.coords ? val.coords.lat : 10.3080;
     const lng = val.coords ? val.coords.lng : 7.0142;
@@ -25,7 +27,6 @@ export default {
     setTimeout(() => {
       val.$animate = false;
     }, ANIMATE_DURATION);
-
     return val;
   },
   collision(snap, animate) {
