@@ -121,12 +121,13 @@ export default {
 }
 
 .txt-title {
-  font-weight: 600;
-  font-size: 12px;
+  font-weight: 700;
+  font-size: 10px;
   width: 100%;
   text-align: start;
   line-height: 1;
   padding: 5px;
+  padding-left: 0px;
 }
 
 .outline-red {
@@ -171,14 +172,32 @@ export default {
 }
 
 .btn-view {
-  font-size: 11px;
+  font-weight: 700;
+  font-size: 7px;
   cursor: pointer;
   /* border-color: #DF90B8; */
-  color: white;
-  background-color: transparent;
+  /* color: white; */
+  /* background-color: transparent; */
+  background-color: white;
+  border: 1px solid transparent;
   line-height: 1;
-  padding: 1px 20px;
+  padding: 1px 10px;
   margin-right: 5px;
+  text-transform: uppercase;
+  border-radius: 40px;
+  /* transition: 0.4s; */
+}
+
+.btn-view:hover {
+  background-color: rgba(255,255,255,0.65);
+}
+
+.btn-blue {
+  color: #1565c0;
+}
+
+.btn-red {
+  color: #c62828;
 }
 
 .icon-small {
