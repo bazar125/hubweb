@@ -452,7 +452,8 @@ export default {
 }
 
 .stats-container {
-  background-color: #ececec;
+  /* background-color: #ececec; */
+  background-color: #212338;
 }
 
 .map-overlay {

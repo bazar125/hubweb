@@ -20,7 +20,8 @@ export default {
 
 <style scoped>
 .slick-footer {
-  background-color: #3D4A8B;
+  /* background-color: #3D4A8B; */
+  background-color: #212338;
   height: 40px;
 }
 

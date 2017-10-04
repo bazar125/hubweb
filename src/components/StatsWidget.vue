@@ -33,6 +33,8 @@ export default {
   padding-bottom: 10px;
   padding-top: 10px;
   flex: 1;
+  /* color: #797a97; */
+  color: white;
 }
 
 .stats-widget:last-child {
@@ -42,7 +44,8 @@ export default {
 .stats-card {
   width: 100%;
   padding: 10px;
-  background-color: white;
+  /* background-color: white; */
+  background-color: #3A3E5C;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }

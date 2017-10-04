@@ -104,7 +104,8 @@ export default {
 
 <style scoped>
 .activity-stream {
-  background-color: #ececec;
+  /* background-color: #ececec; */
+  background-color: #2c2e4a;
   width: 200px;
   min-width: 200px;
   z-index: 999;
@@ -114,20 +115,22 @@ export default {
 .activity-stream-inner {
   overflow-y: auto;
   width: 100%;
-  background-color: #ececec;
+  /* background-color: #ececec; */
+  background-color: #2c2e4a;
   padding-top: 5px;
   padding-left: 5px;
   padding-right: 5px;
 }
 
 .txt-title {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 10px;
   width: 100%;
   text-align: start;
   line-height: 1;
   padding: 5px;
   padding-left: 0px;
+  text-transform: uppercase;
 }
 
 .outline-red {
@@ -140,6 +143,7 @@ export default {
 
 .txt-timeago {
   font-size: 8px;
+  color: white;
 }
 
 .txt-address {
@@ -149,11 +153,14 @@ export default {
   /* white-space: nowrap;
   text-overflow: ellipsis; */
   padding-right: 5px;
+  color: white;
 }
 
 .activity-stream-row {
   width: 100%;
-  background-color: white;
+  /* background-color: white; */
+  background-color: #3A3E5C;
+  color: #797a97;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
   /* border-radius: 4px; */
   /* padding: 8px; */
