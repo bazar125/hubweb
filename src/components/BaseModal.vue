@@ -102,15 +102,29 @@ export default {
 <style>
 .modal-header {
   padding: 5px 10px;
+  /* border-color: #797a97; */
+  border-color: #8f90a8;
+  color: #8f90a8;
+}
+
+.modal-header .close {
+  color: #8f90a8;
+  text-shadow: none;
 }
 
 .modal-header > h5 {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
+  text-transform: uppercase;
+}
+
+.modal-content {
+  background-color: #2c2e4a;
 }
 
 .modal-footer {
   padding: 5px 10px;
+  border-color: #8f90a8;
 }
 
 .modal-footer .btn {

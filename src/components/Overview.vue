@@ -25,7 +25,8 @@
       </div>
 
       <v-map class="live-map" ref="map" :zoom="8" :center="center">
-        <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+        <!-- <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer> -->
+        <v-tilelayer url="http://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"></v-tilelayer>
         <!-- <v-marker :lat-lng="center"></v-marker> -->
       </v-map>
     </div>
@@ -448,6 +449,8 @@ export default {
   position: relative;
   overflow: hidden;
   flex: 1;
+  padding-right: 10px;
+  background-color: #212338;
   /* padding: 10px 20px; */
 }
 
@@ -460,7 +463,8 @@ export default {
   position: absolute;
   overflow: hidden;
   top: 0;
-  width: 100%;
+  /* width: 100%; */
+  width: calc(100% - 10px);
   padding-left: 50px;
   padding-right: 20px;
   border-bottom: 1px solid #ececec;
@@ -484,6 +488,10 @@ export default {
 
 .custom-table {
   width: 100%;
+}
+
+.stats-container .stats-widget {
+  border-right: 1px solid rgba(137,146,198, 0.2);
 }
 </style>
 

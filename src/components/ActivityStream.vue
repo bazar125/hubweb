@@ -1,7 +1,7 @@
 <template>
   <div class="activity-stream d-flex flex-column justify-content-start align-items-center">
     <div class="master-container d-flex justify-content-center align-items-center">
-      <span class="master-title">Activity Stream</span>
+      <span class="master-title">ACTIVITY STREAM</span>
     </div>
     <div class="activity-stream-inner">
       <div v-for="(activity, index) in activities" :key="activity.$id" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
@@ -105,7 +105,8 @@ export default {
 <style scoped>
 .activity-stream {
   /* background-color: #ececec; */
-  background-color: #2c2e4a;
+  /* background-color: #2c2e4a; */
+  background-color: #585e8c;
   width: 200px;
   min-width: 200px;
   z-index: 999;
@@ -116,7 +117,8 @@ export default {
   overflow-y: auto;
   width: 100%;
   /* background-color: #ececec; */
-  background-color: #2c2e4a;
+  /* background-color: #2c2e4a; */
+  background-color: #585e8c;
   padding-top: 5px;
   padding-left: 5px;
   padding-right: 5px;
@@ -124,11 +126,11 @@ export default {
 
 .txt-title {
   font-weight: 600;
-  font-size: 10px;
+  font-size: 11px;
   width: 100%;
   text-align: start;
   line-height: 1;
-  padding: 5px;
+  padding: 8px;
   padding-left: 0px;
   text-transform: uppercase;
 }
@@ -159,10 +161,11 @@ export default {
 .activity-stream-row {
   width: 100%;
   /* background-color: white; */
-  background-color: #3A3E5C;
-  color: #797a97;
+  background-color: #2c2e4a;
+  /* color: #8f90a8; */
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
-  /* border-radius: 4px; */
+  border-radius: 4px;
+  overflow: hidden;
   /* padding: 8px; */
   /* border-bottom: 1px solid #DF90B8; */
   /* border-bottom: 1px solid #ececec; */
@@ -180,7 +183,7 @@ export default {
 
 .btn-view {
   font-weight: 700;
-  font-size: 7px;
+  font-size: 9px;
   cursor: pointer;
   /* border-color: #DF90B8; */
   /* color: white; */
@@ -188,7 +191,7 @@ export default {
   background-color: white;
   border: 1px solid transparent;
   line-height: 1;
-  padding: 1px 10px;
+  padding: 3px 10px;
   margin-right: 5px;
   text-transform: uppercase;
   border-radius: 40px;
@@ -211,6 +214,7 @@ export default {
   width: 20px;
   height: 12px;
   margin-right: 0px;
+  color: white;
 }
 
 .bg-red {
@@ -226,20 +230,27 @@ export default {
 .master-container {
   width: 100%;
   height: 52px;
-  min-height: 52px;
-  background-color: #244474;
+  min-height: 32px;
+  /* background-color: #244474; */
+  background-color: #585e8c;
   color: white;
+  /* border: 1px solid #8992C6; */
+  /* border-bottom: 1px solid rgba(137,146,198, 0.2); */
+  border-bottom: 1px solid rgba(44,46,74, 0.2);
 }
 
 .master-title {
   /* margin-top: 5px;
   margin-bottom: 5px; */
   font-weight: 600;
+  font-size: 11px;
   /* border-bottom: 1px solid #ececec; */
   /* border-bottom: 1px solid #8992C6; */
   /* border-bottom: 1px solid white; */
   padding-left: 20px;
   padding-right: 20px;
+  /* color: #797a97; */
+  color: #ececec;
 }
 
 .container-title {

@@ -29,11 +29,13 @@ export default {
   font-size: 11px;
   line-height: 1.5;
   text-align: start;
+  color: #8f90a8;
 }
 
 .data-text {
   text-align: start;
   line-height: 1.5;
   font-size: 10px;
+  color: rgba(255,255,255,0.84);
 }
 </style>

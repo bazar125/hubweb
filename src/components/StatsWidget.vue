@@ -29,9 +29,9 @@ export default {
 
 <style scoped>
 .stats-widget {
-  padding-left: 10px;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  /* padding-left: 10px; */
+  /* padding-bottom: 10px;
+  padding-top: 10px; */
   flex: 1;
   /* color: #797a97; */
   color: white;
@@ -45,9 +45,10 @@ export default {
   width: 100%;
   padding: 10px;
   /* background-color: white; */
-  background-color: #3A3E5C;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  /* background-color: #3A3E5C; */
+  background-color: #212338;
+  /* border-radius: 4px; */
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
 }
 
 .txt-stat {
@@ -63,7 +64,8 @@ export default {
   height: 40px;
   padding: 10px;
   color: white;
-  border-right: 1px solid #ececec;
+  /* border-right: 1px solid #ececec; */
+  border-right: 1px solid #797a97;
 }
 
 .bg-blue {
@@ -79,16 +81,20 @@ export default {
 }
 
 .txt-type {
-  font-size: 13px;
+  font-size: 11px;
+  color: #8f90a8;
+  text-transform: uppercase;
 }
 
 .txt-label {
   font-size: 10px;
+  color: #797a97;
 }
 
 .container-stat {
   border-radius: 4px;
-  border: 1px solid #ececec;
+  /* border: 1px solid #ececec; */
+  border: 1px solid #797a97;
   overflow: hidden;
 }
 

@@ -5,7 +5,7 @@
     <div v-if="type !== 'collision'" :class="{'container-overlay': type === 'citation'}" class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
         <span v-if="type === 'driver' || type === 'vehicle'" class="alert-title mr-auto">Alerts</span>
-        <b-btn v-if="type !== 'collision' "@click="$emit('clickEdit');" id="btnEdit" size="sm" class="btn-action" style="margin-right: 10px;" :class="{'btn-cancel': editBtnTitle === 'Back', 'btn-delete': editBtnTitle === 'Delete', 'ml-auto': type === 'citation'}">{{editBtnTitle}}</b-btn>
+        <b-btn v-if="type !== 'collision' "@click="$emit('clickEdit');" id="btnEdit" size="sm" class="btn-action" :class="{'btn-cancel': editBtnTitle === 'Back', 'btn-delete': editBtnTitle === 'Delete', 'ml-auto': type === 'citation'}">{{editBtnTitle}}</b-btn>
         <b-btn v-if="type === 'driver' || type === 'vehicle'" @click="$emit('clickAuditHistory');" id="btnAuditHistory" size="sm" class="btn-action" :class="{'btn-show-details': auditBtnTitle === 'Details'}">{{auditBtnTitle}}</b-btn>
       </div>
       <div v-if="type === 'driver' || type === 'vehicle'" class="d-flex justify-content-start align-items-center" style="flex: 1; padding: 5px; width: 100%;">
@@ -76,7 +76,9 @@ export default {
 .image-container {
   position: relative;
   width: 100%;
-  border: 1px solid #ececec;
+  /* border: 1px solid #ececec; */
+  border: 1px solid #797a97;
+  overflow: hidden;
   border-radius: 4px;
 }
 
@@ -179,5 +181,6 @@ export default {
 .container-overlay {
   position: absolute;
   right: 0;
+  top: 0;
 }
 </style>
