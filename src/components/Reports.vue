@@ -68,6 +68,7 @@ export default {
 .reports {
   width: calc(100% - 350px);
   padding: 20px;
+  background-color: #2c2e4a;
 }
 
 .charts-container {

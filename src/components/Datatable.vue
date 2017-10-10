@@ -67,8 +67,10 @@ export default {
 
 <style scoped>
 .title {
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 300;
+  color: #8f90a8;
+  text-transform: uppercase;
 }
 
 .custom-table {
