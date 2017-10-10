@@ -97,6 +97,36 @@ export default {
 .edit-root-container {
   width: 100%;
 }
+
+.btn-action {
+  position: relative;
+  background-color: transparent;
+  /* border-color: #DF90B8; */
+  border-color: #8f90a8;
+  color: rgba(255, 255, 255, 0.84);
+  /* border-radius: 4px; */
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 11px;
+  width: 40px;
+  height: 40px;
+  padding: 6px 0px;
+  cursor: pointer;
+  transition: ease-out 0.2s;
+  margin-right: 10px;
+}
+
+.btn-action:hover {
+  background-color: #8f90a8;
+  border-color: #8f90a8;
+  transition: ease-out 0.2s;
+}
+
+.btn-action:active {
+  background-color: #585e8c;
+  border-color: #585e8c;
+  transition: ease-out 0.2s;
+}
 </style>
 
 <style>

@@ -124,7 +124,7 @@ export default {
   /* background-color: rgba(255, 255, 255, 0.18); */
   border: 1px solid #8992C6;
   /* color: #8992C6; */
-  color: white;
+  color: rgba(255, 255, 255, 0.84);
   font-weight: 700;
   font-size: 11px;
   transition: ease-out 0.2s;
@@ -140,6 +140,6 @@ export default {
 
 .nav-button.router-link-exact-active .nav-icon {
   /* color: #8992C6; */
-  color: white;
+  color: rgba(255, 255, 255, 0.84);
 }
 </style>

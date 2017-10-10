@@ -134,6 +134,11 @@ export default {
           row._cellVariants = {
             completionStatus: 'alert',
           };
+        } else if (row.completionStatus === 'Warning') {
+          row._dirtyClass = 'wwarning';
+          row._cellVariants = {
+            completionStatus: 'wwarning',
+          };
         } else if (row.completionStatus === 'Paid') {
           row._dirtyClass = 'success';
           row._cellVariants = {

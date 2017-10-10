@@ -6,7 +6,7 @@
     <div class="activity-stream-inner">
       <div v-for="(activity, index) in activities" :key="activity.$id" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
         <div :class="{'bg-blue': activity.location, 'bg-red': !activity.location, 'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center">
-          <icon :name="activity.location ? 'book' : 'fire' " class="icon-small icon-title"></icon>
+          <icon :name="activity.location ? 'book' : 'fire' " class="icon-master icon-title"></icon>
           <span class="txt-title">{{activity.location ? 'Citation' : 'Collision'}}</span>
           <b-btn @click.stop="showModal(activity, index, $event.target)" :class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn>
         </div>
@@ -145,7 +145,8 @@ export default {
 
 .txt-timeago {
   font-size: 8px;
-  color: white;
+  /* color: white; */
+  color: rgba(255,255,255,0.84);
 }
 
 .txt-address {
@@ -155,7 +156,7 @@ export default {
   /* white-space: nowrap;
   text-overflow: ellipsis; */
   padding-right: 5px;
-  color: white;
+  color: rgba(255,255,255,0.84);
 }
 
 .activity-stream-row {
@@ -214,6 +215,13 @@ export default {
   width: 20px;
   height: 12px;
   margin-right: 0px;
+  color: rgba(255,255,255,0.84);
+}
+
+.icon-master {
+  width: 20px;
+  height: 12px;
+  margin-right: 0px;
   color: white;
 }
 
@@ -233,10 +241,11 @@ export default {
   min-height: 32px;
   /* background-color: #244474; */
   background-color: #585e8c;
-  color: white;
+  color: rgba(255,255,255,0.84);
   /* border: 1px solid #8992C6; */
   /* border-bottom: 1px solid rgba(137,146,198, 0.2); */
-  border-bottom: 1px solid rgba(44,46,74, 0.2);
+  /* border-bottom: 1px solid rgba(44,46,74, 0.2); */
+  border-bottom: 1px solid #797a97;
 }
 
 .master-title {
@@ -250,7 +259,8 @@ export default {
   padding-left: 20px;
   padding-right: 20px;
   /* color: #797a97; */
-  color: #ececec;
+  /* color: #ececec; */
+  color: rgba(255,255,255,0.84);
 }
 
 .container-title {

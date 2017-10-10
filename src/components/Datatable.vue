@@ -15,7 +15,7 @@
             <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
       <template slot="actions" scope="row">
         <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
-        <b-btn size="sm" class="btn-action" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert', 'btn-success': row.item._dirtyClass === 'success'}" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
+        <b-btn size="sm" class="btn-action" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert', 'btn-wwarning': row.item._dirtyClass === 'wwarning', 'btn-success': row.item._dirtyClass === 'success'}" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
       </template>
     </b-table>
 
@@ -105,6 +105,13 @@ export default {
   background-color: #1565c0;
   border-color: #1565c0;
 }
+
+.datatable .btn-wwarning {
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+  color: white;
+}
+
 </style>
 
 <style>
@@ -124,6 +131,16 @@ export default {
 /* .custom-datatable-action-cell {
   padding: 0px;
 } */
+
+.table-wwarning {
+  /* background-color: #f0ad4e; */
+  background-color: #f0ad4e;
+  color: white;
+}
+.table-wwarning:hover {
+  background-color: #f0ad4e;
+  color: white;
+}
 
 .table-alert {
   /* background-color: #f0ad4e; */
