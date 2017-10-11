@@ -1,6 +1,6 @@
 <template>
   <div class="custom-sidenav d-flex flex-column justify-content-start align-items-center">
-    <router-link v-for="(link, index) in links" :key="link.path" :to="link.path" tag="div" class="nav-button">
+    <router-link v-for="(link, index) in links" :key="link.path" :to="link.path" v-show="showForRole(link)" tag="div" class="nav-button">
       <div class="d-flex justify-content-start align-items-center">
         <!-- <img class="nav-icon" :src="link.icon"></img> -->
         <icon class="nav-icon" :name="link.icon"></icon>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import * as Firebase from 'firebase';
 // import IconOverview from '../assets/overview_icon.png';
 // import IconDrivers from '../assets/drivers_icon.png';
 // import IconVehicles from '../assets/vehicles_icon.png';
@@ -21,6 +22,7 @@
 export default {
   name: 'Sidenav',
   components: {
+    currentUser: {},
   },
   data() {
     return {
@@ -69,6 +71,13 @@ export default {
         //   icon: 'users',
         // },
         {
+          path: '/manage',
+          name: 'Admin',
+          // icon: IconSettings,
+          icon: 'user-plus',
+          role: 'stateAdmin',
+        },
+        {
           path: '/settings',
           name: 'Settings',
           // icon: IconSettings,
@@ -76,6 +85,29 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    showForRole(link) {
+      console.log(`${link.role} => ${this.currentUser}`);
+      if (!link.role) {
+        return true;
+      }
+
+      if (!this.currentUser || !this.currentUser.accountType) {
+        return false;
+      }
+
+      return link.role === this.currentUser.accountType;
+    },
+  },
+  mounted() {
+    const ref = Firebase.database().ref();
+    const uid = Firebase.auth().currentUser.uid;
+    ref.child(`users/${uid}`).once('value', (snap) => {
+      const val = snap.val();
+      this.currentUser = val;
+      this.$forceUpdate();
+    });
   },
 };
 </script>

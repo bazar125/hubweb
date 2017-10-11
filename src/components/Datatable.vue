@@ -111,7 +111,8 @@ export default {
 .datatable .btn-wwarning {
   background-color: #f0ad4e;
   border-color: #f0ad4e;
-  color: white;
+  color: rgba(255, 255, 255, 0.84);
+  /* color: rgba(0,0,0,0.84); */
 }
 
 </style>
@@ -166,4 +167,11 @@ export default {
 .table td {
   padding: 0.25rem 0.75rem;
 }
+
+.datatable .table-bordered td,
+.datatable .table-bordered th {
+  border-color: rgba(255, 255, 255, 0.34) !important;
+  color: rgba(255, 255, 255, 0.84);
+}
+
 </style>

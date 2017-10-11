@@ -9,6 +9,7 @@ import Citations from '@/components/Citations';
 import Collisions from '@/components/Collisions';
 import Personnel from '@/components/Personnel';
 import Reports from '@/components/Reports';
+import Admin from '@/components/Admin';
 import Settings from '@/components/Settings';
 
 Vue.use(Router);
@@ -55,6 +56,12 @@ export default new Router({
       path: '/reports',
       name: 'Reports',
       component: Reports,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/manage',
+      name: 'Admin',
+      component: Admin,
       meta: { requiresAuth: true },
     },
     {
