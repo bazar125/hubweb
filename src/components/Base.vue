@@ -9,11 +9,12 @@
       <active-personnel-card></active-personnel-card>
 
       <div class="map-overlay d-flex justify-content-start align-items-center">
-        <icon name="check-circle-o" class="icon-status color-green"></icon>
+        <!-- <icon name="check-circle-o" class="icon-status color-green"></icon>
         <span class="txt-status">All systems are functioning normally</span>
 
         <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
-        <span class="txt-status">No pending notifications</span>
+        <span class="txt-status">No pending notifications</span> -->
+        <MarqueeTips class="marquee-text" speed="200" :content="!headlines || headlines.count == 0 ? '' : headlines.join(' 	  	 ')"></MarqueeTips>
 
         <icon name="circle-thin" class="ml-auto icon-status color-red" style="margin-left: 15px;"></icon>
         <span class="txt-status">Collision</span>
@@ -38,6 +39,7 @@
 import DailyStatsCard from '@/components/DailyStatsCard';
 import SystemInformationCard from '@/components/SystemInformationCard';
 import ActivePersonnelCard from '@/components/ActivePersonnelCard';
+import MarqueeTips from 'vue-marquee-tips';
 import Clock from 'vue-digital-clock';
 import L from 'leaflet';
 import * as d3 from 'd3';
@@ -374,6 +376,7 @@ export default {
     DailyStatsCard,
     SystemInformationCard,
     ActivePersonnelCard,
+    MarqueeTips,
   },
   data() {
     return {
@@ -382,10 +385,22 @@ export default {
       statCitations: 314,
       statCollisions: 214,
       statNotifications: 34,
+      headlines: [],
     };
   },
   mounted() {
     this.initialize();
+  },
+  created() {
+    const apiKey = 'b145ac1c37d04657b72b1ce5097d48e6';
+    const source = 'bbc-news';
+    this.$http.get(`https://newsapi.org/v1/articles?source=${source}&sortBy=top&apiKey=${apiKey}`)
+      .then(response => {
+        this.headlines = response.data.articles.map((article) => {
+          return `${article.author} — ${article.description}`;
+        });
+        console.log(this.headlines);
+      });
   },
   methods: {
     initialize() {
@@ -471,7 +486,7 @@ export default {
   /* padding: 10px 20px; */
 }
 
-.map-container >>> .active-personnel-card {
+.map-container>>>.active-personnel-card {
   /* flex: 0.369; */
   /* flex: 1; */
   flex: 0.4;
@@ -486,7 +501,7 @@ export default {
   padding-bottom: 8px;
 }
 
-.stats-container >>> .daily-stats-card {
+.stats-container>>>.daily-stats-card {
   margin-right: 8px;
 }
 
@@ -494,10 +509,10 @@ export default {
   position: absolute;
   overflow: hidden;
   top: 0;
-  right: 8px;
+  right: 0;
   /* width: 100%; */
   /* width: calc(100% - 10px); */
-  width: calc(70% - 10px);
+  width: calc(71% - 10px);
   padding-left: 50px;
   padding-right: 20px;
   border-bottom: 1px solid #ececec;
@@ -524,7 +539,7 @@ export default {
 }
 
 .stats-container .stats-widget {
-  border-right: 1px solid rgba(137,146,198, 0.2);
+  border-right: 1px solid rgba(137, 146, 198, 0.2);
 }
 </style>
 
@@ -579,13 +594,22 @@ circle.blue {
   color: steelblue;
 }
 
+
 /* red is ef3135 */
+
 .txt-status {
-font-size: 9px;
+  font-size: 9px;
 }
 
 .live-map {
   flex: 1;
   /* flex: 1.61803398875;; */
+}
+
+.marquee-text {
+  font-size: 9px;
+  margin-right: 5px !important;
+  /* padding-right: 10px; */
+  /* overflow: hidden !important; */
 }
 </style>

@@ -10,7 +10,7 @@
     </b-button>
     <b-button @click="messages()" size="sm" class="btn-notification">
       <icon name="comment-o"></icon>
-      <b-badge class="custom-badge" pill variant="success">1</b-badge>
+      <b-badge class="custom-badge" pill variant="info">1</b-badge>
     </b-button>
     <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
     <b-button @click="logout()" size="sm" class="btn-login">

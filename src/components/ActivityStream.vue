@@ -2,7 +2,7 @@
   <div class="activity-stream d-flex flex-column justify-content-start align-items-center">
     <dark-card title="Live Feed">
       <div class="activity-stream-inner">
-        <div v-for="(activity, index) in activities" :key="activity.$id" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
+        <div v-for="(activity, index) in activities" :key="activity.$id" :class="{'blink-title': activity.$animate}" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
           <!-- <div :class="{'bg-blue': activity.location, 'bg-red': !activity.location, 'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center">
             <icon :name="activity.location ? 'book' : 'fire' " class="icon-master icon-title"></icon>
             <span class="txt-title">{{activity.location ? 'Citation' : 'Collision'}}</span>
@@ -21,7 +21,8 @@
             <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
           </div> -->
 
-          <div :class="{'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center">
+          <!-- <div :class="{'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center"> -->
+          <div class="container-title d-flex justify-content-start align-items-center">
             <!-- <icon :name="activity.location ? 'book' : 'fire' " class="icon-master icon-title"></icon> -->
             <icon :name="activity.location ? 'circle' : 'circle'" :class="{'circle-citation': activity.location, 'circle-collision': !activity.location}" class="icon-master icon-title"></icon>
             <span class="txt-title">{{activity.location ? 'Citation Issued' : 'Collision Logged'}}</span>
@@ -29,11 +30,15 @@
             <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="search"></base-btn>
           </div>
           <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
-            <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon>
+            <!-- <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon> -->
+            <span class="txt-reference">Ref: {{activity.location ? activity.paymentReference : (activity.reference ? activity.reference : 'Unknown reference') }}</span>
+          </div>
+          <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
+            <!-- <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon> -->
             <span class="txt-address">{{activity.location ? activity.location : (activity.address ? activity.address : 'Unknown address') }}</span>
           </div>
           <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 5px;">
-            <icon name="clock-o" class="icon-small"></icon>
+            <!-- <icon name="clock-o" class="icon-small"></icon> -->
             <span class="txt-timeago">{{activity.timeAgo}}</span>
           </div>
 
@@ -175,7 +180,21 @@ export default {
 
 .txt-timeago {
   font-size: 8px;
+  /* font-style: italic; */
   /* color: white; */
+  color: rgba(255, 255, 255, 0.84);
+  margin-left: 5px;
+}
+
+.txt-reference {
+  font-weight: 600;
+  font-size: 10px;
+  width: 100%;
+  text-align: start;
+  /* white-space: nowrap;
+  text-overflow: ellipsis; */
+  padding-right: 5px;
+  margin-left: 5px;
   color: rgba(255, 255, 255, 0.84);
 }
 
@@ -186,6 +205,7 @@ export default {
   /* white-space: nowrap;
   text-overflow: ellipsis; */
   padding-right: 5px;
+  margin-left: 5px;
   color: rgba(255, 255, 255, 0.84);
 }
 
@@ -214,8 +234,10 @@ export default {
 } */
 .icon-title {
   /* height: 12px !important; */
+  width: 6px !important;
   height: 6px !important;
   margin-left: 5px;
+  margin-right: 5px !important;
   /* margin-right: 5px !important; */
 }
 
@@ -318,7 +340,7 @@ export default {
   color: white;
   /* padding-right: 20px; */
   /* padding: 5px; */
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   /* border-top-left-radius: 4px;
   border-top-right-radius: 4px; */
 }

@@ -9,7 +9,10 @@
         <!-- <b-list-group-item active> -->
         <b-list-group-item class="user-list-item" v-for="(user, index) in users" :key="user">
           <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
-          {{user}}
+          <div class="d-flex flex-column">
+            <span class="txt-name">{{user}}</span>
+            <span class="txt-zone">Zone B23</span>
+          </div>
           <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="comment-o"></base-btn>
           <base-btn @click="clickEditUser(index)" class="btn-view" icon="search"></base-btn>
           <!-- <div class="d-flex flex-column">
@@ -81,7 +84,7 @@ export default {
   border-right-color: transparent;
   border-radius: 0px;
   /* padding: 0.75rem 1rem; */
-  padding: 0.75rem 0rem;
+  padding: 0.5rem 0rem;
 }
 
 .img-avatar {
@@ -89,6 +92,18 @@ export default {
   height: 30px;
   border-radius: 20px;
   margin-right: 10px;
+}
+
+.txt-name {
+  text-align: start;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.txt-zone {
+  text-align: start;
+  font-size: 10px;
 }
 
 .txt-timeago {

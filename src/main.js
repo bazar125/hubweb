@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css';
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 import Icon from 'vue-awesome/components/Icon';
 import VideoBg from 'vue-videobg';
+import VueResource from 'vue-resource';
 
 import * as Firebase from 'firebase';
 import * as Vue2Leaflet from 'vue2-leaflet';
@@ -27,6 +28,7 @@ const config = {
 };
 
 Vue.use(BootstrapVue);
+Vue.use(VueResource);
 Vue.component('icon', Icon);
 Vue.component('video-bg', VideoBg);
 
