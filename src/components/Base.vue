@@ -14,7 +14,9 @@
 
         <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
         <span class="txt-status">No pending notifications</span> -->
-        <MarqueeTips class="marquee-text" speed="200" :content="!headlines || headlines.count == 0 ? '' : headlines.join(' 	  	 ')"></MarqueeTips>
+        <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
+          <MarqueeTips class="marquee-text" speed="200" :content="!headlines || headlines.count == 0 ? '' : headlines.join(' 	  	 ')"></MarqueeTips>
+        </div>  
 
         <icon name="circle-thin" class="ml-auto icon-status color-red" style="margin-left: 15px;"></icon>
         <span class="txt-status">Collision</span>
