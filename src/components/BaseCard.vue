@@ -25,6 +25,7 @@
 <script>
 import ClipLoader from 'vue-spinner/src/ClipLoader';
 
+/* Prop for padding? */
 export default {
   name: 'BaseCard',
   props: ['data', 'hidePlaceholder'],

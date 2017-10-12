@@ -1,12 +1,13 @@
 <template>
-  <div class="overview d-flex flex-column">
+  <div class="base d-flex flex-column">
     <div class="stats-container d-flex justify-content-start align-items-center">
-      <stats-widget type="Citations" icon="book" :value="statCitations"></stats-widget>
-      <stats-widget type="Collisions" icon="fire" :value="statCollisions"></stats-widget>
-      <stats-widget type="Notifications" icon="exclamation" :value="statNotifications"></stats-widget>
+      <daily-stats-card></daily-stats-card>
+      <system-information-card></system-information-card>
     </div>
 
-    <div class="map-container d-flex flex-column justify-content-start align-items-center">
+    <div class="map-container d-flex justify-content-start align-items-center">
+      <active-personnel-card></active-personnel-card>
+
       <div class="map-overlay d-flex justify-content-start align-items-center">
         <icon name="check-circle-o" class="icon-status color-green"></icon>
         <span class="txt-status">All systems are functioning normally</span>
@@ -34,12 +35,14 @@
 </template>
 
 <script>
+import DailyStatsCard from '@/components/DailyStatsCard';
+import SystemInformationCard from '@/components/SystemInformationCard';
+import ActivePersonnelCard from '@/components/ActivePersonnelCard';
 import Clock from 'vue-digital-clock';
 import L from 'leaflet';
 import * as d3 from 'd3';
 
 import TablePageLoader from '@/services/TablePageLoader';
-import StatsWidget from '@/components/StatsWidget';
 
 const pageLoader = new TablePageLoader('citation');
 
@@ -365,10 +368,12 @@ L.pingLayer = options => new L.PingLayer(options);
 
 /* eslint-disable no-underscore-dangle */
 export default {
-  name: 'Overview',
+  name: 'Base',
   components: {
     Clock,
-    StatsWidget,
+    DailyStatsCard,
+    SystemInformationCard,
+    ActivePersonnelCard,
   },
   data() {
     return {
@@ -439,32 +444,60 @@ export default {
 </script>
 
 <style scoped>
-.overview {
+.base {
   height: 100%;
   /* Sidenav width: 150px */
-  width: calc(100% - 150px);
+  /* width: calc(100% - 150px); */
+  width: calc(100% - 350px);
+}
+
+.base .daily-stats-card {
+  flex: 0.55;
+}
+
+.base .system-information-card {
+  flex: 0.45;
 }
 
 .map-container {
   position: relative;
   overflow: hidden;
   flex: 1;
-  padding-right: 10px;
-  background-color: #212338;
+  /* padding-right: 8px; */
+  padding-left: 8px;
+  /* padding-right: 8px; */
+  padding-bottom: 8px;
+  background-color: #2c2e4a;
   /* padding: 10px 20px; */
+}
+
+.map-container >>> .active-personnel-card {
+  /* flex: 0.369; */
+  /* flex: 1; */
+  flex: 0.4;
+  margin-right: 8px;
 }
 
 .stats-container {
   /* background-color: #ececec; */
-  background-color: #212338;
+  background-color: #2c2e4a;
+  padding-top: 8px;
+  padding-left: 8px;
+  padding-bottom: 8px;
+}
+
+.stats-container >>> .daily-stats-card {
+  margin-right: 8px;
 }
 
 .map-overlay {
   position: absolute;
   overflow: hidden;
   top: 0;
+  right: 8px;
   /* width: 100%; */
-  width: calc(100% - 10px);
+  /* width: calc(100% - 10px); */
+  width: calc(70% - 10px);
   padding-left: 50px;
   padding-right: 20px;
   border-bottom: 1px solid #ececec;
@@ -500,19 +533,19 @@ export default {
   cursor: pointer;
 }
 
-.overview-lower .table-footer {
+.base-lower .table-footer {
   margin-bottom: 0px !important;
 }
 
 .icon-status {
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   margin-right: 10px;
 }
 
 .icon-clock {
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   margin-right: 5px;
 }
 
@@ -521,7 +554,7 @@ export default {
 }
 
 .custom-clock {
-  font-size: 16px;
+  font-size: 13px;
   padding: 3px 0px;
 }
 
@@ -548,10 +581,11 @@ circle.blue {
 
 /* red is ef3135 */
 .txt-status {
-
+font-size: 9px;
 }
 
 .live-map {
   flex: 1;
+  /* flex: 1.61803398875;; */
 }
 </style>

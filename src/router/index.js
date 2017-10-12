@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Login from '@/components/Login';
 
-import Overview from '@/components/Overview';
+import Base from '@/components/Base';
 import Drivers from '@/components/Drivers';
 import Vehicles from '@/components/Vehicles';
 import Citations from '@/components/Citations';
@@ -18,8 +18,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Overview',
-      component: Overview,
+      name: 'Base',
+      component: Base,
       meta: { requiresAuth: true },
     },
     {

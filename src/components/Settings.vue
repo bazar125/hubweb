@@ -18,7 +18,7 @@ export default {
 
 <style scoped>
 .settings {
-  width: 100%;
-  min-width: 100%;
+  width: calc(100% - 150px);
+  min-width: calc(100% - 150px);
 }
 </style>

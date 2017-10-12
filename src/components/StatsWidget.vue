@@ -1,13 +1,9 @@
 <template>
   <div class="stats-widget d-flex justify-content-center align-items-center">
     <div class="stats-card d-flex justify-content-center align-items-center">
-      <div class="container-stat d-flex justify-content-center align-items-center">
-        <icon class="main-icon" :name="icon" :class="{'bg-blue': icon === 'book', 'bg-red': icon === 'fire', 'bg-yellow': icon === 'exclamation',}"></icon>
-        <span class="txt-stat">{{value}}</span>
-      </div>
       <div class="container-type d-flex flex-column justify-content-center align-items-center">
         <span class="txt-type"><b>{{type}}</b></span>
-        <span class="txt-label">in the past 24 hours</span>
+        <span class="txt-label">{{value}}</span>
       </div>
     </div>
   </div>
@@ -43,10 +39,10 @@ export default {
 
 .stats-card {
   width: 100%;
-  padding: 10px;
+  /* padding: 10px; */
   /* background-color: white; */
   /* background-color: #3A3E5C; */
-  background-color: #212338;
+  /* background-color: #212338; */
   /* border-radius: 4px; */
   /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
 }
@@ -81,14 +77,15 @@ export default {
 }
 
 .txt-type {
-  font-size: 11px;
-  color: #8f90a8;
+  font-size: 10px;
+  color: white;
   text-transform: uppercase;
 }
 
 .txt-label {
-  font-size: 10px;
-  color: #797a97;
+  font-size: 24px;
+  font-weight: 600;
+  color: #c5ea8e;
 }
 
 .container-stat {
@@ -99,6 +96,6 @@ export default {
 }
 
 .container-type {
-  margin-left: 15px;
+  /* margin-left: 15px; */
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="custom-navbar d-flex justify-content-start align-items-center">
     <img class="logo" src="../assets/kastelea_logo.png"></img>
     <!-- <span class="title-text">Kaduna State Traffic and Environmental Enforcement Agency</span> -->
-    <span class="title-text">KADUNA STATE TRAFFIC AND ENVIRONMENTAL ENFORCEMENT AGENCY</span>
+    <span class="title-text">Kaduna State Traffic and Environmental Law Enforcement Agency</span>
     <!-- <img class="ml-auto img-avatar" src="../assets/user_placeholder.jpg"></img> -->
     <b-button @click="notifications()" size="sm" class="ml-auto btn-notification">
       <icon name="bell-o"></icon>
@@ -42,15 +42,18 @@ export default {
   /* background-color: #2c2e4a; */
   background-color: #212338;
   /* color: white; */
-  color: #8f90a8;
-  height: 67px;
+  color:white;
+  height: 50px;
   padding: 10px 15px;
   padding-left: 0px;
 }
 
 .logo {
   height: 100%;
-  width: 150px;
+  margin-left: 20px;
+  margin-right: 10px;
+  /* width: 65px; */
+  /* width: 150px; */
   /* padding-top: 2px;
   padding-bottom: 2px; */
   user-select: none;
@@ -73,8 +76,8 @@ export default {
   border-radius: 20px;
   font-weight: 600;
   font-size: 11px;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   padding: 6px 0px;
   cursor: pointer;
   transition: ease-out 0.2s;
@@ -95,39 +98,37 @@ export default {
 
 .custom-badge {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 2px;
+  right: 2px;
 }
 
 .btn-login {
-  /* background-color: #DF90B8; */
-  /* background-color: #2c3f92; */
-  background-color: transparent;
-  /* border-color: #DF90B8; */
-  /* border-color: #2c3f92; */
-  border-color: #8f90a8;
+  background-color: #63a54b;
+  /* border-color: #8f90a8; */
+  border-color: #63a54b;
   color: rgba(255,255,255,0.84);
   /* border-radius: 4px; */
   border-radius: 45px;
   font-weight: 600;
   font-size: 11px;
   width: 90px;
-  padding: 6px 0px;
+  padding: 4px 0px;
   cursor: pointer;
   transition: ease-out 0.2s;
 }
 
 .btn-login:hover {
   /* background-color: #d4689f; */
-  background-color: #797a97;
-  border-color: #797a97;
+  background-color: #83bd6e;
+  border-color: #83bd6e;
   transition: ease-out 0.2s;
 }
 
 .img-avatar {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 20px;
   margin-right: 10px;
+  border: 1px solid #8f90a8;
 }
 </style>

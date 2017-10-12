@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "motohub-498b8"
+    "default": "motohub-498b8",
+    "staging": "motohub-staging"
   }
 }

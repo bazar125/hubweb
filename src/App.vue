@@ -59,7 +59,7 @@ export default {
 
 .app-root-container {
   /* nav: 67px, footer: 40px */
-  height: calc(100vh - 107px);
+  height: calc(100vh - 90px);
 }
 
 .form-control {

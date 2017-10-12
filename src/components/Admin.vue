@@ -1,16 +1,21 @@
 <template>
-<div class="manage-users d-flex justify-content-start align-items-start">
-  <span class="txt-heading">Manage Users</span>
-</div>
+  <div class="manage-users d-flex flex-column justify-content-start align-items-center">
+    <invite-users-card></invite-users-card>
+    <!-- <span class="txt-heading mr-auto">Manage Users</span> -->
+  </div>
 </template>
 
 <script>
+import InviteUsersCard from '@/components/InviteUsersCard';
+
 export default {
   name: 'ManageUsers',
   components: {
+    InviteUsersCard,
   },
   data() {
     return {
+      email: '',
     };
   },
 };
@@ -18,17 +23,9 @@ export default {
 
 <style scoped>
 .manage-users {
-  width: 100%;
-  min-width: 100%;
+  width: calc(100% - 150px);
+  min-width: calc(100% - 150px);
   background-color: #2c2e4a;
   padding: 20px;
 }
-
-.txt-heading {
-  font-size: 16px;
-  font-weight: 300;
-  color: #8f90a8;
-  text-transform: uppercase;
-}
-
 </style>
