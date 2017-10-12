@@ -8,6 +8,10 @@
       <icon name="bell-o"></icon>
       <b-badge class="custom-badge" pill variant="danger">1</b-badge>
     </b-button>
+    <b-button @click="messages()" size="sm" class="btn-notification">
+      <icon name="comment-o"></icon>
+      <b-badge class="custom-badge" pill variant="success">1</b-badge>
+    </b-button>
     <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
     <b-button @click="logout()" size="sm" class="btn-login">
       LOG OUT
@@ -98,8 +102,8 @@ export default {
 
 .custom-badge {
   position: absolute;
-  top: 2px;
-  right: 2px;
+  top: 0px;
+  right: 0px;
 }
 
 .btn-login {
