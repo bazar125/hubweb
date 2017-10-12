@@ -44,6 +44,10 @@ export default {
 <style scoped>
 .system-information-card {}
 
+.system-information-card .stats-widget {
+  flex: none;
+}
+
 .icon-status {
   width: 16px;
   height: 16px;
