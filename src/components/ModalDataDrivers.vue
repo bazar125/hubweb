@@ -5,8 +5,7 @@
       <b-list-group-item class="driver-item" v-for="(user, index) in users" :key="user">
         <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
         {{user}}
-        <!-- <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn> -->
-        <b-badge class="ml-auto" pill variant="success">VIEW</b-badge>
+        <base-btn @click="clickViewDriver(index)" class="ml-auto btn-view" text="View"></base-btn>
         <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
       </b-list-group-item>
     </b-list-group>
@@ -27,7 +26,7 @@ export default {
   data() {
     return {
       photoPlaceholder: PhotoPlaceholder,
-      users: ['John Doe', 'Jane Doe', 'Bob Doe'],
+      users: ['John Doe', 'Jane Doe', 'Bob Doe', 'John Doe', 'Jane Doe', 'Bob Doe'],
     };
   },
   methods: {
@@ -53,6 +52,8 @@ export default {
   margin-top: 10px;
   width: 100%;
   flex: 1;
+  max-height: 142px;
+  overflow-y: auto;
 }
 
 .driver-item {
@@ -60,7 +61,7 @@ export default {
   background: transparent;
   border-color: #8f90a8;
   /* color: white; */
-  color: rgba(0,0,0,0.87);
+  color: rgba(0, 0, 0, 0.87);
   padding: 0.5rem 1rem;
 }
 
@@ -83,8 +84,10 @@ export default {
 .btn-view {
   height: 30px !important;
   width: 30px !important;
-  margin-right: 10px;
   padding: 0px !important;
+  background-color: #63a54b !important;
+  color: white;
+  border-color: #63a54b !important;
 }
 
 .txt-label {

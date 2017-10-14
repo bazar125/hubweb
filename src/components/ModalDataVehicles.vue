@@ -5,8 +5,8 @@
       <b-list-group-item class="vehicle-item" v-for="(vehicle, index) in vehicles" :key="vehicle">
         <img class="img-avatar" src="../assets/car_placeholder.jpg"></img>
         {{vehicle}}
-        <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn>
-        <b-badge pill variant="success">VIEW</b-badge>
+        <base-btn @click="clickViewVehicle(index)" class="ml-auto btn-view" text="View"></base-btn>
+        <!-- <b-badge pill variant="success">VIEW</b-badge> -->
         <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
       </b-list-group-item>
     </b-list-group>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import BaseBtn from '@/components/BaseBtn';
 import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
@@ -21,11 +22,12 @@ export default {
   // props: ['label', 'images'],
   props: ['data'],
   components: {
+    BaseBtn,
   },
   data() {
     return {
       photoPlaceholder: PhotoPlaceholder,
-      vehicles: ['DEF456', 'GWA1235JS', 'ASD123'],
+      vehicles: ['DEF456', 'GWA1235JS', 'ASD123', 'DEF456', 'GWA1235JS', 'ASD123'],
     };
   },
   methods: {
@@ -51,6 +53,8 @@ export default {
   margin-top: 10px;
   width: 100%;
   flex: 1;
+  max-height: 142px;
+  overflow-y: auto;
 }
 
 .vehicle-item {
@@ -81,8 +85,10 @@ export default {
 .btn-view {
   height: 30px !important;
   width: 30px !important;
-  margin-right: 10px;
   padding: 0px !important;
+  background-color: #63a54b !important;
+  border-color: #63a54b !important;
+  font-size: 10px !important;
 }
 
 .txt-label {
