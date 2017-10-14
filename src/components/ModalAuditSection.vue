@@ -9,7 +9,6 @@
     <div v-else class="audit-row-container d-flex flex-column justify-content-start align-items-center">
       <modal-audit-row v-for="audit in auditHistory" :key="audit" :data="audit"></modal-audit-row>
     </div>
-
   </div>
 </template>
 

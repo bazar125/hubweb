@@ -27,7 +27,7 @@
             <icon :name="activity.location ? 'circle' : 'circle'" :class="{'circle-citation': activity.location, 'circle-collision': !activity.location}" class="icon-master icon-title"></icon>
             <span class="txt-title">{{activity.location ? 'Citation Issued' : 'Collision Logged'}}</span>
             <!-- <b-btn @click.stop="showModal(activity, index, $event.target)" :class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn> -->
-            <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="search"></base-btn>
+            <base-btn @click.stop="showModal(activity, index, {})" class="ml-auto btn-view" icon="search"></base-btn>
           </div>
           <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
             <!-- <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon> -->

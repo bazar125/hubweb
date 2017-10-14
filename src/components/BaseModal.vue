@@ -12,7 +12,7 @@
         <base-btn @click="clickDelete()" class="btn-heading" icon="times-circle-o"></base-btn>
       </div>
     </div>
-    <modal-image-section :editBtnTitle="editBtnTitle" :auditBtnTitle="auditBtnTitle" @clickEdit="toggleEdit()" @clickAuditHistory="toggleAudit()" :type="type" :data="data"></modal-image-section>
+    <!-- <modal-image-section :editBtnTitle="editBtnTitle" :auditBtnTitle="auditBtnTitle" @clickEdit="toggleEdit()" @clickAuditHistory="toggleAudit()" :type="type" :data="data"></modal-image-section> -->
 
     <div v-if="showAudit" class="audit-root-container d-flex justify-content-start align-items-start">
       <modal-audit-section :record-type="type" :data="data"></modal-audit-section>

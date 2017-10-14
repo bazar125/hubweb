@@ -1,6 +1,6 @@
 <template>
   <div class="image-container d-flex justify-content-start align-items-center">
-    <img :class="{'img-full': type === 'citation' || type === 'collision'}" class="img-main" :src="data.image ? data.image : photoPlaceholder"></img>
+    <!-- <img :class="{'img-full': type === 'citation' || type === 'collision'}" class="img-main" :src="data.image ? data.image : photoPlaceholder"></img> -->
 
     <div v-if="type !== 'collision'" :class="{'container-overlay': type === 'citation'}" class="d-flex flex-column justify-content-start align-items-start" style="height: 100%; flex: 1;">
       <div class="d-flex justify-content-start align-items-center" style="width: 100%; padding: 5px;">
@@ -77,9 +77,10 @@ export default {
   position: relative;
   width: 100%;
   /* border: 1px solid #ececec; */
-  border: 1px solid #797a97;
+  /* border: 1px solid #797a97; */
   overflow: hidden;
-  border-radius: 4px;
+  /* border-radius: 4px; */
+  height: 40px;
 }
 
 .img-main {
