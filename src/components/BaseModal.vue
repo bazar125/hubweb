@@ -26,7 +26,7 @@
       <slot name="main" :data="data ? data : {}"></slot>
     </div>
 
-    <div v-if="this.type === 'citation' || this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
+    <div v-if="!showEdit && this.type === 'citation' || this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
       <div class="d-flex" style="flex: 1; height: 100%;">
         <modal-data-drivers></modal-data-drivers>
       </div>
@@ -35,10 +35,10 @@
       </div>
     </div>
 
-    <span v-if="(this.type === 'citation' && this.data.completionStatus !== 'Warning') || this.type === 'collision'" class="txt-timeleft">There are 12 days left to pay this citation</span>
+    <span v-if="!showEdit && (this.type === 'citation' && this.data.completionStatus !== 'Warning') || this.type === 'collision'" class="txt-timeleft">There are 12 days left to pay this citation</span>
 
-    <div :class="{'timeleft-hidden': this.type === 'citation' && this.data.completionStatus === 'Warning' }" class="action-container d-flex justify-content-end align-items-center">
-      <base-btn @click="clickDelete()" class="btn-delete" text="Delete" icon="trash-o"></base-btn>
+    <div :class="{'timeleft-hidden': showEdit || this.type === 'citation' && this.data.completionStatus === 'Warning' }" class="action-container d-flex justify-content-end align-items-center">
+      <base-btn @click="toggleEdit()" class="btn-delete" text="Delete" icon="trash-o"></base-btn>
       <base-btn @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
       <base-btn @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
       <base-btn @click="clickPdf()" class="btn-pdf" text="PDF" icon="file-pdf-o"></base-btn>
