@@ -38,7 +38,7 @@
     <span v-if="!showEdit && (this.type === 'citation' && this.data.completionStatus !== 'Warning') || this.type === 'collision'" class="txt-timeleft">There are 12 days left to pay this citation</span>
 
     <div :class="{'timeleft-hidden': showEdit || this.type === 'citation' && this.data.completionStatus === 'Warning' }" class="action-container d-flex justify-content-end align-items-center">
-      <base-btn @click="toggleEdit()" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
+      <base-btn @click="toggleEdit()" :class="{'btn-back': showEdit}" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
       <base-btn @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
       <base-btn @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
       <base-btn @click="clickPdf()" class="btn-pdf" text="PDF" icon="file-pdf-o"></base-btn>
@@ -274,6 +274,13 @@ export default {
   border-color: #f3686b !important;
   transition: ease-out 0.2;
 }
+
+.btn-back, 
+.btn-back:hover {
+  background-color: #b97310 !important;
+  border-color: #b97310 !important;
+}
+
 
 .icon-heading {
   height: 17px !important;
