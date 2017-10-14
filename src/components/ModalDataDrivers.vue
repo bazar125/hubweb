@@ -5,8 +5,8 @@
       <b-list-group-item class="driver-item" v-for="(user, index) in users" :key="user">
         <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
         {{user}}
-        <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn>
-        <b-badge pill variant="success">VIEW</b-badge>
+        <!-- <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn> -->
+        <b-badge class="ml-auto" pill variant="success">VIEW</b-badge>
         <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
       </b-list-group-item>
     </b-list-group>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import BaseBtn from '@/components/BaseBtn';
 import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
@@ -21,6 +22,7 @@ export default {
   // props: ['label', 'images'],
   props: ['data'],
   components: {
+    BaseBtn,
   },
   data() {
     return {
