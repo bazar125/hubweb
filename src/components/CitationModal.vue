@@ -2,7 +2,7 @@
   <base-modal class="citation-modal d-flex flex-column justify-content-center align-items-start" title="Citation" type="citation" :modalId="modalId" :data="data">
     <template slot="main" scope="props">
       <div class="d-flex flex-column justify-content-start align-items-center">
-        <div class="data-section d-flex justify-content-start align-items-start">
+        <div id="citation-modal-print-root" class="data-section d-flex justify-content-start align-items-start">
           <div class="data-container d-flex flex-column justify-content-start align-items-center">
             <modal-data-row label="Completion Status" :text="props.data.completionStatus"></modal-data-row>
             <modal-data-row label="Date" :text="props.data.date"></modal-data-row>

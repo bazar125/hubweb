@@ -7,7 +7,7 @@
     <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
       <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @resetModal="resetModal()" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields">
         <template slot="modal" scope="props">
-          <citation-modal :data="props.data" modal-id="citationModal"></citation-modal>
+          <citation-modal id="citation-modal-print" :data="props.data" modal-id="citationModal"></citation-modal>
         </template>
       </datatable>
     </div>

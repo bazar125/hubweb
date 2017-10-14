@@ -53,6 +53,9 @@ import ModalEditSection from '@/components/ModalEditSection';
 import ModalDataDrivers from '@/components/ModalDataDrivers';
 import ModalDataVehicles from '@/components/ModalDataVehicles';
 import BaseBtn from '@/components/BaseBtn';
+import html2canvas from 'html2canvas';
+// import domtoimage from 'dom-to-image';
+import printJS from 'print-js';
 
 export default {
   name: 'BaseModal',
@@ -133,6 +136,15 @@ export default {
     },
     clickNewTab() {
 
+    },
+    clickPrint() {
+      // console.log(this.$refs.printRoot);
+      const node = document.getElementById('citation-modal-print-root');
+      // html2canvas(this.$refs.printRoot).then((canvas) => {
+      html2canvas(node, { allowTaint: false, useCORS: true }).then((canvas) => {
+        const dataUrl = canvas.toDataURL();
+        printJS(dataUrl, 'image');
+      });
     },
   },
 };
@@ -275,7 +287,7 @@ export default {
   transition: ease-out 0.2;
 }
 
-.btn-back, 
+.btn-back,
 .btn-back:hover {
   background-color: #b97310 !important;
   border-color: #b97310 !important;
