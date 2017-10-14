@@ -1,6 +1,6 @@
 <template>
   <div class="activity-stream d-flex flex-column justify-content-start align-items-center">
-    <dark-card title="Live Feed">
+    <dark-card class="container-card" title="Live Feed">
       <div class="activity-stream-inner">
         <div v-for="(activity, index) in activities" :key="activity.$id" :class="{'blink-title': activity.$animate}" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
           <!-- <div :class="{'bg-blue': activity.location, 'bg-red': !activity.location, 'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center">
@@ -157,6 +157,10 @@ export default {
   padding-top: 5px;
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.container-card {
+  width: 100%;
 }
 
 .txt-title {

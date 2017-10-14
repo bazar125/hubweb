@@ -5,11 +5,13 @@
       <span class="mx-auto txt-reference">Ref: {{data.location ? data.paymentReference : ''}}</span>
       <div @click="clickNewTab()" class="heading-btn-container d-flex justify-content-start align-items-center">
         <span class="txt-heading">open in new tab</span>
-        <base-btn @click="clickDelete()" class="btn-heading" icon="external-link"></base-btn>
+        <icon class="icon-heading" name="external-link"></icon>
+        <!-- <base-btn @click="clickDelete()" class="btn-heading" icon="external-link"></base-btn> -->
       </div>
       <div @click="clickClose()" class="heading-btn-container d-flex justify-content-start align-items-center">
         <span class="txt-heading">close</span>
-        <base-btn @click="clickDelete()" class="btn-heading" icon="times-circle-o"></base-btn>
+        <icon class="icon-heading" name="times-circle-o"></icon>
+        <!-- <base-btn @click="clickClose()" class="btn-heading" icon="times-circle-o"></base-btn> -->
       </div>
     </div>
     <!-- <modal-image-section :editBtnTitle="editBtnTitle" :auditBtnTitle="auditBtnTitle" @clickEdit="toggleEdit()" @clickAuditHistory="toggleAudit()" :type="type" :data="data"></modal-image-section> -->
@@ -24,6 +26,13 @@
       <slot name="main" :data="data ? data : {}"></slot>
     </div>
 
+    <div v-if="this.type === 'citation' || this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-start align-items-start">
+      <modal-data-drivers></modal-data-drivers>
+      <modal-data-vehicles></modal-data-vehicles>
+    </div>
+
+    <span class="txt-timeleft">There are 12 days left to pay this citation</span>
+
     <div class="action-container d-flex justify-content-end align-items-center">
       <base-btn @click="clickDelete()" class="btn-delete" text="Delete" icon="trash-o"></base-btn>
       <base-btn @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
@@ -37,6 +46,8 @@
 import ModalImageSection from '@/components/ModalImageSection';
 import ModalAuditSection from '@/components/ModalAuditSection';
 import ModalEditSection from '@/components/ModalEditSection';
+import ModalDataDrivers from '@/components/ModalDataDrivers';
+import ModalDataVehicles from '@/components/ModalDataVehicles';
 import BaseBtn from '@/components/BaseBtn';
 
 export default {
@@ -46,6 +57,8 @@ export default {
     ModalImageSection,
     ModalAuditSection,
     ModalEditSection,
+    ModalDataDrivers,
+    ModalDataVehicles,
     BaseBtn,
   },
   data() {
@@ -109,11 +122,15 @@ export default {
   flex: 1;
 }
 
-.data-container {
+.data-container:not(:last-child) {
   padding-right: 5px;
 }
 
 .data-container .modal-data-row {
+  flex: 1;
+}
+
+.data-container {
   flex: 1;
 }
 
@@ -189,13 +206,13 @@ export default {
   /* color: #8f90a8; */
 }
 
-.modal-heading >>> .btn-icon {
+.modal-heading>>>.btn-icon {
   width: 17px !important;
   height: 17px !important;
 }
 
 .txt-title {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   text-transform: uppercase;
 }
@@ -221,7 +238,7 @@ export default {
   border-color: #ef3135 !important;
 }
 
-.btn-heading {
+.icon-heading {
   height: 17px !important;
   width: 17px !important;
   padding: 0px !important;
@@ -260,14 +277,21 @@ export default {
 .action-container {
   width: 100%;
 }
+
 .action-container .btn-base:not(:last-child) {
   margin-right: 10px;
+}
+
+.txt-timeleft {
+  font-size: 14px;
+  font-weight: 700;
+  color: #094977;
+  margin-bottom: 10px;
 }
 </style>
 
 <style>
-
-.modal-header > h5 {
+.modal-header>h5 {
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;

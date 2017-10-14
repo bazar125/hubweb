@@ -25,7 +25,7 @@ export default {
 }
 
 .data-label {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 11px;
   line-height: 1.5;
   text-align: start;
