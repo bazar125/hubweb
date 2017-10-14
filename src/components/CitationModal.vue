@@ -36,6 +36,7 @@ import BaseModal from '@/components/BaseModal';
 import ModalDataRow from '@/components/ModalDataRow';
 import ModalDataAttachments from '@/components/ModalDataAttachments';
 import ModalDataDrivers from '@/components/ModalDataDrivers';
+import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
   name: 'CitationModal',
@@ -48,6 +49,7 @@ export default {
   },
   data() {
     return {
+      photoPlaceholder: PhotoPlaceholder,
     };
   },
   computed: {

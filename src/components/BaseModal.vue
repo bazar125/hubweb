@@ -1,7 +1,7 @@
 <template>
   <div class="driver-modal d-flex flex-column justify-content-center align-items-start">
-    <div class="modal-heading d-flex justify-content-start align-items-center">
-      <span class="txt-title">{{type}}</span>
+    <div :class="{'yellow-heading': isWarning}" class="modal-heading d-flex justify-content-start align-items-center">
+      <span class="txt-title">{{title}}</span>
       <span class="mx-auto txt-reference">Ref: {{data.location ? data.paymentReference : ''}}</span>
       <div @click="clickNewTab()" class="heading-btn-container d-flex justify-content-start align-items-center">
         <span class="txt-heading">open in new tab</span>
@@ -35,9 +35,9 @@
       </div>
     </div>
 
-    <span v-if="this.type === 'citation' || this.type === 'collision'" class="txt-timeleft">There are 12 days left to pay this citation</span>
+    <span v-if="(this.type === 'citation' && this.data.completionStatus !== 'Warning') || this.type === 'collision'" class="txt-timeleft">There are 12 days left to pay this citation</span>
 
-    <div class="action-container d-flex justify-content-end align-items-center">
+    <div :class="{'timeleft-hidden': this.type === 'citation' && this.data.completionStatus === 'Warning' }" class="action-container d-flex justify-content-end align-items-center">
       <base-btn @click="clickDelete()" class="btn-delete" text="Delete" icon="trash-o"></base-btn>
       <base-btn @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
       <base-btn @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
@@ -72,6 +72,22 @@ export default {
       auditBtnTitle: 'History',
       editBtnTitle: this.type === 'citation' ? 'Delete' : 'Edit',
     };
+  },
+  computed: {
+    title() {
+      if (this.data.completionStatus && this.data.completionStatus === 'Warning') {
+        return 'Warning';
+      }
+
+      return this.type;
+    },
+    isWarning() {
+      if (this.data.completionStatus && this.data.completionStatus === 'Warning') {
+        return true;
+      }
+
+      return false;
+    },
   },
   methods: {
     toggleAudit() {
@@ -210,6 +226,10 @@ export default {
   /* color: #8f90a8; */
 }
 
+.yellow-heading {
+  background-color: #b97310 !important;
+}
+
 .modal-heading>>>.btn-icon {
   width: 17px !important;
   height: 17px !important;
@@ -254,8 +274,6 @@ export default {
   width: 17px !important;
   padding: 0px !important;
   color: white !important;
-  background-color: #ef3135 !important;
-  border-color: #ef3135 !important;
 }
 
 .btn-print {
@@ -333,6 +351,10 @@ export default {
 
 .modal-data-vehicles {
   flex: 1;
+}
+
+.timeleft-hidden {
+  margin-top: 10px;
 }
 </style>
 
