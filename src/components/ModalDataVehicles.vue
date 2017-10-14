@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       photoPlaceholder: PhotoPlaceholder,
-      vehicles: ['DEF456', 'GWA1235JS', 'ASD123', 'DEF456', 'GWA1235JS', 'ASD123'],
+      vehicles: ['DEF456'],
     };
   },
   methods: {
@@ -83,12 +83,19 @@ export default {
 }
 
 .btn-view {
-  height: 30px !important;
-  width: 30px !important;
+  height: 20px !important;
+  width: 40px !important;
   padding: 0px !important;
   background-color: #63a54b !important;
   border-color: #63a54b !important;
-  font-size: 10px !important;
+  font-size: 9px !important;
+  transition: ease-out 0.2;
+}
+
+.btn-view:hover {
+  background-color: #9ac98f !important;
+  border-color: #9ac98f !important;
+  transition: ease-out 0.2;
 }
 
 .txt-label {

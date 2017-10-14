@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       photoPlaceholder: PhotoPlaceholder,
-      users: ['John Doe', 'Jane Doe', 'Bob Doe', 'John Doe', 'Jane Doe', 'Bob Doe'],
+      users: ['John Doe'],
     };
   },
   methods: {
@@ -82,12 +82,19 @@ export default {
 }
 
 .btn-view {
-  height: 30px !important;
-  width: 30px !important;
+  height: 20px !important;
+  width: 40px !important;
   padding: 0px !important;
   background-color: #63a54b !important;
-  color: white;
   border-color: #63a54b !important;
+  font-size: 9px !important;
+  transition: ease-out 0.2;
+}
+
+.btn-view:hover {
+  background-color: #9ac98f !important;
+  border-color: #9ac98f !important;
+  transition: ease-out 0.2;
 }
 
 .txt-label {

@@ -26,7 +26,7 @@
       <slot name="main" :data="data ? data : {}"></slot>
     </div>
 
-    <div v-if="this.type === 'citation' || this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-start align-items-start">
+    <div v-if="this.type === 'citation' || this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
       <div class="d-flex" style="flex: 1; height: 100%;">
         <modal-data-drivers></modal-data-drivers>
       </div>
@@ -240,6 +240,13 @@ export default {
   color: white !important;
   background-color: #ef3135 !important;
   border-color: #ef3135 !important;
+  transition: ease-out 0.2;
+}
+
+.btn-delete:hover {
+  background-color: #f3686b !important;
+  border-color: #f3686b !important;
+  transition: ease-out 0.2;
 }
 
 .icon-heading {
@@ -258,6 +265,13 @@ export default {
   color: white !important;
   background-color: #4869a4 !important;
   border-color: #4869a4 !important;
+  transition: ease-out 0.2;
+}
+
+.btn-print:hover {
+  background-color: #6988bd !important;
+  border-color: #6988bd !important;
+  transition: ease-out 0.2;
 }
 
 .btn-email {
@@ -267,6 +281,13 @@ export default {
   color: white !important;
   background-color: #63a54b !important;
   border-color: #63a54b !important;
+  transition: ease-out 0.2;
+}
+
+.btn-email:hover {
+  background-color: #9ac98f !important;
+  border-color: #9ac98f !important;
+  transition: ease-out 0.2;
 }
 
 .btn-pdf {
@@ -276,6 +297,13 @@ export default {
   color: white !important;
   background-color: #094977 !important;
   border-color: #094977 !important;
+  transition: ease-out 0.2 !important;
+}
+
+.btn-pdf:hover {
+  background-color: #0d6bae !important;
+  border-color: #0d6bae !important;
+  transition: ease-out 0.2 !important;
 }
 
 .action-container {

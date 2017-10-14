@@ -2,12 +2,12 @@
   <div class="modal-data-attachments d-flex flex-column justify-content-center align-items-start">
     <span class="data-label">Attachments</span>
     <div class="attachment-container d-flex justify-content-start align-items-center">
-      <img class="img-attachment" :src="getImage(0)"></img>
-      <img class="img-attachment" :src="getImage(1)"></img>
+      <img class="img-attachment" @click="clickImage(0)" :src="getImage(0)"></img>
+      <img class="img-attachment" @click="clickImage(1)" :src="getImage(1)"></img>
     </div>
     <div class="attachment-container d-flex justify-content-start align-items-center">
-      <img class="img-attachment" :src="getImage(2)"></img>
-      <img class="img-attachment" :src="getImage(3)"></img>
+      <img class="img-attachment" @click="clickImage(2)" :src="getImage(2)"></img>
+      <img class="img-attachment" @click="clickImage(3)" :src="getImage(3)"></img>
     </div>
   </div>
 </template>
@@ -36,6 +36,9 @@ export default {
       const images = this.data.media ? this.data.media : imagesOrEmpty;
       return images.count > index ? images[index] : this.photoPlaceholder;
     },
+    clickImage(index) {
+      console.log(`print image ${index}`);
+    },
   },
 };
 </script>
@@ -57,10 +60,11 @@ export default {
 }
 
 .img-attachment {
-  height: 60px;
+  height: 40px;
   flex: 1;
   object-fit: cover;
   object-position: center center;
+  cursor: pointer;
 }
 
 .img-attachment:first-child {
