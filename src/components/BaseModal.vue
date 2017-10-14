@@ -38,7 +38,7 @@
     <span v-if="!showEdit && (this.type === 'citation' && this.data.completionStatus !== 'Warning') || this.type === 'collision'" class="txt-timeleft">There are 12 days left to pay this citation</span>
 
     <div :class="{'timeleft-hidden': showEdit || this.type === 'citation' && this.data.completionStatus === 'Warning' }" class="action-container d-flex justify-content-end align-items-center">
-      <base-btn @click="toggleEdit()" class="btn-delete" text="Delete" icon="trash-o"></base-btn>
+      <base-btn @click="toggleEdit()" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
       <base-btn @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
       <base-btn @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
       <base-btn @click="clickPdf()" class="btn-pdf" text="PDF" icon="file-pdf-o"></base-btn>
@@ -71,6 +71,7 @@ export default {
       showEdit: false,
       auditBtnTitle: 'History',
       editBtnTitle: this.type === 'citation' ? 'Delete' : 'Edit',
+      editBtnIcon: this.type === 'citation' ? 'trash-o' : 'pencil',
     };
   },
   computed: {
@@ -101,8 +102,10 @@ export default {
       }
       if (this.type === 'citation') {
         this.editBtnTitle = 'Delete';
+        this.editBtnIcon = 'trash-o';
       } else {
         this.editBtnTitle = 'Edit';
+        this.editBtnIcon = 'pencil';
       }
     },
     toggleEdit() {
@@ -111,10 +114,13 @@ export default {
 
       if (this.showEdit) {
         this.editBtnTitle = 'Back';
+        this.editBtnIcon = 'angle-left';
       } else if (this.type === 'citation') {
         this.editBtnTitle = 'Delete';
+        this.editBtnIcon = 'trash-o';
       } else {
         this.editBtnTitle = 'Edit';
+        this.editBtnIcon = 'pencil';
       }
       this.auditBtnTitle = 'History';
     },
