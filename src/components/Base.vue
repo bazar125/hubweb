@@ -10,15 +10,15 @@
 
       <div class="map-overlay d-flex justify-content-start align-items-center">
         <!-- <icon name="check-circle-o" class="icon-status color-green"></icon>
-        <span class="txt-status">All systems are functioning normally</span>
+            <span class="txt-status">All systems are functioning normally</span>
 
-        <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
-        <span class="txt-status">No pending notifications</span> -->
+            <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
+            <span class="txt-status">No pending notifications</span> -->
         <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
-          <MarqueeTips class="marquee-text" speed="200" :content="!headlines || headlines.count == 0 ? '' : headlines.join(' 	  	 ')"></MarqueeTips>
-        </div>  
+          <span class="marquee-text">{{scrollHeadlines}}</span>
+        </div>
 
-        <icon name="circle-thin" class="ml-auto icon-status color-red" style="margin-left: 15px;"></icon>
+        <icon name="circle-thin" class="ml-auto icon-status color-red" style="margin-left: 5px !important;"></icon>
         <span class="txt-status">Collision</span>
 
         <icon name="circle-thin" class="icon-status color-blue" style="margin-left: 15px;"></icon>
@@ -41,7 +41,6 @@
 import DailyStatsCard from '@/components/DailyStatsCard';
 import SystemInformationCard from '@/components/SystemInformationCard';
 import ActivePersonnelCard from '@/components/ActivePersonnelCard';
-import MarqueeTips from 'vue-marquee-tips';
 import Clock from 'vue-digital-clock';
 import L from 'leaflet';
 import * as d3 from 'd3';
@@ -378,7 +377,19 @@ export default {
     DailyStatsCard,
     SystemInformationCard,
     ActivePersonnelCard,
-    MarqueeTips,
+  },
+  computed: {
+    scrollHeadlines() {
+      if(!this.headlines || this.headlines.count < 1) {
+        return '';
+      }
+
+      let str = '';
+      for (let headline of this.headlines) {
+        str += `${headline}\xa0\xa0\xa0\xa0\xa0`;
+      }
+      return str;
+    },
   },
   data() {
     return {
@@ -597,6 +608,8 @@ circle.blue {
 }
 
 
+
+
 /* red is ef3135 */
 
 .txt-status {
@@ -611,7 +624,20 @@ circle.blue {
 .marquee-text {
   font-size: 9px;
   margin-right: 5px !important;
+  /* transform: translateX(%); */
+  animation: newstickeranim 120s linear infinite;
+  white-space: nowrap;
+  /* animation-name: 'marquee5u9q4'; */
   /* padding-right: 10px; */
   /* overflow: hidden !important; */
+}
+
+@keyframes newstickeranim {
+  0% {
+    transform: translateX(400px);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 </style>

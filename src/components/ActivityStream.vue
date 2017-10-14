@@ -51,7 +51,7 @@
           </div>
 
           <b-modal title="Citation" :id="`citationModal${index}`" ok-only>
-            <citation-modal :data="activity"></citation-modal>
+            <citation-modal :modalId="`citationModal${index}`" :data="activity"></citation-modal>
           </b-modal>
 
           <b-modal title="Collision" :id="`collisionModal${index}`" ok-only>

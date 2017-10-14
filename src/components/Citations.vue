@@ -201,37 +201,6 @@ export default {
   /* height: 40px; */
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 
-.custom-pagination-info {
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-} */
-
 .filter-bar {
   padding: 8px;
 }
@@ -257,52 +226,4 @@ export default {
 .citations-lower .table-footer {
   margin-bottom: 0px !important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* .data-table thead tr th {
-  text-align: center;
-}
-
-.data-table thead {
-  background-color: rgba(0, 0, 0, 0.82);
-  color: white;
-}
-
-.pagination-container {
-  width: 100%;
-  position: relative;
-} */
 </style>

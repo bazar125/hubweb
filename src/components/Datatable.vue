@@ -19,7 +19,7 @@
       </template>
     </b-table>
 
-    <b-modal :title="modalTitle" :id="modalId" @hide="resetModal" ok-only>
+    <b-modal :title="modalTitle" :id="modalId" @hide="resetModal" hide-header="true" hide-footer="true">
       <slot name="modal" :data="modalDetails.data"></slot>
     </b-modal>    
   </div>
@@ -69,7 +69,8 @@ export default {
 .title {
   font-size: 16px;
   font-weight: 300;
-  color: #8f90a8;
+  /* color: #8f90a8; */
+  color: white;
   text-transform: uppercase;
 }
 
@@ -109,9 +110,11 @@ export default {
 }
 
 .datatable .btn-wwarning {
-  background-color: #f0ad4e;
-  border-color: #f0ad4e;
-  color: rgba(255, 255, 255, 0.84);
+  background-color: #b97310;
+  /* background-color: #f0ad4e; */
+  border-color: #b97310;
+  /* color: rgba(255, 255, 255, 0.84); */
+  color: white;
   /* color: rgba(0,0,0,0.84); */
 }
 
@@ -137,11 +140,12 @@ export default {
 
 .table-wwarning {
   /* background-color: #f0ad4e; */
-  background-color: #f0ad4e;
+  background-color: #b97310;
   color: white;
 }
 .table-wwarning:hover {
-  background-color: #f0ad4e;
+  /* background-color: #f0ad4e; */
+  background-color: #b97310;
   color: white;
 }
 
@@ -163,6 +167,11 @@ export default {
   /* background-color: transparent; */
 }
 
+.datatable .table {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
 .datatable .table th,
 .table td {
   padding: 0.25rem 0.75rem;
@@ -170,8 +179,11 @@ export default {
 
 .datatable .table-bordered td,
 .datatable .table-bordered th {
-  border-color: rgba(255, 255, 255, 0.34) !important;
-  color: rgba(255, 255, 255, 0.84);
+  /* border-color: rgba(255, 255, 255, 0.34) !important; */
+  /* border-color: rgba(255, 255, 255, 0.5) !important; */
+  border-color: #a0a0a0 !important;
+  /* color: rgba(255, 255, 255, 0.84); */
+  color: white;
 }
 
 </style>

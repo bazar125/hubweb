@@ -1,5 +1,5 @@
 <template>
-  <base-modal class="citation-modal d-flex flex-column justify-content-center align-items-start" type="citation" :data="data">
+  <base-modal class="citation-modal d-flex flex-column justify-content-center align-items-start" title="Citation" type="citation" :modalId="modalId" :data="data">
     <template slot="main" scope="props">
       <div class="data-container d-flex flex-column justify-content-start align-items-center">
         <modal-data-row label="Date" :text="props.data.date"></modal-data-row>
@@ -18,9 +18,9 @@
 
       <div class="data-container d-flex flex-column justify-content-start align-items-center">
         <modal-data-row label="Issuing Officers" :text="props.data.issuingOfficers ? props.data.issuingOfficers.join(', ') : ''"></modal-data-row>
-        <modal-data-row label="Payment Reference" :text="props.data.paymentReference"></modal-data-row>
+        <!-- <modal-data-row label="Payment Reference" :text="props.data.paymentReference"></modal-data-row> -->
         <modal-data-row label="Completion Status" :text="props.data.completionStatus"></modal-data-row>
-      </div>
+      </div>      
     </template>
   </base-modal>
 </template>
@@ -31,7 +31,7 @@ import ModalDataRow from '@/components/ModalDataRow';
 
 export default {
   name: 'CitationModal',
-  props: ['data'],
+  props: ['data', 'modalId'],
   components: {
     BaseModal,
     ModalDataRow,
