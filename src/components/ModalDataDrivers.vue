@@ -1,13 +1,13 @@
 <template>
-  <div class="modal-data-drivers d-flex flex-column justify-content-start align-items-center">
+  <div class="modal-data-drivers d-flex flex-column justify-content-start align-items-start">
     <span class="txt-label">Drivers</span>
     <b-list-group class="drivers-list">
       <b-list-group-item class="driver-item" v-for="(user, index) in users" :key="user">
         <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
         {{user}}
         <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn>
-        <b-badge pill variant="success">ACCEPTED</b-badge>
-        <edit-user-modal :user="user" :index="index"></edit-user-modal>
+        <b-badge pill variant="success">VIEW</b-badge>
+        <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -59,7 +59,7 @@ export default {
   border-color: #8f90a8;
   /* color: white; */
   color: rgba(0,0,0,0.87);
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 1rem;
 }
 
 .img-avatar {

@@ -32,7 +32,8 @@ export default {
         return this.photoPlaceholder;
       }
 
-      const images = this.data.media ? this.data.media : this.data.images;
+      const imagesOrEmpty = this.data.images ? this.data.images : [];
+      const images = this.data.media ? this.data.media : imagesOrEmpty;
       return images.count > index ? images[index] : this.photoPlaceholder;
     },
   },

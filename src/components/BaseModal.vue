@@ -27,11 +27,15 @@
     </div>
 
     <div v-if="this.type === 'citation' || this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-start align-items-start">
-      <modal-data-drivers></modal-data-drivers>
-      <modal-data-vehicles></modal-data-vehicles>
+      <div class="d-flex" style="flex: 1; height: 100%;">
+        <modal-data-drivers></modal-data-drivers>
+      </div>
+      <div class="d-flex" style="flex: 1; height: 100%;">
+        <modal-data-vehicles></modal-data-vehicles>
+      </div>
     </div>
 
-    <span class="txt-timeleft">There are 12 days left to pay this citation</span>
+    <span v-if="this.type === 'citation' || this.type === 'collision'" class="txt-timeleft">There are 12 days left to pay this citation</span>
 
     <div class="action-container d-flex justify-content-end align-items-center">
       <base-btn @click="clickDelete()" class="btn-delete" text="Delete" icon="trash-o"></base-btn>
@@ -286,7 +290,21 @@ export default {
   font-size: 14px;
   font-weight: 700;
   color: #094977;
+  margin-top: 5px;
   margin-bottom: 10px;
+}
+
+.driver-vehicle-container {
+  width: 100%;
+}
+
+.modal-data-drivers {
+  margin-right: 10px;
+  flex: 1;
+}
+
+.modal-data-vehicles {
+  flex: 1;
 }
 </style>
 
