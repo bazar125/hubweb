@@ -23,7 +23,7 @@
           <div class="data-container d-flex flex-column justify-content-start align-items-center">
             <img class="img-main" :src="data.image ? data.image : photoPlaceholder"></img>
             <!-- <modal-data-row label="Attachments" :text="props.data.completionStatus"></modal-data-row> -->
-            <modal-data-attachments :data="data"></modal-data-attachments>
+            <modal-data-attachments @clickImage="clickImage" :data="data"></modal-data-attachments>
           </div>
         </div>
       </div>
@@ -49,6 +49,17 @@ export default {
   data() {
     return {
     };
+  },
+  computed: {
+    modalImages() {
+      const mediaOrEmpty = this.data.media ? this.data.media : [];
+      return this.data.images ? this.data.images : mediaOrEmpty;
+    },
+  },
+  methods: {
+    clickImage(index) {
+      console.log(index);
+    },
   },
 };
 </script>

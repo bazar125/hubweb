@@ -1,13 +1,13 @@
 <template>
   <div class="modal-data-attachments d-flex flex-column justify-content-center align-items-start">
     <span class="data-label">Attachments</span>
-    <div class="attachment-container d-flex justify-content-start align-items-center">
-      <img class="img-attachment" @click="clickImage(0)" :src="getImage(0)"></img>
-      <img class="img-attachment" @click="clickImage(1)" :src="getImage(1)"></img>
+    <div v-viewer class="attachment-container d-flex justify-content-start align-items-center">
+      <img class="img-attachment" :src="getImage(0)"></img>
+      <img class="img-attachment" @click="$emit('clickImage', 1)" :src="getImage(1)"></img>
     </div>
-    <div class="attachment-container d-flex justify-content-start align-items-center">
-      <img class="img-attachment" @click="clickImage(2)" :src="getImage(2)"></img>
-      <img class="img-attachment" @click="clickImage(3)" :src="getImage(3)"></img>
+    <div v-viewer class="attachment-container d-flex justify-content-start align-items-center">
+      <img class="img-attachment" @click="$emit('clickImage', 2)" :src="getImage(2)"></img>
+      <img class="img-attachment" @click="$emit('clickImage', 3)" :src="getImage(3)"></img>
     </div>
   </div>
 </template>
