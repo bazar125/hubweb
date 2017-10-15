@@ -1,5 +1,5 @@
 <template>
-  <base-modal class="citation-modal d-flex flex-column justify-content-center align-items-start" title="Citation" type="citation" :modalId="modalId" :data="data">
+  <base-modal :hide-navigation="hideNavigation" class="citation-modal d-flex flex-column justify-content-center align-items-start" title="Citation" type="citation" :modalId="modalId" :data="data">
     <template slot="main" scope="props">
       <div class="d-flex flex-column justify-content-start align-items-center">
         <div id="citation-modal-print-root" class="data-section d-flex justify-content-start align-items-start">
@@ -40,7 +40,7 @@ import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
   name: 'CitationModal',
-  props: ['data', 'modalId'],
+  props: ['data', 'modalId', 'hideNavigation'],
   components: {
     BaseModal,
     ModalDataRow,

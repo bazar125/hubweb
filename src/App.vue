@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <navbar v-if="showNavigation"></navbar>
-    <div class="app-root-container d-flex">
+    <div :class="{'hidden-navigation': !showNavigation}" class="app-root-container d-flex">
       <sidenav v-if="showNavigation"></sidenav>
       <router-view></router-view>
       <activity-stream v-if="showNavigation"></activity-stream>
@@ -32,6 +32,16 @@ export default {
     };
   },
   created() {
+    this.$root.$on('::hideNavigation', () => {
+      console.log('app.vue ::hideNavigation');
+      this.showNavigation = false;
+    });
+
+    this.$root.$on('::showNavigation', () => {
+      console.log('app.vue ::showNavigation');
+      this.showNavigation = true;
+    });
+
     Firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.showNavigation = true;
@@ -72,5 +82,9 @@ optgroup,
 select,
 textarea {
   font-family: 'Open Sans', sans-serif;
+}
+
+.hidden-navigation {
+  height: 100% !important;
 }
 </style>

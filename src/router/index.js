@@ -11,6 +11,9 @@ import Personnel from '@/components/Personnel';
 import Reports from '@/components/Reports';
 import Admin from '@/components/Admin';
 import Settings from '@/components/Settings';
+import ViewCitation from '@/components/ViewCitation';
+import ViewDriver from '@/components/ViewDriver';
+import ViewVehicle from '@/components/ViewVehicle';
 
 Vue.use(Router);
 
@@ -29,15 +32,33 @@ export default new Router({
       meta: { requiresAuth: true },
     },
     {
+      path: '/_driver/:id',
+      name: 'ViewDriver',
+      component: ViewDriver,
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/vehicles',
       name: 'Vehicles',
       component: Vehicles,
       meta: { requiresAuth: true },
     },
     {
+      path: '/_vehicle/:id',
+      name: 'ViewVehicle',
+      component: ViewVehicle,
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/citations',
       name: 'Citations',
       component: Citations,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/_citation/:reference',
+      name: 'ViewCitation',
+      component: ViewCitation,
       meta: { requiresAuth: true },
     },
     {

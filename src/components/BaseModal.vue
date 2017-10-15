@@ -2,13 +2,13 @@
   <div class="driver-modal d-flex flex-column justify-content-center align-items-start">
     <div :class="{'yellow-heading': isWarning}" class="modal-heading d-flex justify-content-start align-items-center">
       <span class="txt-title">{{title}}</span>
-      <span class="mx-auto txt-reference">Ref: {{data.location ? data.paymentReference : ''}}</span>
-      <div @click="clickNewTab()" class="heading-btn-container d-flex justify-content-start align-items-center">
+      <span :class="{'reference-nav-hidden': hideNavigation}" class="mx-auto txt-reference">Ref: {{data.location ? data.paymentReference : ''}}</span>
+      <div v-if="!hideNavigation" @click="clickNewTab()" class="heading-btn-container d-flex justify-content-start align-items-center">
         <span class="txt-heading">open in new tab</span>
         <icon class="icon-heading" name="external-link"></icon>
         <!-- <base-btn @click="clickDelete()" class="btn-heading" icon="external-link"></base-btn> -->
       </div>
-      <div @click="clickClose()" class="heading-btn-container d-flex justify-content-start align-items-center">
+      <div v-if="!hideNavigation" @click="clickClose()" class="heading-btn-container d-flex justify-content-start align-items-center">
         <span class="txt-heading">close</span>
         <icon class="icon-heading" name="times-circle-o"></icon>
         <!-- <base-btn @click="clickClose()" class="btn-heading" icon="times-circle-o"></base-btn> -->
@@ -62,7 +62,7 @@ import printJS from 'print-js';
 
 export default {
   name: 'BaseModal',
-  props: ['data', 'type', 'modalId'],
+  props: ['data', 'type', 'modalId', 'hideNavigation'],
   components: {
     ModalImageSection,
     ModalAuditSection,
@@ -143,17 +143,17 @@ export default {
     },
     clickNewTab() {
       const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
-      const win = window.open(`http://localhost:8080/#/citations/${ref}`, '_blank');
+      const win = window.open(`/#/_citation/${ref}`, '_blank');
       win.focus();
     },
     viewDriver(driver) {
       console.log(driver);
-      const win = window.open(`http://localhost:8080/#/drivers/${driver.$id}`, '_blank');
+      const win = window.open(`/#/_driver/${driver.$id}`, '_blank');
       win.focus();
     },
     viewVehicle(vehicle) {
       console.log(vehicle);
-      const win = window.open(`http://localhost:8080/#/vehicles/${vehicle.$id}`, '_blank');
+      const win = window.open(`/#/_vehicle/${vehicle.$id}`, '_blank');
       win.focus();
     },
     clickPrint() {
@@ -167,8 +167,9 @@ export default {
       // eslint-disable-next-line max-len
       const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
       const additionalPenalty = this.data.additionalPenalty.replace(/\u2013|\u2014/g, '-');
+      const location = this.data.location.replace(/\u2013|\u2014/g, '-');
       // eslint-disable-next-line max-len
-      const mailTo = `mailto:?Subject=MotoHub%20Citation%20${ref}&Body=Payment%20Reference%3A%20${ref}%0ACompletion%20Status%3A%20${escape(this.data.completionStatus)}%0ADate%3A%20${escape(this.data.date)}%0ATime%3A%20${escape(this.data.time)}%0ALocation%3A%20${escape(this.data.location)}%0ADriver%3A%20${escape(this.data.driverName)}%0AVehicle%20Registration%3A%20${escape(this.data.vehicleRegistration)}%0ACitation%20Code%3A%20${escape(this.data.citationCode)}%0ADescription%3A%20${escape(this.data.citationDescription)}%0AFine%3A%20${escape(this.data.fineAmount)}%0AAdditional%20Penalty%3A%20${escape(additionalPenalty)}%0AIssuing%20Officers%3A%20${escape(this.data.issuingOfficers[0])}`;
+      const mailTo = `mailto:?Subject=MotoHub%20Citation%20${ref}&Body=Payment%20Reference%3A%20${ref}%0ACompletion%20Status%3A%20${escape(this.data.completionStatus)}%0ADate%3A%20${escape(this.data.date)}%0ATime%3A%20${escape(this.data.time)}%0ALocation%3A%20${escape(location)}%0ADriver%3A%20${escape(this.data.driverName)}%0AVehicle%20Registration%3A%20${escape(this.data.vehicleRegistration)}%0ACitation%20Code%3A%20${escape(this.data.citationCode)}%0ADescription%3A%20${escape(this.data.citationDescription)}%0AFine%3A%20${escape(this.data.fineAmount)}%0AAdditional%20Penalty%3A%20${escape(additionalPenalty)}%0AIssuing%20Officers%3A%20${escape(this.data.issuingOfficers[0])}`;
       console.log(mailTo);
       window.location.href = mailTo;
     },
@@ -432,6 +433,10 @@ export default {
 
 .timeleft-hidden {
   margin-top: 10px;
+}
+
+.reference-nav-hidden {
+  margin-right: 0px !important;
 }
 </style>
 
