@@ -55,6 +55,7 @@ export default {
   padding: 20px;
   flex: 1;
   width: 100%;
+  overflow: hidden;
 }
 
 .placeholder-container {

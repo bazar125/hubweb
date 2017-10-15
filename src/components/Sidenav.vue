@@ -114,7 +114,9 @@ export default {
 
 <style scoped>
 .custom-sidenav {
-  background-color: #3A3E5C;
+  /* background-color: #3A3E5C; */
+  background-color: #191970;
+  /* background-color: #4a59ad; */
   width: 150px;
   min-width: 150px;
   z-index: 999;
@@ -129,6 +131,7 @@ export default {
   /* color: rgba(0, 0, 0, 0.87); */
   /* color: rgb(137,146,198, 0.8); */
   color: rgb(255, 255, 255, 0.5);
+  /* color: rgba(197, 234, 142, 0.5); */
   text-align: center;
   padding: 8px 10px;
   font-size: 11px;
@@ -148,6 +151,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.1);
   /* color: rgba(137, 146, 198, 0.1); */
   color: rgba(255, 255, 255, 0.84);
+  /* color: rgba(197, 234, 142, 0.5); */
   /* color: rgb(137,146,198); */
   transition: ease-out 0.2s;
 }
@@ -155,9 +159,11 @@ export default {
 .nav-button.router-link-exact-active {
   /* background-color: rgba(255, 255, 255, 0.18); */
   border: 1px solid #8992C6;
+  /* border: 1px solid rgba(197, 234, 142, 0.6); */
   /* color: #8992C6; */
   /* color: rgba(255, 255, 255, 0.84); */
   color: white;
+  /* color: #c5ea8e; */
   font-weight: 700;
   font-size: 11px;
   transition: ease-out 0.2s;
@@ -175,5 +181,6 @@ export default {
   /* color: #8992C6; */
   /* color: rgba(255, 255, 255, 0.84); */
   color: white;
+  /* color: #c5ea8e; */
 }
 </style>

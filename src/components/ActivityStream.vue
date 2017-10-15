@@ -56,7 +56,7 @@
             </b-modal>
           </div>
 
-          <div class="d-flex justify-content-center align-items-center" style="position: relative; width: 100%; margin-bottom: 5px; height: 20px;">
+          <div class="divider-container d-flex justify-content-center align-items-center">
             <!-- <icon name="ellipsis-h" class="icon-small"></icon> -->
             <span class="icon-divider">...</span>
           </div>
@@ -327,9 +327,16 @@ export default {
   color: #c62828;
 }
 
+.divider-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 5px;
+  height: 10px;
+}
+
 .icon-divider {
   position: absolute;
-  top: -3px;
+  top: -9px;
   left: 50%;
   transform: translateX(-50%);
   width: 20px;

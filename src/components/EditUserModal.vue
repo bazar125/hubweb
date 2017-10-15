@@ -46,7 +46,8 @@ export default {
 }
 
 .modal-content {
-  background-color: #2c2e4a;
+  /* background-color: #2c2e4a; */
+  background-color: white;
 }
 
 .modal-footer {

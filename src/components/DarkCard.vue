@@ -46,6 +46,7 @@ export default {
   padding: 10px;
   flex: 1;
   width: 100%;
+  overflow: hidden;
 }
 
 .title-container {
