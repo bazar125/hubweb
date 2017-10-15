@@ -77,8 +77,8 @@ export default {
 .user-list-item {
   position: relative;
   /* background: transparent; */
-  background-color: #6270bc;
-  border-color: #6270bc;
+  background-color: #5563b6;
+  border-color: #5563b6;
   color: white;
   /* border: 0px solid; */
   border-radius: 0px;
