@@ -7,37 +7,39 @@
 
     <div class="map-container d-flex justify-content-start align-items-center">
       <active-personnel-card></active-personnel-card>
+      <dark-card title="Live Map" class="live-map-card">
+        <div class="map-overlay d-flex justify-content-start align-items-center">
+          <!-- <icon name="check-circle-o" class="icon-status color-green"></icon>
+              <span class="txt-status">All systems are functioning normally</span>
 
-      <div class="map-overlay d-flex justify-content-start align-items-center">
-        <!-- <icon name="check-circle-o" class="icon-status color-green"></icon>
-            <span class="txt-status">All systems are functioning normally</span>
+              <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
+              <span class="txt-status">No pending notifications</span> -->
+          <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
+            <span class="marquee-text">{{scrollHeadlines}}</span>
+          </div>
 
-            <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
-            <span class="txt-status">No pending notifications</span> -->
-        <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
-          <span class="marquee-text">{{scrollHeadlines}}</span>
+          <icon name="circle-thin" class="ml-auto icon-status color-red" style="margin-left: 5px !important;"></icon>
+          <span class="txt-status">Collision</span>
+
+          <icon name="circle-thin" class="icon-status color-blue" style="margin-left: 15px;"></icon>
+          <span class="txt-status" style="margin-right: 15px;">Citation</span>
+
+          <icon name="clock-o" class="icon-clock"></icon>
+          <clock class="custom-clock" :blink="true" :displaySeconds="false" />
         </div>
 
-        <icon name="circle-thin" class="ml-auto icon-status color-red" style="margin-left: 5px !important;"></icon>
-        <span class="txt-status">Collision</span>
-
-        <icon name="circle-thin" class="icon-status color-blue" style="margin-left: 15px;"></icon>
-        <span class="txt-status" style="margin-right: 15px;">Citation</span>
-
-        <icon name="clock-o" class="icon-clock"></icon>
-        <clock class="custom-clock" :blink="true" :displaySeconds="false" />
-      </div>
-
-      <v-map class="live-map" ref="map" :zoom="8" :center="center">
-        <!-- <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer> -->
-        <v-tilelayer url="http://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"></v-tilelayer>
-        <!-- <v-marker :lat-lng="center"></v-marker> -->
-      </v-map>
+        <v-map class="live-map" ref="map" :zoom="8" :center="center">
+          <!-- <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer> -->
+          <v-tilelayer url="http://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"></v-tilelayer>
+          <!-- <v-marker :lat-lng="center"></v-marker> -->
+        </v-map>
+      </dark-card>
     </div>
   </div>
 </template>
 
 <script>
+import DarkCard from '@/components/DarkCard';
 import DailyStatsCard from '@/components/DailyStatsCard';
 import SystemInformationCard from '@/components/SystemInformationCard';
 import ActivePersonnelCard from '@/components/ActivePersonnelCard';
@@ -377,10 +379,11 @@ export default {
     DailyStatsCard,
     SystemInformationCard,
     ActivePersonnelCard,
+    DarkCard,
   },
   computed: {
     scrollHeadlines() {
-      if(!this.headlines || this.headlines.count < 1) {
+      if (!this.headlines || this.headlines.count < 1) {
         return '';
       }
 
@@ -525,7 +528,7 @@ export default {
   right: 0;
   /* width: 100%; */
   /* width: calc(100% - 10px); */
-  width: calc(71% - 10px);
+  width: 100%;
   padding-left: 50px;
   padding-right: 20px;
   border-bottom: 1px solid #ececec;
@@ -553,6 +556,11 @@ export default {
 
 .stats-container .stats-widget {
   border-right: 1px solid rgba(137, 146, 198, 0.2);
+}
+
+.live-map-card >>> .main-container {
+  position: relative;
+  padding: 0px;
 }
 </style>
 
@@ -606,6 +614,7 @@ circle.blue {
 .color-blue {
   color: steelblue;
 }
+
 
 
 
