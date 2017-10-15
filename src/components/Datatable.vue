@@ -123,7 +123,7 @@ export default {
 }
 
 .btn-action {
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 600;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -147,7 +147,9 @@ export default {
   /* color: rgba(0,0,0,0.84); */
 }
 
-.dark-card-container {}
+.dark-card-container {
+  width: 100%;
+}
 </style>
 
 <style>

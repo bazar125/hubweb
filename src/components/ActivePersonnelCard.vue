@@ -76,15 +76,19 @@ export default {
 
 .user-list-item {
   position: relative;
-  background: transparent;
-  border-color: #8f90a8;
+  /* background: transparent; */
+  background-color: #6270bc;
+  border-color: #6270bc;
   color: white;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-right-color: transparent;
+  /* border: 0px solid; */
   border-radius: 0px;
   /* padding: 0.75rem 1rem; */
-  padding: 0.5rem 0rem;
+  padding: 0.5rem 0.5rem;
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
+}
+
+.user-list-item:not(:last-child) {
+  margin-bottom: 10px;
 }
 
 .img-avatar {

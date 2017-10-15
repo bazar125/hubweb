@@ -2,61 +2,64 @@
   <div class="activity-stream d-flex flex-column justify-content-start align-items-center">
     <dark-card class="container-card" title="Live Feed">
       <div class="activity-stream-inner">
-        <div v-for="(activity, index) in activities" :key="activity.$id" :class="{'blink-title': activity.$animate}" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
-          <!-- <div :class="{'bg-blue': activity.location, 'bg-red': !activity.location, 'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center">
-            <icon :name="activity.location ? 'book' : 'fire' " class="icon-master icon-title"></icon>
-            <span class="txt-title">{{activity.location ? 'Citation' : 'Collision'}}</span>
-            <b-btn @click.stop="showModal(activity, index, $event.target)" :class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn>
-          </div>
-          <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
-            <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon>
-            <span class="txt-address">{{activity.location ? activity.location : (activity.address ? activity.address : 'Unknown address') }}</span>
-          </div>
-          <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 5px;">
-            <icon name="clock-o" class="icon-small"></icon>
-            <span class="txt-timeago">{{activity.timeAgo}}</span>
+        <div v-for="(activity, index) in activities" :key="activity.$id" :class="{'blink-title': activity.$animate}" class="d-flex flex-column justify-content-start align-items-center" style="position: relative;">
+          <div :class="{'row-citation': activity.location && activity.completionStatus !== 'Warning', 'row-warning': activity.location && activity.completionStatus === 'Warning', 'row-collision': !activity.location}" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
+            <!-- <div :class="{'bg-blue': activity.location, 'bg-red': !activity.location, 'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center">
+                            <icon :name="activity.location ? 'book' : 'fire' " class="icon-master icon-title"></icon>
+                            <span class="txt-title">{{activity.location ? 'Citation' : 'Collision'}}</span>
+                            <b-btn @click.stop="showModal(activity, index, $event.target)" :class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn>
+                          </div>
+                          <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
+                            <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon>
+                            <span class="txt-address">{{activity.location ? activity.location : (activity.address ? activity.address : 'Unknown address') }}</span>
+                          </div>
+                          <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 5px;">
+                            <icon name="clock-o" class="icon-small"></icon>
+                            <span class="txt-timeago">{{activity.timeAgo}}</span>
+                          </div>
+
+                          <div v-if="!activity.location" class="d-flex justify-content-start align-items-center" style="width: 100%; overflow: hidden;">
+                            <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
+                          </div> -->
+
+            <!-- <div :class="{'bl ink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center"> -->
+            <div class="container-title d-flex justify-content-start align-items-center">
+              <!-- <icon :name="activity.location ? 'book' : 'fire' " class="icon-master icon-title"></icon> -->
+              <icon :name="activity.location ? 'circle' : 'circle'" :class="{'circle-citation': activity.location, 'circle-collision': !activity.location}" class="icon-master icon-title"></icon>
+              <span class="txt-title">{{getActivityTitle(activity)}}</span>
+              <!-- <b-btn @click.stop="showModal(activity, index, $event.target)" :class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn> -->
+              <base-btn @click.stop="showModal(activity, index, {})" class="ml-auto btn-view" icon="search"></base-btn>
+            </div>
+            <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
+              <!-- <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon> -->
+              <span class="txt-reference">Ref: {{activity.location ? activity.paymentReference : (activity.reference ? activity.reference : 'Unknown reference') }}</span>
+            </div>
+            <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
+              <!-- <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon> -->
+              <span class="txt-address">{{activity.location ? activity.location : (activity.address ? activity.address : 'Unknown address') }}</span>
+            </div>
+            <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 5px;">
+              <!-- <icon name="clock-o" class="icon-small"></icon> -->
+              <span class="txt-timeago">{{activity.timeAgo}}</span>
+            </div>
+
+            <div v-if="!activity.location" class="d-flex justify-content-center align-items-center" style="width: 100%; overflow: hidden;">
+              <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
+            </div>
+
+            <b-modal title="Citation" :id="`citationModal${index}`" ok-only>
+              <citation-modal :modalId="`citationModal${index}`" :data="activity"></citation-modal>
+            </b-modal>
+
+            <b-modal title="Collision" :id="`collisionModal${index}`" ok-only>
+              <collision-modal :data="activity"></collision-modal>
+            </b-modal>
           </div>
 
-          <div v-if="!activity.location" class="d-flex justify-content-start align-items-center" style="width: 100%; overflow: hidden;">
-            <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
-          </div> -->
-
-          <!-- <div :class="{'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center"> -->
-          <div class="container-title d-flex justify-content-start align-items-center">
-            <!-- <icon :name="activity.location ? 'book' : 'fire' " class="icon-master icon-title"></icon> -->
-            <icon :name="activity.location ? 'circle' : 'circle'" :class="{'circle-citation': activity.location, 'circle-collision': !activity.location}" class="icon-master icon-title"></icon>
-            <span class="txt-title">{{activity.location ? 'Citation Issued' : 'Collision Logged'}}</span>
-            <!-- <b-btn @click.stop="showModal(activity, index, $event.target)" :class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn> -->
-            <base-btn @click.stop="showModal(activity, index, {})" class="ml-auto btn-view" icon="search"></base-btn>
+          <div class="d-flex justify-content-center align-items-center" style="position: relative; width: 100%; margin-bottom: 5px; height: 20px;">
+            <!-- <icon name="ellipsis-h" class="icon-small"></icon> -->
+            <span class="icon-divider">...</span>
           </div>
-          <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
-            <!-- <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon> -->
-            <span class="txt-reference">Ref: {{activity.location ? activity.paymentReference : (activity.reference ? activity.reference : 'Unknown reference') }}</span>
-          </div>
-          <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
-            <!-- <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon> -->
-            <span class="txt-address">{{activity.location ? activity.location : (activity.address ? activity.address : 'Unknown address') }}</span>
-          </div>
-          <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 5px;">
-            <!-- <icon name="clock-o" class="icon-small"></icon> -->
-            <span class="txt-timeago">{{activity.timeAgo}}</span>
-          </div>
-
-          <div v-if="!activity.location" class="d-flex justify-content-center align-items-center" style="width: 100%; overflow: hidden;">
-            <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
-          </div>
-
-          <div class="d-flex justify-content-center align-items-center" style="width: 100%; margin-bottom: 5px;">
-            <icon name="ellipsis-h" class="icon-small"></icon>
-          </div>
-
-          <b-modal title="Citation" :id="`citationModal${index}`" ok-only>
-            <citation-modal :modalId="`citationModal${index}`" :data="activity"></citation-modal>
-          </b-modal>
-
-          <b-modal title="Collision" :id="`collisionModal${index}`" ok-only>
-            <collision-modal :data="activity"></collision-modal>
-          </b-modal>
         </div>
       </div>
     </dark-card>
@@ -129,6 +132,21 @@ export default {
       } else {
         this.$root.$emit('show::modal', `collisionModal${index}`, sender);
       }
+    },
+    getActivityTitle(activity) {
+      if (!activity) {
+        return '';
+      }
+
+      if (activity.location) {
+        if (activity.completionStatus === 'Warning') {
+          return 'Warning issued';
+        }
+
+        return 'Citation issued';
+      }
+
+      return 'Collision logged';
     },
   },
 };
@@ -219,23 +237,45 @@ export default {
   /* background-color: #2c2e4a; */
   background-color: #3a3d41;
   /* color: #8f90a8; */
-  /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3); */
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   overflow: hidden;
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
   /* padding: 8px; */
   /* border-bottom: 1px solid #DF90B8; */
   /* border-bottom: 1px solid #ececec; */
+}
+
+.row-citation {
+  background-color: #1565c0;
+}
+
+.row-warning {
+  background-color: #b97310;
+}
+
+.row-collision {
+  background-color: #c62828;
 }
 
 .activity-stream-row:not(:last-child) {
   margin-bottom: 5px;
 }
 
+
+
+
+
+
+
+
+
 /* .icon-title {
   height: 14px !important;
   margin-left: 5px;
   margin-right: 5px !important;
 } */
+
 .icon-title {
   /* height: 12px !important; */
   width: 6px !important;
@@ -244,6 +284,14 @@ export default {
   margin-right: 5px !important;
   /* margin-right: 5px !important; */
 }
+
+
+
+
+
+
+
+
 
 /* .btn-view {
   font-weight: 700;
@@ -279,10 +327,19 @@ export default {
   color: #c62828;
 }
 
-.icon-small {
+.icon-divider {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 20px;
   height: 12px;
-  margin-right: 0px;
+  line-height: 12px;
+  text-align: center;
+  vertical-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  user-select: none;
   color: rgba(255, 255, 255, 0.84);
 }
 
@@ -347,6 +404,8 @@ export default {
   /* margin-bottom: 5px; */
   /* border-top-left-radius: 4px;
   border-top-right-radius: 4px; */
+  background-color: rgba(0, 0, 0, 0.3);
+  margin-bottom: 5px;
 }
 
 .blink-title {
