@@ -17,7 +17,7 @@ import BaseCard from '@/components/BaseCard';
 
 export default {
   name: 'DarkCard',
-  props: ['title'],
+  props: ['title', 'showPulse'],
   components: {
     BaseCard,
   },
@@ -50,6 +50,7 @@ export default {
 }
 
 .title-container {
+  /* position: relative; */
   width: 100%;
   background-color: #4a59ad;
 }

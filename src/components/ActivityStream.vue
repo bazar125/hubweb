@@ -1,6 +1,7 @@
 <template>
   <div class="activity-stream d-flex flex-column justify-content-start align-items-center">
-    <dark-card class="container-card" title="Live Feed">
+    <lottie class="loading-animation" :options="defaultOptions" :width="160" :height="160" />
+    <dark-card :showPulse="true" class="container-card" title="Live Feed">
       <div class="activity-stream-inner">
         <div v-for="(activity, index) in activities" :key="activity.$id" :class="{'blink-title': activity.$animate}" class="d-flex flex-column justify-content-start align-items-center" style="position: relative;">
           <div :class="{'row-citation': activity.location && activity.completionStatus !== 'Warning', 'row-warning': activity.location && activity.completionStatus === 'Warning', 'row-collision': !activity.location}" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
@@ -73,7 +74,10 @@ import CollisionModal from '@/components/CollisionModal';
 import ModelFactory from '@/services/ModelFactory';
 import DarkCard from '@/components/DarkCard';
 import BaseBtn from '@/components/BaseBtn';
+import Lottie from '@/components/VueLottie';
 import PhotoPlaceholder from '../assets/photo_placeholder.png';
+// import * as animationData from '../assets/ripple_animation.json';
+import * as animationData from '../assets/loading_animation.json';
 
 // Wait this time after initialLoadTime before applying the blink animation to new activities
 const BLINK_WAIT_DURATION = 6000;
@@ -85,6 +89,7 @@ export default {
     CollisionModal,
     DarkCard,
     BaseBtn,
+    Lottie,
   },
   data() {
     return {
@@ -94,6 +99,7 @@ export default {
       lastTimestamp: 0,
       initialLoadTime: new Date().getTime(),
       photoPlaceholder: PhotoPlaceholder,
+      defaultOptions: { animationData },
     };
   },
   computed: {
@@ -161,6 +167,7 @@ export default {
   z-index: 999;
   box-shadow: -2px 0px 8px 2px rgba(0, 0, 0, 0.1);
   padding: 8px;
+  position: relative;
 }
 
 .activity-stream>>>.main-container {
@@ -262,20 +269,6 @@ export default {
   margin-bottom: 5px;
 }
 
-
-
-
-
-
-
-
-
-/* .icon-title {
-  height: 14px !important;
-  margin-left: 5px;
-  margin-right: 5px !important;
-} */
-
 .icon-title {
   /* height: 12px !important; */
   width: 6px !important;
@@ -284,27 +277,6 @@ export default {
   margin-right: 5px !important;
   /* margin-right: 5px !important; */
 }
-
-
-
-
-
-
-
-
-
-/* .btn-view {
-  font-weight: 700;
-  font-size: 9px;
-  cursor: pointer;
-  background-color: white;
-  border: 1px solid transparent;
-  line-height: 1;
-  padding: 3px 10px;
-  margin-right: 5px;
-  text-transform: uppercase;
-  border-radius: 40px;
-} */
 
 .btn-view {
   height: 20px !important;
@@ -395,7 +367,7 @@ export default {
   font-size: 11px;
   /* border-bottom: 1px solid #ececec; */
   /* border-bottom: 1px solid #8992C6; */
-  /* border-bottom: 1px solid white; */
+  /* border-bottom: 1p  x solid white; */
   padding-left: 20px;
   padding-right: 20px;
   /* color: #797a97; */
@@ -433,5 +405,12 @@ export default {
   padding: 5px;
   /* object-position: center center; */
   /* object-position: -100px -20px; */
+}
+
+.loading-animation {
+  position: absolute;
+  top: -58px;
+  left: -30px;
+  z-index: 999;
 }
 </style>
