@@ -28,10 +28,10 @@
 
     <div v-if="!showEdit && this.type === 'citation' || this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
       <div class="d-flex" style="flex: 1; height: 100%;">
-        <modal-data-drivers></modal-data-drivers>
+        <modal-data-drivers @viewDriver="viewDriver"></modal-data-drivers>
       </div>
       <div class="d-flex" style="flex: 1; height: 100%;">
-        <modal-data-vehicles></modal-data-vehicles>
+        <modal-data-vehicles @viewVehicle="viewVehicle"></modal-data-vehicles>
       </div>
     </div>
 
@@ -142,7 +142,19 @@ export default {
       this.$root.$emit('hide::modal', this.modalId);
     },
     clickNewTab() {
-
+      const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
+      const win = window.open(`http://localhost:8080/#/citations/${ref}`, '_blank');
+      win.focus();
+    },
+    viewDriver(driver) {
+      console.log(driver);
+      const win = window.open(`http://localhost:8080/#/drivers/${driver.$id}`, '_blank');
+      win.focus();
+    },
+    viewVehicle(vehicle) {
+      console.log(vehicle);
+      const win = window.open(`http://localhost:8080/#/vehicles/${vehicle.$id}`, '_blank');
+      win.focus();
     },
     clickPrint() {
       const node = document.getElementById('citation-modal-print-root');

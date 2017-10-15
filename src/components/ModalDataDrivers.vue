@@ -2,10 +2,10 @@
   <div class="modal-data-drivers d-flex flex-column justify-content-start align-items-start">
     <span class="txt-label">Drivers</span>
     <b-list-group class="drivers-list">
-      <b-list-group-item class="driver-item" v-for="(user, index) in users" :key="user">
+      <b-list-group-item class="driver-item" v-for="(driver, index) in drivers" :key="driver">
         <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
-        {{user}}
-        <base-btn @click="clickViewDriver(index)" class="ml-auto btn-view" text="View"></base-btn>
+        {{driver}}
+        <base-btn @click="$emit('viewDriver', index)" class="ml-auto btn-view" text="View"></base-btn>
         <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
       </b-list-group-item>
     </b-list-group>
@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       photoPlaceholder: PhotoPlaceholder,
-      users: ['John Doe'],
+      drivers: ['John Doe'],
     };
   },
   methods: {

@@ -5,7 +5,7 @@
       <b-list-group-item class="vehicle-item" v-for="(vehicle, index) in vehicles" :key="vehicle">
         <img class="img-avatar" src="../assets/car_placeholder.jpg"></img>
         {{vehicle}}
-        <base-btn @click="clickViewVehicle(index)" class="ml-auto btn-view" text="View"></base-btn>
+        <base-btn @click="$emit('viewVehicle', index)" class="ml-auto btn-view" text="View"></base-btn>
         <!-- <b-badge pill variant="success">VIEW</b-badge> -->
         <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
       </b-list-group-item>
