@@ -39,9 +39,9 @@
 
     <div :class="{'timeleft-hidden': showEdit || this.type === 'citation' && this.data.completionStatus === 'Warning' }" class="action-container d-flex justify-content-end align-items-center">
       <base-btn @click="toggleEdit()" :class="{'btn-back': showEdit}" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
-      <base-btn @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
-      <base-btn @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
-      <base-btn @click="clickPdf()" class="btn-pdf" text="PDF" icon="file-pdf-o"></base-btn>
+      <base-btn v-if="!showEdit" @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
+      <base-btn v-if="!showEdit" @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
+      <base-btn v-if="!showEdit" @click="clickPdf()" class="btn-pdf" text="PDF" icon="file-pdf-o"></base-btn>
     </div>
   </div>
 </template>
@@ -52,10 +52,13 @@ import ModalAuditSection from '@/components/ModalAuditSection';
 import ModalEditSection from '@/components/ModalEditSection';
 import ModalDataDrivers from '@/components/ModalDataDrivers';
 import ModalDataVehicles from '@/components/ModalDataVehicles';
+import TablePageLoader from '@/services/TablePageLoader';
 import BaseBtn from '@/components/BaseBtn';
 import html2canvas from 'html2canvas';
 import * as JsPDF from 'jspdf';
 import printJS from 'print-js';
+
+const driverLoader = new TablePageLoader('drivers');
 
 export default {
   name: 'BaseModal',
@@ -142,6 +145,39 @@ export default {
       html2canvas(node, { allowTaint: false, useCORS: true }).then((canvas) => {
         const dataUrl = canvas.toDataURL();
         printJS(dataUrl, 'image');
+      });
+    },
+    clickEmail() {
+      const driverQuery = {
+        bool: {
+          must: [
+            {
+              term: { _id: this.data.driverId },
+            },
+          ],
+        },
+      };
+
+      driverLoader.load(1, driverQuery).then((page) => {
+        console.log(page);
+        const driver = page.items[0];
+        if (!driver) {
+          return;
+        }
+        const email = driver.email;
+        if (!email) {
+          return;
+        }
+
+        const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
+        if (!ref) {
+          return;
+        }
+
+        const mailTo = `mailto:${email}?Subject=MotoHub%20Citation%20${ref}&Body=Payment%20Reference%3A%20${ref}%0ACompletion%20Status%3A%20${escape(this.data.additionalPenalty)}%0ADate%3A%20${escape(this.data.date)}%0ATime%3A%20${escape(this.data.time)}%0A
+        Location%3A%20${escape(this.data.location)}%0ADriver%3A%20${escape(`${this.data.firstName} ${this.data.lastName}`)}%0AVehicle%20Registration%3A%20${escape(this.data.vehicleRegistration)}%0ACitation%20Code%3A%20${escape(this.data.citationCode)}%0ADescription%3A%20${escape(this.data.citationDescription)}%0AFine%3A%20${escape(this.data.fineAmount)}%0AAdditional%20Penalty%3A%20${escape(this.data.completionStatus)}%0AIssuing%20Officers%3A%20${escape(this.data.issuingOfficers[0])}`;
+        console.log(mailTo);
+        window.location.href = mailTo;
       });
     },
     clickPdf() {
@@ -302,6 +338,7 @@ export default {
 .btn-back:hover {
   background-color: #b97310 !important;
   border-color: #b97310 !important;
+  margin-right: auto;
 }
 
 
