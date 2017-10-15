@@ -28,10 +28,10 @@
 
     <div v-if="!showEdit && this.type === 'citation' || this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
       <div class="d-flex" style="flex: 1; height: 100%;">
-        <modal-data-drivers @viewDriver="viewDriver"></modal-data-drivers>
+        <modal-data-drivers :drivers="drivers" @viewDriver="viewDriver"></modal-data-drivers>
       </div>
       <div class="d-flex" style="flex: 1; height: 100%;">
-        <modal-data-vehicles @viewVehicle="viewVehicle"></modal-data-vehicles>
+        <modal-data-vehicles :vehicles="vehicles" @viewVehicle="viewVehicle"></modal-data-vehicles>
       </div>
     </div>
 
@@ -95,6 +95,21 @@ export default {
       }
 
       return false;
+    },
+    drivers() {
+      if (this.type === 'citation') {
+        return [{
+          id: this.data.driverId,
+          name: this.data.driverName,
+        }];
+      }
+
+      return this.data.drivers;
+      // return this.data.drivers.map((x) => {
+      //   return { name: x };
+      // });
+    },
+    vehicles() {
     },
   },
   mounted() {

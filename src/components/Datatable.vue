@@ -1,35 +1,43 @@
 <template>
   <div class="datatable d-flex flex-column justify-content-start align-items-center">
+    <dark-card :title="title" class="dark-card-container d-flex flex-column justify-content-start align-items-center">
+      <div class="container-pagination d-flex justify-content-end align-items-center">
+        <!-- <span class="txt-rows-per-page">Rows Per Page</span>
+              <b-form-select class="rows-per-page" size="sm" :options="pageOptions" v-model="perPage" />
+              <b-button size="sm" :disabled="!sortBy" @click="sortBy = null">Clear Sort</b-button> -->
+        <!-- <span class="title mr-auto">{{title ? title : ''}}</span> -->
+        <table-search v-model="searchFilter"></table-search>
+        <b-pagination @input="paginationChanged" class="ml-auto custom-pagination" :total-rows="totalRows" :per-page="perPage" v-model="currentPage" />
+      </div>
 
-    <div class="container-pagination d-flex justify-content-end align-items-center">
-      <!-- <span class="txt-rows-per-page">Rows Per Page</span>
-          <b-form-select class="rows-per-page" size="sm" :options="pageOptions" v-model="perPage" />
-          <b-button size="sm" :disabled="!sortBy" @click="sortBy = null">Clear Sort</b-button> -->
-      <span class="title mr-auto">{{title ? title : ''}}</span>
-      <b-pagination @input="paginationChanged" class="custom-pagination" :total-rows="totalRows" :per-page="perPage" v-model="currentPage" />
-    </div>
+      <!-- <b-table bordered hover show-empty :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered"> -->
+      <b-table class="custom-table" bordered hover show-empty :items="items" :fields="fields" :per-page="perPage" :filter="searchFilter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered">
+        <!-- <template slot="name" scope="row">{{row.value.first}} {{row.value.last}}</template>
+                <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
+        <template slot="actions" scope="row">
+          <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
+          <b-btn size="sm" class="btn-action" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert', 'btn-wwarning': row.item._dirtyClass === 'wwarning', 'btn-success': row.item._dirtyClass === 'success'}" @click.stop="details(row.item,row.index,$event.target)">VIEW</b-btn>
+        </template>
+      </b-table>
 
-    <!-- <b-table bordered hover show-empty :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered"> -->
-    <b-table class="custom-table" bordered hover show-empty :items="items" :fields="fields" :per-page="perPage" :filter="searchFilter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered">
-      <!-- <template slot="name" scope="row">{{row.value.first}} {{row.value.last}}</template>
-            <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
-      <template slot="actions" scope="row">
-        <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
-        <b-btn size="sm" class="btn-action" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert', 'btn-wwarning': row.item._dirtyClass === 'wwarning', 'btn-success': row.item._dirtyClass === 'success'}" @click.stop="details(row.item,row.index,$event.target)">Details</b-btn>
-      </template>
-    </b-table>
+      <b-modal :title="modalTitle" :id="modalId" @hide="resetModal" :hide-header="true" :hide-footer="true">
+        <slot name="modal" :data="modalDetails.data"></slot>
+      </b-modal>
+    </dark-card>
 
-    <b-modal :title="modalTitle" :id="modalId" @hide="resetModal" :hide-header="true" :hide-footer="true">
-      <slot name="modal" :data="modalDetails.data"></slot>
-    </b-modal>    
   </div>
 </template>
 
 <script>
+import TableSearch from '@/components/TableSearch';
+import DarkCard from '@/components/DarkCard';
+
 export default {
   name: 'Datatable',
   props: ['perPage', 'items', 'fields', 'totalRows', 'searchFilter', 'title', 'modalId', 'modalTitle'],
   components: {
+    DarkCard,
+    TableSearch,
   },
   data() {
     return {
@@ -39,6 +47,7 @@ export default {
       sortDesc: false,
       filter: null,
       modalDetails: { index: '', data: '' },
+      searchFilter: '',
     };
   },
   methods: {
@@ -88,6 +97,21 @@ export default {
   margin-left: 20px;
 }
 
+.custom-pagination>>>.page-link {
+  background-color: transparent;
+  /* border-color: #4a59ad; */
+  color: white;
+  border-color: #4f6f8f;
+  padding: 0.4rem 0.75rem;
+}
+
+.custom-pagination>>>.page-link.active {
+  background-color: #4a59ad;
+  border-color: #4f6f8f;
+  color: white;
+  padding: 0.4rem 0.75rem;
+}
+
 .rows-per-page {
   margin-bottom: 0px;
   width: 20px;
@@ -100,8 +124,13 @@ export default {
 
 .btn-action {
   font-size: 9px;
+  font-weight: 600;
   padding-top: 2px;
   padding-bottom: 2px;
+  border-radius: 10px;
+  background-color: #1565c0;
+  border-color: #1565c0;
+  color: white;
 }
 
 .datatable .btn-warning {
@@ -118,6 +147,7 @@ export default {
   /* color: rgba(0,0,0,0.84); */
 }
 
+.dark-card-container {}
 </style>
 
 <style>
@@ -134,6 +164,13 @@ export default {
   font-size: 11px;
 }
 
+.custom-datatable-address-cell {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100px;
+}
+
 /* .custom-datatable-action-cell {
   padding: 0px;
 } */
@@ -143,6 +180,7 @@ export default {
   background-color: #b97310;
   color: white;
 }
+
 .table-wwarning:hover {
   /* background-color: #f0ad4e; */
   background-color: #b97310;
@@ -153,6 +191,10 @@ export default {
   /* background-color: #f0ad4e; */
   background-color: #1565c0;
   color: white;
+}
+
+.table-alert:not(:last-child) {
+  border-bottom-color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .table-danger {
@@ -172,18 +214,41 @@ export default {
   overflow: hidden;
 }
 
-.datatable .table th,
+
+
+/* .datatable .table th,
+.table td { */
+
 .table td {
-  padding: 0.25rem 0.75rem;
+  padding: 0.35rem 0.75rem;
+}
+
+.datatable .table th {
+  padding: 0.5rem 0.75rem;
+  background-color: #212338;
+  /* border-color: white; */
+  color: white;
+}
+
+.datatable .table th::before,
+.datatable .table th::after {
+  color: white;
+}
+
+table.b-table>tfoot>tr>.sorting::after,
+table.b-table>tfoot>tr>.sorting::before,
+table.b-table>thead>tr>.sorting::after,
+table.b-table>thead>tr>.sorting::before {
+  opacity: 1;
 }
 
 .datatable .table-bordered td,
 .datatable .table-bordered th {
   /* border-color: rgba(255, 255, 255, 0.34) !important; */
   /* border-color: rgba(255, 255, 255, 0.5) !important; */
-  border-color: #a0a0a0 !important;
+  /* border-color: #a0a0a0 !important; */
+  border-color: rgba(79, 111, 143, 0.6);
   /* color: rgba(255, 255, 255, 0.84); */
   color: white;
 }
-
 </style>

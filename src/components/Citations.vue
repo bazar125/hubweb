@@ -1,21 +1,14 @@
 <template>
-  <div class="citations d-flex flex-column">
-    <div class="citations-upper d-flex justify-content-start align-items-center">
-      <table-search v-model="searchFilter"></table-search>
-    </div>
-
-    <div class="citations-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @resetModal="resetModal()" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields">
-        <template slot="modal" scope="props">
-          <citation-modal id="citation-modal-print" :data="props.data" modal-id="citationModal"></citation-modal>
-        </template>
-      </datatable>
-    </div>
+  <div class="citations d-flex flex-column justify-content-start align-items-center">
+    <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @resetModal="resetModal()" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields">
+      <template slot="modal" scope="props">
+        <citation-modal id="citation-modal-print" :data="props.data" modal-id="citationModal"></citation-modal>
+      </template>
+    </datatable>
   </div>
 </template>
 
 <script>
-import TableSearch from '@/components/TableSearch';
 import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import CitationModal from '@/components/CitationModal';
@@ -30,7 +23,6 @@ const REFRESH_DELAY = 4000;
 export default {
   name: 'Citations',
   components: {
-    TableSearch,
     Datatable,
     CitationModal,
   },
@@ -174,22 +166,8 @@ export default {
   height: 100%;
   /* Sidenav width: 150px */
   width: calc(100% - 150px);
-  background-color: #323444;
-}
-
-.citations-upper {
-  overflow: hidden;
-  /* flex: 0.1; */
-  height: 52px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: #455a64;
-}
-
-.citations-lower {
-  overflow: hidden;
-  flex: 1;
-  padding: 10px 20px;
+  background-color: #2c2e4a;
+  padding: 10px;
 }
 
 .datatable {
@@ -211,6 +189,15 @@ export default {
 
 .custom-table {
   width: 100%;
+}
+.citations >>> .dark-card {
+  width: 100%;
+  flex: 1;
+}
+
+.citations >>> .datatable {
+  flex: 1;
+  width: 100% !important;
 }
 </style>
 

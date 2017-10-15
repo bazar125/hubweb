@@ -1,16 +1,10 @@
 <template>
   <div class="collisions d-flex flex-column">
-    <div class="collisions-upper d-flex justify-content-start align-items-center">
-      <table-search v-model="searchFilter"></table-search>
-    </div>
-
-    <div class="collisions-lower d-flex flex-column justify-content-start align-items-center">
-      <datatable title="Collisions" modalId="collisionModal" modalTitle="Collision" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields">
-        <template slot="modal" scope="props">
-          <collision-modal :data="props.data"></collision-modal>
-        </template>
-      </datatable>
-    </div>
+    <datatable title="Collisions" modalId="collisionModal" modalTitle="Collision" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields">
+      <template slot="modal" scope="props">
+        <collision-modal :data="props.data"></collision-modal>
+      </template>
+    </datatable>
   </div>
 </template>
 
@@ -41,9 +35,9 @@ export default {
         reference: { label: 'Reference', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         date: { label: 'Date', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         time: { label: 'Time', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
-        address: { label: 'Address', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        address: { label: 'Address', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell custom-datatable-address-cell' },
         description: { label: 'Description', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
-        attendingOfficer: { label: 'Attending Officer', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        attendingOfficer: { label: 'Attending Officer', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell custom-datatable-address-cell' },
         allDrivers: { label: 'Drivers', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         allVehicles: { label: 'Vehicles', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         actions: { label: 'Actions', class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
@@ -162,20 +156,7 @@ export default {
   /* Sidenav width: 150px */
   width: calc(100% - 150px);
   background-color: #323444;
-}
-
-.collisions-upper {
-  overflow: hidden;
-  height: 52px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: #455a64;
-}
-
-.collisions-lower {
-  overflow: hidden;
-  flex: 1;
-  padding: 10px 20px;
+  padding: 10px;
 }
 
 .datatable {
