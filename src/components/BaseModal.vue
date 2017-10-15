@@ -40,7 +40,7 @@
     <div :class="{'timeleft-hidden': showEdit || this.type === 'citation' && this.data.completionStatus === 'Warning' }" class="action-container d-flex justify-content-end align-items-center">
       <base-btn @click="toggleEdit()" :class="{'btn-back': showEdit}" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
       <base-btn v-if="!showEdit" @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
-      <base-btn v-if="!showEdit" @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
+      <base-btn v-if="!showEdit" :class="{'btn-disabled': !userHasEmail}" @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
       <base-btn v-if="!showEdit" @click="clickPdf()" class="btn-pdf" text="PDF" icon="file-pdf-o"></base-btn>
     </div>
   </div>
@@ -52,13 +52,13 @@ import ModalAuditSection from '@/components/ModalAuditSection';
 import ModalEditSection from '@/components/ModalEditSection';
 import ModalDataDrivers from '@/components/ModalDataDrivers';
 import ModalDataVehicles from '@/components/ModalDataVehicles';
-import TablePageLoader from '@/services/TablePageLoader';
+// import TablePageLoader from '@/services/TablePageLoader';
 import BaseBtn from '@/components/BaseBtn';
 import html2canvas from 'html2canvas';
 import * as JsPDF from 'jspdf';
 import printJS from 'print-js';
 
-const driverLoader = new TablePageLoader('drivers');
+// const driverLoader = new TablePageLoader('driver');
 
 export default {
   name: 'BaseModal',
@@ -78,6 +78,7 @@ export default {
       auditBtnTitle: 'History',
       editBtnTitle: this.type === 'citation' ? 'Delete' : 'Edit',
       editBtnIcon: this.type === 'citation' ? 'trash-o' : 'pencil',
+      userHasEmail: true,
     };
   },
   computed: {
@@ -95,6 +96,9 @@ export default {
 
       return false;
     },
+  },
+  mounted() {
+    this.userHasEmail = true;
   },
   methods: {
     toggleAudit() {
@@ -148,37 +152,13 @@ export default {
       });
     },
     clickEmail() {
-      const driverQuery = {
-        bool: {
-          must: [
-            {
-              term: { _id: this.data.driverId },
-            },
-          ],
-        },
-      };
-
-      driverLoader.load(1, driverQuery).then((page) => {
-        console.log(page);
-        const driver = page.items[0];
-        if (!driver) {
-          return;
-        }
-        const email = driver.email;
-        if (!email) {
-          return;
-        }
-
-        const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
-        if (!ref) {
-          return;
-        }
-
-        const mailTo = `mailto:${email}?Subject=MotoHub%20Citation%20${ref}&Body=Payment%20Reference%3A%20${ref}%0ACompletion%20Status%3A%20${escape(this.data.additionalPenalty)}%0ADate%3A%20${escape(this.data.date)}%0ATime%3A%20${escape(this.data.time)}%0A
-        Location%3A%20${escape(this.data.location)}%0ADriver%3A%20${escape(`${this.data.firstName} ${this.data.lastName}`)}%0AVehicle%20Registration%3A%20${escape(this.data.vehicleRegistration)}%0ACitation%20Code%3A%20${escape(this.data.citationCode)}%0ADescription%3A%20${escape(this.data.citationDescription)}%0AFine%3A%20${escape(this.data.fineAmount)}%0AAdditional%20Penalty%3A%20${escape(this.data.completionStatus)}%0AIssuing%20Officers%3A%20${escape(this.data.issuingOfficers[0])}`;
-        console.log(mailTo);
-        window.location.href = mailTo;
-      });
+      // eslint-disable-next-line max-len
+      const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
+      const additionalPenalty = this.data.additionalPenalty.replace(/\u2013|\u2014/g, '-');
+      // eslint-disable-next-line max-len
+      const mailTo = `mailto:?Subject=MotoHub%20Citation%20${ref}&Body=Payment%20Reference%3A%20${ref}%0ACompletion%20Status%3A%20${escape(this.data.completionStatus)}%0ADate%3A%20${escape(this.data.date)}%0ATime%3A%20${escape(this.data.time)}%0ALocation%3A%20${escape(this.data.location)}%0ADriver%3A%20${escape(this.data.driverName)}%0AVehicle%20Registration%3A%20${escape(this.data.vehicleRegistration)}%0ACitation%20Code%3A%20${escape(this.data.citationCode)}%0ADescription%3A%20${escape(this.data.citationDescription)}%0AFine%3A%20${escape(this.data.fineAmount)}%0AAdditional%20Penalty%3A%20${escape(additionalPenalty)}%0AIssuing%20Officers%3A%20${escape(this.data.issuingOfficers[0])}`;
+      console.log(mailTo);
+      window.location.href = mailTo;
     },
     clickPdf() {
       const node = document.getElementById('citation-modal-print-root');
@@ -379,6 +359,18 @@ export default {
   background-color: #9ac98f !important;
   border-color: #9ac98f !important;
   transition: ease-out 0.2;
+}
+
+.btn-disabled {
+  background-color: #888888 !important;
+  border-color: #888888 !important;
+  cursor: default !important;
+}
+
+.btn-disabled:hover {
+  background-color: #888888 !important;
+  border-color: #888888 !important;
+  cursor: default !important;
 }
 
 .btn-pdf {
