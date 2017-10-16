@@ -37,22 +37,22 @@
 
     <div v-if="!showEdit && this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
       <div class="d-flex" style="flex: 0.5; height: 100%;">
-        <modal-data-drivers :drivers="perpetrators" @viewDriver="viewDriver"></modal-data-drivers>
+        <modal-data-drivers title="Perpetrators" :drivers="perpetrators" @viewDriver="viewDriver"></modal-data-drivers>
       </div>
-      <div class="d-flex" style="flex: 1; height: 100%;">
-        <modal-data-drivers :drivers="passengers" @viewDriver="viewDriver"></modal-data-drivers>
-      </div>
-    </div>
-
-    <div v-if="!showEdit && this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
-      <div class="d-flex" style="flex: 1; height: 100%;">
-        <modal-data-drivers :drivers="pedestrians" @viewDriver="viewDriver"></modal-data-drivers>
+      <div v-if="this.passengers.count > 0" class="d-flex" style="flex: 0.5; height: 100%;">
+        <modal-data-drivers title="Passengers" :drivers="passengers" @viewDriver="viewDriver" style="margin-right: 0px;"></modal-data-drivers>
       </div>
     </div>
 
-    <span v-if="!showEdit && (this.type === 'citation' && this.data.completionStatus !== 'Warning') || this.type === 'collision'" class="txt-timeleft">There are 12 days left to pay this citation</span>
+    <div v-if="!showEdit && this.type === 'collision' && this.pedestrians.count > 0" class="driver-vehicle-container d-flex justify-content-center align-items-start">
+      <div class="d-flex" style="flex: 0.5; height: 100%;">
+        <modal-data-drivers title="Pedestrians" :drivers="pedestrians" @viewDriver="viewDriver"></modal-data-drivers>
+      </div>
+    </div>
 
-    <div :class="{'timeleft-hidden': showEdit || this.type === 'citation' && this.data.completionStatus === 'Warning' }" class="action-container d-flex justify-content-end align-items-center">
+    <span v-if="!showEdit && (this.type === 'citation' && this.data.completionStatus !== 'Warning')" class="txt-timeleft">There are 12 days left to pay this citation</span>
+
+    <div :class="{'timeleft-hidden': showEdit || this.type === 'citation' && this.data.completionStatus === 'Warning' || this.type === 'collision' }" class="action-container d-flex justify-content-end align-items-center">
       <base-btn @click="toggleEdit()" :class="{'btn-back': showEdit}" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
       <base-btn v-if="!showEdit" @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
       <base-btn v-if="!showEdit" :class="{'btn-disabled': !userHasEmail}" @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>

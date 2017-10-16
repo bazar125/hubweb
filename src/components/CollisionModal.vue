@@ -66,5 +66,22 @@ export default {
 </script>
 
 <style scoped>
+.img-main {
+  /* margin-right: 5px; */
+  width: 180px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center center;
+  margin-bottom: 5px;
+}
 
+.img-full {
+  margin-right: 0px;
+  flex: 1;
+}
+
+.data-section {
+  flex: 1;
+  width: 100%;
+}
 </style>
