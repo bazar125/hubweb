@@ -35,7 +35,6 @@
 import BaseModal from '@/components/BaseModal';
 import ModalDataRow from '@/components/ModalDataRow';
 import ModalDataAttachments from '@/components/ModalDataAttachments';
-import ModalDataDrivers from '@/components/ModalDataDrivers';
 import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
@@ -45,7 +44,6 @@ export default {
     BaseModal,
     ModalDataRow,
     ModalDataAttachments,
-    ModalDataDrivers,
   },
   data() {
     return {

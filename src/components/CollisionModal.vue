@@ -1,21 +1,26 @@
 <template>
-  <base-modal class="collision-modal d-flex flex-column justify-content-center align-items-start" type="collision" :data="data">
+  <base-modal :hide-navigation="hideNavigation" class="collision-modal d-flex flex-column justify-content-center align-items-start" title="Collision" type="collision" :modalId="modalId" :data="data">
     <template slot="main" scope="props">
-      <div class="data-container d-flex flex-column justify-content-start align-items-center">
-        <modal-data-row label="Date" :text="props.data.date"></modal-data-row>
-        <modal-data-row label="Time" :text="props.data.time"></modal-data-row>
-        <modal-data-row label="Address" :text="props.data.address"></modal-data-row>
-      </div>
+      <div class="d-flex flex-column justify-content-start align-items-center">
+        <div id="collision-modal-print-root" class="data-section d-flex justify-content-start align-items-start">
+          <div class="data-container d-flex flex-column justify-content-start align-items-center">
+            <modal-data-row label="Date" :text="props.data.date"></modal-data-row>
+            <modal-data-row label="Time" :text="props.data.time"></modal-data-row>
+            <modal-data-row label="Address" :text="props.data.address"></modal-data-row>
+            <modal-data-row label="Location Description" :text="props.data.attendingOfficer"></modal-data-row>
+          </div>
 
-      <div class="data-container d-flex flex-column justify-content-start align-items-center">
-        <modal-data-row v-for="(driver, index) in props.data.drivers" :key="driver.name" :label="`Driver ${index+1}`" :text="`${driver.name}, ${driver.dob}, ${driver.gender}`"></modal-data-row>
-        <modal-data-row v-for="(vehicle, index) in props.data.vehicles" :key="vehicle.plate" :label="`Vehicle ${index+1}`" :text="`${vehicle.plate}, ${vehicle.color}`"></modal-data-row>
-      </div>
+          <div class="data-container d-flex flex-column justify-content-start align-items-center">
+            <modal-data-row label="Attending Officer" :text="props.data.attendingOfficer"></modal-data-row>
+            <modal-data-row label="Reference" :text="props.data.reference"></modal-data-row>
+            <modal-data-row label="Description" :text="props.data.description"></modal-data-row>
+          </div>
 
-      <div class="data-container d-flex flex-column justify-content-start align-items-center">
-        <modal-data-row label="Attending Officer" :text="props.data.attendingOfficer"></modal-data-row>
-        <modal-data-row label="Reference" :text="props.data.reference"></modal-data-row>
-        <modal-data-row label="Description" :text="props.data.description"></modal-data-row>
+          <div class="data-container d-flex flex-column justify-content-start align-items-center">
+            <img class="img-main" :src="data.image ? data.image : photoPlaceholder"></img>
+            <modal-data-attachments @clickImage="clickImage" :data="data"></modal-data-attachments>
+          </div>
+        </div>
       </div>
     </template>
   </base-modal>
@@ -24,6 +29,8 @@
 <script>
 import BaseModal from '@/components/BaseModal';
 import ModalDataRow from '@/components/ModalDataRow';
+import ModalDataAttachments from '@/components/ModalDataAttachments';
+import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
   name: 'CollisionModal',
@@ -31,9 +38,11 @@ export default {
   components: {
     BaseModal,
     ModalDataRow,
+    ModalDataAttachments,
   },
   data() {
     return {
+      photoPlaceholder: PhotoPlaceholder,
     };
   },
   computed: {
@@ -42,6 +51,15 @@ export default {
     },
     vehicles() {
       return [];
+    },
+    modalImages() {
+      const mediaOrEmpty = this.data.media ? this.data.media : [];
+      return this.data.images ? this.data.images : mediaOrEmpty;
+    },
+  },
+  methods: {
+    clickImage(index) {
+      console.log(index);
     },
   },
 };

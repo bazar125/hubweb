@@ -35,6 +35,21 @@
       </div>
     </div>
 
+    <div v-if="!showEdit && this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
+      <div class="d-flex" style="flex: 0.5; height: 100%;">
+        <modal-data-drivers :drivers="perpetrators" @viewDriver="viewDriver"></modal-data-drivers>
+      </div>
+      <div class="d-flex" style="flex: 1; height: 100%;">
+        <modal-data-drivers :drivers="passengers" @viewDriver="viewDriver"></modal-data-drivers>
+      </div>
+    </div>
+
+    <div v-if="!showEdit && this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
+      <div class="d-flex" style="flex: 1; height: 100%;">
+        <modal-data-drivers :drivers="pedestrians" @viewDriver="viewDriver"></modal-data-drivers>
+      </div>
+    </div>
+
     <span v-if="!showEdit && (this.type === 'citation' && this.data.completionStatus !== 'Warning') || this.type === 'collision'" class="txt-timeleft">There are 12 days left to pay this citation</span>
 
     <div :class="{'timeleft-hidden': showEdit || this.type === 'citation' && this.data.completionStatus === 'Warning' }" class="action-container d-flex justify-content-end align-items-center">
@@ -105,11 +120,25 @@ export default {
       }
 
       return this.data.drivers;
-      // return this.data.drivers.map((x) => {
-      //   return { name: x };
-      // });
+    },
+    perpetrators() {
+      return this.data.perpetrators ? this.data.perpetrators : [];
+    },
+    passengers() {
+      return this.data.passengers ? this.data.passengers : [];
+    },
+    pedestrians() {
+      return this.data.pedestrians ? this.data.pedestrians : [];
     },
     vehicles() {
+      if (this.type === 'citation') {
+        return [{
+          id: this.data.vehicleRegistration,
+          name: this.data.vehicleRegistration,
+        }];
+      }
+
+      return this.data.vehicles;
     },
   },
   mounted() {
@@ -172,7 +201,8 @@ export default {
       win.focus();
     },
     clickPrint() {
-      const node = document.getElementById('citation-modal-print-root');
+      const id = `${this.type}-modal-print-root`;
+      const node = document.getElementById(id);
       html2canvas(node, { allowTaint: false, useCORS: true }).then((canvas) => {
         const dataUrl = canvas.toDataURL();
         printJS(dataUrl, 'image');
@@ -182,14 +212,44 @@ export default {
       // eslint-disable-next-line max-len
       const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
       const additionalPenalty = this.data.additionalPenalty.replace(/\u2013|\u2014/g, '-');
-      const location = this.data.location.replace(/\u2013|\u2014/g, '-');
+      let loc;
+      if (this.data.location) {
+        loc = this.data.location;
+      } else if (this.data.address) {
+        loc = this.data.address;
+      } else {
+        loc = '';
+      }
+      const location = loc.replace(/\u2013|\u2014/g, '-');
+      const typeCapital = this.type.charAt(0).toUpperCase() + this.type.slice(1);
+
+      let body;
+      if (this.type === 'citation') {
+        // eslint-disable-next-line max-len
+        const citationBody = `Payment%20Reference%3A%20${ref}%0ACompletion%20Status%3A%20${escape(this.data.completionStatus)}%0ADate%3A%20${escape(this.data.date)}%0ATime%3A%20${escape(this.data.time)}%0ALocation%3A%20${escape(location)}%0ADriver%3A%20${escape(this.data.driverName)}%0AVehicle%20Registration%3A%20${escape(this.data.vehicleRegistration)}%0ACitation%20Code%3A%20${escape(this.data.citationCode)}%0ADescription%3A%20${escape(this.data.citationDescription)}%0AFine%3A%20${escape(this.data.fineAmount)}%0AAdditional%20Penalty%3A%20${escape(additionalPenalty)}%0AIssuing%20Officers%3A%20${escape(this.data.issuingOfficers[0])}`;
+        body = citationBody;
+      } else if (this.type === 'collision') {
+        // eslint-disable-next-line max-len
+        const collisionBody = `Reference%3A%20${ref}%0ADate%3A%20${escape(this.data.date)}%0ATime%3A%20${escape(this.data.time)}%0ALocation%3A%20${escape(location)}%0ADrivers%3A%20${encodeURI(this.drivers.map(x => x.name).join('\n'))}%0APerpetrators%3A%20${encodeURI(this.perpetrators.map(x => x.name).join('\n'))}%0APassengers%3A%20${encodeURI(this.passengers.map(x => x.name).join('\n'))}%0APedestrians%3A%20${encodeURI(this.pedestrians.map(x => x.name).join('\n'))}%0AVehicles%3A%20${encodeURI(this.vehicles.map(x => x.plate).join('\n'))}%0A`;
+        body = collisionBody;
+      } else if (this.type === 'driver') {
+        // eslint-disable-next-line max-len
+        const driverBody = `First Name: ${this.data.firstName}\nMiddle Name(s): ${this.data.middleName}\nLast Name: ${this.data.lastName}\nGender: ${this.data.gender}\nDate of Birth: ${this.data.dob}\nCitation Points: ${this.data.citationPoints}\nProsecutions: ${this.data.prosecutions}\nEmail: ${this.data.email}\nCurrent License Date Issue: ${this.data.currentLicenseDateIssue}\nLicense Class: ${this.data.licenseClass}\nLicense Type: ${this.data.licenseType}\nLicense Date of First Issue: ${this.data.licenseDateOfFirstIssue}\nLicense Expiry: ${this.data.licenseExpiry}\nPhone: ${this.data.phone}\nRegistered Addresses: ${this.data.registeredAddresses.join('\n')}\nInsured Vehicles: ${this.data.insuredVehicles.join('\n')}\n`;
+        body = encodeURI(driverBody);
+      } else if (this.type === 'vehicle') {
+        // eslint-disable-next-line max-len
+        const vehicleBody = `Current Plate: ${this.data.currentPlate}\nManufacturer: ${this.data.manufacturer}\nModel: ${this.data.model}\nYear of Manufacture: ${this.data.yearOfManufacture}\nBody: ${this.data.body}\nColor: ${this.data.color}\nCountry of Origin: ${this.data.countryOfOrigin}\nCylinder Capacity: ${this.data.cylinderCapacity}\nDate of First Reg.: ${this.data.dateOfFirstRegistration}\nImport Date: ${this.data.importDate}\nFuel Type: ${this.data.fuelType}\nOdometer History: ${this.data.odometerHistory.join('\n')}\nMOT Expiry: ${this.data.motExpiry}\nEngine Number: ${this.data.engineNumber}\nPin: ${this.data.pin}\nVin: ${this.data.vin}\nInsured Drivers: ${this.data.insuredVehicles.map(x => `${x.name} (${x.coverageType}, ${x.startDate} - ${x.validUntil})`)}\n`;
+        body = encodeURI(vehicleBody);
+      }
+
       // eslint-disable-next-line max-len
-      const mailTo = `mailto:?Subject=MotoHub%20Citation%20${ref}&Body=Payment%20Reference%3A%20${ref}%0ACompletion%20Status%3A%20${escape(this.data.completionStatus)}%0ADate%3A%20${escape(this.data.date)}%0ATime%3A%20${escape(this.data.time)}%0ALocation%3A%20${escape(location)}%0ADriver%3A%20${escape(this.data.driverName)}%0AVehicle%20Registration%3A%20${escape(this.data.vehicleRegistration)}%0ACitation%20Code%3A%20${escape(this.data.citationCode)}%0ADescription%3A%20${escape(this.data.citationDescription)}%0AFine%3A%20${escape(this.data.fineAmount)}%0AAdditional%20Penalty%3A%20${escape(additionalPenalty)}%0AIssuing%20Officers%3A%20${escape(this.data.issuingOfficers[0])}`;
+      const mailTo = `mailto:?Subject=MotoHub%20${typeCapital}%20${ref}&Body=${body}`;
       console.log(mailTo);
       window.location.href = mailTo;
     },
     clickPdf() {
-      const node = document.getElementById('citation-modal-print-root');
+      const id = `${this.type}-modal-print-root`;
+      const node = document.getElementById(id);
       html2canvas(node, { allowTaint: false, useCORS: true }).then((canvas) => {
         const dataUrl = canvas.toDataURL();
         // const doc = new JsPDF();
@@ -198,7 +258,8 @@ export default {
         // doc.addImage(dataUrl, 0, 0, 200, 300);
         doc.addImage(dataUrl, 'PNG', 10, 10);
         const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
-        doc.save(`Citation-${ref}.pdf`);
+        const typeCapital = this.type.charAt(0).toUpperCase() + this.type.slice(1);
+        doc.save(`${typeCapital}-${ref}.pdf`);
       });
     },
   },
