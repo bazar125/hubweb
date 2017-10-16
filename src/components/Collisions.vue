@@ -2,7 +2,7 @@
   <div class="collisions d-flex flex-column">
     <datatable title="Collisions" modalId="collisionModal" modalTitle="Collision" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields">
       <template slot="modal" scope="props">
-        <collision-modal :data="props.data"></collision-modal>
+        <collision-modal :data="props.data" modal-id="collisionModal"></collision-modal>
       </template>
     </datatable>
   </div>

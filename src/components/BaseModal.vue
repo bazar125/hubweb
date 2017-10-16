@@ -2,7 +2,7 @@
   <div class="driver-modal d-flex flex-column justify-content-center align-items-start">
     <div :class="{'yellow-heading': isWarning}" class="modal-heading d-flex justify-content-start align-items-center">
       <span class="txt-title">{{title}}</span>
-      <span :class="{'reference-nav-hidden': hideNavigation}" class="mx-auto txt-reference">Ref: {{data.location ? data.paymentReference : ''}}</span>
+      <span :class="{'reference-nav-hidden': hideNavigation}" class="mx-auto txt-reference">Ref: {{data.location ? data.paymentReference : data.reference}}</span>
       <div v-if="!hideNavigation" @click="clickNewTab()" class="heading-btn-container d-flex justify-content-start align-items-center">
         <span class="txt-heading">open in new tab</span>
         <icon class="icon-heading" name="external-link"></icon>
@@ -39,7 +39,7 @@
       <div class="d-flex" style="flex: 0.5; height: 100%;">
         <modal-data-drivers title="Perpetrators" :drivers="perpetrators" @viewDriver="viewDriver"></modal-data-drivers>
       </div>
-      <div v-if="this.passengers.count > 0" class="d-flex" style="flex: 0.5; height: 100%;">
+      <div v-if="this.passengers.count > 0" class="d-flex" style="flex: 0.5 ; height: 100%;">
         <modal-data-drivers title="Passengers" :drivers="passengers" @viewDriver="viewDriver" style="margin-right: 0px;"></modal-data-drivers>
       </div>
     </div>
@@ -192,12 +192,14 @@ export default {
     },
     viewDriver(driver) {
       console.log(driver);
-      const win = window.open(`/#/_driver/${driver.$id}`, '_blank');
+      const id = driver.$id ? driver.$id : driver.id;
+      const win = window.open(`/#/_driver/${id}`, '_blank');
       win.focus();
     },
     viewVehicle(vehicle) {
       console.log(vehicle);
-      const win = window.open(`/#/_vehicle/${vehicle.$id}`, '_blank');
+      const id = vehicle.$id ? vehicle.$id : vehicle.id;
+      const win = window.open(`/#/_vehicle/${id}`, '_blank');
       win.focus();
     },
     clickPrint() {

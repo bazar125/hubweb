@@ -34,7 +34,7 @@ import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
   name: 'CollisionModal',
-  props: ['data'],
+  props: ['data', 'modalId', 'hideNavigation'],
   components: {
     BaseModal,
     ModalDataRow,
