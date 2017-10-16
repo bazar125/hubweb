@@ -2,10 +2,10 @@
   <div class="modal-data-vehicles d-flex flex-column justify-content-start align-items-start">
     <span class="txt-label">Vehicles</span>
     <b-list-group class="vehicles-list">
-      <b-list-group-item class="vehicle-item" v-for="(vehicle, index) in vehicles" :key="vehicle">
+      <b-list-group-item class="vehicle-item" v-for="(vehicle, index) in vehicles" :key="vehicle.plate">
         <img class="img-avatar" src="../assets/car_placeholder.jpg"></img>
-        {{vehicle}}
-        <base-btn @click="$emit('viewVehicle', index)" class="ml-auto btn-view" text="View"></base-btn>
+        {{vehicle.plate}}
+        <base-btn @click="$emit('viewVehicle', vehicle)" class="ml-auto btn-view" text="View"></base-btn>
         <!-- <b-badge pill variant="success">VIEW</b-badge> -->
         <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
       </b-list-group-item>
@@ -20,14 +20,13 @@ import PhotoPlaceholder from '../assets/photo_placeholder.png';
 export default {
   name: 'ModalDataVehicles',
   // props: ['label', 'images'],
-  props: ['data'],
+  props: ['data', 'vehicles'],
   components: {
     BaseBtn,
   },
   data() {
     return {
       photoPlaceholder: PhotoPlaceholder,
-      vehicles: ['DEF456'],
     };
   },
   methods: {

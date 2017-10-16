@@ -12,6 +12,7 @@ import Reports from '@/components/Reports';
 import Admin from '@/components/Admin';
 import Settings from '@/components/Settings';
 import ViewCitation from '@/components/ViewCitation';
+import ViewCollision from '@/components/ViewCollision';
 import ViewDriver from '@/components/ViewDriver';
 import ViewVehicle from '@/components/ViewVehicle';
 
@@ -65,6 +66,12 @@ export default new Router({
       path: '/collisions',
       name: 'Collisions',
       component: Collisions,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/_collision/:reference',
+      name: 'ViewCollision',
+      component: ViewCollision,
       meta: { requiresAuth: true },
     },
     {

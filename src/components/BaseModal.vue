@@ -27,16 +27,16 @@
     </div>
 
     <div v-if="!showEdit && this.type === 'citation' || this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
-      <div class="d-flex" style="flex: 1; height: 100%;">
+      <div class="d-flex" style="flex: 0.5; height: 100%;">
         <modal-data-drivers :drivers="drivers" @viewDriver="viewDriver"></modal-data-drivers>
       </div>
-      <div class="d-flex" style="flex: 1; height: 100%;">
+      <div class="d-flex" style="flex: 0.5; height: 100%;">
         <modal-data-vehicles :vehicles="vehicles" @viewVehicle="viewVehicle"></modal-data-vehicles>
       </div>
     </div>
 
     <div v-if="!showEdit && this.type === 'collision'" class="driver-vehicle-container d-flex justify-content-center align-items-start">
-      <div class="d-flex" style="flex: 0.5; height: 100%;">
+      <div v-if="this.perpetrators.count > 0" class="d-flex" style="flex: 0.5; height: 100%;">
         <modal-data-drivers title="Perpetrators" :drivers="perpetrators" @viewDriver="viewDriver"></modal-data-drivers>
       </div>
       <div v-if="this.passengers.count > 0" class="d-flex" style="flex: 0.5 ; height: 100%;">
@@ -52,7 +52,7 @@
 
     <span v-if="!showEdit && (this.type === 'citation' && this.data.completionStatus !== 'Warning')" class="txt-timeleft">There are 12 days left to pay this citation</span>
 
-    <div :class="{'timeleft-hidden': showEdit || this.type === 'citation' && this.data.completionStatus === 'Warning' || this.type === 'collision' }" class="action-container d-flex justify-content-end align-items-center">
+    <div :class="{'timeleft-hidden': showEdit || this.type === 'citation' && this.data.completionStatus === 'Warning' || this.type === 'collision' || this.type === 'driver' }" class="action-container d-flex justify-content-end align-items-center">
       <base-btn @click="toggleEdit()" :class="{'btn-back': showEdit}" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
       <base-btn v-if="!showEdit" @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
       <base-btn v-if="!showEdit" :class="{'btn-disabled': !userHasEmail}" @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
@@ -119,7 +119,7 @@ export default {
         }];
       }
 
-      return this.data.drivers;
+      return this.data.drivers ? this.data.drivers : [];
     },
     perpetrators() {
       return this.data.perpetrators ? this.data.perpetrators : [];
@@ -134,7 +134,7 @@ export default {
       if (this.type === 'citation') {
         return [{
           id: this.data.vehicleRegistration,
-          name: this.data.vehicleRegistration,
+          plate: this.data.vehicleRegistration,
         }];
       }
 
@@ -187,12 +187,11 @@ export default {
     },
     clickNewTab() {
       const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
-      const win = window.open(`/#/_citation/${ref}`, '_blank');
+      const win = window.open(`/#/_${this.type}/${ref}`, '_blank');
       win.focus();
     },
     viewDriver(driver) {
-      console.log(driver);
-      const id = driver.$id ? driver.$id : driver.id;
+      const id = driver.driverId;
       const win = window.open(`/#/_driver/${id}`, '_blank');
       win.focus();
     },

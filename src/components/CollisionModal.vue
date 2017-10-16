@@ -46,12 +46,6 @@ export default {
     };
   },
   computed: {
-    drivers() {
-      return [];
-    },
-    vehicles() {
-      return [];
-    },
     modalImages() {
       const mediaOrEmpty = this.data.media ? this.data.media : [];
       return this.data.images ? this.data.images : mediaOrEmpty;

@@ -2,10 +2,10 @@
   <div class="modal-data-drivers d-flex flex-column justify-content-start align-items-start">
     <span class="txt-label">{{title ? title : 'Drivers'}}</span>
     <b-list-group class="drivers-list">
-      <b-list-group-item class="driver-item" v-for="(driver, index) in drivers" :key="driver">
+      <b-list-group-item class="driver-item" v-for="(driver, index) in drivers" :key="driver.name">
         <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
-        {{driver}}
-        <base-btn @click="$emit('viewDriver', index)" class="ml-auto btn-view" text="View"></base-btn>
+        {{driver.name}}
+        <base-btn @click="$emit('viewDriver', driver)" class="ml-auto btn-view" text="View"></base-btn>
         <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
       </b-list-group-item>
     </b-list-group>
@@ -19,14 +19,13 @@ import PhotoPlaceholder from '../assets/photo_placeholder.png';
 export default {
   name: 'ModalDataDrivers',
   // props: ['label', 'images'],
-  props: ['data', 'title'],
+  props: ['data', 'title', 'drivers'],
   components: {
     BaseBtn,
   },
   data() {
     return {
       photoPlaceholder: PhotoPlaceholder,
-      drivers: ['John Doe'],
     };
   },
   methods: {

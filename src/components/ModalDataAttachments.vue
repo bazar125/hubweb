@@ -17,7 +17,6 @@ import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
   name: 'ModalDataAttachments',
-  // props: ['label', 'images'],
   props: ['label', 'data'],
   components: {
   },
@@ -34,7 +33,9 @@ export default {
 
       const imagesOrEmpty = this.data.images ? this.data.images : [];
       const images = this.data.media ? this.data.media : imagesOrEmpty;
-      return images.count > index ? images[index] : this.photoPlaceholder;
+      console.log(index);
+      console.log(images);
+      return images.length > index ? images[index] : this.photoPlaceholder;
     },
     clickImage(index) {
       console.log(`print image ${index}`);

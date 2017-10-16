@@ -34,7 +34,7 @@ import DarkCard from '@/components/DarkCard';
 
 export default {
   name: 'Datatable',
-  props: ['perPage', 'items', 'fields', 'totalRows', 'searchFilter', 'title', 'modalId', 'modalTitle'],
+  props: ['perPage', 'items', 'fields', 'totalRows', 'title', 'modalId', 'modalTitle'],
   components: {
     DarkCard,
     TableSearch,
