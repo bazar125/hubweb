@@ -34,7 +34,7 @@ export default {
       bool: {
         must: [
           {
-            term: { _id: this.id },
+            match: { currentPlate: this.id },
           },
         ],
       },

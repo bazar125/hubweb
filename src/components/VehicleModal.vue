@@ -1,30 +1,35 @@
 <template>
-  <base-modal class="vehicle-modal d-flex flex-column justify-content-center align-items-start" type="vehicle" :data="data">
+  <base-modal :hide-navigation="hideNavigation" :modalId="modalId" class="vehicle-modal d-flex flex-column justify-content-center align-items-start" type="vehicle" :data="data">
     <template slot="main" scope="props">
-      <div class="data-container d-flex flex-column justify-content-start align-items-center">
-        <modal-data-row label="Current Plate" :text="props.data.currentPlate"></modal-data-row>
-        <modal-data-row label="Manufacturer" :text="props.data.manufacturer"></modal-data-row>
-        <modal-data-row label="Model" :text="props.data.model"></modal-data-row>
-        <modal-data-row label="Year of Manufacture" :text="props.data.yearOfManufacture"></modal-data-row>
-        <modal-data-row label="Body" :text="props.data.body"></modal-data-row>
-        <modal-data-row label="Color" :text="props.data.color"></modal-data-row>
-      </div>
+      <div class="d-flex flex-column justify-content-start align-items-center">
+        <div id="vehicle-modal-print-root" class="data-section d-flex justify-content-start align-items-start">
+          <div class="data-container d-flex flex-column justify-content-start align-items-center">
+            <modal-data-row label="Current Plate" :text="props.data.currentPlate"></modal-data-row>
+            <modal-data-row label="Manufacturer" :text="props.data.manufacturer"></modal-data-row>
+            <modal-data-row label="Model" :text="props.data.model"></modal-data-row>
+            <modal-data-row label="Year of Manufacture" :text="props.data.yearOfManufacture"></modal-data-row>
+            <modal-data-row label="Body" :text="props.data.body"></modal-data-row>
+            <modal-data-row label="Color" :text="props.data.color"></modal-data-row>
+            <modal-data-row label="Insured Drivers" :text="!props.data.insuredDrivers ? '' : `${props.data.insuredDrivers[0].name} (${props.data.insuredDrivers[0].coverageType}, ${props.data.insuredDrivers[0].startDate} - ${props.data.insuredDrivers[0].validUntil})`"></modal-data-row>
+          </div>
 
-      <div class="data-container d-flex flex-column justify-content-start align-items-center">
-        <modal-data-row label="Country of Origin" :text="props.data.countryOfOrigin"></modal-data-row>
-        <modal-data-row label="Cylinder Capacity" :text="props.data.cylinderCapacity"></modal-data-row>
-        <modal-data-row label="Date of First Reg." :text="props.data.dateOfFirstRegistration"></modal-data-row>
-        <modal-data-row label="Import Date" :text="props.data.importDate"></modal-data-row>
-        <modal-data-row label="Fuel Type" :text="props.data.fuelType"></modal-data-row>
-        <modal-data-row label="Odometer History" :text="props.data.odometerHistory ? props.data.odometerHistory.join(', ') : ''"></modal-data-row>
-      </div>
+          <div class="data-container d-flex flex-column justify-content-start align-items-center">
+            <modal-data-row label="Country of Origin" :text="props.data.countryOfOrigin"></modal-data-row>
+            <modal-data-row label="Cylinder Capacity" :text="props.data.cylinderCapacity"></modal-data-row>
+            <modal-data-row label="Date of First Reg." :text="props.data.dateOfFirstRegistration"></modal-data-row>
+            <modal-data-row label="Import Date" :text="props.data.importDate"></modal-data-row>
+            <modal-data-row label="Fuel Type" :text="props.data.fuelType"></modal-data-row>
+            <modal-data-row label="Odometer History" :text="props.data.odometerHistory ? props.data.odometerHistory.join(', ') : ''"></modal-data-row>
+          </div>
 
-      <div class="data-container d-flex flex-column justify-content-start align-items-center">
-        <modal-data-row label="Mot Expiry" :text="props.data.motExpiry"></modal-data-row>
-        <modal-data-row label="Engine Number" :text="props.data.engineNumber"></modal-data-row>
-        <modal-data-row label="Pin" :text="props.data.pin"></modal-data-row>
-        <modal-data-row label="Vin" :text="props.data.vin"></modal-data-row>
-        <modal-data-row label="Insured Drivers" :text="!props.data.insuredDrivers ? '' : `${props.data.insuredDrivers[0].name} (${props.data.insuredDrivers[0].coverageType}, ${props.data.insuredDrivers[0].startDate} - ${props.data.insuredDrivers[0].validUntil})`"></modal-data-row>
+          <div class="data-container d-flex flex-column justify-content-start align-items-center">
+            <img class="img-main" :src="data.image ? data.image : photoPlaceholder"></img>
+            <modal-data-row label="Mot Expiry" :text="props.data.motExpiry"></modal-data-row>
+            <modal-data-row label="Engine Number" :text="props.data.engineNumber"></modal-data-row>
+            <modal-data-row label="Pin" :text="props.data.pin"></modal-data-row>
+            <modal-data-row label="Vin" :text="props.data.vin"></modal-data-row>
+          </div>
+        </div>
       </div>
     </template>
   </base-modal>
@@ -33,20 +38,40 @@
 <script>
 import BaseModal from '@/components/BaseModal';
 import ModalDataRow from '@/components/ModalDataRow';
+import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
   name: 'VehicleModal',
-  props: ['data'],
+  props: ['data', 'modalId', 'hideNavigation'],
   components: {
     BaseModal,
     ModalDataRow,
   },
   data() {
     return {
+      photoPlaceholder: PhotoPlaceholder,
     };
   },
 };
 </script>
 
 <style scoped>
+.img-main {
+  /* margin-right: 5px; */
+  width: 180px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center center;
+  margin-bottom: 5px;
+}
+
+.img-full {
+  margin-right: 0px;
+  flex: 1;
+}
+
+.data-section {
+  flex: 1;
+  width: 100%;
+}
 </style>

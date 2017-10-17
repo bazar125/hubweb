@@ -80,7 +80,7 @@
     </div>
 
     <div :class="{'timeleft-hidden': showEdit || showVerify || this.type === 'citation' && this.data.completionStatus === 'Warning' || this.type === 'collision' || this.type === 'driver' }" class="action-container d-flex justify-content-end align-items-center">
-      <base-btn v-if="this.type !== 'collision'" @click="toggleEdit()" :class="{'btn-back': showEdit || showVerify}" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
+      <base-btn v-if="this.type !== 'collision' && this.type !== 'vehicle'" @click="toggleEdit()" :class="{'btn-back': showEdit || showVerify}" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
       <base-btn v-if="!showEdit && !showVerify" @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
       <base-btn v-if="!showEdit && !showVerify" :class="{'btn-disabled': !userHasEmail}" @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
       <base-btn v-if="!showEdit && !showVerify" @click="clickPdf()" class="btn-pdf" text="PDF" icon="file-pdf-o"></base-btn>
@@ -251,8 +251,10 @@ export default {
     },
     clickNewTab() {
       let ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
-      if (!ref) {
+      if (!ref && this.type === 'driver') {
         ref = this.data.$id ? this.data.$id : this.data.id;
+      } else if (!ref && this.type === 'vehicle') {
+        ref = this.data.currentPlate;
       }
       const win = window.open(`/#/_${this.type}/${ref}`, '_blank');
       win.focus();

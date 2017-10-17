@@ -1,17 +1,10 @@
 <template>
   <div class="vehicles d-flex flex-column">
-    <div class="vehicles-upper d-flex justify-content-start align-items-center">
-      <table-search v-model="searchFilter"></table-search>
-    </div>
-    <div class="vehicles-lower d-flex flex-column justify-content-start align-items-center">
-      <div class="container-vehicles d-flex flex-column justify-content-center align-items-center">
-        <datatable title="Vehicles" modalId="vehicleModal" modalTitle="Vehicle" class="vehicle-table" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields" :search-filter="searchFilter">
-          <template slot="modal" scope="props">
-            <vehicle-modal :data="props.data"></vehicle-modal>
-          </template>
-        </datatable>
-      </div>
-    </div>
+    <datatable title="Vehicles" modalId="vehicleModal" modalTitle="Vehicle" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields">
+      <template slot="modal" scope="props">
+        <vehicle-modal :data="props.data" modal-id="vehicleModal"></vehicle-modal>
+      </template>
+    </datatable>
   </div>
 </template>
 
@@ -107,34 +100,12 @@ export default {
   height: 100%;
   /* Sidenav width: 150px */
   width: calc(100% - 150px);
-  background-color: #323444;
-}
-
-.vehicles-upper {
-  overflow: hidden;
-  height: 52px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: #455a64;
-}
-
-.vehicles-lower {
-  overflow: hidden;
-  flex: 1;
-  padding: 10px 20px;
-}
-
-.container-vehicles {
-  width: 100%;
-  flex: 0.5;
+  background-color: #2c2e4a;
+  padding: 10px;
 }
 
 .datatable {
   width: 100%;
-}
-
-.vehicle-table {
-  flex: 1;
 }
 
 .search-input {
@@ -154,12 +125,12 @@ export default {
   width: 100%;
 }
 
-.vehicles >>> .dark-card {
+.vehicles>>>.dark-card {
   width: 100%;
   flex: 1;
 }
 
-.vehicles >>> .datatable {
+.vehicles>>>.datatable {
   flex: 1;
   width: 100% !important;
 }

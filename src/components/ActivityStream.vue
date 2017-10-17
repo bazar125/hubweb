@@ -3,27 +3,8 @@
     <lottie class="loading-animation" :options="defaultOptions" :width="160" :height="160" />
     <dark-card :showPulse="true" class="container-card" title="Live Feed">
       <div class="activity-stream-inner">
-        <div v-for="(activity, index) in activities" :key="activity.$id" :class="{'blink-title': activity.$animate}" class="d-flex flex-column justify-content-start align-items-center" style="position: relative;">
-          <div :class="{'row-citation': activity.location && activity.completionStatus !== 'Warning', 'row-warning': activity.location && activity.completionStatus === 'Warning', 'row-collision': !activity.location}" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
-            <!-- <div :class="{'bg-blue': activity.location, 'bg-red': !activity.location, 'blink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center">
-                            <icon :name="activity.location ? 'book' : 'fire' " class="icon-master icon-title"></icon>
-                            <span class="txt-title">{{activity.location ? 'Citation' : 'Collision'}}</span>
-                            <b-btn @click.stop="showModal(activity, index, $event.target)" :class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn>
-                          </div>
-                          <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
-                            <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon>
-                            <span class="txt-address">{{activity.location ? activity.location : (activity.address ? activity.address : 'Unknown address') }}</span>
-                          </div>
-                          <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 5px;">
-                            <icon name="clock-o" class="icon-small"></icon>
-                            <span class="txt-timeago">{{activity.timeAgo}}</span>
-                          </div>
-
-                          <div v-if="!activity.location" class="d-flex justify-content-start align-items-center" style="width: 100%; overflow: hidden;">
-                            <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
-                          </div> -->
-
-            <!-- <div :class="{'bl ink-title': activity.$animate}" class="container-title d-flex justify-content-start align-items-center"> -->
+        <div v-for="(activity, index) in activities" :key="activity.$id" class="d-flex flex-column justify-content-start align-items-center" style="position: relative;">
+          <div :class="{'blink-title': activity.$animate, 'row-citation': activity.location && activity.completionStatus !== 'Warning', 'row-warning': activity.location && activity.completionStatus === 'Warning', 'row-collision': !activity.location}" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
             <div class="container-title d-flex justify-content-start align-items-center">
               <!-- <icon :name="activity.location ? 'book' : 'fire' " class="icon-master icon-title"></icon> -->
               <icon :name="activity.location ? 'circle' : 'circle'" :class="{'circle-citation': activity.location, 'circle-collision': !activity.location}" class="icon-master icon-title"></icon>

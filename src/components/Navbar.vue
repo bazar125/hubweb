@@ -1,6 +1,6 @@
 <template>
   <div class="custom-navbar d-flex justify-content-start align-items-center">
-    <img class="logo" src="../assets/kastelea_logo.png"></img>
+    <img @click="clickLogo" class="logo" src="../assets/kastelea_logo.png"></img>
     <!-- <span class="title-text">Kaduna State Traffic and Environmental Enforcement Agency</span> -->
     <span class="title-text">Kaduna State Traffic and Environmental Law Enforcement Agency</span>
     <!-- <img class="ml-auto img-avatar" src="../assets/user_placeholder.jpg"></img> -->
@@ -36,6 +36,9 @@ export default {
         this.$router.push('/login');
       });
     },
+    clickLogo() {
+      this.$router.push('/');
+    },
   },
 };
 </script>
@@ -46,7 +49,7 @@ export default {
   /* background-color: #2c2e4a; */
   background-color: #212338;
   /* color: white; */
-  color:white;
+  color: white;
   height: 50px;
   padding: 10px 15px;
   padding-left: 0px;
@@ -63,6 +66,7 @@ export default {
   user-select: none;
   object-fit: contain;
   object-position: center center;
+  cursor: pointer;
 }
 
 .title-text {
@@ -110,7 +114,7 @@ export default {
   background-color: #63a54b;
   /* border-color: #8f90a8; */
   border-color: #63a54b;
-  color: rgba(255,255,255,0.84);
+  color: rgba(255, 255, 255, 0.84);
   /* border-radius: 4px; */
   border-radius: 45px;
   font-weight: 600;
