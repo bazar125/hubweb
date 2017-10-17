@@ -1,7 +1,7 @@
 <template>
   <dark-card title="System Information" class="system-information-card">
     <div class="d-flex justify-content-start align-items-center" style="flex: 1; width: 100%;">
-      <stats-widget type="Officers Online" icon="book" :value="statOfficers"></stats-widget>
+      <!-- <stats-widget type="Officers Online" icon="book" :value="statOfficers"></stats-widget> -->
       <!-- <stats-widget type="Collisions" icon="fire" :value="statCollisions"></stats-widget>
           <stats-widget type="Warnings" icon="exclamation" :value="statWarnings"></stats-widget>
           <stats-widget type="Overdue Fines" icon="exclamation" :value="statFines"></stats-widget> -->

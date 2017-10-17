@@ -31,10 +31,14 @@ export default {
   },
   methods: {
     clickCitations() {
-      this.$router.push('/citations');
+      // this.$router.push('/citations');
+      const win = window.open('/#/citations', '_blank');
+      win.focus();
     },
     clickCollisions() {
-      this.$router.push('/collisions');
+      // this.$router.push('/collisions');
+      const win = window.open('/#/collisions', '_blank');
+      win.focus();
     },
   },
 };
