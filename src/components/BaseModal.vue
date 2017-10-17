@@ -1,5 +1,5 @@
 <template>
-  <div class="driver-modal d-flex flex-column justify-content-center align-items-start">
+  <div class="driver-modal base-modal d-flex flex-column justify-content-center align-items-start">
     <div :class="{'yellow-heading': isWarning}" class="modal-heading d-flex justify-content-start align-items-center">
       <span class="txt-title">{{title}}</span>
       <span v-if="this.type === 'driver' && this.data.status === 'Unverified'" :class="{'reference-nav-hidden': hideNavigation}" class="ml-auto txt-reference">Manually Added
@@ -383,6 +383,9 @@ export default {
 </script>
 
 <style scoped>
+.base-modal {
+  z-index: 9999 !important;
+}
 #test-print-root {
   z-index: 9999;
 }

@@ -649,4 +649,8 @@ circle.blue {
     transform: translateX(-100%);
   }
 }
+
+.leaflet-top, .leaflet-bottom {
+  z-index: 999;
+}
 </style>

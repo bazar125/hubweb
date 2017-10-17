@@ -1,6 +1,6 @@
 <template>
   <div class="activity-stream d-flex flex-column justify-content-start align-items-center">
-    <lottie class="loading-animation" :options="defaultOptions" :width="160" :height="160" />
+    <lottie class="loading-animation" :options="defaultOptions" :width="150" :height="150" />
     <dark-card :showPulse="true" class="container-card" title="Live Feed">
       <div class="activity-stream-inner">
         <div v-for="(activity, index) in activities" :key="activity.$id" class="d-flex flex-column justify-content-start align-items-center" style="position: relative;">
@@ -10,7 +10,7 @@
               <icon :name="activity.location ? 'circle' : 'circle'" :class="{'circle-citation': activity.location, 'circle-collision': !activity.location}" class="icon-master icon-title"></icon>
               <span class="txt-title">{{getActivityTitle(activity)}}</span>
               <!-- <b-btn @click.stop="showModal(activity, index, $event.target)" :class="{'btn-blue': activity.location, 'btn-red': !activity.location}" class="btn-primary btn-view" size="sm">View</b-btn> -->
-              <base-btn @click.stop="showModal(activity, index, {})" class="ml-auto btn-view" icon="search"></base-btn>
+              <base-btn @click="showModal(activity, index, {})" class="ml-auto btn-view" icon="search"></base-btn>
             </div>
             <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-bottom: 2px;">
               <!-- <icon name="location-arrow" class="icon-small" style="margin-right: 1px;"></icon> -->
@@ -29,12 +29,12 @@
               <img class="img-collision" :src="activity.image ? activity.image : photoPlaceholder"></img>
             </div>
 
-            <b-modal title="Citation" :id="`citationModal${index}`" ok-only>
+            <b-modal title="Citation" :id="`citationModal${index}`" :hide-header="true" :hide-footer="true">
               <citation-modal :modalId="`citationModal${index}`" :data="activity"></citation-modal>
             </b-modal>
 
-            <b-modal title="Collision" :id="`collisionModal${index}`" ok-only>
-              <collision-modal :data="activity"></collision-modal>
+            <b-modal title="Collision" :id="`collisionModal${index}`" :hide-header="true" :hide-footer="true">
+              <collision-modal :modalId="`collisionModal${index}`" :data="activity"></collision-modal>
             </b-modal>
           </div>
 
@@ -390,8 +390,8 @@ export default {
 
 .loading-animation {
   position: absolute;
-  top: -58px;
-  left: -30px;
+  top: -52px;
+  left: -25px;
   z-index: 999;
 }
 </style>
