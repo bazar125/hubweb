@@ -240,6 +240,7 @@ export default {
             updates[`/citations/${this.data.$id}`] = null;
             updates[`/drivers/${driver.$id}/citationPoints`] = points;
             ref.update(updates).then(() => {
+              this.$root.$emit('modaleditsection::savechanges', {});
               this.$root.$emit('hide::modal', `${this.name}Modal`);
               unsub();
             });
@@ -268,6 +269,7 @@ export default {
       updates[`/drivers/${this.data.$id}/licenseDateOfFirstIssue`] = this.data.licenseDateOfFirstIssue;
 
       ref.update(updates).then(() => {
+        this.$root.$emit('modaleditsection::savechanges', {});
         this.$root.$emit('hide::modal', `${this.name}Modal`);
       });
     },
@@ -294,6 +296,7 @@ export default {
       updates[`/vehicles/${this.data.$id}/yearOfManufacture`] = this.data.yearOfManufacture;
 
       ref.update(updates).then(() => {
+        this.$root.$emit('modaleditsection::savechanges', {});
         this.$root.$emit('hide::modal', `${this.name}Modal`);
       });
     },

@@ -58,12 +58,12 @@ export default {
           // icon: IconCitations,
           icon: 'fire',
         },
-        {
-          path: '/reports',
-          name: 'Reports',
-          // icon: IconCitations,
-          icon: 'bar-chart',
-        },
+        // {
+        //   path: '/reports',
+        //   name: 'Reports',
+        //   // icon: IconCitations,
+        //   icon: 'bar-chart',
+        // },
         // {
         //   path: '/personnel',
         //   name: 'Personnel',
@@ -77,12 +77,12 @@ export default {
           icon: 'user-plus',
           role: 'stateAdmin',
         },
-        {
-          path: '/settings',
-          name: 'Settings',
-          // icon: IconSettings,
-          icon: 'cog',
-        },
+        // {
+        //   path: '/settings',
+        //   name: 'Settings',
+        //   // icon: IconSettings,
+        //   icon: 'cog',
+        // },
       ],
     };
   },

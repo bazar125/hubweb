@@ -23,7 +23,7 @@
       <modal-audit-section :record-type="type" :data="data"></modal-audit-section>
     </div>
     <div v-else-if="showEdit && !showVerify" class="edit-root-container d-flex justify-content-start align-items-start">
-      <modal-edit-section :name="type" :data="data"></modal-edit-section>
+      <modal-edit-section @onSaveChanges="onSaveChanges" :name="type" :data="data"></modal-edit-section>
     </div>
     <div v-else-if="!showVerify" class="data-root-container d-flex justify-content-start align-items-start">
       <slot name="main" :data="data ? data : {}"></slot>
@@ -184,8 +184,18 @@ export default {
   },
   mounted() {
     this.userHasEmail = true;
+    this.$root.$on('modaleditsection::savechanges', () => {
+      this.initialize();
+    });
   },
   methods: {
+    initialize() {
+      this.showAudit = false;
+      this.showEdit = false;
+      this.showVerify = false;
+      this.editBtnTitle = this.type === 'citation' ? 'Delete' : 'Edit';
+      this.editBtnIcon = this.type === 'citation' ? 'trash-o' : 'pencil';
+    },
     addFileOne(event) {
       this.fileOne = event.target.files[0];
       this.fileOneName = this.fileOne.name;
@@ -332,21 +342,29 @@ export default {
       this.showVerify = true;
     },
     clickSubmitVerification() {
-      if (!this.stepOneFile || !this.stepTwoFile || !this.data.$id) {
+      if (!this.fileOne || !this.fileTwo || !this.data.$id) {
         return;
       }
       const photoGuid = this.getGuid();
-      const addressGuid = this.GetGuid();
+      const addressGuid = this.getGuid();
       const photoRef = Firebase.storage().ref(`verificationPhoto/${photoGuid}.jpg`);
       const addressRef = Firebase.storage().ref(`verificationProofOfAddress/${addressGuid}`);
 
-      photoRef.put(this.stepOneFile)
-        .then(() => addressRef.put(this.stepTwoFile))
+      photoRef.put(this.fileOne)
+        .then(() => addressRef.put(this.fileTwo))
         .then(() => {
           const ref = Firebase.database().ref();
           const updates = {};
           updates[`/drivers/${this.data.$id}/status`] = 'Verified';
+          updates[`/drivers/${this.data.$id}/status`] = 'Verified';
+          updates[`/drivers/${this.data.$id}/status`] = 'Verified';
+          updates[`/drivers/${this.data.$id}/status`] = 'Verified';
+          updates[`/drivers/${this.data.$id}/status`] = 'Verified';
+          updates[`/drivers/${this.data.$id}/status`] = 'Verified';
           ref.update(updates).then(() => {
+            this.showAudit = false;
+            this.showEdit = false;
+            this.showVerify = false;
             this.$root.$emit('hide::modal', `${this.type}Modal`);
           });
         });
@@ -658,9 +676,20 @@ export default {
   padding-bottom: 0px !important;
 }
 
+.btn-submit-verification.btn-disabled {
+  background-color: lightgray !important;
+  border-color: lightgray !important;
+}
+
 .btn-submit-verification:hover {
   background-color: #83bd6e !important;
   border-color: #83bd6e !important;
+}
+
+.btn-submit-verification.btn-disabled:hover { 
+  background-color: lightgray !important;
+  border-color: lightgray !important;
+
 }
 
 .name-file {
