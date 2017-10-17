@@ -37,9 +37,9 @@ export default {
         time: { label: 'Time', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         address: { label: 'Address', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell custom-datatable-address-cell' },
         description: { label: 'Description', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
-        attendingOfficer: { label: 'Attending Officer', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell custom-datatable-address-cell' },
-        allDrivers: { label: 'Drivers', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
-        allVehicles: { label: 'Vehicles', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        attendingOfficer: { label: 'Attending Officer', sortable: true, class: 'text-center vertical-middle', thClass: 'shorten-header', tdClass: 'custom-datatable-cell custom-datatable-address-cell' },
+        allDrivers: { label: 'Drivers', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell custom-datatable-address-cell' },
+        allVehicles: { label: 'Vehicles', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell custom-datatable-address-cell' },
         actions: { label: 'Actions', class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
       },
       totalRows: 0,
@@ -178,6 +178,16 @@ export default {
 
 .custom-table {
   width: 100%;
+}
+
+.collisions >>> .dark-card {
+  width: 100%;
+  flex: 1;
+}
+
+.collisions >>> .datatable {
+  flex: 1;
+  width: 100% !important;
 }
 </style>
 

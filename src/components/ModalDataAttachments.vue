@@ -33,8 +33,6 @@ export default {
 
       const imagesOrEmpty = this.data.images ? this.data.images : [];
       const images = this.data.media ? this.data.media : imagesOrEmpty;
-      console.log(index);
-      console.log(images);
       return images.length > index ? images[index] : this.photoPlaceholder;
     },
     clickImage(index) {

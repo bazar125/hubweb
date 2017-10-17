@@ -24,7 +24,6 @@
         <slot name="modal" :data="modalDetails.data"></slot>
       </b-modal>
     </dark-card>
-
   </div>
 </template>
 
@@ -160,6 +159,12 @@ export default {
 .vertical-middle {
   vertical-align: middle !important;
   padding-right: 10px !important;
+}
+
+.shorten-header {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .custom-datatable-cell {

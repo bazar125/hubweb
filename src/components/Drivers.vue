@@ -1,17 +1,10 @@
 <template>
   <div class="drivers d-flex flex-column">
-    <div class="drivers-upper d-flex justify-content-start align-items-center">
-      <table-search v-model="searchFilter"></table-search>
-    </div>
-    <div class="drivers-lower d-flex flex-column justify-content-start align-items-center">
-      <div class="container-drivers d-flex flex-column justify-content-center align-items-center">
-        <datatable title="Drivers" modalId="driverModal" modalTitle="Driver" class="driver-table" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields" :search-filter="searchFilter">
-          <template slot="modal" scope="props">
-            <driver-modal :data="props.data"></driver-modal>
-          </template>
-        </datatable>
-      </div>
-    </div>
+    <datatable title="Drivers" modalId="driverModal" modalTitle="Driver" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields">
+      <template slot="modal" scope="props">
+        <driver-modal :data="props.data" modal-id="driverModal"></driver-modal>
+      </template>
+    </datatable>
   </div>
 </template>
 
@@ -44,6 +37,14 @@ function processDrivers(items) {
         citationPoints: 'danger',
       };
     }
+    if (row.status === 'Unverified') {
+      row._dirtyClass = 'wwarning';
+      row._cellVariants = {
+        status: 'wwarning',
+      };
+    } else {
+      row.status = 'Verified';
+    }
   }
   return items;
 }
@@ -60,6 +61,7 @@ export default {
     return {
       driverItems: [],
       driverFields: {
+        status: { label: 'Status', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         firstName: { label: 'First Name', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         lastName: { label: 'Last Name', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         dob: { label: 'Date of Birth', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
@@ -114,35 +116,17 @@ export default {
   height: 100%;
   /* Sidenav width: 150px */
   width: calc(100% - 150px);
-  background-color: #323444;
-}
-
-.drivers-upper {
-  overflow: hidden;
-  height: 52px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: #455a64;
-}
-
-.drivers-lower {
-  overflow: hidden;
-  flex: 1;
-  padding: 10px 20px;
-}
-
-.container-drivers {
-  width: 100%;
-  flex: 0.5;
+  background-color: #2c2e4a;
+  padding: 10px;
 }
 
 .datatable {
   width: 100%;
 }
 
-.driver-table {
-  flex: 1;
-  margin-bottom: 10px;
+.search-input {
+  width: 150px;
+  /* height: 40px; */
 }
 
 .filter-bar {
@@ -155,6 +139,16 @@ export default {
 
 .custom-table {
   width: 100%;
+}
+
+.drivers>>>.dark-card {
+  width: 100%;
+  flex: 1;
+}
+
+.drivers>>>.datatable {
+  flex: 1;
+  width: 100% !important;
 }
 </style>
 

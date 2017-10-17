@@ -2,8 +2,9 @@
   <div class="driver-modal d-flex flex-column justify-content-center align-items-start">
     <div :class="{'yellow-heading': isWarning}" class="modal-heading d-flex justify-content-start align-items-center">
       <span class="txt-title">{{title}}</span>
-      <span :class="{'reference-nav-hidden': hideNavigation}" class="mx-auto txt-reference">Ref: {{data.location ? data.paymentReference : data.reference}}</span>
-      <div v-if="!hideNavigation" @click="clickNewTab()" class="heading-btn-container d-flex justify-content-start align-items-center">
+      <span v-if="this.type === 'driver' && this.data.status === 'Unverified'" :class="{'reference-nav-hidden': hideNavigation}" class="ml-auto txt-reference">Unverified <b-btn @click="clickVerify()" size="sm" class="btn-verify">Verify</b-btn></span>
+      <span v-if="this.type === 'citation' || this.type === 'collision'" :class="{'reference-nav-hidden': hideNavigation}" class="ml-auto txt-reference">Ref: {{data.location ? data.paymentReference : data.reference}}</span>
+      <div v-if="!hideNavigation" @click="clickNewTab()" class="ml-auto heading-btn-container d-flex justify-content-start align-items-center">
         <span class="txt-heading">open in new tab</span>
         <icon class="icon-heading" name="external-link"></icon>
         <!-- <base-btn @click="clickDelete()" class="btn-heading" icon="external-link"></base-btn> -->
@@ -107,6 +108,8 @@ export default {
     isWarning() {
       if (this.data.completionStatus && this.data.completionStatus === 'Warning') {
         return true;
+      } else if (this.data.status === 'Unverified') {
+        return true;
       }
 
       return false;
@@ -178,15 +181,16 @@ export default {
       }
       this.auditBtnTitle = 'History';
     },
-    onChange(newJson) {
-      console.log(newJson);
-    },
+    // onChange(newJson) {
+    // },
     clickClose() {
-      console.log(this.modalId);
       this.$root.$emit('hide::modal', this.modalId);
     },
     clickNewTab() {
-      const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
+      let ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
+      if (!ref) {
+        ref = this.data.$id ? this.data.$id : this.data.id;
+      }
       const win = window.open(`/#/_${this.type}/${ref}`, '_blank');
       win.focus();
     },
@@ -196,8 +200,7 @@ export default {
       win.focus();
     },
     viewVehicle(vehicle) {
-      console.log(vehicle);
-      const id = vehicle.$id ? vehicle.$id : vehicle.id;
+      const id = vehicle.plate;
       const win = window.open(`/#/_vehicle/${id}`, '_blank');
       win.focus();
     },
@@ -205,14 +208,20 @@ export default {
       const id = `${this.type}-modal-print-root`;
       const node = document.getElementById(id);
       html2canvas(node, { allowTaint: false, useCORS: true }).then((canvas) => {
-        const dataUrl = canvas.toDataURL();
+        // html2canvas(node, { allowTaint: false, useCORS: true }).then((canvas) => {
+        const dataUrl = canvas.toDataURL('image/png');
         printJS(dataUrl, 'image');
       });
     },
     clickEmail() {
       // eslint-disable-next-line max-len
-      const ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
-      const additionalPenalty = this.data.additionalPenalty.replace(/\u2013|\u2014/g, '-');
+      let ref = this.data.paymentReference ? this.data.paymentReference : this.data.reference;
+      if (!ref && this.type === 'driver') {
+        ref = `${this.data.firstName} ${this.data.lastName}`;
+      } else if (!ref && this.type === 'vehicle') {
+        ref = this.data.currentPlate;
+      }
+      const additionalPenalty = this.data.additionalPenalty ? this.data.additionalPenalty.replace(/\u2013|\u2014/g, '-') : '';
       let loc;
       if (this.data.location) {
         loc = this.data.location;
@@ -235,11 +244,11 @@ export default {
         body = collisionBody;
       } else if (this.type === 'driver') {
         // eslint-disable-next-line max-len
-        const driverBody = `First Name: ${this.data.firstName}\nMiddle Name(s): ${this.data.middleName}\nLast Name: ${this.data.lastName}\nGender: ${this.data.gender}\nDate of Birth: ${this.data.dob}\nCitation Points: ${this.data.citationPoints}\nProsecutions: ${this.data.prosecutions}\nEmail: ${this.data.email}\nCurrent License Date Issue: ${this.data.currentLicenseDateIssue}\nLicense Class: ${this.data.licenseClass}\nLicense Type: ${this.data.licenseType}\nLicense Date of First Issue: ${this.data.licenseDateOfFirstIssue}\nLicense Expiry: ${this.data.licenseExpiry}\nPhone: ${this.data.phone}\nRegistered Addresses: ${this.data.registeredAddresses.join('\n')}\nInsured Vehicles: ${this.data.insuredVehicles.join('\n')}\n`;
+        const driverBody = `First Name: ${this.data.firstName}\nMiddle Name(s): ${this.data.middleName}\nLast Name: ${this.data.lastName}\nGender: ${this.data.gender}\nDate of Birth: ${this.data.dob}\nCitation Points: ${this.data.citationPoints}\nProsecutions: ${this.data.prosecutions}\nEmail: ${this.data.email}\nCurrent License Date Issue: ${this.data.currentLicenseDateIssue}\nLicense Class: ${this.data.licenseClass}\nLicense Type: ${this.data.licenseType}\nLicense Date of First Issue: ${this.data.licenseDateOfFirstIssue}\nLicense Expiry: ${this.data.licenseExpiry}\nPhone: ${this.data.phone}\nRegistered Addresses: ${this.data.registeredAddresses.join('\n')}\nInsured Vehicles: ${this.data.insuredVehicles ? this.data.insuredVehicles.length : 0}\n`;
         body = encodeURI(driverBody);
       } else if (this.type === 'vehicle') {
         // eslint-disable-next-line max-len
-        const vehicleBody = `Current Plate: ${this.data.currentPlate}\nManufacturer: ${this.data.manufacturer}\nModel: ${this.data.model}\nYear of Manufacture: ${this.data.yearOfManufacture}\nBody: ${this.data.body}\nColor: ${this.data.color}\nCountry of Origin: ${this.data.countryOfOrigin}\nCylinder Capacity: ${this.data.cylinderCapacity}\nDate of First Reg.: ${this.data.dateOfFirstRegistration}\nImport Date: ${this.data.importDate}\nFuel Type: ${this.data.fuelType}\nOdometer History: ${this.data.odometerHistory.join('\n')}\nMOT Expiry: ${this.data.motExpiry}\nEngine Number: ${this.data.engineNumber}\nPin: ${this.data.pin}\nVin: ${this.data.vin}\nInsured Drivers: ${this.data.insuredVehicles.map(x => `${x.name} (${x.coverageType}, ${x.startDate} - ${x.validUntil})`)}\n`;
+        const vehicleBody = `Current Plate: ${this.data.currentPlate}\nManufacturer: ${this.data.manufacturer}\nModel: ${this.data.model}\nYear of Manufacture: ${this.data.yearOfManufacture}\nBody: ${this.data.body}\nColor: ${this.data.color}\nCountry of Origin: ${this.data.countryOfOrigin}\nCylinder Capacity: ${this.data.cylinderCapacity}\nDate of First Reg.: ${this.data.dateOfFirstRegistration}\nImport Date: ${this.data.importDate}\nFuel Type: ${this.data.fuelType}\nOdometer History: ${this.data.odometerHistory.join('\n')}\nMOT Expiry: ${this.data.motExpiry}\nEngine Number: ${this.data.engineNumber}\nPin: ${this.data.pin}\nVin: ${this.data.vin}\nInsured Drivers: ${this.data.insuredVehicles ? this.data.insuredVehicles.map(x => `${x.name} (${x.coverageType}, ${x.startDate} - ${x.validUntil})`) : ''}\n`;
         body = encodeURI(vehicleBody);
       }
 
@@ -268,6 +277,10 @@ export default {
 </script>
 
 <style scoped>
+#test-print-root {
+  z-index: 9999;
+}
+
 .data-root-container {
   width: 100%;
   margin-top: 10px;
@@ -514,6 +527,23 @@ export default {
 
 .reference-nav-hidden {
   margin-right: 0px !important;
+}
+.btn-verify {
+  margin-left: 10px;
+  height: 20px !important;
+  width: 40px !important;
+  padding: 0px !important;
+  background-color: #4869a4 !important;
+  border-color: #4869a4 !important;
+  color: white;
+  font-size: 10px !important;
+  transition: ease-out 0.2;
+}
+
+.btn-verify:hover {
+  background-color: #094977 !important;
+  border-color: #094977 !important;
+  transition: ease-out 0.2;
 }
 </style>
 

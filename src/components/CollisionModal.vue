@@ -7,10 +7,10 @@
             <modal-data-row label="Date" :text="props.data.date"></modal-data-row>
             <modal-data-row label="Time" :text="props.data.time"></modal-data-row>
             <modal-data-row label="Address" :text="props.data.address"></modal-data-row>
-            <modal-data-row label="Location Description" :text="props.data.attendingOfficer"></modal-data-row>
           </div>
 
           <div class="data-container d-flex flex-column justify-content-start align-items-center">
+            <modal-data-row label="Location Description" :text="props.data.attendingOfficer"></modal-data-row>
             <modal-data-row label="Attending Officer" :text="props.data.attendingOfficer"></modal-data-row>
             <modal-data-row label="Reference" :text="props.data.reference"></modal-data-row>
             <modal-data-row label="Description" :text="props.data.description"></modal-data-row>

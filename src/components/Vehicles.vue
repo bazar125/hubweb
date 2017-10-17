@@ -153,6 +153,16 @@ export default {
 .custom-table {
   width: 100%;
 }
+
+.vehicles >>> .dark-card {
+  width: 100%;
+  flex: 1;
+}
+
+.vehicles >>> .datatable {
+  flex: 1;
+  width: 100% !important;
+}
 </style>
 
 <style>
