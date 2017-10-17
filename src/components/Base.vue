@@ -10,10 +10,10 @@
       <dark-card title="Live Map" class="live-map-card">
         <div class="map-overlay d-flex justify-content-start align-items-center">
           <!-- <icon name="check-circle-o" class="icon-status color-green"></icon>
-              <span class="txt-status">All systems are functioning normally</span>
+                    <span class="txt-status">All systems are functioning normally</span>
 
-              <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
-              <span class="txt-status">No pending notifications</span> -->
+                    <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
+                    <span class="txt-status">No pending notifications</span> -->
           <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
             <span class="marquee-text">{{scrollHeadlines}}</span>
           </div>
@@ -28,11 +28,12 @@
           <clock class="custom-clock" :blink="true" :displaySeconds="false" />
         </div>
 
-        <v-map class="live-map" ref="map" :zoom="8" :center="center">
-          <!-- <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer> -->
-          <v-tilelayer url="http://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"></v-tilelayer>
-          <!-- <v-marker :lat-lng="center"></v-marker> -->
-        </v-map>
+        <div ref="map" class="live-map"></div>
+        <!-- <v-map class="live-map" ref="map" :zoom="8" :center="center"> -->
+        <!-- <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer> -->
+        <!-- <v-tilelayer url="http://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"></v-tilelayer> -->
+        <!-- <v-marker :lat-lng="center"></v-marker> -->
+        <!-- </v-map> -->
       </dark-card>
     </div>
   </div>
@@ -46,8 +47,8 @@ import ActivePersonnelCard from '@/components/ActivePersonnelCard';
 import Clock from 'vue-digital-clock';
 import L from 'leaflet';
 import * as d3 from 'd3';
-
 import TablePageLoader from '@/services/TablePageLoader';
+import MapStyle from '../assets/mapstyle.json';
 
 const pageLoader = new TablePageLoader('citation');
 
@@ -397,15 +398,22 @@ export default {
   data() {
     return {
       pingLayer: {},
-      center: [10.3080, 7.0142],
+      center: [10.5059, 7.4319],
       statCitations: 314,
       statCollisions: 214,
       statNotifications: 34,
       headlines: [],
+      map: {},
     };
   },
   mounted() {
-    this.initialize();
+    // this.initialize();
+    console.log(MapStyle);
+    this.map = new google.maps.Map(this.$refs.map, {
+      center: { lat: this.center[0], lng: this.center[1] },
+      zoom: 13,
+      styles: MapStyle,
+    });
   },
   created() {
     const apiKey = 'b145ac1c37d04657b72b1ce5097d48e6';
@@ -558,7 +566,7 @@ export default {
   border-right: 1px solid rgba(137, 146, 198, 0.2);
 }
 
-.live-map-card >>> .main-container {
+.live-map-card>>>.main-container {
   position: relative;
   padding: 0px;
 }
@@ -619,6 +627,9 @@ circle.blue {
 
 
 
+
+
+
 /* red is ef3135 */
 
 .txt-status {
@@ -627,6 +638,7 @@ circle.blue {
 
 .live-map {
   flex: 1;
+  width: 100%;
   /* flex: 1.61803398875;; */
 }
 
@@ -650,7 +662,8 @@ circle.blue {
   }
 }
 
-.leaflet-top, .leaflet-bottom {
+.leaflet-top,
+.leaflet-bottom {
   z-index: 999;
 }
 </style>
