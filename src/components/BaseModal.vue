@@ -80,7 +80,7 @@
     </div>
 
     <div :class="{'timeleft-hidden': showEdit || showVerify || this.type === 'citation' && this.data.completionStatus === 'Warning' || this.type === 'collision' || this.type === 'driver' }" class="action-container d-flex justify-content-end align-items-center">
-      <base-btn @click="toggleEdit()" :class="{'btn-back': showEdit || showVerify}" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
+      <base-btn v-if="this.type !== 'collision'" @click="toggleEdit()" :class="{'btn-back': showEdit || showVerify}" class="btn-delete" :text="editBtnTitle" :icon="editBtnIcon"></base-btn>
       <base-btn v-if="!showEdit && !showVerify" @click="clickPrint()" class="btn-print" text="Print" icon="print"></base-btn>
       <base-btn v-if="!showEdit && !showVerify" :class="{'btn-disabled': !userHasEmail}" @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o"></base-btn>
       <base-btn v-if="!showEdit && !showVerify" @click="clickPdf()" class="btn-pdf" text="PDF" icon="file-pdf-o"></base-btn>
@@ -258,7 +258,7 @@ export default {
       win.focus();
     },
     viewDriver(driver) {
-      const id = driver.driverId;
+      const id = driver.driverId ? driver.driverId : driver.id;
       const win = window.open(`/#/_driver/${id}`, '_blank');
       win.focus();
     },
