@@ -1,7 +1,7 @@
 <template>
   <div class="stats-widget d-flex justify-content-center align-items-center">
     <div class="stats-card d-flex justify-content-center align-items-center">
-      <div class="container-type d-flex flex-column justify-content-center align-items-center">
+      <div @click="$emit('click')" class="container-type d-flex flex-column justify-content-center align-items-center">
         <span class="txt-type"><b>{{type}}</b></span>
         <span class="txt-label">{{value}}</span>
       </div>
@@ -97,5 +97,6 @@ export default {
 
 .container-type {
   /* margin-left: 15px; */
+  cursor: pointer;
 }
 </style>
