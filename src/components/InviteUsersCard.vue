@@ -78,6 +78,21 @@ export default {
   height: 27.5px !important;
   padding: 3px !important;
   padding: 0px 8px !important;
+  color: rgba(0,0,0,0.54) !important;
+}
+
+.btn-invite:hover {
+  background-color: rgba(255,255,255,0.5);
+  color: rgba(0,0,0,0.84) !important;
+}
+
+.btn-invite >>> .btn-icon {
+  color: rgba(0,0,0,0.54) !important;
+}
+
+.btn-invite:hover >>> .btn-icon {
+  color: rgba(0,0,0,0.84) !important;
+  transition: ease-out 0.2s;
 }
 
 .users-list {
@@ -116,6 +131,6 @@ export default {
   width: 30px !important;
   margin-right: 10px;
   padding: 0px !important;
-  color: rgba(0,0,0, 0.84);
+  color: rgba(0,0,0, 0.84) !important;
 }
 </style>
