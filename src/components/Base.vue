@@ -109,7 +109,7 @@ export default {
         // eslint-disable-next-line max-len
         const latlng = [d3.randomNormal(this.center[0], 0.05)(), d3.randomNormal(this.center[1], 0.05)()];
         const duration = 2000;
-        const maxPings = 10;
+        const maxPings = 6;
         if (this.pingMarkers.length > maxPings) {
           const marker = this.pingMarkers.pop();
           marker.setMap(null);
