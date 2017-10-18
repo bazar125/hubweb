@@ -19,7 +19,7 @@
                   <b-badge pill variant="success">ACCEPTED</b-badge>
                   <span class="txt-timeago">2 hours ago</span>
                 </div> -->
-          <edit-user-modal :user="user" :index="index"></edit-user-modal>
+          <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
         </b-list-group-item>
       </b-list-group>
     </div>
@@ -106,7 +106,7 @@ export default {
 
 .txt-name {
   text-align: start;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-size: 11px;
   font-weight: 600;
 }
@@ -133,6 +133,11 @@ export default {
   /* color: #26B630 !important; */
   /* color: white !important; */
   color: rgba(0,0,0,0.87) !important;
-  border: 0px solid white;
+  border: 1px solid white;
+}
+
+.btn-view:hover {
+  background-color: transparent !important;
+  border: 1px solid rgba(0,0,0,0.54) !important;
 }
 </style>

@@ -10,10 +10,10 @@
       <dark-card title="Live Map" class="live-map-card">
         <div class="map-overlay d-flex justify-content-start align-items-center">
           <!-- <icon name="check-circle-o" class="icon-status color-green"></icon>
-                              <span class="txt-status">All systems are functioning normally</span>
+                                                    <span class="txt-status">All systems are functioning normally</span>
 
-                              <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
-                              <span class="txt-status">No pending notifications</span> -->
+                                                    <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
+                                                    <span class="txt-status">No pending notifications</span> -->
           <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
             <span class="marquee-text">{{scrollHeadlines}}</span>
           </div>
@@ -43,6 +43,8 @@ import ActivePersonnelCard from '@/components/ActivePersonnelCard';
 import MapOverlayFactory from '@/services/MapOverlayFactory';
 import Clock from 'vue-digital-clock';
 import * as d3 from 'd3';
+import * as Firebase from 'firebase';
+
 import MapStyle from '../assets/mapstyle.json';
 
 // const pageLoader = new TablePageLoader('citation');
@@ -81,6 +83,8 @@ export default {
       headlines: [],
       map: {},
       pingMarkers: [],
+      activeUserLocations: {},
+      scannerUserMarkers: {},
     };
   },
   mounted() {
@@ -111,7 +115,7 @@ export default {
         const duration = 2000;
         const maxPings = 6;
         if (this.pingMarkers.length > maxPings) {
-          const marker = this.pingMarkers.pop();
+          const marker = this.pingMarkers.shift();
           marker.setMap(null);
         }
         const marker = MapOverlayFactory.pulseMarker(this.map, latlng[0], latlng[1], (Math.random() > 0.5) ? 'red' : 'blue');
@@ -119,6 +123,33 @@ export default {
         setTimeout(update, duration + (Math.random() * 400));
       };
       setTimeout(update);
+
+      const ref = Firebase.database().ref('scannerUserLocation');
+      ref.on('child_added', (snap) => {
+        const userId = snap.key;
+        const userLocation = snap.val();
+        this.activeUserLocations[userId] = userLocation;
+        userLocation.$id = userId;
+        // eslint-disable-next-line max-len
+        const marker = MapOverlayFactory.scannerUserMarker(this.map, userLocation.coords.lat, userLocation.coords.lng, userLocation);
+        this.scannerUserMarkers[userId] = marker;
+        console.log(this.scannerUserMarkers);
+      });
+      ref.on('child_changed', (snap) => {
+        const userId = snap.key;
+        const userLocation = snap.val();
+        this.activeUserLocations[userId] = userLocation;
+        const currentMarker = this.scannerUserMarkers[userId];
+        if (currentMarker) {
+          console.log('child_changed removing existing marker');
+          currentMarker.setMap(null);
+        }
+
+        // eslint-disable-next-line max-len
+        const marker = MapOverlayFactory.scannerUserMarker(this.map, userLocation.coords.lat, userLocation.coords.lng, userLocation);
+        this.scannerUserMarkers[userId] = marker;
+        console.log(this.scannerUserMarkers);
+      });
 
       // pageLoader.load(1).then((page) => {
       //   this.items = this.processRows(page.items);
@@ -131,6 +162,16 @@ export default {
     //   this.totalRows = page.totalRows;
     // });
     // },
+    animateMapZoomTo(map, targetZoom) {
+      const currentZoom = targetZoom || map.getZoom();
+      if (currentZoom !== targetZoom) {
+        // eslint-disable-next-line no-undef
+        google.maps.event.addListenerOnce(map, 'zoom_changed', () => {
+          this.animateMapZoomTo(map, targetZoom, currentZoom + (targetZoom > currentZoom ? 1 : -1));
+        });
+        setTimeout(() => map.setZoom(currentZoom), 80);
+      }
+    },
     processRows(items) {
       for (let i = 0; i < items.length; i += 1) {
         const row = items[i];
@@ -311,6 +352,17 @@ circle.blue {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 /* red is ef3135 */
 
 .txt-status {
@@ -394,5 +446,55 @@ circle.blue {
     transform: scale(1.2, 1.2);
     opacity: 0;
   }
+}
+
+.scanner-user-marker {
+  position: relative;
+  border-radius: 4px;
+  background-color: #0f68c4;
+  color: white;
+  height: 40px;
+  width: 200px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.scanner-user-marker:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  width: 0;
+  height: 0;
+  border-top: solid 5px #0f68c4;
+  border-left: solid 5px transparent;
+  border-right: solid 5px transparent;
+}
+
+.scanner-user-marker-timeago {
+  position: absolute;
+  bottom: 7px;
+  right: 6px;
+  font-size: 7px;
+}
+
+.scanner-user-marker-name {
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.scanner-user-marker-zone {
+  font-size: 8px;
+}
+
+.scanner-user-marker-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  /* border: 1px solid #8f90a8; */
 }
 </style>
