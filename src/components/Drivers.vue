@@ -116,8 +116,10 @@ export default {
   height: 100%;
   /* Sidenav width: 150px */
   width: calc(100% - 150px);
-  background-color: #2c2e4a;
+  /* background-color: #2c2e4a; */
+  background-color: #ececec;
   padding: 10px;
+  padding-right: 0px;
 }
 
 .datatable {

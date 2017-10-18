@@ -30,7 +30,8 @@ export default {
 
 <style scoped>
 .dark-card {
-  background-color: #323443 !important;
+  /* background-color: #323443 !important; */
+  /* background-color: #white !important; */
 }
 
 .dark-card>>>.content-container {

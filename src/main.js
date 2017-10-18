@@ -4,8 +4,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'vue-awesome/icons';
 import 'jsoneditor/dist/jsoneditor.min.css';
-import 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 import Icon from 'vue-awesome/components/Icon';
 import VideoBg from 'vue-videobg';
@@ -13,7 +11,6 @@ import VueResource from 'vue-resource';
 import Viewer from 'v-viewer';
 
 import * as Firebase from 'firebase';
-import * as Vue2Leaflet from 'vue2-leaflet';
 
 import Vue from 'vue';
 import App from './App';
@@ -33,10 +30,6 @@ Vue.use(VueResource);
 Vue.use(Viewer);
 Vue.component('icon', Icon);
 Vue.component('video-bg', VideoBg);
-
-Vue.component('v-map', Vue2Leaflet.Map);
-Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
-Vue.component('v-marker', Vue2Leaflet.Marker);
 
 Vue.config.productionTip = false;
 

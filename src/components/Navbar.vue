@@ -45,9 +45,8 @@ export default {
 
 <style scoped>
 .custom-navbar {
-  /* background-color: #8992C6; */
-  /* background-color: #2c2e4a; */
-  background-color: #212338;
+  /* background-color: #212338; */
+  background-color: #31429E;
   /* color: white; */
   color: white;
   height: 50px;
@@ -122,14 +121,14 @@ export default {
   width: 90px;
   padding: 4px 0px;
   cursor: pointer;
-  transition: ease-out 0.2s;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 .btn-login:hover {
   /* background-color: #d4689f; */
   background-color: #83bd6e;
   border-color: #83bd6e;
-  transition: ease-out 0.2s;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 .img-avatar {

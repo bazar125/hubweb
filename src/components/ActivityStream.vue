@@ -141,12 +141,12 @@ export default {
 
 <style scoped>
 .activity-stream {
-  /* background-color: #585e8c; */
-  background-color: #2c2e4a;
+  /* background-color: #2c2e4a; */
+  background-color: #ececec;
   width: 200px;
   min-width: 200px;
   z-index: 999;
-  box-shadow: -2px 0px 8px 2px rgba(0, 0, 0, 0.1);
+  /* box-shadow: -2px 0px 8px 2px rgba(0, 0, 0, 0.1); */
   padding: 8px;
   position: relative;
 }
@@ -159,7 +159,8 @@ export default {
   overflow-y: auto;
   width: 100%;
   /* background-color: #585e8c; */
-  background-color: #323444;
+  /* background-color: #323444; */
+  background-color: white;
   padding-top: 5px;
   padding-left: 5px;
   padding-right: 5px;
@@ -300,7 +301,8 @@ export default {
   font-size: 24px;
   font-weight: 700;
   user-select: none;
-  color: rgba(255, 255, 255, 0.84);
+  /* color: rgba(255, 255, 255, 0.84); */
+  color: rgba(0, 0, 0, 0.54);
 }
 
 .icon-master {

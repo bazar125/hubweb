@@ -13,7 +13,7 @@
         </div>
 
         <div class="d-flex justify-content-start align-items-center">
-          <icon name="exclamation" class="icon-status" style="color: white;"></icon>
+          <icon name="exclamation" class="icon-status" style="color: rgba(0,0,0,0.87);"></icon>
           <span class="txt-status">No pending notifications</span>
         </div>
       </div>
@@ -57,7 +57,8 @@ export default {
 
 .txt-status {
   font-size: 11px;
-  color: white;
+  /* color: white; */
+  color: rgba(0,0,0,0.87);
 }
 
 </style>

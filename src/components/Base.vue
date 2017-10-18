@@ -10,10 +10,10 @@
       <dark-card title="Live Map" class="live-map-card">
         <div class="map-overlay d-flex justify-content-start align-items-center">
           <!-- <icon name="check-circle-o" class="icon-status color-green"></icon>
-                    <span class="txt-status">All systems are functioning normally</span>
+                              <span class="txt-status">All systems are functioning normally</span>
 
-                    <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
-                    <span class="txt-status">No pending notifications</span> -->
+                              <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
+                              <span class="txt-status">No pending notifications</span> -->
           <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
             <span class="marquee-text">{{scrollHeadlines}}</span>
           </div>
@@ -29,11 +29,6 @@
         </div>
 
         <div ref="map" class="live-map"></div>
-        <!-- <v-map class="live-map" ref="map" :zoom="8" :center="center"> -->
-        <!-- <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer> -->
-        <!-- <v-tilelayer url="http://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"></v-tilelayer> -->
-        <!-- <v-marker :lat-lng="center"></v-marker> -->
-        <!-- </v-map> -->
       </dark-card>
     </div>
   </div>
@@ -44,333 +39,13 @@ import DarkCard from '@/components/DarkCard';
 import DailyStatsCard from '@/components/DailyStatsCard';
 import SystemInformationCard from '@/components/SystemInformationCard';
 import ActivePersonnelCard from '@/components/ActivePersonnelCard';
+// import TablePageLoader from '@/services/TablePageLoader';
+import MapOverlayFactory from '@/services/MapOverlayFactory';
 import Clock from 'vue-digital-clock';
-import L from 'leaflet';
 import * as d3 from 'd3';
-import TablePageLoader from '@/services/TablePageLoader';
 import MapStyle from '../assets/mapstyle.json';
 
-const pageLoader = new TablePageLoader('citation');
-
-/* eslint-disable */
-/**
- * L is defined by the Leaflet library, see git://github.com/Leaflet/Leaflet.git for documentation
- * We extend L.SVG to take advantage of built-in zoom animations.
- */
-L.PingLayer = L.SVG.extend({
-  includes: [L.Mixin.Events],
-
-	/*
-	 * Default options
-	 */
-  options: {
-    duration: 800,
-    fps: 32,
-    opacityRange: [1, 0],
-    radiusRange: [3, 15]
-  },
-
-
-  // Initialization of the plugin
-  initialize(options) {
-    L.setOptions(this, options);
-
-    this._fn = {
-      lng(d) { return d[0]; },
-      lat(d) { return d[1]; },
-      radiusScaleFactor(d) { return 1; }
-    };
-
-    this._scale = {
-      radius: d3.scalePow().exponent(0.35),
-      opacity: d3.scaleLinear()
-    };
-
-    this._lastUpdate = Date.now();
-    this._fps = 0;
-
-    this._scale.radius
-      .domain([0, this.options.duration])
-      .range(this.options.radiusRange)
-      .clamp(true);
-    this._scale.opacity
-      .domain([0, this.options.duration])
-      .range(this.options.opacityRange)
-      .clamp(true);
-  },
-
-  // Called when the plugin layer is added to the map
-  onAdd(map) {
-
-    L.SVG.prototype.onAdd.call(this);
-
-    // Store a reference to the map for later use
-    this._map = map;
-
-    // Init the state of the simulation
-    this._running = false;
-
-    // Set up events
-    map.on({ 'move': this._updateContainer }, this);
-
-  },
-
-  // Called when the plugin layer is removed from the map
-  onRemove(map) {
-
-    L.SVG.prototype.onRemove.call(this);
-
-    // Destroy the svg container
-    this._destroyContainer();
-
-    // Remove events
-    map.off({ 'move': this._updateContainer }, this);
-
-    this._map = null;
-    this._data = null;
-
-  },
-
-
-	/*
-	 * Private Methods
-	 */
-
-  // Initialize the Container - creates the svg pane
-  _initContainer() {
-
-    L.SVG.prototype._initContainer.call(this);
-    this._d3Container = d3.select(this._container).select('g');
-
-  },
-
-  // Update the container - Updates the dimensions of the svg pane
-  _updateContainer() {
-
-    this._updatePings(true);
-
-  },
-
-  // Cleanup the svg pane
-  _destroyContainer() {
-
-    // Don't do anything
-
-  },
-
-
-  // Calculate the circle coordinates for the provided data
-  _getCircleCoords(geo) {
-    const point = this._map.latLngToLayerPoint(geo);
-    return { x: point.x, y: point.y };
-  },
-
-
-  // Add a ping to the map
-  _addPing(data, cssClass) {
-    // Lazy init the data array
-    if (null == this._data) this._data = [];
-
-    // Derive the spatial data
-    const geo = [this._fn.lat(data), this._fn.lng(data)];
-    const coords = this._getCircleCoords(geo);
-
-    // Add the data to the list of pings
-    const circle = {
-      data,
-      geo,
-      ts: Date.now(),
-      nts: 0
-    };
-    circle.c = this._d3Container.append('circle')
-      .attr('class', (null != cssClass) ? `ping ${cssClass}` : 'ping')
-      .attr('cx', coords.x)
-      .attr('cy', coords.y)
-      .attr('r', this._fn.radiusScaleFactor.call(this, data) * this._scale.radius.range()[0]);
-
-    // Push new circles
-    this._data.push(circle);
-  },
-
-  // Main update loop
-  _updatePings(immediate) {
-    const nowTs = Date.now();
-    if (null == this._data) this._data = [];
-
-    let maxIndex = -1;
-
-    // Update everything
-    for (let i = 0; i < this._data.length; i++) {
-
-      const d = this._data[i];
-      const age = nowTs - d.ts;
-
-      if (this.options.duration < age) {
-
-        // If the blip is beyond it's life, remove it from the dom and track the lowest index to remove
-        d.c.remove();
-        maxIndex = i;
-
-      }
-      else {
-
-        // If the blip is still alive, process it
-        if (immediate || d.nts < nowTs) {
-
-          const coords = this._getCircleCoords(d.geo);
-
-          d.c.attr('cx', coords.x)
-            .attr('cy', coords.y)
-            .attr('r', this._fn.radiusScaleFactor.call(this, d.data) * this._scale.radius(age))
-            .attr('fill-opacity', this._scale.opacity(age))
-            .attr('stroke-opacity', this._scale.opacity(age));
-          d.nts = Math.round(nowTs + 1000 / this.options.fps);
-
-        }
-      }
-    }
-
-    // Delete all the aged off data at once
-    if (maxIndex > -1) {
-      this._data.splice(0, maxIndex + 1);
-    }
-
-    // The return function dictates whether the timer loop will continue
-    this._running = (this._data.length > 0);
-
-    if (this._running) {
-      this._fps = 1000 / (nowTs - this._lastUpdate);
-      this._lastUpdate = nowTs;
-    }
-
-    return !this._running;
-  },
-
-  // Expire old pings
-  _expirePings() {
-    let maxIndex = -1;
-    const nowTs = Date.now();
-
-    // Search from the front of the array
-    for (let i = 0; i < this._data.length; i++) {
-      const d = this._data[i];
-      const age = nowTs - d.ts;
-
-      if (this.options.duration < age) {
-        // If the blip is beyond it's life, remove it from the dom and track the lowest index to remove
-        d.c.remove();
-        maxIndex = i;
-      }
-      else {
-        break;
-      }
-    }
-
-    // Delete all the aged off data at once
-    if (maxIndex > -1) {
-      this._data.splice(0, maxIndex + 1);
-    }
-  },
-
-	/*
-	 * Public Methods
-	 */
-
-  duration(v) {
-    if (!arguments.length) { return this.options.duration; }
-    this.options.duration = v;
-
-    return this;
-  },
-
-  fps(v) {
-    if (!arguments.length) { return this.options.fps; }
-    this.options.fps = v;
-
-    return this;
-  },
-
-  lng(v) {
-    if (!arguments.length) { return this._fn.lng; }
-    this._fn.lng = v;
-
-    return this;
-  },
-
-  lat(v) {
-    if (!arguments.length) { return this._fn.lat; }
-    this._fn.lat = v;
-
-    return this;
-  },
-
-  radiusRange(v) {
-    if (!arguments.length) { return this.options.radiusRange; }
-    this.options.radiusRange = v;
-    this._scale.radius().range(v);
-
-    return this;
-  },
-
-  opacityRange(v) {
-    if (!arguments.length) { return this.options.opacityRange; }
-    this.options.opacityRange = v;
-    this._scale.opacity().range(v);
-
-    return this;
-  },
-
-  radiusScale(v) {
-    if (!arguments.length) { return this._scale.radius; }
-    this._scale.radius = v;
-
-    return this;
-  },
-
-  opacityScale(v) {
-    if (!arguments.length) { return this._scale.opacity; }
-    this._scale.opacity = v;
-
-    return this;
-  },
-
-  radiusScaleFactor(v) {
-    if (!arguments.length) { return this._fn.radiusScaleFactor; }
-    this._fn.radiusScaleFactor = v;
-
-    return this;
-  },
-
-	/*
-	 * Method by which to "add" pings
-	 */
-  ping(data, cssClass) {
-    this._addPing(data, cssClass);
-    this._expirePings();
-
-    // Start timer if not active
-    if (!this._running && this._data.length > 0) {
-      this._running = true;
-      this._lastUpdate = Date.now();
-
-      const that = this;
-      d3.timer(() => { that._updatePings.call(that, false) });
-    }
-
-    return this;
-  },
-
-  getActualFps() {
-    return this._fps;
-  },
-
-  data() {
-    return this._data;
-  },
-
-});
-
-L.pingLayer = options => new L.PingLayer(options);
+// const pageLoader = new TablePageLoader('citation');
 
 /* eslint-disable no-underscore-dangle */
 export default {
@@ -389,7 +64,8 @@ export default {
       }
 
       let str = '';
-      for (let headline of this.headlines) {
+      for (let i = 0; i < this.headlines.length; i += 1) {
+        const headline = this.headlines[i];
         str += `${headline}\xa0\xa0\xa0\xa0\xa0`;
       }
       return str;
@@ -404,58 +80,57 @@ export default {
       statNotifications: 34,
       headlines: [],
       map: {},
+      pingMarkers: [],
     };
   },
   mounted() {
-    // this.initialize();
-    console.log(MapStyle);
-    this.map = new google.maps.Map(this.$refs.map, {
-      center: { lat: this.center[0], lng: this.center[1] },
-      zoom: 13,
-      styles: MapStyle,
-    });
+    this.initialize();
   },
   created() {
     const apiKey = 'b145ac1c37d04657b72b1ce5097d48e6';
     const source = 'bbc-news';
     this.$http.get(`https://newsapi.org/v1/articles?source=${source}&sortBy=top&apiKey=${apiKey}`)
-      .then(response => {
-        this.headlines = response.data.articles.map((article) => {
-          return `${article.author} — ${article.description}`;
-        });
+      .then((response) => {
+        this.headlines = response.data.articles.map(article => `${article.author} — ${article.description}`);
         console.log(this.headlines);
       });
   },
   methods: {
     initialize() {
-      const options = {
-        duration: 800,
-      };
-
-      this.pingLayer = L.pingLayer(options).addTo(this.$refs.map.mapObject);
-      this.pingLayer.radiusScale().range([2, 18]);
-      this.pingLayer.opacityScale().range([1, 0]);
+      // eslint-disable-next-line no-undef
+      this.map = new google.maps.Map(this.$refs.map, {
+        center: { lat: this.center[0], lng: this.center[1] },
+        zoom: 13,
+        styles: MapStyle,
+      });
 
       // const paused = false;
       const update = () => {
-        const latlng = [d3.randomNormal(this.center[0], 1)(), d3.randomNormal(this.center[0], 1)()];
-        // console.log(latlng);
-        this.pingLayer.ping(latlng, (Math.random() > 0.5) ? 'red' : 'blue');
-        setTimeout(update, 100 + (Math.random() * 400));
+        // eslint-disable-next-line max-len
+        const latlng = [d3.randomNormal(this.center[0], 0.05)(), d3.randomNormal(this.center[1], 0.05)()];
+        const duration = 2000;
+        const maxPings = 10;
+        if (this.pingMarkers.length > maxPings) {
+          const marker = this.pingMarkers.pop();
+          marker.setMap(null);
+        }
+        const marker = MapOverlayFactory.pulseMarker(this.map, latlng[0], latlng[1], (Math.random() > 0.5) ? 'red' : 'blue');
+        this.pingMarkers.push(marker);
+        setTimeout(update, duration + (Math.random() * 400));
       };
       setTimeout(update);
 
-      pageLoader.load(1).then((page) => {
-        this.items = this.processRows(page.items);
-        this.totalRows = page.totalRows;
-      });
+      // pageLoader.load(1).then((page) => {
+      //   this.items = this.processRows(page.items);
+      //   this.totalRows = page.totalRows;
+      // });
     },
-    pageChanged(newPage) {
-      pageLoader.load(newPage).then((page) => {
-        this.items = this.processRows(page.items);
-        this.totalRows = page.totalRows;
-      });
-    },
+    // pageChanged(newPage) {
+    // pageLoader.load(newPage).then((page) => {
+    //   this.items = this.processRows(page.items);
+    //   this.totalRows = page.totalRows;
+    // });
+    // },
     processRows(items) {
       for (let i = 0; i < items.length; i += 1) {
         const row = items[i];
@@ -506,7 +181,8 @@ export default {
   padding-left: 8px;
   /* padding-right: 8px; */
   padding-bottom: 8px;
-  background-color: #2c2e4a;
+  /* background-color: #2c2e4a; */
+  background-color: #ececec;
   /* padding: 10px 20px; */
 }
 
@@ -518,8 +194,8 @@ export default {
 }
 
 .stats-container {
-  /* background-color: #ececec; */
-  background-color: #2c2e4a;
+  background-color: #ececec;
+  /* background-color: #2c2e4a; */
   padding-top: 8px;
   padding-left: 8px;
   padding-bottom: 8px;
@@ -537,7 +213,7 @@ export default {
   /* width: 100%; */
   /* width: calc(100% - 10px); */
   width: 100%;
-  padding-left: 50px;
+  padding-left: 20px;
   padding-right: 20px;
   border-bottom: 1px solid #ececec;
   color: white;
@@ -630,6 +306,11 @@ circle.blue {
 
 
 
+
+
+
+
+
 /* red is ef3135 */
 
 .txt-status {
@@ -665,5 +346,53 @@ circle.blue {
 .leaflet-top,
 .leaflet-bottom {
   z-index: 999;
+}
+
+.pulse-marker {
+  /* background: #9BA6DF; */
+  background: transparent;
+  border-radius: 50%;
+  height: 14px;
+  width: 14px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: 11px 0px 0px -12px;
+  /* transform: rotateX(55deg); */
+  z-index: -2;
+}
+
+.pulse-marker:after {
+  content: "";
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  margin: -13px 0 0 -13px;
+  animation: pulsate 1s ease-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
+  box-shadow: 0 0 1px 2px #1565c0;
+  animation-delay: 1.1s;
+}
+
+.pulse-marker.red:after {
+  box-shadow: 0 0 1px 2px #c62828;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
 }
 </style>

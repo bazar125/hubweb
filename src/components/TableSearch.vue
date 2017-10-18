@@ -35,7 +35,8 @@ export default {
   border-left-width: 0px;
   border-top-width: 0px; */
   background-color: transparent;
-  color: white;
+  /* color: white; */
+  color: rgba(0,0,0,0.87);
   border-color: #00b0ff;
   /* border-color: #0275d8; */
   /* border-color: rgba(255,255,255,0.8); */
@@ -44,34 +45,40 @@ export default {
 .search-icon {
   width: 15px;
   height: 15px;
-  margin-right: 15px;
-  color: white;
+  margin-right: 10px;
+  /* color: white; */
+  color: rgba(0,0,0,0.87);
 }
 
 .table-search ::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
-  color: rgba(255, 255, 255, 0.4);
+  /* color: rgba(255, 255, 255, 0.4); */
+  color: rgba(0,0,0, 0.4);
 }
 
 .table-search :-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
-  color: rgba(255, 255, 255, 0.4);
+  /* color: rgba(255, 255, 255, 0.4); */
+  color: rgba(0,0,0, 0.4);
   opacity: 1;
 }
 
 .table-search ::-moz-placeholder {
   /* Mozilla Firefox 19+ */
-  color: rgba(255, 255, 255, 0.4);
+  /* color: rgba(255, 255, 255, 0.4); */
+  color: rgba(0,0,0, 0.4);
   opacity: 1;
 }
 
 .table-search :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: rgba(255, 255, 255, 0.4);
+  /* color: rgba(255, 255, 255, 0.4); */
+  color: rgba(0,0,0, 0.4);
 }
 
 .table-search ::-ms-input-placeholder {
   /* Microsoft Edge */
-  color: rgba(255, 255, 255, 0.4);
+  /* color: rgba(255, 255, 255, 0.4); */
+  color: rgba(0,0,0, 0.4);
 }
 </style>

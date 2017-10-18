@@ -24,7 +24,7 @@ export default {
 .btn-base {
   position: relative;
   background-color: transparent;
-  border-color: #8f90a8;
+  /* border-color: #8f90a8; */
   color: white;
   border-radius: 20px;
   font-weight: 600;

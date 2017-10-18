@@ -25,7 +25,8 @@ export default {
 .manage-users {
   width: calc(100% - 150px);
   min-width: calc(100% - 150px);
-  background-color: #2c2e4a;
+  /* background-color: #2c2e4a; */
+  background-color: #ececec;
   padding: 20px;
 }
 </style>

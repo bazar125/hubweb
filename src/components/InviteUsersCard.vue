@@ -61,11 +61,12 @@ export default {
 }
 
 .input-email {
-  border-color: #8f90a8;
+  /* border-color: #8f90a8; */
   width: 300px;
   border-radius: 14px;
   background-color: transparent;
-  color: white;
+  /* color: white; */
+  /* color: rgba(0,0,0,0.87); */
 }
 
 .input-email:focus {
@@ -88,8 +89,8 @@ export default {
 .user-list-item {
   position: relative;
   background: transparent;
-  border-color: #8f90a8;
-  color: white;
+  /* border-color: #8f90a8;
+  color: white; */
   padding: 0.75rem 1rem;
 }
 
@@ -106,7 +107,8 @@ export default {
   right: 4px; */
   font-size: 8px;
   margin-top: 2px;
-  color: rgba(255, 255, 255, 0.7);
+  /* color: rgba(255, 255, 255, 0.7); */
+  color: rgba(0,0,0, 0.7);
 }
 
 .btn-view {
@@ -114,5 +116,6 @@ export default {
   width: 30px !important;
   margin-right: 10px;
   padding: 0px !important;
+  color: rgba(0,0,0, 0.84);
 }
 </style>

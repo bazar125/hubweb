@@ -94,20 +94,23 @@ export default {
 .custom-pagination {
   margin-bottom: 0px;
   margin-left: 20px;
+  color: rgba(0,0,0,0.87);
 }
 
 .custom-pagination>>>.page-link {
-  background-color: transparent;
+  /* background-color: transparent; */
   /* border-color: #4a59ad; */
-  color: white;
-  border-color: #4f6f8f;
+  /* color: white;
+  border-color: #4f6f8f; */
   padding: 0.4rem 0.75rem;
 }
 
 .custom-pagination>>>.page-link.active {
-  background-color: #4a59ad;
-  border-color: #4f6f8f;
-  color: white;
+  background-color: #31429E;
+  /* background-color: #4a59ad;
+  border-color: #4f6f8f; */
+  /* color: white; */
+  /* color: rgba(0,0,0,0.87); */
   padding: 0.4rem 0.75rem;
 }
 
@@ -185,19 +188,19 @@ export default {
 .table-wwarning {
   /* background-color: #f0ad4e; */
   background-color: #b97310;
-  color: white;
+  color: white !important;
 }
 
 .table-wwarning:hover {
   /* background-color: #f0ad4e; */
   background-color: #b97310;
-  color: white;
+  color: white !important;
 }
 
 .table-alert {
   /* background-color: #f0ad4e; */
   background-color: #1565c0;
-  color: white;
+  color: white !important;
 }
 
 .table-alert:not(:last-child) {
@@ -207,12 +210,16 @@ export default {
 .table-danger {
   background-color: #d9534f;
   /* background-color: #1565c0;; */
-  color: white;
+  color: white !important;
+}
+
+.table-danger:hover {
+  background-color: #d9534f !important;
 }
 
 .table-success {
   background-color: #5cb85c;
-  color: white;
+  color: white !important;
   /* background-color: transparent; */
 }
 
@@ -232,7 +239,8 @@ export default {
 
 .datatable .table th {
   padding: 0.5rem 0.75rem;
-  background-color: #212338;
+  /* background-color: #212338; */
+  background-color: #31429E;
   /* border-color: white; */
   color: white;
 }
@@ -249,13 +257,15 @@ table.b-table>thead>tr>.sorting::before {
   opacity: 1;
 }
 
-.datatable .table-bordered td,
-.datatable .table-bordered th {
-  /* border-color: rgba(255, 255, 255, 0.34) !important; */
-  /* border-color: rgba(255, 255, 255, 0.5) !important; */
-  /* border-color: #a0a0a0 !important; */
-  border-color: rgba(79, 111, 143, 0.6);
+.datatable .table-bordered td {
+  /* border-color: rgba(79, 111, 143, 0.6); */
+  border-color: rgba(0,0,0,0.12);
   /* color: rgba(255, 255, 255, 0.84); */
-  color: white;
+  /* color: white; */
+  color: rgba(0,0,0,0.87);
+}
+
+.datatable .table-bordered th {
+  border-color: rgba(0,0,0,0.12);
 }
 </style>

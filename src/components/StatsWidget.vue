@@ -30,7 +30,8 @@ export default {
   padding-top: 10px; */
   flex: 1;
   /* color: #797a97; */
-  color: white;
+  /* color: white; */
+  color: rgba(0,0,0,0.87);
 }
 
 .stats-widget:last-child {
@@ -59,7 +60,8 @@ export default {
   width: 40px;
   height: 40px;
   padding: 10px;
-  color: white;
+  /* color: white; */
+  color: rgba(0,0,0,0.87);
   /* border-right: 1px solid #ececec; */
   border-right: 1px solid #797a97;
 }
@@ -78,14 +80,16 @@ export default {
 
 .txt-type {
   font-size: 10px;
-  color: white;
+  /* color: white; */
+  color: rgba(0,0,0,0.87);
   text-transform: uppercase;
 }
 
 .txt-label {
   font-size: 24px;
   font-weight: 600;
-  color: #c5ea8e;
+  /* color: #c5ea8e; */
+  color: #26B630;
 }
 
 .container-stat {

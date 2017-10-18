@@ -49,12 +49,12 @@ export default {
 .active-personnel-card {}
 
 .input-search {
-  border-color: #8f90a8;
+  /* border-color: #8f90a8; */
   /* width: 300px; */
   width: 100%;
   border-radius: 14px;
   background-color: transparent;
-  color: white;
+  /* color: white; */
 }
 
 .input-search:focus {
@@ -77,14 +77,21 @@ export default {
 .user-list-item {
   position: relative;
   /* background: transparent; */
-  background-color: #2c2e4a;
-  border-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  /* border: 0px solid; */
-  border-radius: 0px;
+  /* background-color: #2c2e4a; */
+  /* background-color: #1C2C81; */
+  border: 0px solid;
+  /* border-color: rgba(255, 255, 255, 0.2); */
+  /* color: white; */
+  color: rgba(0, 0, 0, 0.87);
+  border: 0px solid;
+  border-radius: 4px;
   /* padding: 0.75rem 1rem; */
   padding: 0.5rem 0.5rem;
-  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
+  /* box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); */
+}
+
+..user-list-item.active {
+  background-color: #1C2C81;
 }
 
 .user-list-item:not(:last-child) {
@@ -117,13 +124,15 @@ export default {
   font-size: 8px;
   margin-top: 2px;
   color: rgba(255, 255, 255, 0.7);
+  /* color: rgba(0, 0, 0, 0.7); */
 }
 
 .btn-view {
   height: 25px !important;
   width: 25px !important;
   padding: 0px !important;
-  color: #c5ea8e !important;
+  /* color: #26B630 !important; */
+  color: white !important;
   border: 0px solid white;
 }
 </style>
