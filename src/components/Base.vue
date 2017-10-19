@@ -6,14 +6,9 @@
     </div>
 
     <div class="map-container d-flex justify-content-start align-items-center">
-      <active-personnel-card></active-personnel-card>
+      <active-personnel-card :activeUsers="activeUsers"></active-personnel-card>
       <dark-card title="Live Map" class="live-map-card">
         <div class="map-overlay d-flex justify-content-start align-items-center">
-          <!-- <icon name="check-circle-o" class="icon-status color-green"></icon>
-                                                    <span class="txt-status">All systems are functioning normally</span>
-
-                                                    <icon name="exclamation" class="icon-status" style="margin-left: 15px;"></icon>
-                                                    <span class="txt-status">No pending notifications</span> -->
           <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
             <span class="marquee-text">{{scrollHeadlines}}</span>
           </div>
@@ -83,6 +78,7 @@ export default {
       headlines: [],
       map: {},
       pingMarkers: [],
+      activeUsers: [],
       activeUserLocations: {},
       scannerUserMarkers: {},
     };
@@ -96,11 +92,15 @@ export default {
     this.$http.get(`https://newsapi.org/v1/articles?source=${source}&sortBy=top&apiKey=${apiKey}`)
       .then((response) => {
         this.headlines = response.data.articles.map(article => `${article.author} — ${article.description}`);
-        console.log(this.headlines);
       });
   },
   methods: {
     initialize() {
+      this.$root.$on('map::centeronuser', (user) => {
+        // eslint-disable-next-line no-undef
+        this.map.setCenter(new google.maps.LatLng(user.coords.lat, user.coords.lng));
+      });
+
       // eslint-disable-next-line no-undef
       this.map = new google.maps.Map(this.$refs.map, {
         center: { lat: this.center[0], lng: this.center[1] },
@@ -128,27 +128,36 @@ export default {
       ref.on('child_added', (snap) => {
         const userId = snap.key;
         const userLocation = snap.val();
-        this.activeUserLocations[userId] = userLocation;
         userLocation.$id = userId;
+        this.activeUserLocations[userId] = userLocation;
         // eslint-disable-next-line max-len
         const marker = MapOverlayFactory.scannerUserMarker(this.map, userLocation.coords.lat, userLocation.coords.lng, userLocation);
         this.scannerUserMarkers[userId] = marker;
-        console.log(this.scannerUserMarkers);
+
+        this.activeUsers.push(userLocation);
       });
       ref.on('child_changed', (snap) => {
         const userId = snap.key;
         const userLocation = snap.val();
+        userLocation.$id = userId;
         this.activeUserLocations[userId] = userLocation;
         const currentMarker = this.scannerUserMarkers[userId];
         if (currentMarker) {
-          console.log('child_changed removing existing marker');
           currentMarker.setMap(null);
         }
 
         // eslint-disable-next-line max-len
         const marker = MapOverlayFactory.scannerUserMarker(this.map, userLocation.coords.lat, userLocation.coords.lng, userLocation);
         this.scannerUserMarkers[userId] = marker;
-        console.log(this.scannerUserMarkers);
+
+        const existingIndex = this.activeUsers.map(x => x.$id).indexOf(userLocation.$id);
+        // console.log(`existing index: ${existingIndex}`);
+        if (existingIndex > -1) {
+          this.activeUsers.splice(existingIndex, 1);
+          this.activeUsers.splice(existingIndex, 0, userLocation);
+        } else {
+          this.activeUsers.push(userLocation);
+        }
       });
 
       // pageLoader.load(1).then((page) => {
@@ -339,6 +348,12 @@ circle.blue {
 .color-blue {
   color: steelblue;
 }
+
+
+
+
+
+
 
 
 

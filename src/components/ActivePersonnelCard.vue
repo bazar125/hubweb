@@ -1,5 +1,5 @@
 <template>
-  <dark-card title="Active Personnel" class="active-personnel-card">
+  <dark-card :title="`Active Personnel (${users ? users.length : 0})`" class="active-personnel-card">
     <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; width: 100%;">
       <b-input-group>
         <b-form-input class="input-search" v-model="search" size="sm" type="text" placeholder="Search"></b-form-input>
@@ -7,18 +7,18 @@
 
       <b-list-group class="users-list">
         <!-- <b-list-group-item active> -->
-        <b-list-group-item class="user-list-item" v-for="(user, index) in users" :key="user">
-          <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
+        <b-list-group-item @click.native="clickUser(user)" class="user-list-item" v-for="(user, index) in users" :key="user.name">
+          <img class="img-avatar" :src="user.image"></img>
           <div class="d-flex flex-column">
-            <span class="txt-name">{{user}}</span>
+            <span class="txt-name">{{user.name}}</span>
             <span class="txt-zone">Zone B23</span>
           </div>
           <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="comment-o"></base-btn>
           <base-btn @click="clickEditUser(index)" class="btn-view" icon="search"></base-btn>
           <!-- <div class="d-flex flex-column">
-                  <b-badge pill variant="success">ACCEPTED</b-badge>
-                  <span class="txt-timeago">2 hours ago</span>
-                </div> -->
+                                  <b-badge pill variant="success">ACCEPTED</b-badge>
+                                  <span class="txt-timeago">2 hours ago</span>
+                                </div> -->
           <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
         </b-list-group-item>
       </b-list-group>
@@ -27,20 +27,56 @@
 </template>
 
 <script>
+import * as moment from 'moment';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
 
 export default {
   name: 'ActivePersonnelCard',
+  props: ['activeUsers'],
   components: {
     BaseBtn,
     DarkCard,
   },
   data() {
     return {
-      users: ['John Doe', 'Jane Doe', 'Bob Doe'],
       search: '',
     };
+  },
+  methods: {
+    clickUser(user) {
+      console.log('clickUser');
+      this.$root.$emit('map::centeronuser', user);
+    },
+    userIsOnline(user) {
+      const now = moment();
+      const then = moment(user.timestamp);
+      const diff = now.diff(then, 'minutes');
+      return diff < 10;
+    },
+  },
+  computed: {
+    users() {
+      console.log('computed users');
+      return this.activeUsers.slice().filter(x => this.userIsOnline(x));
+    },
+  },
+  mounted() {
+    const cullingInterval = 4000; // ms
+    const cullOfflineUsers = () => {
+      console.log('$forceUpdate');
+      for (let i = 0; i < this.users.length; i += 1) {
+        const user = this.users[i];
+        if (!this.userIsOnline(user)) {
+          const index = this.activeUsers.map(x => x.$id).indexOf(user.$id);
+          this.activeUsers.splice(index, 1);
+        }
+      }
+      console.log(this.users);
+      this.$forceUpdate();
+      setTimeout(cullOfflineUsers, cullingInterval);
+    };
+    setTimeout(cullOfflineUsers);
   },
 };
 </script>
@@ -81,12 +117,18 @@ export default {
   /* background-color: #1C2C81; */
   /* border-color: rgba(255, 255, 255, 0.2); */
   /* color: white; */
+  height: 50px;
   color: rgba(0, 0, 0, 0.87);
   /* border: 0px solid; */
   border-radius: 4px;
   /* padding: 0.75rem 1rem; */
   padding: 0.5rem 0.5rem;
+  cursor: pointer;
   /* box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); */
+}
+
+.user-list-item:hover {
+  background-color: #ececec;
 }
 
 .user-list-item.active {
@@ -107,13 +149,16 @@ export default {
 .txt-name {
   text-align: start;
   /* text-transform: uppercase; */
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .txt-zone {
   text-align: start;
-  font-size: 10px;
+  font-size: 9px;
 }
 
 .txt-timeago {
@@ -127,17 +172,21 @@ export default {
 }
 
 .btn-view {
-  height: 25px !important;
-  width: 25px !important;
+  height: 20px !important;
+  width: 20px !important;
   padding: 0px !important;
   /* color: #26B630 !important; */
   /* color: white !important; */
-  color: rgba(0,0,0,0.87) !important;
+  color: rgba(0, 0, 0, 0.87) !important;
   border: 1px solid white;
+}
+
+.btn-view:last-child {
+  margin-left: 5px;
 }
 
 .btn-view:hover {
   background-color: transparent !important;
-  border: 1px solid rgba(0,0,0,0.54) !important;
+  border: 1px solid rgba(0, 0, 0, 0.54) !important;
 }
 </style>
