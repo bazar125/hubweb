@@ -8,10 +8,46 @@
       <icon name="bell-o"></icon>
       <b-badge class="custom-badge" pill variant="danger">1</b-badge>
     </b-button>
-    <b-button @click="messages()" size="sm" class="btn-notification">
-      <icon name="comment-o"></icon>
-      <b-badge class="custom-badge" pill variant="info">1</b-badge>
-    </b-button>
+    <b-dropdown id="ddown1" variant="link" class="message-dropdown">
+      <template slot="button-content">
+        <b-button size="sm" class="btn-notification">
+          <icon name="comment-o"></icon>
+          <b-badge class="custom-badge" pill variant="danger">1</b-badge>
+        </b-button>
+      </template>
+      <b-dropdown-header>You have 2 new messages</b-dropdown-header>
+      <b-dropdown-item>
+        <!-- <b>John Doe</b>: Hello World -->
+        <div class="d-flex justify-content-start align-items-center">
+          <img class="img-chat" src="../assets/user_placeholder.jpg"></img>
+          <div class="d-flex flex-column" style="overflow: hidden;">
+            <span class="txt-name">John Doe</span>
+            <span class="txt-message">This is a test message that should overflow the chat popup.</span>
+            <!-- <span class="txt-message">Hello world</span> -->
+            <!-- <span class="txt-timeago">{{getTimeAgo(user.timestamp)}}</span> -->
+          </div>
+        </div>
+      </b-dropdown-item>
+      <b-dropdown-item>
+        <!-- <b>John Doe</b>: Hello World -->
+        <div class="d-flex justify-content-start align-items-center">
+          <img class="img-chat" src="../assets/user_avatar.jpg"></img>
+          <div class="d-flex flex-column" style="overflow: hidden;">
+            <span class="txt-name">Boboye Olayemi Oyeyemi</span>
+            <span class="txt-message">Short message</span>
+            <!-- <span class="txt-message">Hello world</span> -->
+            <!-- <span class="txt-timeago">{{getTimeAgo(user.timestamp)}}</span> -->
+          </div>
+        </div>
+      </b-dropdown-item>
+      <!-- <b-dropdown-divider style="margin-bottom: 0px;"></b-dropdown-divider> -->
+      <b-dropdown-item>
+        <div class="d-flex justify-content-center align-items-center">
+          <span class="txt-view-messages">See All Messages</span>
+        </div>
+      </b-dropdown-item>
+    </b-dropdown>
+
     <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
     <b-button @click="logout()" size="sm" class="btn-login">
       LOG OUT
@@ -21,6 +57,7 @@
 
 <script>
 import * as Firebase from 'firebase';
+import * as moment from 'moment';
 
 export default {
   name: 'Navbar',
@@ -39,6 +76,12 @@ export default {
     clickLogo() {
       this.$router.push('/');
     },
+    getTimeAgo(timestamp) {
+      if (!timestamp) {
+        return '';
+      }
+      return moment(timestamp).fromNow();
+    },
   },
 };
 </script>
@@ -52,6 +95,10 @@ export default {
   height: 50px;
   padding: 10px 15px;
   padding-left: 0px;
+}
+
+.custom-navbar>* {
+  z-index: 9999;
 }
 
 .logo {
@@ -121,14 +168,14 @@ export default {
   width: 90px;
   padding: 4px 0px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
 .btn-login:hover {
   /* background-color: #d4689f; */
   background-color: #83bd6e;
   border-color: #83bd6e;
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
 .img-avatar {
@@ -137,5 +184,101 @@ export default {
   border-radius: 20px;
   margin-right: 10px;
   border: 1px solid #8f90a8;
+}
+
+.img-chat {
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+
+.message-dropdown {
+  border: 0px solid;
+}
+
+.custom-navbar>>>.message-dropdown .btn {
+  cursor: pointer !important;
+  padding: 0px;
+}
+
+.custom-navbar>>>.message-dropdown .btn:hover .btn-notification {
+  background-color: #8f90a8;
+  border-color: #8f90a8;
+  transition: ease-out 0.2s;
+}
+
+.custom-navbar>>>.message-dropdown .btn:active .btn-notification {
+  background-color: #585e8c;
+  border-color: #585e8c;
+  transition: ease-out 0.2s;
+}
+
+.custom-navbar>>>.message-dropdown .dropdown-toggle {
+  width: 40px;
+  height: 30px;
+}
+
+.custom-navbar>>>.message-dropdown .dropdown-item {
+  outline: none;
+  padding: 6px 10px;
+  overflow: hidden;
+}
+
+.custom-navbar>>>.message-dropdown .dropdown-item:not(:last-child) {
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.12); */
+  border-bottom: 1px solid #eceeef;
+}
+
+.custom-navbar>>>.message-dropdown .dropdown-menu {
+  left: -100px;
+  padding: 0px;
+  width: 220px;
+}
+
+.custom-navbar>>>.message-dropdown .dropdown-header {
+  font-size: 10px;
+  text-align: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eceeef;
+}
+
+.custom-navbar>>>.dropdown-toggle::after {
+  display: none
+}
+
+.txt-name {
+  text-align: start;
+  /* text-transform: uppercase; */
+  font-size: 10px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.txt-message {
+  text-align: start;
+  font-size: 9px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.txt-view-messages {
+  font-size: 10px;
+  text-align: center;
+}
+
+.txt-timeago {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  font-size: 7px;
+  margin-top: 2px;
+  /* color: rgba(255, 255, 255, 0.7); */
+  color: rgba(0, 0, 0, 0.87);
+  outline: none;
 }
 </style>
