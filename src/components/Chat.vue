@@ -1,15 +1,17 @@
 <template>
   <div class="chat d-flex flex-column justify-content-start align-items-center">
+    <chat-card></chat-card>
     <!-- <span class="txt-heading mr-auto">Manage Users</span> -->
   </div>
 </template>
 
 <script>
-// import InviteUsersCard from '@/components/InviteUsersCard';
+import ChatCard from '@/components/ChatCard';
 
 export default {
   name: 'Chat',
   components: {
+    ChatCard,
   },
   data() {
     return {
@@ -25,5 +27,6 @@ export default {
   /* background-color: #2c2e4a; */
   background-color: #ececec;
   padding: 20px;
+  overflow: hidden;
 }
 </style>

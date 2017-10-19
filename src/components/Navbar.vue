@@ -41,7 +41,7 @@
         </div>
       </b-dropdown-item>
       <!-- <b-dropdown-divider style="margin-bottom: 0px;"></b-dropdown-divider> -->
-      <b-dropdown-item>
+      <b-dropdown-item @click="$router.push('/chat')">
         <div class="d-flex justify-content-center align-items-center">
           <span class="txt-view-messages">See All Messages</span>
         </div>

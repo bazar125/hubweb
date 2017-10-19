@@ -58,6 +58,13 @@ export default {
           // icon: IconCitations,
           icon: 'fire',
         },
+        {
+          path: '/chat',
+          name: 'Messages',
+          // icon: IconSettings,
+          icon: 'comments',
+          role: 'stateAdmin',
+        },
         // {
         //   path: '/reports',
         //   name: 'Reports',

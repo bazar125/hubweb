@@ -10,6 +10,7 @@ import Collisions from '@/components/Collisions';
 import Personnel from '@/components/Personnel';
 import Reports from '@/components/Reports';
 import Admin from '@/components/Admin';
+import Chat from '@/components/Chat';
 import Settings from '@/components/Settings';
 import ViewCitation from '@/components/ViewCitation';
 import ViewCollision from '@/components/ViewCollision';
@@ -90,6 +91,12 @@ export default new Router({
       path: '/manage',
       name: 'Admin',
       component: Admin,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/chat',
+      name: 'Chat',
+      component: Chat,
       meta: { requiresAuth: true },
     },
     {
