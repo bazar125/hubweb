@@ -29,4 +29,8 @@ export default {
   padding: 20px;
   overflow: hidden;
 }
+
+.chat >>> .chat-card {
+  width: 100%;
+}
 </style>
