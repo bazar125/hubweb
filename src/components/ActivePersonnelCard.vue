@@ -12,13 +12,14 @@
           <div class="d-flex flex-column">
             <span class="txt-name">{{user.name}}</span>
             <span class="txt-zone">Zone B23</span>
+            <span class="txt-timeago">{{getTimeAgo(user.timestamp)}}</span>
           </div>
           <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="comment-o"></base-btn>
           <base-btn @click="clickEditUser(index)" class="btn-view" icon="search"></base-btn>
           <!-- <div class="d-flex flex-column">
-                                  <b-badge pill variant="success">ACCEPTED</b-badge>
-                                  <span class="txt-timeago">2 hours ago</span>
-                                </div> -->
+                                          <b-badge pill variant="success">ACCEPTED</b-badge>
+                                          <span class="txt-timeago">2 hours ago</span>
+                                        </div> -->
           <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
         </b-list-group-item>
       </b-list-group>
@@ -45,7 +46,7 @@ export default {
   },
   methods: {
     clickUser(user) {
-      console.log('clickUser');
+      // console.log('clickUser');
       this.$root.$emit('map::centeronuser', user);
     },
     userIsOnline(user) {
@@ -54,29 +55,38 @@ export default {
       const diff = now.diff(then, 'minutes');
       return diff < 10;
     },
+    getTimeAgo(timestamp) {
+      if (!timestamp) {
+        return '';
+      }
+      return moment(timestamp).fromNow();
+    },
+    startCullingOfflineUsers() {
+      const cullingInterval = 4000; // ms
+      const cullOfflineUsers = () => {
+        // console.log('$forceUpdate');
+        for (let i = 0; i < this.users.length; i += 1) {
+          const user = this.users[i];
+          if (!this.userIsOnline(user)) {
+            const index = this.activeUsers.map(x => x.$id).indexOf(user.$id);
+            this.activeUsers.splice(index, 1);
+          }
+        }
+        // console.log(this.users);
+        this.$forceUpdate();
+        setTimeout(cullOfflineUsers, cullingInterval);
+      };
+      setTimeout(cullOfflineUsers);
+    },
   },
   computed: {
     users() {
-      console.log('computed users');
+      // console.log('computed users');
       return this.activeUsers.slice().filter(x => this.userIsOnline(x));
     },
   },
   mounted() {
-    const cullingInterval = 4000; // ms
-    const cullOfflineUsers = () => {
-      console.log('$forceUpdate');
-      for (let i = 0; i < this.users.length; i += 1) {
-        const user = this.users[i];
-        if (!this.userIsOnline(user)) {
-          const index = this.activeUsers.map(x => x.$id).indexOf(user.$id);
-          this.activeUsers.splice(index, 1);
-        }
-      }
-      console.log(this.users);
-      this.$forceUpdate();
-      setTimeout(cullOfflineUsers, cullingInterval);
-    };
-    setTimeout(cullOfflineUsers);
+    this.startCullingOfflineUsers();
   },
 };
 </script>
@@ -162,13 +172,13 @@ export default {
 }
 
 .txt-timeago {
-  /* position: absolute;
-  top: 2px;
-  right: 4px; */
-  font-size: 8px;
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  font-size: 7px;
   margin-top: 2px;
-  color: rgba(255, 255, 255, 0.7);
-  /* color: rgba(0, 0, 0, 0.7); */
+  /* color: rgba(255, 255, 255, 0.7); */
+  color: rgba(0, 0, 0, 0.87);
 }
 
 .btn-view {

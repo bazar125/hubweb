@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import * as moment from 'moment';
 import DarkCard from '@/components/DarkCard';
 import DailyStatsCard from '@/components/DailyStatsCard';
 import SystemInformationCard from '@/components/SystemInformationCard';
@@ -130,9 +131,11 @@ export default {
         const userLocation = snap.val();
         userLocation.$id = userId;
         this.activeUserLocations[userId] = userLocation;
-        // eslint-disable-next-line max-len
-        const marker = MapOverlayFactory.scannerUserMarker(this.map, userLocation.coords.lat, userLocation.coords.lng, userLocation);
-        this.scannerUserMarkers[userId] = marker;
+        if (this.userIsOnline(userLocation)) {
+          // eslint-disable-next-line max-len
+          const marker = MapOverlayFactory.scannerUserMarker(this.map, userLocation.coords.lat, userLocation.coords.lng, userLocation);
+          this.scannerUserMarkers[userId] = marker;
+        }
 
         this.activeUsers.push(userLocation);
       });
@@ -141,14 +144,17 @@ export default {
         const userLocation = snap.val();
         userLocation.$id = userId;
         this.activeUserLocations[userId] = userLocation;
-        const currentMarker = this.scannerUserMarkers[userId];
-        if (currentMarker) {
-          currentMarker.setMap(null);
-        }
 
-        // eslint-disable-next-line max-len
-        const marker = MapOverlayFactory.scannerUserMarker(this.map, userLocation.coords.lat, userLocation.coords.lng, userLocation);
-        this.scannerUserMarkers[userId] = marker;
+        if (this.userIsOnline(userLocation)) {
+          const currentMarker = this.scannerUserMarkers[userId];
+          if (currentMarker) {
+            currentMarker.setMap(null);
+          }
+
+          // eslint-disable-next-line max-len
+          const marker = MapOverlayFactory.scannerUserMarker(this.map, userLocation.coords.lat, userLocation.coords.lng, userLocation);
+          this.scannerUserMarkers[userId] = marker;
+        }
 
         const existingIndex = this.activeUsers.map(x => x.$id).indexOf(userLocation.$id);
         // console.log(`existing index: ${existingIndex}`);
@@ -159,6 +165,8 @@ export default {
           this.activeUsers.push(userLocation);
         }
       });
+
+      this.startCullingOfflineUsers();
 
       // pageLoader.load(1).then((page) => {
       //   this.items = this.processRows(page.items);
@@ -180,6 +188,33 @@ export default {
         });
         setTimeout(() => map.setZoom(currentZoom), 80);
       }
+    },
+    userIsOnline(user) {
+      const now = moment();
+      const then = moment(user.timestamp);
+      const diff = now.diff(then, 'minutes');
+      return diff < 10;
+    },
+    startCullingOfflineUsers() {
+      const cullingInterval = 4000; // ms
+      const cullOfflineUsers = () => {
+        Object.values(this.activeUserLocations).forEach((user) => {
+          if (!this.userIsOnline(user)) {
+            // console.log('culling');
+            // console.log(user);
+            // console.log(user.name);
+            // console.log(user.$id);
+            // console.log(this.scannerUserMarkers);
+            const marker = this.scannerUserMarkers[user.$id];
+            if (marker) {
+              marker.setMap(null);
+            }
+          }
+        });
+        this.$forceUpdate();
+        setTimeout(cullOfflineUsers, cullingInterval);
+      };
+      setTimeout(cullOfflineUsers);
     },
     processRows(items) {
       for (let i = 0; i < items.length; i += 1) {
@@ -348,6 +383,12 @@ circle.blue {
 .color-blue {
   color: steelblue;
 }
+
+
+
+
+
+
 
 
 

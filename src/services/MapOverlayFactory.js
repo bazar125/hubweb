@@ -1,5 +1,4 @@
-import * as moment from 'moment';
-
+// import * as moment from 'moment';
 export default {
   // map: Google maps object, content: HTML as string
   createOverlay(map, lat, lng, content) {
@@ -94,8 +93,8 @@ export default {
         <span class="scanner-user-marker-name">${scannerUser.name}</span>
         <span class="scanner-user-marker-zone">Zone B23</span>
       </div>
-      <span class="scanner-user-marker-timeago">${moment(scannerUser.timestamp).fromNow()}</span>
     </div>`;
+    // <span class="scanner-user-marker-timeago">${moment(scannerUser.timestamp).fromNow()}</span>
     const overlay = this.createOverlay(map, lat, lng, content);
     return overlay;
   },
