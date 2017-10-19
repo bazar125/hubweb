@@ -127,7 +127,7 @@
               <div class="message-data align-right">
                 <span class="message-data-time">10:10 AM, Today</span> &nbsp; &nbsp;
                 <span class="message-data-name">Olia</span>
-                <i class="fa fa-circle me"></i>
+                <icon name="circle" class="me"></icon>
 
               </div>
               <div class="message other-message float-right">
@@ -150,7 +150,7 @@
               <div class="message-data align-right">
                 <span class="message-data-time">10:14 AM, Today</span> &nbsp; &nbsp;
                 <span class="message-data-name">Olia</span>
-                <i class="fa fa-circle me"></i>
+                <icon name="circle" class="me"></icon>
 
               </div>
               <div class="message other-message float-right">
@@ -200,9 +200,10 @@
       <!-- end chat -->
 
       <div class="user-info d-flex flex-column justify-content-center align-items-center">
-        <span class="user-talking" >User Information</span>
+        <div ref="map" class="live-map"></div>
+        <span class="user-talking">User Information</span>
         <img class="user-image" src="../assets/user_placeholder.jpg"></img>
-        <span class="user-name" >John Doe</span>
+        <span class="user-name">John Doe</span>
         <span class="user-current-label">CURRENT DEPLOYMENT</span>
         <span class="user-zone">B23</span>
       </div>
@@ -211,41 +212,43 @@
     <!-- end container -->
 
     <!-- <script id="message-template" type="text/x-handlebars-template">
-        <li class="clearfix">
-          <div class="message-data align-right">
-            <span class="message-data-time">{{time}}, Today</span> &nbsp; &nbsp;
-            <span class="message-data-name">Olia</span>
-            <i class="fa fa-circle me"></i>
-          </div>
-          <div class="message other-message float-right">
-            {{messageOutput}}
-          </div>
-        </li>
-      </script>
+            <li class="clearfix">
+              <div class="message-data align-right">
+                <span class="message-data-time">{{time}}, Today</span> &nbsp; &nbsp;
+                <span class="message-data-name">Olia</span>
+                <icon name="circle" class="me"></icon>
+              </div>
+              <div class="message other-message float-right">
+                {{messageOutput}}
+              </div>
+            </li>
+          </script>
 
-      <script id="message-response-template" type="text/x-handlebars-template">
-        <li>
-          <div class="message-data">
-            <span class="message-data-name">
-              <icon name="circle" class="online"></icon> Vincent</span>
-            <span class="message-data-time">{{time}}, Today</span>
-          </div>
-          <div class="message my-message">
-            {{response}}
-          </div>
-        </li>
-      </script> -->
+          <script id="message-response-template" type="text/x-handlebars-template">
+            <li>
+              <div class="message-data">
+                <span class="message-data-name">
+                  <icon name="circle" class="online"></icon> Vincent</span>
+                <span class="message-data-time">{{time}}, Today</span>
+              </div>
+              <div class="message my-message">
+                {{response}}
+              </div>
+            </li>
+          </script> -->
 
     <!-- <dark-card title="Users" class="invite-users-card">
-          <div class="d-flex flex-column justify-content-start align-items-center">
-          </div>
-        </dark-card> -->
+              <div class="d-flex flex-column justify-content-start align-items-center">
+              </div>
+            </dark-card> -->
   </dark-card>
 </template>
 
 <script>
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
+
+import MapStyle from '../assets/mapstyle.json';
 
 export default {
   name: 'ChatCard',
@@ -255,7 +258,16 @@ export default {
   },
   data() {
     return {
+      center: [10.5059, 7.4319],
     };
+  },
+  mounted() {
+    // eslint-disable-next-line no-undef
+    this.map = new google.maps.Map(this.$refs.map, {
+      center: { lat: this.center[0], lng: this.center[1] },
+      zoom: 13,
+      styles: MapStyle,
+    });
   },
   methods: {
   },
@@ -312,6 +324,8 @@ export default {
   height: 770px;
   list-style: none;
 }
+
+
 
 
 
@@ -391,7 +405,8 @@ export default {
   padding: 30px 30px 20px;
   border-bottom: 2px solid white;
   overflow-y: scroll;
-  height: 575px;
+  /* height: 575px; */
+  height: 250px;
 }
 
 .chat .chat-history .message-data {
@@ -446,7 +461,7 @@ export default {
 }
 
 .chat .chat-message {
-  padding: 30px;
+  padding: 10px 30px;
 }
 
 .chat .chat-message textarea {
@@ -527,7 +542,7 @@ export default {
   /* 100% - width of chat + people list  */
   width: calc(100% - 750px);
   color: white;
-  /* background-color: rgb(36,144,204); */
+  background-color: rgb(36, 144, 204);
 }
 
 .user-image {
@@ -540,22 +555,29 @@ export default {
 .user-talking {
   font-weight: 300;
   font-size: 18px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .user-name {
   font-weight: 700;
   font-size: 18px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .user-current-label {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
 .user-zone {
-  font-size: 13px;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.live-map {
+  width: 100%;
+  height: 350px;
+  margin-bottom: 10px;
 }
 </style>
