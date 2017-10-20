@@ -1,7 +1,7 @@
 <template>
   <dark-card title="Messages" class="chat-card">
-    <div class="container clearfix d-flex">
-      <div class="people-list" id="people-list">
+    <div class="container clearfix d-flex" style="flex: 1;">
+      <div class="people-list d-flex flex-column" id="people-list">
         <div class="search">
           <input type="text" placeholder="search" />
           <i class="fa fa-search"></i>
@@ -17,6 +17,24 @@
             </div>
           </li>
         </ul>
+        <div class="user-info d-flex flex-column justify-content-center align-items-center">
+          <div class="selected-user-overlay d-flex flex-column justify-content-start align-items-start">
+            <span class="txt-user-information">User Information</span>
+            <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
+              <img class="user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&token=1352d4a0-906e-4a6e-8511-39bf8411963f"></img>
+              <div class="d-flex flex-column" style="flex: 1;">
+                <span class="user-name">Jimmy Eze</span>
+                <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
+                  <span class="user-zone mr-auto">Zone B23</span>
+                  <icon name="circle" class="ml-auto online"></icon> online
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex" style="height: 200px; width: 100%; padding: 10px;">
+            <div ref="map" class="live-map"></div>
+          </div>
+        </div>
       </div>
 
       <div class="chat">
@@ -109,15 +127,6 @@
       </div>
       <!-- end chat -->
 
-      <div class="user-info d-flex flex-column justify-content-center align-items-center">
-        <span class="user-talking">User Information</span>
-        <img class="user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&token=1352d4a0-906e-4a6e-8511-39bf8411963f"></img>
-        <span class="user-name">Jimmy Eze</span>
-        <span class="user-current-label">CURRENT DEPLOYMENT</span>
-        <span class="user-zone">B23</span>
-        <div ref="map" class="live-map"></div>
-      </div>
-
     </div>
     <!-- end container -->
 
@@ -188,8 +197,7 @@ export default {
       this.users.push(user);
     });
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>
 
@@ -202,7 +210,8 @@ export default {
   margin: 0 auto;
   /* width: 750px; */
   width: 100%;
-  background: #444753;
+  /* background: #444753; */
+  background: #3a3e5c;
   /* border-radius: 5px; */
   overflow: hidden;
   /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
@@ -213,12 +222,19 @@ export default {
 .people-list {
   width: 260px;
   float: left;
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
 
 .people-list .search {
   /* padding: 20px; */
   padding-top: 10px;
+}
+
+.people-list .list {
+  /* flex: 1; */
+  /* max-height: 150px; */
+  overflow-y: auto;
+  margin-bottom: 0px;
 }
 
 .people-list input {
@@ -227,7 +243,7 @@ export default {
   /* padding: 14px; */
   padding: 8px;
   color: white;
-  background: #6A6C75;
+  background: #6a6c75;
   width: 90%;
   font-size: 14px;
 }
@@ -244,13 +260,6 @@ export default {
   list-style: none;
 }
 
-
-
-
-
-
-
-
 /* .people-list ul li:not(:last-child) { */
 
 .people-list ul li {
@@ -259,13 +268,13 @@ export default {
   padding: 6px 10px;
   cursor: pointer;
   border-radius: 4px;
-  border: 1px solid rgba(255,255,255,0.5);
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .people-list ul li:hover {
   background-color: rgba(255, 255, 255, 0.23);
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .people-list img {
@@ -283,7 +292,7 @@ export default {
 
 .people-list .status {
   /* color: #92959E; */
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
   text-align: start;
 }
 
@@ -302,9 +311,10 @@ export default {
 }
 
 .chat {
-  width: 490px;
+  flex: 1;
+  /* width: 490px; */
   float: left;
-  background: #F2F5F8;
+  background: #f2f5f8;
   /* border-top-right-radius: 5px; */
   /* border-bottom-right-radius: 5px; */
 
@@ -333,13 +343,13 @@ export default {
 }
 
 .chat .chat-header .chat-num-messages {
-  color: #92959E;
+  color: #92959e;
   text-align: start;
 }
 
 .chat .chat-header .fa-star {
   float: right;
-  color: #D8DADF;
+  color: #d8dadf;
   font-size: 20px;
   margin-top: 12px;
 }
@@ -382,21 +392,21 @@ export default {
   width: 0;
   position: absolute;
   pointer-events: none;
-  border-bottom-color: #86BB71;
+  border-bottom-color: #86bb71;
   border-width: 10px;
   margin-left: -10px;
 }
 
 .chat .chat-history .my-message {
-  background: #86BB71;
+  background: #86bb71;
 }
 
 .chat .chat-history .other-message {
-  background: #94C2ED;
+  background: #94c2ed;
 }
 
 .chat .chat-history .other-message:after {
-  border-bottom-color: #94C2ED;
+  border-bottom-color: #94c2ed;
   left: 93%;
 }
 
@@ -427,13 +437,13 @@ export default {
 
 .chat .chat-message button {
   float: right;
-  color: #94C2ED;
+  color: #94c2ed;
   font-size: 16px;
   text-transform: uppercase;
   border: none;
   cursor: pointer;
   font-weight: bold;
-  background: #F2F5F8;
+  background: #f2f5f8;
 }
 
 .chat .chat-message button:hover {
@@ -450,15 +460,15 @@ export default {
 }
 
 .online {
-  color: #86BB71;
+  color: #86bb71;
 }
 
 .offline {
-  color: #E38968;
+  color: #e38968;
 }
 
 .me {
-  color: #94C2ED;
+  color: #94c2ed;
 }
 
 .align-left {
@@ -483,47 +493,53 @@ export default {
 }
 
 .user-info {
+  position: relative;
   /* 100% - width of chat + people list  */
-
-  width: calc(100% - 750px);
+  /* width: calc(100% - 750px);*/
+  flex: 1;
   color: white;
-  background-color: rgb(36, 144, 204);
+  border-top: 0.5px solid rgba(255,255,255,0.5);
 }
 
 .user-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50px;
-  margin-bottom: 10px;
-}
-
-.user-talking {
-  font-weight: 300;
-  font-size: 18px;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 10px;
 }
 
 .user-name {
-  font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.user-current-label {
+  text-align: start;
   font-weight: 700;
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-right: 10px;
 }
 
 .user-zone {
-  font-size: 18px;
-  margin-bottom: 10px;
+  text-align: start;
+  font-size: 12px;
+  margin-right: 10px;
 }
 
 .live-map {
-  width: 90%;
-  height: 350px;
-  margin-bottom: 10px;
+  flex: 1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.selected-user-overlay {
+  width: calc(100% - 20px);
+  z-index: 9999;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(36, 144, 204, 0.8);
+  padding: 6px;
+}
+
+.txt-user-information {
+  font-size: 10px;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 </style>
