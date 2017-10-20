@@ -2,9 +2,9 @@
   <dark-card title="Messages" class="chat-card">
     <div class="container clearfix d-flex" style="flex: 1;">
       <div class="people-list d-flex flex-column" id="people-list">
-        <div class="search">
+        <div class="search" style="position: relative">
           <input type="text" placeholder="search" />
-          <i class="fa fa-search"></i>
+          <icon name="search" class="icon-search"></icon>
         </div>
         <ul class="list">
           <li class="clearfix d-flex justify-content-start align-items-center" v-for="user in users" :key="user.$id">
@@ -19,15 +19,21 @@
         </ul>
         <div class="user-info d-flex flex-column justify-content-center align-items-center">
           <div class="selected-user-overlay d-flex flex-column justify-content-start align-items-start">
-            <span class="txt-user-information">User Information</span>
+            <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
+                  <span class="txt-user-information">User Information</span>
+                  <span class="txt-user-information ml-auto"><icon name="circle" class="online"></icon> online</span>
+                </div>
+            <!-- <span class="txt-user-information">User Information</span> -->
+            
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
               <img class="user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&token=1352d4a0-906e-4a6e-8511-39bf8411963f"></img>
               <div class="d-flex flex-column" style="flex: 1;">
                 <span class="user-name">Jimmy Eze</span>
-                <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
-                  <span class="user-zone mr-auto">Zone B23</span>
+                <span class="user-zone mr-auto">Deployed to <span style="font-weight: 600;">Zone B23</span></span>
+                <!-- <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
+                  <span class="user-zone mr-auto">Deployed to Zone B23</span>
                   <icon name="circle" class="ml-auto online"></icon> online
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -37,13 +43,13 @@
         </div>
       </div>
 
-      <div class="chat">
+      <div class="chat d-flex flex-column">
         <div class="chat-header clearfix">
-          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg" alt="avatar" />
+          <img class="chat-user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&amp;token=1352d4a0-906e-4a6e-8511-39bf8411963f" alt="avatar" />
 
           <div class="chat-about">
-            <div class="chat-with">Chat with Vincent Porter</div>
-            <div class="chat-num-messages">already 1 902 messages</div>
+            <div class="chat-with">Officer Jimmy Eze</div>
+            <div class="chat-num-messages">last seen 2 minutes ago</div>
           </div>
           <i class="fa fa-star"></i>
         </div>
@@ -228,6 +234,15 @@ export default {
 .people-list .search {
   /* padding: 20px; */
   padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.icon-search {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  color: rgba(255,255,255,0.54);
 }
 
 .people-list .list {
@@ -242,9 +257,11 @@ export default {
   border: none;
   /* padding: 14px; */
   padding: 8px;
+  padding-right: 30px;
   color: white;
-  background: #6a6c75;
-  width: 90%;
+  /* background: #6a6c75; */
+  background: #797a97;
+  width: 100%;
   font-size: 14px;
 }
 
@@ -254,7 +271,7 @@ export default {
 }
 
 .people-list ul {
-  padding: 20px;
+  padding: 10px;
   /* padding-bottom: 0px; */
   /* height: 770px; */
   list-style: none;
@@ -322,7 +339,7 @@ export default {
 }
 
 .chat .chat-header {
-  padding: 20px;
+  padding: 10px 20px;
   border-bottom: 2px solid white;
 }
 
@@ -358,9 +375,7 @@ export default {
   padding: 30px 30px 20px;
   border-bottom: 2px solid white;
   overflow-y: scroll;
-  /* height: 575px; */
-
-  height: 250px;
+  flex: 1;
 }
 
 .chat .chat-history .message-data {
@@ -499,6 +514,12 @@ export default {
   flex: 1;
   color: white;
   border-top: 0.5px solid rgba(255,255,255,0.5);
+}
+
+.chat-user-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
 }
 
 .user-image {
