@@ -98,8 +98,8 @@
         <div class="chat-message clearfix">
           <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
 
-          <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
-          <i class="fa fa-file-image-o"></i>
+          <icon class="fa-file-o" name="file-o"></icon> &nbsp;&nbsp;&nbsp;
+          <icon class="fa-file-image-o" name="file-image-o"></icon>
 
           <button>Send</button>
 
@@ -111,8 +111,8 @@
 
       <div class="user-info d-flex flex-column justify-content-center align-items-center">
         <span class="user-talking">User Information</span>
-        <img class="user-image" src="../assets/user_placeholder.jpg"></img>
-        <span class="user-name">John Doe</span>
+        <img class="user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&token=1352d4a0-906e-4a6e-8511-39bf8411963f"></img>
+        <span class="user-name">Jimmy Eze</span>
         <span class="user-current-label">CURRENT DEPLOYMENT</span>
         <span class="user-zone">B23</span>
         <div ref="map" class="live-map"></div>
@@ -260,10 +260,12 @@ export default {
   cursor: pointer;
   border-radius: 4px;
   border: 1px solid rgba(255,255,255,0.5);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
 .people-list ul li:hover {
   background-color: rgba(255, 255, 255, 0.23);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
 .people-list img {

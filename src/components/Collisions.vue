@@ -10,9 +10,9 @@
 
 <script>
 import TableSearch from '@/components/TableSearch';
-import TablePageLoader from '@/services/TablePageLoader';
 import Datatable from '@/components/Datatable';
 import CollisionModal from '@/components/CollisionModal';
+import TablePageLoader from '@/services/TablePageLoader';
 import ModelFactory from '@/services/ModelFactory';
 import * as Firebase from 'firebase';
 

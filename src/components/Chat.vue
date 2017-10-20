@@ -22,11 +22,11 @@ export default {
 
 <style scoped>
 .chat {
-  width: calc(100% - 150px);
-  min-width: calc(100% - 150px);
+  width: calc(100% - 350px);
   /* background-color: #2c2e4a; */
   background-color: #ececec;
-  padding: 20px;
+  padding: 8px;
+  padding-right: 0px;
   overflow: hidden;
 }
 
