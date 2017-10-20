@@ -7,100 +7,10 @@
           <i class="fa fa-search"></i>
         </div>
         <ul class="list">
-          <li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar" />
+          <li class="clearfix d-flex justify-content-start align-items-center" v-for="user in users" :key="user.$id">
+            <img class="image" :src="user.image" alt="avatar" />
             <div class="about">
-              <div class="name">Vincent Porter</div>
-              <div class="status">
-                <icon name="circle" class="online"></icon> online
-              </div>
-            </div>
-          </li>
-
-          <li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_02.jpg" alt="avatar" />
-            <div class="about">
-              <div class="name">Aiden Chavez</div>
-              <div class="status">
-                <icon name="circle" class="offline"></icon> left 7 mins ago
-              </div>
-            </div>
-          </li>
-
-          <li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_03.jpg" alt="avatar" />
-            <div class="about">
-              <div class="name">Mike Thomas</div>
-              <div class="status">
-                <icon name="circle" class="online"></icon> online
-              </div>
-            </div>
-          </li>
-
-          <li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_04.jpg" alt="avatar" />
-            <div class="about">
-              <div class="name">Erica Hughes</div>
-              <div class="status">
-                <icon name="circle" class="online"></icon> online
-              </div>
-            </div>
-          </li>
-
-          <li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_05.jpg" alt="avatar" />
-            <div class="about">
-              <div class="name">Ginger Johnston</div>
-              <div class="status">
-                <icon name="circle" class="online"></icon> online
-              </div>
-            </div>
-          </li>
-
-          <li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_06.jpg" alt="avatar" />
-            <div class="about">
-              <div class="name">Tracy Carpenter</div>
-              <div class="status">
-                <icon name="circle" class="offline"></icon> left 30 mins ago
-              </div>
-            </div>
-          </li>
-
-          <li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_07.jpg" alt="avatar" />
-            <div class="about">
-              <div class="name">Christian Kelly</div>
-              <div class="status">
-                <icon name="circle" class="offline"></icon> left 10 hours ago
-              </div>
-            </div>
-          </li>
-
-          <li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_08.jpg" alt="avatar" />
-            <div class="about">
-              <div class="name">Monica Ward</div>
-              <div class="status">
-                <icon name="circle" class="online"></icon> online
-              </div>
-            </div>
-          </li>
-
-          <li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_09.jpg" alt="avatar" />
-            <div class="about">
-              <div class="name">Dean Henry</div>
-              <div class="status">
-                <icon name="circle" class="offline"></icon> offline since Oct 28
-              </div>
-            </div>
-          </li>
-
-          <li class="clearfix">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_10.jpg" alt="avatar" />
-            <div class="about">
-              <div class="name">Peyton Mckinney</div>
+              <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
               <div class="status">
                 <icon name="circle" class="online"></icon> online
               </div>
@@ -200,51 +110,52 @@
       <!-- end chat -->
 
       <div class="user-info d-flex flex-column justify-content-center align-items-center">
-        <div ref="map" class="live-map"></div>
         <span class="user-talking">User Information</span>
         <img class="user-image" src="../assets/user_placeholder.jpg"></img>
         <span class="user-name">John Doe</span>
         <span class="user-current-label">CURRENT DEPLOYMENT</span>
         <span class="user-zone">B23</span>
+        <div ref="map" class="live-map"></div>
       </div>
 
     </div>
     <!-- end container -->
 
     <!-- <script id="message-template" type="text/x-handlebars-template">
-            <li class="clearfix">
-              <div class="message-data align-right">
-                <span class="message-data-time">{{time}}, Today</span> &nbsp; &nbsp;
-                <span class="message-data-name">Olia</span>
-                <icon name="circle" class="me"></icon>
-              </div>
-              <div class="message other-message float-right">
-                {{messageOutput}}
-              </div>
-            </li>
-          </script>
+                  <li class="clearfix">
+                    <div class="message-data align-right">
+                      <span class="message-data-time">{{time}}, Today</span> &nbsp; &nbsp;
+                      <span class="message-data-name">Olia</span>
+                      <icon name="circle" class="me"></icon>
+                    </div>
+                    <div class="message other-message float-right">
+                      {{messageOutput}}
+                    </div>
+                  </li>
+                </script>
 
-          <script id="message-response-template" type="text/x-handlebars-template">
-            <li>
-              <div class="message-data">
-                <span class="message-data-name">
-                  <icon name="circle" class="online"></icon> Vincent</span>
-                <span class="message-data-time">{{time}}, Today</span>
-              </div>
-              <div class="message my-message">
-                {{response}}
-              </div>
-            </li>
-          </script> -->
+                <script id="message-response-template" type="text/x-handlebars-template">
+                  <li>
+                    <div class="message-data">
+                      <span class="message-data-name">
+                        <icon name="circle" class="online"></icon> Vincent</span>
+                      <span class="message-data-time">{{time}}, Today</span>
+                    </div>
+                    <div class="message my-message">
+                      {{response}}
+                    </div>
+                  </li>
+                </script> -->
 
     <!-- <dark-card title="Users" class="invite-users-card">
-              <div class="d-flex flex-column justify-content-start align-items-center">
-              </div>
-            </dark-card> -->
+                    <div class="d-flex flex-column justify-content-start align-items-center">
+                    </div>
+                  </dark-card> -->
   </dark-card>
 </template>
 
 <script>
+import * as Firebase from 'firebase';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
 
@@ -259,6 +170,7 @@ export default {
   data() {
     return {
       center: [10.5059, 7.4319],
+      users: [],
     };
   },
   mounted() {
@@ -267,6 +179,13 @@ export default {
       center: { lat: this.center[0], lng: this.center[1] },
       zoom: 13,
       styles: MapStyle,
+    });
+
+    const ref = Firebase.database().ref('users');
+    ref.on('child_added', (snap) => {
+      const user = snap.val();
+      user.$id = snap.key;
+      this.users.push(user);
     });
   },
   methods: {
@@ -321,9 +240,12 @@ export default {
 .people-list ul {
   padding: 20px;
   /* padding-bottom: 0px; */
-  height: 770px;
+  /* height: 770px; */
   list-style: none;
 }
+
+
+
 
 
 
@@ -332,7 +254,16 @@ export default {
 /* .people-list ul li:not(:last-child) { */
 
 .people-list ul li {
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+.people-list ul li:hover {
+  background-color: rgba(255, 255, 255, 0.23);
 }
 
 .people-list img {
@@ -341,7 +272,7 @@ export default {
 
 .people-list .about {
   float: left;
-  margin-top: 8px;
+  /* margin-top: 8px; */
 }
 
 .people-list .about {
@@ -349,8 +280,17 @@ export default {
 }
 
 .people-list .status {
-  color: #92959E;
+  /* color: #92959E; */
+  color: rgba(255,255,255,0.7);
   text-align: start;
+}
+
+.people-list .image {
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .people-list .name {
@@ -365,6 +305,7 @@ export default {
   background: #F2F5F8;
   /* border-top-right-radius: 5px; */
   /* border-bottom-right-radius: 5px; */
+
   color: #434651;
 }
 
@@ -406,6 +347,7 @@ export default {
   border-bottom: 2px solid white;
   overflow-y: scroll;
   /* height: 575px; */
+
   height: 250px;
 }
 
@@ -540,6 +482,7 @@ export default {
 
 .user-info {
   /* 100% - width of chat + people list  */
+
   width: calc(100% - 750px);
   color: white;
   background-color: rgb(36, 144, 204);
@@ -555,13 +498,14 @@ export default {
 .user-talking {
   font-weight: 300;
   font-size: 18px;
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 
 .user-name {
   font-weight: 700;
   font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .user-current-label {
@@ -576,7 +520,7 @@ export default {
 }
 
 .live-map {
-  width: 100%;
+  width: 90%;
   height: 350px;
   margin-bottom: 10px;
 }
