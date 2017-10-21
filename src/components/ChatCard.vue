@@ -82,10 +82,10 @@
         <div v-else class="chat-history" v-chat-scroll>
           <ul>
             <template v-for="message in messages">
-            <li v-if="this.selectedUser && message.senderId === this.selectedUser.$id" :key="message.message" class="clearfix">
+            <li v-if="message.senderId !== currentUser.$id" :key="message.message" class="clearfix">
               <div class="message-data align-right">
                 <span class="message-data-time">{{getTimeAgo(message.timestamp)}}</span> &nbsp; &nbsp;
-                <span class="message-data-name">{{messages.senderName}}</span>
+                <span class="message-data-name">{{message.senderName}}</span>
                 <icon name="circle" class="me"></icon>
               </div>
               <div class="message other-message float-right">
