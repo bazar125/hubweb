@@ -17,7 +17,7 @@
             </div>
           </li>
         </ul>
-        <div class="user-info d-flex flex-column justify-content-center align-items-center">
+        <div v-if="this.selectedUser" class="user-info d-flex flex-column justify-content-center align-items-center">
           <div class="selected-user-overlay d-flex flex-column justify-content-start align-items-start">
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
                   <span class="txt-user-information">User Information</span>
@@ -25,7 +25,7 @@
                 </div>
             <!-- <span class="txt-user-information">User Information</span> -->
             
-            <div v-if="this.selectedUser" class="d-flex justify-content-start align-items-center" style="width: 100%;">
+            <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
               <img class="user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&token=1352d4a0-906e-4a6e-8511-39bf8411963f"></img>
               <div class="d-flex flex-column overlay-content-container">
                 <span class="user-name">{{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</span>
@@ -42,8 +42,9 @@
           </div>
         </div>
       </div>
-
-      <div class="chat d-flex flex-column">
+      <div v-if="!this.selectedConversation" class="chat d-flex flex-column">
+      </div>
+      <div v-else class="chat d-flex flex-column">
         <div class="chat-header clearfix">
           <img class="chat-user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&amp;token=1352d4a0-906e-4a6e-8511-39bf8411963f" alt="avatar" />
 
@@ -190,27 +191,118 @@ export default {
       users: [],
       selectedIndex: 0,
       selectedUser: null,
+      selectedConversation: null,
+      ownUserId: '',
+      conversations: [],
+      messages: [],
     };
   },
   mounted() {
-    // eslint-disable-next-line no-undef
-    this.map = new google.maps.Map(this.$refs.map, {
-      center: { lat: this.center[0], lng: this.center[1] },
-      zoom: 13,
-      styles: MapStyle,
-    });
+    const ref = Firebase.database().ref();
 
-    const ref = Firebase.database().ref('users');
-    ref.on('child_added', (snap) => {
-      const user = snap.val();
-      user.$id = snap.key;
-      this.users.push(user);
-    });
+    const uid = Firebase.auth().currentUser.uid;
+    ref
+      .child(`users/${uid}`)
+      .once('value')
+      .then(snap => {
+        this.currentUser = snap.val();
+        this.currentUser.$id = snap.key;
+
+        this.loadConversations();
+      });
+  },
+  watch: {
+    selectedConversation() {
+      console.log('selectedConversation changed');
+    },
   },
   methods: {
     clickUser(user, index) {
-      this.selectedIndex = index;
       this.selectedUser = user;
+      this.selectedIndex = index;
+
+      let foundConversation = false;
+      for (let i = 0; i < this.conversations.length; i += 1) {
+        const conversation = this.conversations[i];
+        console.log('considering');
+        console.log(conversation.users);
+        if (
+          conversation.users &&
+          conversation.users[this.currentUser.$id] &&
+          conversation.users[this.selectedUser.$id]
+        ) {
+          this.selectedConversation = conversation;
+          console.log('Selected conversation');
+          console.log(this.selectedConversation);
+          foundConversation = true;
+        }
+
+        if (foundConversation) {
+          break;
+        }
+      }
+
+      if (!foundConversation) {
+        this.createConversation();
+      }
+    },
+    initMap() {
+      // eslint-disable-next-line no-undef
+      this.map = new google.maps.Map(this.$refs.map, {
+        center: { lat: this.center[0], lng: this.center[1] },
+        zoom: 13,
+        styles: MapStyle,
+      });
+    },
+    loadConversations() {
+      const ref = Firebase.database().ref();
+      ref
+        .child('conversations')
+        .orderByChild(`users/${this.currentUser.$id}`)
+        .equalTo(true)
+        .once('value')
+        .then(snap => {
+          const conversations = [];
+          snap.forEach(child => {
+            const conversation = child.val();
+            conversation.$id = child.key;
+            conversations.push(conversation);
+          });
+          this.conversations = conversations;
+          return this.loadUsers();
+        })
+        .then(() => this.initMap());
+    },
+    loadUsers() {
+      const ref = Firebase.database().ref();
+      ref.child('users').on('child_added', snap => {
+        const user = snap.val();
+        user.$id = snap.key;
+        this.users.push(user);
+        if (!this.selectedUser) {
+          this.selectedUser = user;
+        }
+      });
+    },
+    createConversation() {
+      const users = {};
+      users[this.currentUser.$id] = true;
+      users[this.selectedUser.$id] = true;
+      const conversation = {
+        lastMessage: '',
+        senderId: this.currentUser.$id,
+        senderName: `${this.currentUser.firstName} ${this.currentUser
+          .lastName}`,
+        users,
+        timestamp: Firebase.database.ServerValue.TIMESTAMP,
+      };
+      console.log('creating new conversation');
+      console.log(conversation);
+      const ref = Firebase.database().ref();
+      const conversationKey = ref.child('conversations').push(conversation).key;
+      conversation.$id = conversationKey;
+      this.selectedConversation = conversation;
+      this.conversations.push(conversation);
     },
   },
 };
@@ -251,7 +343,7 @@ export default {
   position: absolute;
   right: 20px;
   top: 20px;
-  color: rgba(255,255,255,0.54);
+  color: rgba(255, 255, 255, 0.54);
 }
 
 .people-list .list {
@@ -421,7 +513,7 @@ export default {
   bottom: 100%;
   left: 7%;
   border: solid transparent;
-  content: " ";
+  content: ' ';
   height: 0;
   width: 0;
   position: absolute;
@@ -456,7 +548,7 @@ export default {
   width: 100%;
   border: none;
   padding: 10px 20px;
-  font: 14px/22px "Lato", Arial, sans-serif;
+  font: 14px/22px 'Lato', Arial, sans-serif;
   margin-bottom: 10px;
   border-radius: 5px;
   resize: none;
@@ -521,7 +613,7 @@ export default {
   visibility: hidden;
   display: block;
   font-size: 0;
-  content: " ";
+  content: ' ';
   clear: both;
   height: 0;
 }
@@ -532,7 +624,7 @@ export default {
   /* width: calc(100% - 750px);*/
   flex: 1;
   color: white;
-  border-top: 0.5px solid rgba(255,255,255,0.5);
+  border-top: 0.5px solid rgba(255, 255, 255, 0.5);
 }
 
 .chat-user-image {
@@ -572,6 +664,7 @@ export default {
 
 .live-map {
   flex: 1;
+  height: 150px;
   border-radius: 4px;
   overflow: hidden;
 }
