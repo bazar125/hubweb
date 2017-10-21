@@ -636,21 +636,25 @@ export default {
   width: 0;
   position: absolute;
   pointer-events: none;
-  border-bottom-color: #86bb71;
+  /* border-bottom-color: #86bb71; */
+  border-bottom-color: #9a9bb1;
   border-width: 10px;
   margin-left: -10px;
 }
 
 .chat .chat-history .my-message {
-  background: #86bb71;
+  /* background: #86bb71; */
+  background: #9a9bb1;
 }
 
 .chat .chat-history .other-message {
-  background: #94c2ed;
+  /* background: #a5a6b9; */
+  background: #4a59ad;
 }
 
 .chat .chat-history .other-message:after {
-  border-bottom-color: #94c2ed;
+  /* border-bottom-color: #a5a6b9; */
+  border-bottom-color: #4a59ad;
   left: 93%;
 }
 
