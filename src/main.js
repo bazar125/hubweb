@@ -52,14 +52,16 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-const unsubscribe = Firebase.initializeApp(config).auth().onAuthStateChanged(() => {
-  /* eslint-disable no-new */
-  new Vue({
-    el: '#app',
-    router,
-    template: '<App/>',
-    components: { App },
-  });
+const unsubscribe = Firebase.initializeApp(config)
+  .auth()
+  .onAuthStateChanged(() => {
+    /* eslint-disable no-new */
+    new Vue({
+      el: '#app',
+      router,
+      template: '<App/>',
+      components: { App },
+    });
 
-  unsubscribe();
-});
+    unsubscribe();
+  });

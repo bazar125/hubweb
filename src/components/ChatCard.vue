@@ -6,7 +6,7 @@
           <input type="text" placeholder="search" />
           <icon name="search" class="icon-search"></icon>
         </div>
-        <b-tabs class="chat-user-tabs">
+        <b-tabs class="chat-user-tabs d-flex flex-column justify-content-start align-items-start">
           <b-tab title="OFFICERS" active>
              <ul class="list">
               <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
@@ -456,7 +456,7 @@ export default {
 .people-list ul li {
   /* padding-bottom: 20px; */
   margin-bottom: 10px;
-  padding: 6px 10px;
+  padding: 4px 10px;
   cursor: pointer;
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -736,7 +736,7 @@ export default {
 
 .live-map {
   flex: 1;
-  height: 150px;
+  height: 180px;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -786,10 +786,18 @@ export default {
   overflow: hidden;
 }
 
+.chat-user-tabs>>> div {
+  width: 100%;
+}
+
 .chat-user-tabs>>>.nav {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.chat-user-tabs>>>.tab-content {
+  overflow-y: auto;
 }
 
 .chat-user-tabs>>>.nav .nav-link {
