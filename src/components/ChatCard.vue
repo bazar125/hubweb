@@ -75,14 +75,14 @@
         </div>
         <!-- end chat-header -->
 
-        <div v-if="this.messages.length < 1" class="chat-history d-flex flex-column justify-content-center align-items-center">
+        <div v-if="!this.currentUser || this.messages.length < 1" class="chat-history d-flex flex-column justify-content-center align-items-center">
             <span class="txt-placeholder">Write a message to start a conversation with {{this.selectedUser.firstName}}</span>
             <icon class="icon-placeholder" name="commenting-o"></icon>
         </div>
         <div v-else class="chat-history" v-chat-scroll>
-          <ul ref="chatList">
+          <ul>
             <template v-for="message in messages">
-              <li v-if="this.currentUser && message.senderId === this.currentUser.$id" :key="message.message" class="clearfix">
+            <li v-if="message.senderId !== this.currentUser.$id" :key="message.message" class="clearfix">
               <div class="message-data align-right">
                 <span class="message-data-time">{{getTimeAgo(message.timestamp)}}</span> &nbsp; &nbsp;
                 <span class="message-data-name">{{messages.senderName}}</span>
@@ -235,12 +235,6 @@ export default {
     selectedUser() {
       // Defer to next DOM update cycle so that the map's v-ref is ready
       this.$nextTick(() => this.initMap());
-    },
-    messages() {
-      // this.$nextTick(() => {
-      //   const container = this.$refs.chatList;
-      //   container.scrollTop = container.scrollHeight;
-      // });
     },
   },
   methods: {
