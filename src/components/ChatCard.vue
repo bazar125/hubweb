@@ -7,7 +7,7 @@
           <icon name="search" class="icon-search"></icon>
         </div>
         <ul class="list">
-          <li class="clearfix d-flex justify-content-start align-items-center" v-for="user in users" :key="user.$id">
+          <li :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
             <img class="image" :src="user.image" alt="avatar" />
             <div class="about">
               <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -188,6 +188,7 @@ export default {
     return {
       center: [10.5059, 7.4319],
       users: [],
+      selectedIndex: 0,
     };
   },
   mounted() {
@@ -315,6 +316,10 @@ export default {
   /* color: #92959E; */
   color: rgba(255, 255, 255, 0.7);
   text-align: start;
+}
+
+.chat-user-item.active {
+  background-color: rgba(255, 255, 255, 0.23);
 }
 
 .people-list .image {
