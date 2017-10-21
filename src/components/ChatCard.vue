@@ -27,7 +27,7 @@
             
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
               <img class="user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&token=1352d4a0-906e-4a6e-8511-39bf8411963f"></img>
-              <div class="d-flex flex-column" style="flex: 1;">
+              <div class="d-flex flex-column" style="flex: 1; margin-top: 2px; margin-bottom: 2px;">
                 <span class="user-name">Jimmy Eze</span>
                 <span class="user-zone mr-auto">Deployed to <span style="font-weight: 600;">Zone B23</span></span>
                 <!-- <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
@@ -37,7 +37,7 @@
               </div>
             </div>
           </div>
-          <div class="d-flex" style="height: 200px; width: 100%; padding: 10px;">
+          <div class="d-flex" style="flex: 1; width: 100%; padding: 10px;">
             <div ref="map" class="live-map"></div>
           </div>
         </div>
@@ -70,7 +70,7 @@
             </li>
 
             <li>
-              <div class="message-data">
+              <div class="d-flex justify-content-start align-items-center message-data">
                 <span class="message-data-name">
                   <icon name="circle" class="online"></icon> Vincent</span>
                 <span class="message-data-time">10:12 AM, Today</span>
@@ -93,7 +93,7 @@
             </li>
 
             <li>
-              <div class="message-data">
+              <div class="d-flex justify-content-start align-items-center message-data">
                 <span class="message-data-name">
                   <icon name="circle" class="online"></icon> Vincent</span>
                 <span class="message-data-time">10:20 AM, Today</span>
@@ -104,10 +104,10 @@
             </li>
 
             <li>
-              <div class="message-data">
+              <div class="d-flex justify-content-start align-items-center message-data">
                 <span class="message-data-name">
                   <icon name="circle" class="online"></icon> Vincent</span>
-                <span class="message-data-time">10:31 AM, Today</span>
+                <span class="message-data-time">10:20 AM, Today</span>
               </div>
               <icon name="circle" class="online"></icon>
               <i class="fa fa-circle online" style="color: #AED2A6"></i>
@@ -122,10 +122,12 @@
         <div class="chat-message clearfix">
           <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
 
-          <icon class="fa-file-o" name="file-o"></icon> &nbsp;&nbsp;&nbsp;
-          <icon class="fa-file-image-o" name="file-image-o"></icon>
+          <div class="d-flex justify-content-start align-items-center">
+            <icon class="fa-file-o" name="file-o"></icon> &nbsp;&nbsp;&nbsp;
+            <icon class="fa-file-image-o mr-auto" style="margin-left: 10px;" name="file-image-o"></icon>
 
-          <button>Send</button>
+            <button>Send</button>
+          </div>
 
         </div>
         <!-- end chat-message -->
@@ -301,6 +303,8 @@ export default {
 .people-list .about {
   float: left;
   /* margin-top: 8px; */
+  /* margin-top: 2px;
+  margin-bottom: 2px; */
 }
 
 .people-list .about {
@@ -319,6 +323,8 @@ export default {
   border-radius: 20px;
   object-fit: cover;
   object-position: center;
+  /* border: 2px solid #585e8c; */
+  /* border: 2px solid #9a9bb1; */
 }
 
 .people-list .name {
@@ -389,13 +395,15 @@ export default {
 
 .chat .chat-history .message {
   color: white;
-  padding: 18px 20px;
+  /* padding: 18px 20px; */
+  padding: 8px 20px;
   line-height: 26px;
-  font-size: 16px;
+  font-size: 12px;
   border-radius: 7px;
   margin-bottom: 30px;
   width: 90%;
   position: relative;
+  text-align: start;
 }
 
 .chat .chat-history .message:after {
@@ -520,6 +528,9 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 25px;
+  border: 2px solid #585e8c;
+  object-fit: cover;
+  object-position: center;
 }
 
 .user-image {
@@ -527,6 +538,9 @@ export default {
   height: 40px;
   border-radius: 20px;
   margin-right: 10px;
+  border: 2px solid #585e8c;
+  object-fit: cover;
+  object-position: center;
 }
 
 .user-name {
