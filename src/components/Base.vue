@@ -457,8 +457,8 @@ circle.blue {
 }
 
 .pulse-marker {
-  /* background: #9BA6DF; */
-  background: transparent;
+  background: #9BA6DF;
+  /* background: transparent; */
   border-radius: 50%;
   height: 14px;
   width: 14px;
@@ -552,5 +552,37 @@ circle.blue {
   margin-right: 10px;
   margin-left: 10px;
   /* border: 1px solid #8f90a8; */
+}
+
+.ring-container {
+    position: relative;
+}
+
+.circle {
+    width: 15px;
+    height: 15px;
+    background-color: #62bd19;
+    border-radius: 50%;
+    position: absolute;
+    top: 23px;
+    left: 23px;
+}
+
+.ringring {
+    border: 3px solid #62bd19;
+    -webkit-border-radius: 30px;
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    -webkit-animation: pulsate 1s ease-out;
+    -webkit-animation-iteration-count: infinite; 
+    opacity: 0.0
+}
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
 }
 </style>

@@ -783,6 +783,7 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
   margin-top: 10px;
+  overflow: hidden;
 }
 
 .chat-user-tabs>>>.nav {

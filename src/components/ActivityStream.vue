@@ -1,6 +1,10 @@
 <template>
   <div class="activity-stream d-flex flex-column justify-content-start align-items-center">
-    <lottie class="loading-animation" :options="defaultOptions" :width="150" :height="150" />
+    <!-- <lottie class="loading-animation" :options="defaultOptions" :width="150" :height="150" /> -->
+    <div class="loading-animation">
+        <div class="ringring"></div>
+        <div class="circle"></div>
+    </div>
     <dark-card :showPulse="true" class="container-card" title="Live Feed">
       <div class="activity-stream-inner">
         <div v-for="(activity, index) in activities" :key="activity.$id" class="d-flex flex-column justify-content-start align-items-center" style="position: relative;">
@@ -392,8 +396,38 @@ export default {
 
 .loading-animation {
   position: absolute;
-  top: -52px;
-  left: -25px;
+  width: 25px;
+  height: 25px;
   z-index: 999;
+  left: 40px;
+  top: 10px;
+}
+
+.circle {
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    background-color: #62bd19;
+    border-radius: 50%;
+}
+
+.ringring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 3px solid #62bd19;
+    border-radius: 30px;
+    height: 26px;
+    width: 26px;
+    animation: pulsate 1s ease-out;
+    animation-iteration-count: infinite; 
+    opacity: 0.0
+}
+@keyframes pulsate {
+    0% {transform: scale(0.1, 0.1); opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {transform: scale(1.2, 1.2); opacity: 0.0;}
 }
 </style>

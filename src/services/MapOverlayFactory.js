@@ -78,7 +78,12 @@ export default {
       return null;
     }
 
-    const content = `<div class="pulse-marker ${color}"></div>`;
+    // const content = `<div class="pulse-marker ${color}"></div>`;
+    const content = `<div class="ring-container">
+                        <div class="ringring ${color}"></div>
+                        <div class="circle ${color}"></div>
+                    </div>`;
+    
     const overlay = this.createOverlay(map, lat, lng, content);
     return overlay;
   },
