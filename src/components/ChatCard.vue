@@ -79,8 +79,8 @@
             <span class="txt-placeholder">Write a message to start a conversation with {{this.selectedUser.firstName}}</span>
             <icon class="icon-placeholder" name="commenting-o"></icon>
         </div>
-        <div v-else class="chat-history">
-          <ul chat-scroll>
+        <div v-else class="chat-history" v-chat-scroll>
+          <ul ref="chatList" v-chat-scroll>
             <template v-for="message in messages">
               <li v-if="this.currentUser && message.senderId === this.currentUser.$id" :key="message.message" class="clearfix">
               <div class="message-data align-right">
@@ -110,7 +110,7 @@
         <!-- end chat-history -->
 
         <div class="chat-message clearfix">
-          <textarea @keyup.enter="sendMessage" v-model="messageText" name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
+          <textarea @keyup.shift.enter="doNothing()" @keyup.enter="sendMessage" v-model="messageText" name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
 
           <div class="d-flex justify-content-start align-items-center">
             <icon class="fa-file-o" name="file-o"></icon> &nbsp;&nbsp;&nbsp;
@@ -236,6 +236,12 @@ export default {
       // Defer to next DOM update cycle so that the map's v-ref is ready
       this.$nextTick(() => this.initMap());
     },
+    messages() {
+      // this.$nextTick(() => {
+      //   const container = this.$refs.chatList;
+      //   container.scrollTop = container.scrollHeight;
+      // });
+    },
   },
   methods: {
     clickUser(user, index) {
@@ -323,7 +329,7 @@ export default {
           message.$id = snap.key;
           const lastMessage = this.messages[this.messages.length - 1];
 
-          if (lastMessage && message.timestamp > lastMessage.timestamp) {
+          if (!lastMessage || message.timestamp > lastMessage.timestamp) {
             this.messages.push(message);
           }
         });
@@ -411,8 +417,11 @@ export default {
       const messageKey = ref.child('messages').push().key;
       const updates = {};
       updates[`/messages/${messageKey}`] = message;
-      updates[`/conversations/${this.selectedConversation.$id}/lastMessage`] = this.messageText;
-      updates[`/conversations/${this.selectedConversation.$id}/timestamp`] = Firebase.database.ServerValue.TIMESTAMP;
+      updates[
+        `/conversations/${this.selectedConversation.$id}/lastMessage`
+      ] = this.messageText;
+      updates[`/conversations/${this.selectedConversation.$id}/timestamp`] =
+        Firebase.database.ServerValue.TIMESTAMP;
 
       ref.update(updates).then(() => {
         this.messageText = '';
