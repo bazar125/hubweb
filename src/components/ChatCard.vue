@@ -58,63 +58,29 @@
 
         <div class="chat-history">
           <ul>
-            <li class="clearfix">
+            <template v-for="message in messages">
+              <li v-if="message.senderId === this.currentUser.$id" :key="message.message" class="clearfix">
               <div class="message-data align-right">
                 <span class="message-data-time">10:10 AM, Today</span> &nbsp; &nbsp;
-                <span class="message-data-name">Olia</span>
+                <span class="message-data-name">{{messages.senderName}}</span>
                 <icon name="circle" class="me"></icon>
 
               </div>
               <div class="message other-message float-right">
-                Hi Vincent, how are you? How is the project coming along?
+                {{message.message}}
               </div>
             </li>
-
-            <li>
+            <li v-else :key="message.message">
               <div class="d-flex justify-content-start align-items-center message-data">
                 <span class="message-data-name">
-                  <icon name="circle" class="online"></icon> Vincent</span>
+                  <icon name="circle" class="online"></icon> {{message.senderName}}</span>
                 <span class="message-data-time">10:12 AM, Today</span>
               </div>
               <div class="message my-message">
-                Are we meeting today? Project has been already finished and I have results to show you.
+                {{message.message}}
               </div>
             </li>
-
-            <li class="clearfix">
-              <div class="message-data align-right">
-                <span class="message-data-time">10:14 AM, Today</span> &nbsp; &nbsp;
-                <span class="message-data-name">Olia</span>
-                <icon name="circle" class="me"></icon>
-
-              </div>
-              <div class="message other-message float-right">
-                Well I am not sure. The rest of the team is not here yet. Maybe in an hour or so? Have you faced any problems at the last phase of the project?
-              </div>
-            </li>
-
-            <li>
-              <div class="d-flex justify-content-start align-items-center message-data">
-                <span class="message-data-name">
-                  <icon name="circle" class="online"></icon> Vincent</span>
-                <span class="message-data-time">10:20 AM, Today</span>
-              </div>
-              <div class="message my-message">
-                Actually everything was fine. I'm very excited to show this to our team.
-              </div>
-            </li>
-
-            <li>
-              <div class="d-flex justify-content-start align-items-center message-data">
-                <span class="message-data-name">
-                  <icon name="circle" class="online"></icon> Vincent</span>
-                <span class="message-data-time">10:20 AM, Today</span>
-              </div>
-              <icon name="circle" class="online"></icon>
-              <i class="fa fa-circle online" style="color: #AED2A6"></i>
-              <i class="fa fa-circle online" style="color:#DAE9DA"></i>
-            </li>
-
+            </template>
           </ul>
 
         </div>
@@ -195,12 +161,12 @@ export default {
       ownUserId: '',
       conversations: [],
       messages: [],
+      messageSub: null,
     };
   },
   mounted() {
-    const ref = Firebase.database().ref();
-
     const uid = Firebase.auth().currentUser.uid;
+    const ref = Firebase.database().ref();
     ref
       .child(`users/${uid}`)
       .once('value')
@@ -213,7 +179,7 @@ export default {
   },
   watch: {
     selectedConversation() {
-      console.log('selectedConversation changed');
+      this.loadMessages();
     },
   },
   methods: {
@@ -281,6 +247,17 @@ export default {
         }
       });
     },
+    subscribeNewMessages() {
+      this.messageUnsub = ref
+        .child('messages')
+        .orderByChild('conversation')
+        .equalTo(this.selectedConversation.$id)
+        .on('child_added', snap => {
+          const message = snap.val();
+          message.$id = snap.key;
+          this.messages.push(message);
+        });
+    },
     createConversation() {
       const users = {};
       users[this.currentUser.$id] = true;
@@ -293,13 +270,35 @@ export default {
         users,
         timestamp: Firebase.database.ServerValue.TIMESTAMP,
       };
-      console.log('creating new conversation');
-      console.log(conversation);
       const ref = Firebase.database().ref();
       const conversationKey = ref.child('conversations').push(conversation).key;
       conversation.$id = conversationKey;
       this.selectedConversation = conversation;
       this.conversations.push(conversation);
+    },
+    loadMessages() {
+      if (this.messageUnsub) {
+        this.messageUnsub();
+      }
+
+      const ref = Firebase.database().ref();
+      ref
+        .child('messages')
+        .orderByChild('conversation')
+        .equalTo(this.selectedConversation.$id)
+        .limitToLast(20)
+        .once('value')
+        .then(snap => {
+          const messages = [];
+          snap.forEach(child => {
+            const message = child.val();
+            messages.$id = child.key;
+            messages.push(conversation);
+          });
+
+          this.messages = messages;
+          this.subscribeNewMessages();
+        });
     },
   },
 };
