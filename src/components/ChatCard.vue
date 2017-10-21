@@ -3,13 +3,13 @@
     <div class="container clearfix d-flex" style="flex: 1;">
       <div class="people-list d-flex flex-column" id="people-list">
         <div class="search" style="position: relative">
-          <input type="text" placeholder="search" />
+          <input v-model="searchInput" type="text" placeholder="search" />
           <icon name="search" class="icon-search"></icon>
         </div>
         <b-tabs class="chat-user-tabs d-flex flex-column justify-content-start align-items-start">
           <b-tab title="OFFICERS" active>
              <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
+              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredUsers" :key="user.$id">
                 <img class="image" :src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -22,7 +22,7 @@
           </b-tab>
           <b-tab title="STAFF" >
              <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
+              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredUsers" :key="user.$id">
                 <img class="image" :src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -188,7 +188,17 @@ export default {
       messages: [],
       messageSub: null,
       messageText: '',
+      searchInput: '',
     };
+  },
+  computed: {
+    filteredUsers() {
+      if (!this.searchInput) {
+        return this.users;
+      }
+
+      return this.users.filter(user => this.filterUser(user));
+    },
   },
   mounted() {
     const uid = Firebase.auth().currentUser.uid;
@@ -348,6 +358,17 @@ export default {
           this.messages = messages;
           this.subscribeNewMessages();
         });
+    },
+    filterUser(user) {
+      const firstNameMatches = user.firstName
+        .toLowerCase()
+        .includes(this.searchInput.toLowerCase());
+
+      const lastNameMatches = user.lastName
+        .toLowerCase()
+        .includes(this.searchInput.toLowerCase());
+
+      return firstNameMatches || lastNameMatches;
     },
     getTimeAgo(timestamp) {
       return moment(timestamp).fromNow();
@@ -694,7 +715,6 @@ export default {
   position: relative;
   /* 100% - width of chat + people list  */
   /* width: calc(100% - 750px);*/
-  flex: 1;
   color: white;
   border-top: 0.5px solid rgba(255, 255, 255, 0.5);
 }
@@ -786,7 +806,7 @@ export default {
   overflow: hidden;
 }
 
-.chat-user-tabs>>> div {
+.chat-user-tabs>>>div {
   width: 100%;
 }
 
@@ -804,7 +824,7 @@ export default {
   font-size: 10px;
   border-bottom-color: #8f90a8;
   border-radius: 0px;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .chat-user-tabs>>>.nav .nav-item:first-child .nav-link {
