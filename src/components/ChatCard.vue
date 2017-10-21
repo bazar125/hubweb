@@ -59,7 +59,7 @@
         <div class="chat-history">
           <ul>
             <template v-for="message in messages">
-              <li v-if="message.senderId === this.currentUser.$id" :key="message.message" class="clearfix">
+              <li v-if="this.currentUser && message.senderId === this.currentUser.$id" :key="message.message" class="clearfix">
               <div class="message-data align-right">
                 <span class="message-data-time">10:10 AM, Today</span> &nbsp; &nbsp;
                 <span class="message-data-name">{{messages.senderName}}</span>
@@ -248,14 +248,23 @@ export default {
       });
     },
     subscribeNewMessages() {
+      const ref = Firebase.database().ref();
       this.messageUnsub = ref
         .child('messages')
         .orderByChild('conversation')
         .equalTo(this.selectedConversation.$id)
         .on('child_added', snap => {
+          if (!snap) {
+            return;
+          }
+
+          const lastMessage = this.messages[this.message.length - 1];
           const message = snap.val();
           message.$id = snap.key;
-          this.messages.push(message);
+
+          if (message.timestamp > lastMessage.timestamp) {
+            this.messages.push(message);
+          }
         });
     },
     createConversation() {
@@ -289,11 +298,15 @@ export default {
         .limitToLast(20)
         .once('value')
         .then(snap => {
+          if (!snap) {
+            this.messages = [];
+            return;
+          }
           const messages = [];
           snap.forEach(child => {
             const message = child.val();
             messages.$id = child.key;
-            messages.push(conversation);
+            messages.push(message);
           });
 
           this.messages = messages;
