@@ -9,7 +9,7 @@
         <b-tabs class="chat-user-tabs d-flex flex-column justify-content-start align-items-start">
           <b-tab title="OFFICERS" active>
              <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredUsers" :key="user.$id">
+              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredOfficers" :key="user.$id">
                 <img class="image" :src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -22,7 +22,7 @@
           </b-tab>
           <b-tab title="STAFF" >
              <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredUsers" :key="user.$id">
+              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredStaff" :key="user.$id">
                 <img class="image" :src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -192,12 +192,25 @@ export default {
     };
   },
   computed: {
-    filteredUsers() {
+    officers() {
+      return this.users.filter(user => user.accountType === 'officer');
+    },
+    staff() {
+      return this.users.filter(user => user.accountType === 'staff' || user.accountType === 'stateAdmin');
+    },
+    filteredOfficers() {
       if (!this.searchInput) {
-        return this.users;
+        return this.officers;
       }
 
-      return this.users.filter(user => this.filterUser(user));
+      return this.officers.filter(user => this.filterUser(user));
+    },
+    filteredStaff() {
+      if (!this.searchInput) {
+        return this.staff;
+      }
+
+      return this.staff.filter(user => this.filterUser(user));
     },
   },
   mounted() {
@@ -799,6 +812,7 @@ export default {
   height: 60px;
 }
 .chat-user-tabs {
+  flex: 1;
   width: 100%;
   padding-left: 10px;
   padding-right: 10px;
