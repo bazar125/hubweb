@@ -12,31 +12,17 @@
       <template slot="button-content">
         <b-button size="sm" class="btn-notification">
           <icon name="comment-o"></icon>
-          <b-badge class="custom-badge" pill variant="danger">1</b-badge>
+          <b-badge v-if="unreadConversationCount > 1" class="custom-badge" pill variant="danger">{{this.unreadConversationCount}}</b-badge>
         </b-button>
       </template>
-      <b-dropdown-header>You have 2 new messages</b-dropdown-header>
-      <b-dropdown-item>
+      <b-dropdown-header>You have {{unreadConversations.length}} new messages</b-dropdown-header>
+      <b-dropdown-item v-for="conversation in unreadConversations" :key="conversation.$id">
         <!-- <b>John Doe</b>: Hello World -->
         <div class="d-flex justify-content-start align-items-center">
-          <img class="img-chat" src="../assets/user_placeholder.jpg"></img>
+          <img class="img-chat" :src="conversation.senderImage"></img>
           <div class="d-flex flex-column" style="overflow: hidden;">
-            <span class="txt-name">John Doe</span>
-            <span class="txt-message">This is a test message that should overflow the chat popup.</span>
-            <!-- <span class="txt-message">Hello world</span> -->
-            <!-- <span class="txt-timeago">{{getTimeAgo(user.timestamp)}}</span> -->
-          </div>
-        </div>
-      </b-dropdown-item>
-      <b-dropdown-item>
-        <!-- <b>John Doe</b>: Hello World -->
-        <div class="d-flex justify-content-start align-items-center">
-          <img class="img-chat" src="../assets/user_avatar.jpg"></img>
-          <div class="d-flex flex-column" style="overflow: hidden;">
-            <span class="txt-name">Boboye Olayemi Oyeyemi</span>
-            <span class="txt-message">Short message</span>
-            <!-- <span class="txt-message">Hello world</span> -->
-            <!-- <span class="txt-timeago">{{getTimeAgo(user.timestamp)}}</span> -->
+            <span class="txt-name">{{conversation.senderName}}</span>
+            <span class="txt-message">{{conversation.lastMessage}}</span>
           </div>
         </div>
       </b-dropdown-item>
@@ -58,20 +44,24 @@
 <script>
 import * as Firebase from 'firebase';
 import * as moment from 'moment';
+import ActivityService from '@/services/ActivityService';
 
 export default {
   name: 'Navbar',
-  components: {
-  },
+  components: {},
   data() {
     return {
+      unreadConversationCount: 0,
+      unreadConversations: [],
     };
   },
   methods: {
     logout() {
-      Firebase.auth().signOut().then(() => {
-        this.$router.push('/login');
-      });
+      Firebase.auth()
+        .signOut()
+        .then(() => {
+          this.$router.push('/login');
+        });
     },
     clickLogo() {
       this.$router.push('/');
@@ -83,13 +73,19 @@ export default {
       return moment(timestamp).fromNow();
     },
   },
+  mounted() {
+    ActivityService.subscribeUnreadMessage((count, unreadConversations) => {
+      this.unreadConversationCount = count;
+      this.unreadConversations = unreadConversations;
+    });
+  },
 };
 </script>
 
 <style scoped>
 .custom-navbar {
   /* background-color: #212338; */
-  background-color: #31429E;
+  background-color: #31429e;
   /* color: white; */
   color: white;
   height: 50px;
@@ -97,7 +93,7 @@ export default {
   padding-left: 0px;
 }
 
-.custom-navbar>* {
+.custom-navbar > * {
   z-index: 9999;
 }
 
@@ -168,14 +164,14 @@ export default {
   width: 90px;
   padding: 4px 0px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .btn-login:hover {
   /* background-color: #d4689f; */
   background-color: #83bd6e;
   border-color: #83bd6e;
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .img-avatar {
@@ -249,7 +245,7 @@ export default {
 }
 
 .custom-navbar>>>.dropdown-toggle::after {
-  display: none
+  display: none;
 }
 
 .txt-name {

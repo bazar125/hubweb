@@ -43,7 +43,7 @@
             <!-- <span class="txt-user-information">User Information</span> -->
             
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
-              <img class="user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&token=1352d4a0-906e-4a6e-8511-39bf8411963f"></img>
+              <img class="user-image" :src="selectedUser.image"></img>
               <div class="d-flex flex-column overlay-content-container">
                 <span class="user-name">{{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</span>
                 <span class="user-zone mr-auto">Deployed to <span style="font-weight: 700;">Zone B23</span></span>
@@ -335,6 +335,7 @@ export default {
       const conversation = {
         lastMessage: '',
         senderId: this.currentUser.$id,
+        senderImage: this.currentUser.image,
         senderName: `${this.currentUser.firstName} ${this.currentUser
           .lastName}`,
         users,
@@ -399,6 +400,7 @@ export default {
 
       const message = {
         conversation: this.selectedConversation.$id,
+        senderImage: this.currentUser.image,
         senderId: this.currentUser.$id,
         senderName: `${this.currentUser.firstName} ${this.currentUser
           .lastName}`,
@@ -408,13 +410,26 @@ export default {
 
       const ref = Firebase.database().ref();
 
+      const conversationKey = this.selectedConversation.$id;
       const messageKey = ref.child('messages').push().key;
       const updates = {};
       updates[`/messages/${messageKey}`] = message;
+
       updates[
-        `/conversations/${this.selectedConversation.$id}/lastMessage`
+        `/conversations/${conversationKey}/lastMessage`
       ] = this.messageText;
-      updates[`/conversations/${this.selectedConversation.$id}/timestamp`] =
+
+      updates[`/conversations/${conversationKey}/senderId`] = this.currentUser.$id;
+      
+      updates[
+        `/conversations/${conversationKey}/senderName`
+      ] = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+
+      updates[
+        `/conversations/${conversationKey}/senderImage`
+      ] = this.currentUser.image;
+
+      updates[`/conversations/${conversationKey}/timestamp`] =
         Firebase.database.ServerValue.TIMESTAMP;
 
       ref.update(updates).then(() => {
