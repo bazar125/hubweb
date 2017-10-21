@@ -555,34 +555,55 @@ circle.blue {
 }
 
 .ring-container {
-    position: relative;
+  position: relative;
+  width: 25px;
+  height: 25px;
+  z-index: 999;
+  left: 40px;
+  top: 10px;
 }
 
 .circle {
-    width: 15px;
-    height: 15px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
     background-color: #62bd19;
     border-radius: 50%;
-    position: absolute;
-    top: 23px;
-    left: 23px;
+}
+
+.circle.blue {
+  background-color: #1565c0;
+}
+
+.circle.red {
+  background-color: #c62828;
 }
 
 .ringring {
-    border: 3px solid #62bd19;
-    -webkit-border-radius: 30px;
-    height: 25px;
-    width: 25px;
     position: absolute;
-    left: 15px;
-    top: 15px;
-    -webkit-animation: pulsate 1s ease-out;
-    -webkit-animation-iteration-count: infinite; 
+    top: -5px;
+    left: -5px;
+    border: 3px solid #62bd19;
+    border-radius: 30px;
+    height: 36px;
+    width: 36px;
+    animation: pulsate 1s ease-out;
+    animation-iteration-count: infinite; 
     opacity: 0.0
 }
-@-webkit-keyframes pulsate {
-    0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
+
+.ringring.blue {
+  border-color: #1565c0;
+}
+
+.ringring.red {
+  border-color: #c62828;
+}
+@keyframes pulsate {
+    0% {transform: scale(0.1, 0.1); opacity: 0.0;}
     50% {opacity: 1.0;}
-    100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
+    100% {transform: scale(1.2, 1.2); opacity: 0.0;}
 }
 </style>
