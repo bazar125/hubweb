@@ -6,17 +6,34 @@
           <input type="text" placeholder="search" />
           <icon name="search" class="icon-search"></icon>
         </div>
-        <ul class="list">
-          <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
-            <img class="image" :src="user.image" alt="avatar" />
-            <div class="about">
-              <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
-              <div class="status">
-                <icon name="circle" class="online"></icon> online
-              </div>
-            </div>
-          </li>
-        </ul>
+        <b-tabs class="chat-user-tabs">
+          <b-tab title="OFFICERS" active>
+             <ul class="list">
+              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
+                <img class="image" :src="user.image" alt="avatar" />
+                <div class="about">
+                  <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
+                  <div class="status">
+                    <icon name="circle" class="online"></icon> online
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </b-tab>
+          <b-tab title="STAFF" >
+             <ul class="list">
+              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
+                <img class="image" :src="user.image" alt="avatar" />
+                <div class="about">
+                  <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
+                  <div class="status">
+                    <icon name="circle" class="online"></icon> online
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </b-tab>
+        </b-tabs>
         <div v-if="this.selectedUser" class="user-info d-flex flex-column justify-content-center align-items-center">
           <div class="selected-user-overlay d-flex flex-column justify-content-start align-items-start">
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
@@ -38,30 +55,37 @@
             </div>
           </div>
           <div class="d-flex" style="flex: 1; width: 100%; padding: 10px;">
-            <div ref="map" class="live-map"></div>
+            <div ref="map" id="map" class="live-map"></div>
           </div>
         </div>
       </div>
       <div v-if="!this.selectedConversation" class="chat d-flex flex-column">
       </div>
       <div v-else class="chat d-flex flex-column">
-        <div class="chat-header clearfix">
+        <div class="chat-header d-flex justify-content-start align-items-center clearfix">
           <img class="chat-user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&amp;token=1352d4a0-906e-4a6e-8511-39bf8411963f" alt="avatar" />
 
-          <div class="chat-about">
-            <div class="chat-with">Officer {{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</div>
+          <div class="chat-about d-flex flex-column justify-content-start align-items-start">
+            <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
+              <div class="chat-with">Officer {{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</div>
+              <icon name="circle" class="ml-auto online" style="width: 12px; height: 12px;"></icon> online
+            </div>
             <div class="chat-num-messages">last seen 2 minutes ago</div>
           </div>
           <i class="fa fa-star"></i>
         </div>
         <!-- end chat-header -->
 
-        <div class="chat-history">
-          <ul>
+        <div v-if="this.messages.length < 1" class="chat-history d-flex flex-column justify-content-center align-items-center">
+            <span class="txt-placeholder">Write a message to start a conversation with {{this.selectedUser.firstName}}</span>
+            <icon class="icon-placeholder" name="commenting-o"></icon>
+        </div>
+        <div v-else class="chat-history">
+          <ul chat-scroll>
             <template v-for="message in messages">
               <li v-if="this.currentUser && message.senderId === this.currentUser.$id" :key="message.message" class="clearfix">
               <div class="message-data align-right">
-                <span class="message-data-time">10:10 AM, Today</span> &nbsp; &nbsp;
+                <span class="message-data-time">{{getTimeAgo(message.timestamp)}}</span> &nbsp; &nbsp;
                 <span class="message-data-name">{{messages.senderName}}</span>
                 <icon name="circle" class="me"></icon>
 
@@ -74,7 +98,7 @@
               <div class="d-flex justify-content-start align-items-center message-data">
                 <span class="message-data-name">
                   <icon name="circle" class="online"></icon> {{message.senderName}}</span>
-                <span class="message-data-time">10:12 AM, Today</span>
+                <span class="message-data-time">{{getTimeAgo(message.timestamp)}}</span>
               </div>
               <div class="message my-message">
                 {{message.message}}
@@ -87,13 +111,13 @@
         <!-- end chat-history -->
 
         <div class="chat-message clearfix">
-          <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
+          <textarea @keyup.enter="sendMessage" v-model="messageText" name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
 
           <div class="d-flex justify-content-start align-items-center">
             <icon class="fa-file-o" name="file-o"></icon> &nbsp;&nbsp;&nbsp;
             <icon class="fa-file-image-o mr-auto" style="margin-left: 10px;" name="file-image-o"></icon>
 
-            <button>Send</button>
+            <button :class="{'send-disabled': !this.messageText}" @click="sendMessage">Send</button>
           </div>
 
         </div>
@@ -139,6 +163,7 @@
 </template>
 
 <script>
+import * as moment from 'moment';
 import * as Firebase from 'firebase';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
@@ -162,6 +187,7 @@ export default {
       conversations: [],
       messages: [],
       messageSub: null,
+      messageText: '',
     };
   },
   mounted() {
@@ -180,6 +206,10 @@ export default {
   watch: {
     selectedConversation() {
       this.loadMessages();
+    },
+    selectedUser() {
+      // Defer to next DOM update cycle so that the map's v-ref is ready
+      this.$nextTick(() => this.initMap());
     },
   },
   methods: {
@@ -209,6 +239,9 @@ export default {
       }
     },
     initMap() {
+      if (this.map) {
+        return;
+      }
       // eslint-disable-next-line no-undef
       this.map = new google.maps.Map(this.$refs.map, {
         center: { lat: this.center[0], lng: this.center[1] },
@@ -233,7 +266,10 @@ export default {
           this.conversations = conversations;
           return this.loadUsers();
         })
-        .then(() => this.initMap());
+        .then(() => {
+          this.$nextTick(() => this.initMap);
+        });
+      // .then(() => this.initMap());
     },
     loadUsers() {
       const ref = Firebase.database().ref();
@@ -258,9 +294,9 @@ export default {
             return;
           }
 
-          const lastMessage = this.messages[this.message.length - 1];
           const message = snap.val();
           message.$id = snap.key;
+          const lastMessage = this.messages[this.messages.length - 1];
 
           if (message.timestamp > lastMessage.timestamp) {
             this.messages.push(message);
@@ -313,6 +349,32 @@ export default {
           this.subscribeNewMessages();
         });
     },
+    getTimeAgo(timestamp) {
+      return moment(timestamp).fromNow();
+    },
+    sendMessage() {
+      if (
+        !this.messageText ||
+        !this.selectedConversation ||
+        !this.currentUser
+      ) {
+        return;
+      }
+
+      const message = {
+        conversation: this.selectedConversation.$id,
+        senderId: this.currentUser.$id,
+        senderName: `${this.currentUser.firstName} ${this.currentUser
+          .lastName}`,
+        message: this.messageText,
+        timestamp: Firebase.database.ServerValue.TIMESTAMP,
+      };
+
+      Firebase.database()
+        .ref('messages')
+        .push(message);
+      this.messageText = '';
+    },
   },
 };
 </script>
@@ -360,6 +422,8 @@ export default {
   /* max-height: 150px; */
   overflow-y: auto;
   margin-bottom: 0px;
+  padding: 0px;
+  padding-top: 10px;
 }
 
 .people-list input {
@@ -466,9 +530,8 @@ export default {
 }
 
 .chat .chat-header .chat-about {
-  float: left;
   padding-left: 10px;
-  margin-top: 6px;
+  flex: 1;
 }
 
 .chat .chat-header .chat-with {
@@ -699,5 +762,66 @@ export default {
   margin-top: 2px;
   margin-bottom: 2px;
   overflow: hidden;
+}
+
+.send-disabled {
+  color: #eceeef;
+}
+
+.txt-placeholder {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.icon-placeholder {
+  width: 60px;
+  height: 60px;
+}
+.chat-user-tabs {
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 10px;
+}
+
+.chat-user-tabs>>>.nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.chat-user-tabs>>>.nav .nav-link {
+  font-size: 10px;
+  border-bottom-color: #8f90a8;
+  border-radius: 0px;
+  color: rgba(255,255,255,0.7);
+}
+
+.chat-user-tabs>>>.nav .nav-item:first-child .nav-link {
+  border-top-left-radius: 4px;
+}
+
+.chat-user-tabs>>>.nav .nav-item:last-child .nav-link {
+  border-top-right-radius: 4px;
+}
+
+.chat-user-tabs>>>.nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.34);
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+.chat-user-tabs>>>.nav .nav-link.active {
+  color: white;
+  background-color: #0275d8;
+  border-top-color: #0275d8;
+  border-left-color: #0275d8;
+  border-right-color: #0275d8;
+}
+
+.chat-user-tabs>>>.nav > * {
+  flex: 1;
 }
 </style>

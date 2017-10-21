@@ -9,6 +9,7 @@ import Icon from 'vue-awesome/components/Icon';
 import VideoBg from 'vue-videobg';
 import VueResource from 'vue-resource';
 import Viewer from 'v-viewer';
+import VueChatScroll from 'vue-chat-scroll';
 
 import * as Firebase from 'firebase';
 
@@ -28,6 +29,7 @@ const config = {
 Vue.use(BootstrapVue);
 Vue.use(VueResource);
 Vue.use(Viewer);
+Vue.use(VueChatScroll);
 Vue.component('icon', Icon);
 Vue.component('video-bg', VideoBg);
 
