@@ -63,8 +63,7 @@
       </div>
       <div v-else class="chat d-flex flex-column">
         <div class="chat-header d-flex justify-content-start align-items-center clearfix">
-          <img class="chat-user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&amp;token=1352d4a0-906e-4a6e-8511-39bf8411963f" alt="avatar" />
-
+          <img class="chat-user-image" :src="this.selectedUser.image" alt="avatar" />
           <div class="chat-about d-flex flex-column justify-content-start align-items-start">
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
               <div class="chat-with">Officer {{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</div>
@@ -196,7 +195,10 @@ export default {
       return this.users.filter(user => user.accountType === 'officer');
     },
     staff() {
-      return this.users.filter(user => user.accountType === 'staff' || user.accountType === 'stateAdmin');
+      return this.users.filter(
+        user =>
+          user.accountType === 'staff' || user.accountType === 'stateAdmin'
+      );
     },
     filteredOfficers() {
       if (!this.searchInput) {
@@ -321,7 +323,7 @@ export default {
           message.$id = snap.key;
           const lastMessage = this.messages[this.messages.length - 1];
 
-          if (message.timestamp > lastMessage.timestamp) {
+          if (lastMessage && message.timestamp > lastMessage.timestamp) {
             this.messages.push(message);
           }
         });
@@ -404,10 +406,17 @@ export default {
         timestamp: Firebase.database.ServerValue.TIMESTAMP,
       };
 
-      Firebase.database()
-        .ref('messages')
-        .push(message);
-      this.messageText = '';
+      const ref = Firebase.database().ref();
+
+      const messageKey = ref.child('messages').push().key;
+      const updates = {};
+      updates[`/messages/${messageKey}`] = message;
+      updates[`/conversations/${this.selectedConversation.$id}/lastMessage`] = this.messageText;
+      updates[`/conversations/${this.selectedConversation.$id}/timestamp`] = Firebase.database.ServerValue.TIMESTAMP;
+
+      ref.update(updates).then(() => {
+        this.messageText = '';
+      });
     },
   },
 };

@@ -184,6 +184,8 @@ export default {
   border-radius: 20px;
   margin-right: 10px;
   border: 1px solid #8f90a8;
+  object-fit: cover;
+  object-position: center;
 }
 
 .img-chat {
@@ -191,6 +193,8 @@ export default {
   height: 30px;
   border-radius: 20px;
   margin-right: 10px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .message-dropdown {
