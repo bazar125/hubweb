@@ -224,16 +224,12 @@ export default {
       let foundConversation = false;
       for (let i = 0; i < this.conversations.length; i += 1) {
         const conversation = this.conversations[i];
-        console.log('considering');
-        console.log(conversation.users);
         if (
           conversation.users &&
           conversation.users[this.currentUser.$id] &&
           conversation.users[this.selectedUser.$id]
         ) {
           this.selectedConversation = conversation;
-          console.log('Selected conversation');
-          console.log(this.selectedConversation);
           foundConversation = true;
         }
 
@@ -281,6 +277,7 @@ export default {
         this.users.push(user);
         if (!this.selectedUser) {
           this.selectedUser = user;
+          this.clickUser(user, 0);
         }
       });
     },
