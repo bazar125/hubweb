@@ -7,7 +7,7 @@
           <icon name="search" class="icon-search"></icon>
         </div>
         <ul class="list">
-          <li :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
+          <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
             <img class="image" :src="user.image" alt="avatar" />
             <div class="about">
               <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -25,11 +25,11 @@
                 </div>
             <!-- <span class="txt-user-information">User Information</span> -->
             
-            <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
+            <div v-if="this.selectedUser" class="d-flex justify-content-start align-items-center" style="width: 100%;">
               <img class="user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&token=1352d4a0-906e-4a6e-8511-39bf8411963f"></img>
-              <div class="d-flex flex-column" style="flex: 1; margin-top: 2px; margin-bottom: 2px;">
-                <span class="user-name">Jimmy Eze</span>
-                <span class="user-zone mr-auto">Deployed to <span style="font-weight: 600;">Zone B23</span></span>
+              <div class="d-flex flex-column overlay-content-container">
+                <span class="user-name">{{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</span>
+                <span class="user-zone mr-auto">Deployed to <span style="font-weight: 700;">Zone B23</span></span>
                 <!-- <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
                   <span class="user-zone mr-auto">Deployed to Zone B23</span>
                   <icon name="circle" class="ml-auto online"></icon> online
@@ -48,7 +48,7 @@
           <img class="chat-user-image" src="https://firebasestorage.googleapis.com/v0/b/motohub-498b8.appspot.com/o/driver_1.jpg?alt=media&amp;token=1352d4a0-906e-4a6e-8511-39bf8411963f" alt="avatar" />
 
           <div class="chat-about">
-            <div class="chat-with">Officer Jimmy Eze</div>
+            <div class="chat-with">Officer {{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</div>
             <div class="chat-num-messages">last seen 2 minutes ago</div>
           </div>
           <i class="fa fa-star"></i>
@@ -189,6 +189,7 @@ export default {
       center: [10.5059, 7.4319],
       users: [],
       selectedIndex: 0,
+      selectedUser: null,
     };
   },
   mounted() {
@@ -206,7 +207,12 @@ export default {
       this.users.push(user);
     });
   },
-  methods: {},
+  methods: {
+    clickUser(user, index) {
+      this.selectedIndex = index;
+      this.selectedUser = user;
+    },
+  },
 };
 </script>
 
@@ -551,13 +557,16 @@ export default {
 .user-name {
   text-align: start;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 12px;
   margin-right: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .user-zone {
   text-align: start;
-  font-size: 12px;
+  font-size: 11px;
   margin-right: 10px;
 }
 
@@ -581,5 +590,12 @@ export default {
   font-size: 10px;
   font-weight: 600;
   margin-bottom: 4px;
+}
+
+.overlay-content-container {
+  flex: 1;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  overflow: hidden;
 }
 </style>
