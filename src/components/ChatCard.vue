@@ -75,19 +75,18 @@
         </div>
         <!-- end chat-header -->
 
-        <div v-if="!this.currentUser || this.messages.length < 1" class="chat-history d-flex flex-column justify-content-center align-items-center">
+        <div v-if="this.messages.length < 1" class="chat-history d-flex flex-column justify-content-center align-items-center">
             <span class="txt-placeholder">Write a message to start a conversation with {{this.selectedUser.firstName}}</span>
             <icon class="icon-placeholder" name="commenting-o"></icon>
         </div>
         <div v-else class="chat-history" v-chat-scroll>
           <ul>
             <template v-for="message in messages">
-            <li v-if="message.senderId !== this.currentUser.$id" :key="message.message" class="clearfix">
+            <li v-if="this.selectedUser && message.senderId === this.selectedUser.$id" :key="message.message" class="clearfix">
               <div class="message-data align-right">
                 <span class="message-data-time">{{getTimeAgo(message.timestamp)}}</span> &nbsp; &nbsp;
                 <span class="message-data-name">{{messages.senderName}}</span>
                 <icon name="circle" class="me"></icon>
-
               </div>
               <div class="message other-message float-right">
                 {{message.message}}
@@ -96,7 +95,8 @@
             <li v-else :key="message.message">
               <div class="d-flex justify-content-start align-items-center message-data">
                 <span class="message-data-name">
-                  <icon name="circle" class="online"></icon> {{message.senderName}}</span>
+                  <icon name="circle" class="online"></icon> {{message.senderName}}
+                </span>
                 <span class="message-data-time">{{getTimeAgo(message.timestamp)}}</span>
               </div>
               <div class="message my-message">
