@@ -80,7 +80,7 @@
             <icon class="icon-placeholder" name="commenting-o"></icon>
         </div>
         <div v-else class="chat-history" v-chat-scroll>
-          <ul ref="chatList" v-chat-scroll>
+          <ul ref="chatList">
             <template v-for="message in messages">
               <li v-if="this.currentUser && message.senderId === this.currentUser.$id" :key="message.message" class="clearfix">
               <div class="message-data align-right">
