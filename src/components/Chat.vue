@@ -15,7 +15,6 @@ export default {
   },
   computed: {
     conversationId() {
-      console.log(this.$route.params);
       return this.$route.params && this.$route.params.conversationId
         ? this.$route.params.conversationId
         : '';

@@ -231,6 +231,11 @@ export default {
         return this.loadConversations();
       })
       .then(() => {
+        if (this.conversationId) {
+          this.selectConversationWithId(this.conversationId);
+        }
+      })
+      .then(() => {
         ActivityService.subscribeUnreadMessages(
           (count, unreadConversations) => {
             this.unreadConversationCount = count;
@@ -248,6 +253,8 @@ export default {
       this.$nextTick(() => this.initMap());
     },
     conversationId(newValue) {
+      console.log('conversationId watcher triggered');
+      console.log(newValue);
       if (!newValue) {
         return;
       }
@@ -290,16 +297,40 @@ export default {
           );
           const userId = conversationUsers[0];
           for (let j = 0; j < this.users.length; j += 1) {
-            const user = this.users[i];
+            const user = this.users[j];
             console.log(`checking ${user.$id}`);
             if (user.$id === userId) {
               console.log('mapped to user');
               console.log(user.$id);
               console.log(j);
               this.selectedUser = user;
-              this.selectedIndex = j;
+              // selectedindex is different because of filtering
+              // map j to actualindex
+              let actualIndex = 0;
+              if (this.selectedUser.accountType === 'officer') {
+                for (let l = 0; l < this.officers.length; l += 1) {
+                  const officer = this.officers[l];
+                  if (officer.$id === this.selectedUser.$id) {
+                    actualIndex = l;
+                  }
+                }
+              } else if (
+                this.selectedUser.accountType === 'scannerType' ||
+                this.selectedUser.accountType === 'staff'
+              ) {
+                for (let l = 0; l < this.staff.length; l += 1) {
+                  const staff = this.staff[l];
+                  if (staff.$id === this.selectedUser.$id) {
+                    actualIndex = l;
+                  }
+                }
+              }
+              this.selectedIndex = actualIndex;
+              console.log(`Resolved parameters: ${this.selectedUser} ${this.selectedIndex}`);
+              this.clickUser(this.selectedUser, this.selectedIndex);
             }
           }
+          // clickuser here
           return;
         }
       }
@@ -368,11 +399,22 @@ export default {
     },
     loadUsers() {
       const ref = Firebase.database().ref();
-      ref.child('users').on('child_added', snap => {
-        const user = snap.val();
-        user.$id = snap.key;
-        this.users.push(user);
+      ref.child('users').on('value', snap => {
+        if (!snap) {
+          this.users = [];
+          return;
+        }
+
+        const users = [];
+        snap.forEach(child => {
+          const user = child.val();
+          user.$id = child.key;
+          users.push(user);
+        });
+        this.users = users;
+
         if (!this.selectedUser) {
+          const user = this.users[0];
           this.selectedUser = user;
           this.clickUser(user, 0);
         }
