@@ -4,10 +4,37 @@
     <!-- <span class="title-text">Kaduna State Traffic and Environmental Enforcement Agency</span> -->
     <span class="title-text">Kaduna State Traffic and Environmental Law Enforcement Agency</span>
     <!-- <img class="ml-auto img-avatar" src="../assets/user_placeholder.jpg"></img> -->
-    <b-button @click="notifications()" size="sm" class="ml-auto btn-notification">
+    <!-- <b-button @click="notifications()" size="sm" class="ml-auto btn-notification">
       <icon name="bell-o"></icon>
       <b-badge class="custom-badge" pill variant="danger">1</b-badge>
-    </b-button>
+    </b-button> -->
+
+    <b-dropdown id="ddown2" variant="link" class="notification-dropdown">
+      <template slot="button-content">
+        <b-button size="sm" class="btn-notification">
+          <icon name="bell-o"></icon>
+          <b-badge v-if="unreadNotificationCount >= 1" class="custom-badge" pill variant="danger">{{unreadNotificationCount}}</b-badge>
+        </b-button>
+      </template>
+      <b-dropdown-header>You have {{unreadNotifications.length}} new notifications</b-dropdown-header>
+      <b-dropdown-item v-for="notification in unreadNotifications" :key="notification.$id">
+        <!-- <b>John Doe</b>: Hello World -->
+        <div class="d-flex justify-content-start align-items-center">
+          <!-- <img class="img-chat" :src="notification.senderImage"></img> -->
+          <div class="d-flex flex-column" style="overflow: hidden;">
+            <span class="txt-name">Test Notification</span>
+            <span class="txt-message">Test Message</span>
+          </div>
+        </div>
+      </b-dropdown-item>
+      <!-- <b-dropdown-divider style="margin-bottom: 0px;"></b-dropdown-divider> -->
+      <!-- <b-dropdown-item @click="$router.push('/chat')">
+        <div class="d-flex justify-content-center align-items-center">
+          <span class="txt-view-messages">See All Notifications</span>
+        </div>
+      </b-dropdown-item> -->
+    </b-dropdown>
+
     <b-dropdown id="ddown1" variant="link" class="message-dropdown">
       <template slot="button-content">
         <b-button size="sm" class="btn-notification">
@@ -53,6 +80,8 @@ export default {
     return {
       unreadConversationCount: 0,
       unreadConversations: [],
+      unreadNotificationCount: 0,
+      unreadNotifications: [],
     };
   },
   methods: {
@@ -79,10 +108,14 @@ export default {
       this.unreadConversations = unreadConversations;
       console.log(this.unreadConversationCount);
       console.log(this.unreadConversations);
-      this.$root.$emit('ActivityService::UnreadConversations', {
-        count,
-        unreadConversations,
-      });
+    });
+
+    ActivityService.subscribeNotifications((count, notifications) => {
+      this.unreadNotificationCount = count;
+      this.unreadNotifications = notifications;
+      console.log('subscribe notifications in navbar');
+      console.log(this.unreadNotificationCount);
+      console.log(this.unreadNotifications);
     });
   },
 };

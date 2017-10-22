@@ -4,6 +4,8 @@ import UserService from '@/services/UserService';
 export default {
   currentUser: 0,
   conversations: [],
+  notifications: [],
+  notificationsSeen: [],
   // callback(count, unreadConversations)
   subscribeUnreadMessages(callback) {
     if (!callback) {
@@ -16,6 +18,17 @@ export default {
       })
       .then(() => this.subscribeConversations(callback));
   },
+  subscribeNotifications(callback) {
+    if (!callback) {
+      return;
+    }
+
+    UserService.loadUser()
+      .then(user => {
+        this.currentUser = user;
+      })
+      .then(() => this.subscribeNotifications(callback));
+  },
   subscribeConversations(callback) {
     this.getConversationQuery().on('value', snap => {
       const conversations = [];
@@ -26,6 +39,29 @@ export default {
       });
       this.conversations = conversations;
       this.notifySubscriber(callback);
+    });
+  },
+  subscribeNotifications(callback) {
+    // TODO: Cancel existing subscriptions
+    this.getNotificationQuery().on('value', snap => {
+      const notifications = [];
+      snap.forEach(child => {
+        const notification = child.val();
+        notification.$id = child.key;
+        notifications.push(notification);
+      });
+      this.notifications = notifications;
+      this.notifyNotificationSubscriber(callback);
+    });
+
+    this.getNotificationSeenQuery().on('value', snap => {
+      const notificationsSeen = [];
+      if (snap) {
+        const val = snap.val();
+        notificationsSeen = Object.keys(val);
+      }
+      this.notificationsSeen = notificationsSeen;
+      this.notifyNotificationSubscriber(callback);
     });
   },
   notifySubscriber(callback) {
@@ -48,10 +84,34 @@ export default {
 
     callback(count, unreadConversations);
   },
+  notifyNotificationSubscriber(callback) {
+    let count = 0;
+    const unreadNotifications = [];
+
+    for (let i = 0; i < this.notifications.length; i += 1) {
+      const notification = this.notifications[i];
+      if (this.notificationsSeen.indexOf(notification.$id) === -1) {
+        count += 1;
+        unreadNotifications.push(notification);
+      }
+    }
+
+    callback(count, unreadNotifications);
+  },
   getConversationQuery() {
     return Firebase.database()
       .ref('conversations')
       .orderByChild(`users/${this.currentUser.$id}`)
       .equalTo(true);
+  },
+  getNotificationQuery() {
+    return Firebase.database()
+      .ref('globalNotifications')
+      .orderByChild('timestamp');
+  },
+  getNotificationSeenQuery() {
+    return Firebase.database().ref(
+      `globalNotifications/${this.currentUser.$id}`,
+    );
   },
 };
