@@ -79,6 +79,10 @@ export default {
       this.unreadConversations = unreadConversations;
       console.log(this.unreadConversationCount);
       console.log(this.unreadConversations);
+      this.$root.$emit('ActivityService::UnreadConversations', {
+        count,
+        unreadConversations,
+      });
     });
   },
 };

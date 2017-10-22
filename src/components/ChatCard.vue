@@ -166,6 +166,7 @@ import * as moment from 'moment';
 import * as Firebase from 'firebase';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
+import ActivityService from '@/services/ActivityService';
 
 import MapStyle from '../assets/mapstyle.json';
 
@@ -230,10 +231,12 @@ export default {
         return this.loadConversations();
       })
       .then(() => {
-        this.$root.$on('ActivityService::UnreadConversations', data => {
-          this.unreadConversationCount = data.count;
-          this.unreadConversations = data.unreadConversations;
-        });
+        ActivityService.subscribeUnreadMessages(
+          (count, unreadConversations) => {
+            this.unreadConversationCount = count;
+            this.unreadConversations = unreadConversations;
+          }
+        );
       });
   },
   watch: {
@@ -252,11 +255,15 @@ export default {
       this.selectConversationWithId(newValue);
     },
     unreadConversations() {
+      console.log('unreadconversation watcher');
       const unreadIds = this.unreadConversations.map(x => x.$id);
+      console.log(unreadIds);
       for (let i = 0; i < this.conversations.length; i += 1) {
         const conversation = this.conversations[i];
         if (unreadIds.indexOf(conversation.$id) > -1) {
           conversation.unread = true;
+          console.log('marked as unread');
+          console.log(conversation);
         }
       }
     },
@@ -396,7 +403,10 @@ export default {
 
       const conversationKey = this.selectedConversation.$id;
       console.log(`Marking conversation ${conversationKey} as seen`);
-      const seenBy = this.selectedConversation.seenBy;
+      let seenBy = this.selectedConversation.seenBy;
+      if (!seenBy) {
+        seenBy = {};
+      }
       seenBy[this.currentUser.$id] = true;
 
       const ref = Firebase.database().ref();

@@ -46,10 +46,6 @@ export default {
       }
     }
 
-    this.$root.$emit('ActivityService::UnreadConversations', {
-      count,
-      unreadConversations,
-    });
     callback(count, unreadConversations);
   },
   getConversationQuery() {
