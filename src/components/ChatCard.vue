@@ -9,7 +9,7 @@
         <b-tabs class="chat-user-tabs d-flex flex-column justify-content-start align-items-start">
           <b-tab title="OFFICERS" active>
              <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredOfficers" :key="user.$id">
+              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index, 'unread': user.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredOfficers" :key="user.$id">
                 <img class="image" :src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -255,16 +255,26 @@ export default {
       this.selectConversationWithId(newValue);
     },
     unreadConversations() {
-      console.log('unreadconversation watcher');
-      const unreadIds = this.unreadConversations.map(x => x.$id);
-      console.log(unreadIds);
-      for (let i = 0; i < this.conversations.length; i += 1) {
-        const conversation = this.conversations[i];
-        if (unreadIds.indexOf(conversation.$id) > -1) {
-          conversation.unread = true;
-          console.log('marked as unread');
-          console.log(conversation);
+      let updateRequired = false;
+      for (let i = 0; i < this.unreadConversations.length; i += 1) {
+        const conversation = this.unreadConversations[i];
+        const unreadUsers = Object.keys(conversation.users).filter(
+          x => x !== this.currentUser.$id
+        );
+        for (let j = 0; j < this.users.length; j += 1) {
+          const user = this.users[j];
+          if (user.$id === unreadUsers[0]) {
+            user.unread = true;
+            console.log('marked user as unread');
+            console.log(user.$id);
+            this.users[j] = user;
+            updateRequired = true;
+          }
         }
+      }
+
+      if (updateRequired) {
+        this.$forceUpdate();
       }
     },
   },
@@ -282,6 +292,7 @@ export default {
     clickUser(user, index) {
       this.selectedUser = user;
       this.selectedIndex = index;
+      this.selectedUser.unread = false;
 
       let foundConversation = false;
       for (let i = 0; i < this.conversations.length; i += 1) {
@@ -623,7 +634,17 @@ export default {
 }
 
 .chat-user-item.unread {
-  background-color: rgba(11, 79, 149, 0.5);
+  animation: chat-user-item-pulse 0.7s alternate infinite;
+  transition: all 600ms cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+@keyframes chat-user-item-pulse {
+  0% {
+    background-color: #0275d8;
+  }
+  100% {
+    background-color: transparent;
+  }
 }
 
 .people-list .image {
