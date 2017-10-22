@@ -285,6 +285,21 @@ export default {
         const conversation = this.conversations[i];
         if (conversation.$id === id) {
           this.selectedConversation = conversation;
+          const conversationUsers = Object.keys(conversation.users).filter(
+            x => x !== this.currentUser.$id
+          );
+          const userId = conversationUsers[0];
+          for (let j = 0; j < this.users.length; j += 1) {
+            const user = this.users[i];
+            console.log(`checking ${user.$id}`);
+            if (user.$id === userId) {
+              console.log('mapped to user');
+              console.log(user.$id);
+              console.log(j);
+              this.selectedUser = user;
+              this.selectedIndex = j;
+            }
+          }
           return;
         }
       }

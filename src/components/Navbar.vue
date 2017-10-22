@@ -16,7 +16,7 @@
         </b-button>
       </template>
       <b-dropdown-header>You have {{unreadConversations.length}} new messages</b-dropdown-header>
-      <b-dropdown-item v-for="conversation in unreadConversations" :key="conversation.$id">
+      <b-dropdown-item @click="$router.push(`/chat/${conversation.$id}`)" v-for="conversation in unreadConversations" :key="conversation.$id">
         <!-- <b>John Doe</b>: Hello World -->
         <div class="d-flex justify-content-start align-items-center">
           <img class="img-chat" :src="conversation.senderImage"></img>
