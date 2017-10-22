@@ -22,17 +22,16 @@
         <div class="d-flex justify-content-start align-items-center">
           <!-- <img class="img-chat" :src="notification.senderImage"></img> -->
           <div class="d-flex flex-column" style="overflow: hidden;">
-            <span class="txt-name">Test Notification</span>
-            <span class="txt-message">Test Message</span>
+            <span class="txt-name">{{notification.description}}</span>
+            <span class="txt-message">{{getTimeAgo(notification.timestamp)}}</span>
           </div>
         </div>
       </b-dropdown-item>
-      <!-- <b-dropdown-divider style="margin-bottom: 0px;"></b-dropdown-divider> -->
-      <!-- <b-dropdown-item @click="$router.push('/chat')">
+      <b-dropdown-item @click="$router.push('/notifications')">
         <div class="d-flex justify-content-center align-items-center">
           <span class="txt-view-messages">See All Notifications</span>
         </div>
-      </b-dropdown-item> -->
+      </b-dropdown-item>
     </b-dropdown>
 
     <b-dropdown id="ddown1" variant="link" class="message-dropdown">
