@@ -27,7 +27,29 @@ export default {
       .then(user => {
         this.currentUser = user;
       })
-      .then(() => this.subscribeNotifications(callback));
+      .then(() => {
+        // TODO: Cancel existing subscriptions
+        this.getNotificationQuery().on('value', snap => {
+          const notifications = [];
+          snap.forEach(child => {
+            const notification = child.val();
+            notification.$id = child.key;
+            notifications.push(notification);
+          });
+          this.notifications = notifications;
+          this.notifyNotificationSubscriber(callback);
+        });
+
+        this.getNotificationSeenQuery().on('value', snap => {
+          let notificationsSeen = [];
+          if (snap) {
+            const val = snap.val();
+            notificationsSeen = Object.keys(val);
+          }
+          this.notificationsSeen = notificationsSeen;
+          this.notifyNotificationSubscriber(callback);
+        });
+      });
   },
   subscribeConversations(callback) {
     this.getConversationQuery().on('value', snap => {
@@ -39,29 +61,6 @@ export default {
       });
       this.conversations = conversations;
       this.notifySubscriber(callback);
-    });
-  },
-  subscribeNotifications(callback) {
-    // TODO: Cancel existing subscriptions
-    this.getNotificationQuery().on('value', snap => {
-      const notifications = [];
-      snap.forEach(child => {
-        const notification = child.val();
-        notification.$id = child.key;
-        notifications.push(notification);
-      });
-      this.notifications = notifications;
-      this.notifyNotificationSubscriber(callback);
-    });
-
-    this.getNotificationSeenQuery().on('value', snap => {
-      const notificationsSeen = [];
-      if (snap) {
-        const val = snap.val();
-        notificationsSeen = Object.keys(val);
-      }
-      this.notificationsSeen = notificationsSeen;
-      this.notifyNotificationSubscriber(callback);
     });
   },
   notifySubscriber(callback) {

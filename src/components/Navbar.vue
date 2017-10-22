@@ -9,7 +9,7 @@
       <b-badge class="custom-badge" pill variant="danger">1</b-badge>
     </b-button> -->
 
-    <b-dropdown id="ddown2" variant="link" class="notification-dropdown">
+    <b-dropdown id="ddown2" variant="link" class="ml-auto message-dropdown">
       <template slot="button-content">
         <b-button size="sm" class="btn-notification">
           <icon name="bell-o"></icon>
