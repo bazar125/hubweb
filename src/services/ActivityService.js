@@ -1,47 +1,41 @@
 import * as Firebase from 'firebase';
 import UserService from '@/services/UserService';
 
-let currentUser;
-let conversations;
-
 export default {
+  currentUser: 0,
+  conversations: [],
   // callback(count, unreadConversations)
   subscribeUnreadMessages(callback) {
     if (!callback) {
       return;
     }
-
+    
     UserService.loadUser()
-      .then(user => (this.currentUser = user))
-      .then(() => this.loadConversations())
-      .then(conversations => {
-        this.conversations = conversations;
+      .then(user => {
+        this.currentUser = user;
       })
-      .then(() => this.notifySubscriber(callback));
+      .then(() => this.subscribeConversations(callback))
   },
-  loadConversations() {
-    this.getConversationQuery()
-      .on('value')
-      .then(snap => {
-        const conversations = [];
-        snap.forEach(child => {
-          const conversation = child.val();
-          conversation.$id = child.key;
-          conversations.push(conversation);
-        });
-        return conversations;
+  subscribeConversations(callback) {
+    this.getConversationQuery().on('value', snap => {
+      const conversations = [];
+      snap.forEach(child => {
+        const conversation = child.val();
+        conversation.$id = child.key;
+        conversations.push(conversation);
       });
+      this.conversations = conversations;
+      this.notifySubscriber(callback);
+    });
   },
   notifySubscriber(callback) {
     let count = 0;
     const unreadConversations = [];
 
-    for(let i = 0; i < this.conversations.length; i += 1) {
+    for (let i = 0; i < this.conversations.length; i += 1) {
       const conversation = this.conversations[i];
       const seenBy = Object.keys(conversation.seenBy);
-      console.log(`conversation ${conversation.$id} seen by ${seenBy}`);
       if (seenBy.indexOf(this.currentUser.$id) === -1) {
-        console.log('is unread');
         count += 1;
         unreadConversations.push(conversation);
       }

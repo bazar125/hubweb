@@ -1,13 +1,12 @@
 import * as Firebase from 'firebase';
 
-let currentUser;
-
 export default {
+  currentUser: null,
   loadUser() {
-    if(this.currentUser) {
+    if (this.currentUser) {
       return Promise.resolve(this.currentUser);
     }
-    
+
     const uid = Firebase.auth().currentUser.uid;
     const ref = Firebase.database().ref();
     return ref

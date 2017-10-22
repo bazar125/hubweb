@@ -12,7 +12,7 @@
       <template slot="button-content">
         <b-button size="sm" class="btn-notification">
           <icon name="comment-o"></icon>
-          <b-badge v-if="unreadConversationCount > 1" class="custom-badge" pill variant="danger">{{this.unreadConversationCount}}</b-badge>
+          <b-badge v-if="unreadConversationCount >= 1" class="custom-badge" pill variant="danger">{{unreadConversationCount}}</b-badge>
         </b-button>
       </template>
       <b-dropdown-header>You have {{unreadConversations.length}} new messages</b-dropdown-header>
@@ -74,9 +74,11 @@ export default {
     },
   },
   mounted() {
-    ActivityService.subscribeUnreadMessage((count, unreadConversations) => {
+    ActivityService.subscribeUnreadMessages((count, unreadConversations) => {
       this.unreadConversationCount = count;
       this.unreadConversations = unreadConversations;
+      console.log(this.unreadConversationCount);
+      console.log(this.unreadConversations);
     });
   },
 };

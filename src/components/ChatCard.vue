@@ -262,6 +262,8 @@ export default {
       if (!foundConversation) {
         this.createConversation();
       }
+
+      this.markConversationSeen();
     },
     initMap() {
       if (this.map) {
@@ -347,6 +349,21 @@ export default {
       this.selectedConversation = conversation;
       this.conversations.push(conversation);
     },
+    markConversationSeen() {
+      if (!this.selectedConversation || !this.currentUser) {
+        return;
+      }
+
+      const conversationKey = this.selectedConversation.$id;
+      console.log(`Marking conversation ${conversationKey} as seen`);
+      const seenBy = this.selectedConversation.seenBy;
+      seenBy[this.currentUser.$id] = true;
+
+      const ref = Firebase.database().ref();
+      const updates = {};
+      updates[`/conversations/${conversationKey}/seenBy`] = seenBy;
+      ref.update(updates);
+    },
     loadMessages() {
       if (this.messageUnsub) {
         this.messageUnsub();
@@ -419,11 +436,12 @@ export default {
         `/conversations/${conversationKey}/lastMessage`
       ] = this.messageText;
 
-      updates[`/conversations/${conversationKey}/senderId`] = this.currentUser.$id;
-      
       updates[
-        `/conversations/${conversationKey}/senderName`
-      ] = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+        `/conversations/${conversationKey}/senderId`
+      ] = this.currentUser.$id;
+
+      updates[`/conversations/${conversationKey}/senderName`] = `${this
+        .currentUser.firstName} ${this.currentUser.lastName}`;
 
       updates[
         `/conversations/${conversationKey}/senderImage`
