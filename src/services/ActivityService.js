@@ -9,12 +9,12 @@ export default {
     if (!callback) {
       return;
     }
-    
+
     UserService.loadUser()
       .then(user => {
         this.currentUser = user;
       })
-      .then(() => this.subscribeConversations(callback))
+      .then(() => this.subscribeConversations(callback));
   },
   subscribeConversations(callback) {
     this.getConversationQuery().on('value', snap => {
@@ -34,7 +34,7 @@ export default {
 
     for (let i = 0; i < this.conversations.length; i += 1) {
       const conversation = this.conversations[i];
-      if(!conversation.seenBy) {
+      if (!conversation.seenBy) {
         count += 1;
         unreadConversations.push(conversation);
       } else {
@@ -42,10 +42,14 @@ export default {
         if (seenBy.indexOf(this.currentUser.$id) === -1) {
           count += 1;
           unreadConversations.push(conversation);
-        } 
+        }
       }
     }
 
+    this.$root.$emit('ActivityService::UnreadConversations', {
+      count,
+      unreadConversations,
+    });
     callback(count, unreadConversations);
   },
   getConversationQuery() {

@@ -1,6 +1,6 @@
 <template>
   <div class="chat d-flex flex-column justify-content-start align-items-center">
-    <chat-card></chat-card>
+    <chat-card :conversationId="conversationId"></chat-card>
     <!-- <span class="txt-heading mr-auto">Manage Users</span> -->
   </div>
 </template>
@@ -13,9 +13,15 @@ export default {
   components: {
     ChatCard,
   },
+  computed: {
+    conversationId() {
+      return this.$route.params && this.$route.params.conversationId
+        ? this.$route.params.conversationId
+        : '';
+    },
+  },
   data() {
-    return {
-    };
+    return {};
   },
 };
 </script>
@@ -30,7 +36,7 @@ export default {
   overflow: hidden;
 }
 
-.chat >>> .chat-card {
+.chat>>>.chat-card {
   width: 100%;
 }
 </style>

@@ -22,7 +22,7 @@
           </b-tab>
           <b-tab title="STAFF" >
              <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredStaff" :key="user.$id">
+              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index, 'unread': user.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredStaff" :key="user.$id">
                 <img class="image" :src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -171,6 +171,7 @@ import MapStyle from '../assets/mapstyle.json';
 
 export default {
   name: 'ChatCard',
+  props: ['conversationId'],
   components: {
     BaseBtn,
     DarkCard,
@@ -188,6 +189,8 @@ export default {
       messageSub: null,
       messageText: '',
       searchInput: '',
+      unreadConversationCount: 0,
+      unreadConversations: [],
     };
   },
   computed: {
@@ -224,8 +227,13 @@ export default {
       .then(snap => {
         this.currentUser = snap.val();
         this.currentUser.$id = snap.key;
-
-        this.loadConversations();
+        return this.loadConversations();
+      })
+      .then(() => {
+        this.$root.$on('ActivityService::UnreadConversations', data => {
+          this.unreadConversationCount = data.count;
+          this.unreadConversations = data.unreadConversations;
+        });
       });
   },
   watch: {
@@ -236,8 +244,34 @@ export default {
       // Defer to next DOM update cycle so that the map's v-ref is ready
       this.$nextTick(() => this.initMap());
     },
+    conversationId(newValue) {
+      if (!newValue) {
+        return;
+      }
+
+      this.selectConversationWithId(newValue);
+    },
+    unreadConversations() {
+      const unreadIds = this.unreadConversations.map(x => x.$id);
+      for (let i = 0; i < this.conversations.length; i += 1) {
+        const conversation = this.conversations[i];
+        if (unreadIds.indexOf(conversation.$id) > -1) {
+          conversation.unread = true;
+        }
+      }
+    },
   },
   methods: {
+    selectConversationWithId(id) {
+      console.log(`selectConversationWithId: ${id}`);
+      for (let i = 0; i < this.conversations.length; i += 1) {
+        const conversation = this.conversations[i];
+        if (conversation.$id === id) {
+          this.selectedConversation = conversation;
+          return;
+        }
+      }
+    },
     clickUser(user, index) {
       this.selectedUser = user;
       this.selectedIndex = index;
@@ -250,6 +284,7 @@ export default {
           conversation.users[this.currentUser.$id] &&
           conversation.users[this.selectedUser.$id]
         ) {
+          conversation.unread = false;
           this.selectedConversation = conversation;
           foundConversation = true;
         }
@@ -278,7 +313,7 @@ export default {
     },
     loadConversations() {
       const ref = Firebase.database().ref();
-      ref
+      return ref
         .child('conversations')
         .orderByChild(`users/${this.currentUser.$id}`)
         .equalTo(true)
@@ -334,12 +369,17 @@ export default {
       const users = {};
       users[this.currentUser.$id] = true;
       users[this.selectedUser.$id] = true;
+
+      const seenBy = {};
+      seenBy[this.currentUser.$id] = true;
+
       const conversation = {
         lastMessage: '',
         senderId: this.currentUser.$id,
         senderImage: this.currentUser.image,
         senderName: `${this.currentUser.firstName} ${this.currentUser
           .lastName}`,
+        seenBy,
         users,
         timestamp: Firebase.database.ServerValue.TIMESTAMP,
       };
@@ -570,6 +610,10 @@ export default {
 
 .chat-user-item.active {
   background-color: rgba(255, 255, 255, 0.23);
+}
+
+.chat-user-item.unread {
+  background-color: rgba(11, 79, 149, 0.5);
 }
 
 .people-list .image {

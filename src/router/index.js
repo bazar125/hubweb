@@ -100,6 +100,12 @@ export default new Router({
       meta: { requiresAuth: true },
     },
     {
+      path: '/chat/:conversationId',
+      name: 'Chat',
+      component: Chat,
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/settings',
       name: 'Settings',
       component: Settings,
