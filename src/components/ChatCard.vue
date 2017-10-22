@@ -113,10 +113,10 @@
           <textarea @keyup.shift.enter="doNothing()" @keyup.enter="sendMessage" v-model="messageText" name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
 
           <div class="d-flex justify-content-start align-items-center">
-            <icon class="fa-file-o" name="file-o"></icon> &nbsp;&nbsp;&nbsp;
-            <icon class="fa-file-image-o mr-auto" style="margin-left: 10px;" name="file-image-o"></icon>
+            <!-- <icon class="fa-file-o" name="file-o"></icon> &nbsp;&nbsp;&nbsp;
+            <icon class="fa-file-image-o mr-auto" style="margin-left: 10px;" name="file-image-o"></icon> -->
 
-            <button :class="{'send-disabled': !this.messageText}" @click="sendMessage">Send</button>
+            <button class="ml-auto" :class="{'send-disabled': !this.messageText}" @click="sendMessage">Send</button>
           </div>
 
         </div>

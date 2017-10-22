@@ -34,10 +34,15 @@ export default {
 
     for (let i = 0; i < this.conversations.length; i += 1) {
       const conversation = this.conversations[i];
-      const seenBy = Object.keys(conversation.seenBy);
-      if (seenBy.indexOf(this.currentUser.$id) === -1) {
+      if(!conversation.seenBy) {
         count += 1;
         unreadConversations.push(conversation);
+      } else {
+        const seenBy = Object.keys(conversation.seenBy);
+        if (seenBy.indexOf(this.currentUser.$id) === -1) {
+          count += 1;
+          unreadConversations.push(conversation);
+        } 
       }
     }
 

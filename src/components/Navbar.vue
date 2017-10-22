@@ -22,7 +22,7 @@
           <img class="img-chat" :src="conversation.senderImage"></img>
           <div class="d-flex flex-column" style="overflow: hidden;">
             <span class="txt-name">{{conversation.senderName}}</span>
-            <span class="txt-message">{{conversation.lastMessage}}</span>
+            <span class="txt-message">{{conversation.lastMessage ? converation.lastMessage : 'No message yet...'}}</span>
           </div>
         </div>
       </b-dropdown-item>
