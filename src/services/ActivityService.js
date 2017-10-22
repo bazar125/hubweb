@@ -44,7 +44,11 @@ export default {
           let notificationsSeen = [];
           if (snap) {
             const val = snap.val();
-            notificationsSeen = Object.keys(val);
+            if (val) {
+              notificationsSeen = Object.keys(val);
+              console.log('notifications seen');
+              console.log(notificationsSeen);
+            }
           }
           this.notificationsSeen = notificationsSeen;
           this.notifyNotificationSubscriber(callback);
