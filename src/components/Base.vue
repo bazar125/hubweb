@@ -6,7 +6,16 @@
     </div>
 
     <div class="map-container d-flex justify-content-start align-items-center">
-      <active-personnel-card :activeUsers="activeUsers"></active-personnel-card>
+      <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 0.4; height: 100%;">
+        <div id="notificationContainer" class="d-flex justify-content-start align-items-center">
+          <current-notification-card :notifications="notifications"></current-notification-card>
+        </div>
+
+        <div id="activePersonnelContainer" class="d-flex justify-content-start align-items-center">
+          <active-personnel-card :activeUsers="activeUsers"></active-personnel-card>
+        </div>
+      </div>
+      
       <dark-card title="Live Map" class="live-map-card">
         <div class="map-overlay d-flex justify-content-start align-items-center">
           <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
@@ -35,6 +44,7 @@ import DarkCard from '@/components/DarkCard';
 import DailyStatsCard from '@/components/DailyStatsCard';
 import SystemInformationCard from '@/components/SystemInformationCard';
 import ActivePersonnelCard from '@/components/ActivePersonnelCard';
+import CurrentNotificationCard from '@/components/CurrentNotificationCard';
 // import TablePageLoader from '@/services/TablePageLoader';
 import MapOverlayFactory from '@/services/MapOverlayFactory';
 import Clock from 'vue-digital-clock';
@@ -53,6 +63,7 @@ export default {
     DailyStatsCard,
     SystemInformationCard,
     ActivePersonnelCard,
+    CurrentNotificationCard,
     DarkCard,
   },
   computed: {
@@ -79,6 +90,7 @@ export default {
       headlines: [],
       map: {},
       pingMarkers: [],
+      notifications: [],
       activeUsers: [],
       activeUserLocations: {},
       scannerUserMarkers: {},
@@ -90,16 +102,23 @@ export default {
   created() {
     const apiKey = 'b145ac1c37d04657b72b1ce5097d48e6';
     const source = 'bbc-news';
-    this.$http.get(`https://newsapi.org/v1/articles?source=${source}&sortBy=top&apiKey=${apiKey}`)
-      .then((response) => {
-        this.headlines = response.data.articles.map(article => `${article.author} — ${article.description}`);
+    this.$http
+      .get(
+        `https://newsapi.org/v1/articles?source=${source}&sortBy=top&apiKey=${apiKey}`
+      )
+      .then(response => {
+        this.headlines = response.data.articles.map(
+          article => `${article.author} — ${article.description}`
+        );
       });
   },
   methods: {
     initialize() {
-      this.$root.$on('map::centeronuser', (user) => {
-        // eslint-disable-next-line no-undef
-        this.map.setCenter(new google.maps.LatLng(user.coords.lat, user.coords.lng));
+      this.$root.$on('map::centeronuser', user => {
+        this.map.setCenter(
+          // eslint-disable-next-line no-undef
+          new google.maps.LatLng(user.coords.lat, user.coords.lng)
+        );
       });
 
       // eslint-disable-next-line no-undef
@@ -112,34 +131,47 @@ export default {
       // const paused = false;
       const update = () => {
         // eslint-disable-next-line max-len
-        const latlng = [d3.randomNormal(this.center[0], 0.05)(), d3.randomNormal(this.center[1], 0.05)()];
+        const latlng = [
+          d3.randomNormal(this.center[0], 0.05)(),
+          d3.randomNormal(this.center[1], 0.05)(),
+        ];
         const duration = 2000;
         const maxPings = 6;
         if (this.pingMarkers.length > maxPings) {
           const marker = this.pingMarkers.shift();
           marker.setMap(null);
         }
-        const marker = MapOverlayFactory.pulseMarker(this.map, latlng[0], latlng[1], (Math.random() > 0.5) ? 'red' : 'blue');
+        const marker = MapOverlayFactory.pulseMarker(
+          this.map,
+          latlng[0],
+          latlng[1],
+          Math.random() > 0.5 ? 'red' : 'blue'
+        );
         this.pingMarkers.push(marker);
-        setTimeout(update, duration + (Math.random() * 400));
+        setTimeout(update, duration + Math.random() * 400);
       };
       setTimeout(update);
 
       const ref = Firebase.database().ref('scannerUserLocation');
-      ref.on('child_added', (snap) => {
+      ref.on('child_added', snap => {
         const userId = snap.key;
         const userLocation = snap.val();
         userLocation.$id = userId;
         this.activeUserLocations[userId] = userLocation;
         if (this.userIsOnline(userLocation)) {
           // eslint-disable-next-line max-len
-          const marker = MapOverlayFactory.scannerUserMarker(this.map, userLocation.coords.lat, userLocation.coords.lng, userLocation);
+          const marker = MapOverlayFactory.scannerUserMarker(
+            this.map,
+            userLocation.coords.lat,
+            userLocation.coords.lng,
+            userLocation
+          );
           this.scannerUserMarkers[userId] = marker;
         }
 
         this.activeUsers.push(userLocation);
       });
-      ref.on('child_changed', (snap) => {
+      ref.on('child_changed', snap => {
         const userId = snap.key;
         const userLocation = snap.val();
         userLocation.$id = userId;
@@ -152,11 +184,18 @@ export default {
           }
 
           // eslint-disable-next-line max-len
-          const marker = MapOverlayFactory.scannerUserMarker(this.map, userLocation.coords.lat, userLocation.coords.lng, userLocation);
+          const marker = MapOverlayFactory.scannerUserMarker(
+            this.map,
+            userLocation.coords.lat,
+            userLocation.coords.lng,
+            userLocation
+          );
           this.scannerUserMarkers[userId] = marker;
         }
 
-        const existingIndex = this.activeUsers.map(x => x.$id).indexOf(userLocation.$id);
+        const existingIndex = this.activeUsers
+          .map(x => x.$id)
+          .indexOf(userLocation.$id);
         // console.log(`existing index: ${existingIndex}`);
         if (existingIndex > -1) {
           this.activeUsers.splice(existingIndex, 1);
@@ -184,7 +223,11 @@ export default {
       if (currentZoom !== targetZoom) {
         // eslint-disable-next-line no-undef
         google.maps.event.addListenerOnce(map, 'zoom_changed', () => {
-          this.animateMapZoomTo(map, targetZoom, currentZoom + (targetZoom > currentZoom ? 1 : -1));
+          this.animateMapZoomTo(
+            map,
+            targetZoom,
+            currentZoom + (targetZoom > currentZoom ? 1 : -1)
+          );
         });
         setTimeout(() => map.setZoom(currentZoom), 80);
       }
@@ -198,7 +241,7 @@ export default {
     startCullingOfflineUsers() {
       const cullingInterval = 4000; // ms
       const cullOfflineUsers = () => {
-        Object.values(this.activeUserLocations).forEach((user) => {
+        Object.values(this.activeUserLocations).forEach(user => {
           if (!this.userIsOnline(user)) {
             // console.log('culling');
             // console.log(user);
@@ -271,11 +314,20 @@ export default {
   /* padding: 10px 20px; */
 }
 
-.map-container>>>.active-personnel-card {
-  /* flex: 0.369; */
-  /* flex: 1; */
-  flex: 0.4;
-  margin-right: 8px;
+.base>>>.active-personnel-card {
+  /* flex: 0.6;
+  width: 100%; */
+  flex: 1;
+  height: 100%;
+  /* margin-right: 8px; */
+}
+
+.base>>>.current-notification-card {
+  /* flex: 0.4;
+  width: 100%; */
+  flex: 1;
+  height: 100%;
+  /* margin-right: 8px; */
 }
 
 .stats-container {
@@ -302,7 +354,7 @@ export default {
   padding-right: 20px;
   border-bottom: 1px solid #ececec;
   color: white;
-  background-color: rgba(0, 0, 0, .7);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 999;
 }
 
@@ -355,7 +407,7 @@ export default {
 }
 
 .color-green {
-  color: #00B76F;
+  color: #00b76f;
 }
 
 .custom-clock {
@@ -383,41 +435,6 @@ circle.blue {
 .color-blue {
   color: steelblue;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* red is ef3135 */
 
@@ -457,7 +474,7 @@ circle.blue {
 }
 
 .pulse-marker {
-  background: #9BA6DF;
+  background: #9ba6df;
   /* background: transparent; */
   border-radius: 50%;
   height: 14px;
@@ -471,7 +488,7 @@ circle.blue {
 }
 
 .pulse-marker:after {
-  content: "";
+  content: '';
   border-radius: 50%;
   height: 40px;
   width: 40px;
@@ -564,13 +581,13 @@ circle.blue {
 }
 
 .circle {
-    position: absolute;
-    top: 9px;
-    left: 9px;
-    width: 8px;
-    height: 8px;
-    background-color: #62bd19;
-    border-radius: 50%;
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  background-color: #62bd19;
+  border-radius: 50%;
 }
 
 .circle.blue {
@@ -582,16 +599,16 @@ circle.blue {
 }
 
 .ringring {
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    border: 3px solid #62bd19;
-    border-radius: 30px;
-    height: 36px;
-    width: 36px;
-    animation: pulsate 1s ease-out;
-    animation-iteration-count: infinite; 
-    opacity: 0.0
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  border: 3px solid #62bd19;
+  border-radius: 30px;
+  height: 36px;
+  width: 36px;
+  animation: pulsate 1s ease-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
 }
 
 .ringring.blue {
@@ -602,8 +619,29 @@ circle.blue {
   border-color: #c62828;
 }
 @keyframes pulsate {
-    0% {transform: scale(0.1, 0.1); opacity: 0.0;}
-    50% {opacity: 1.0;}
-    100% {transform: scale(1.2, 1.2); opacity: 0.0;}
+  0% {
+    transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
+}
+
+#notificationContainer {
+  flex: 0.4;
+  width: 100%;
+  padding-right: 8px;
+  padding-bottom: 8px;
+}
+
+#activePersonnelContainer {
+  flex: 0.6;
+  width: 100%;
+  padding-right: 8px;
 }
 </style>
