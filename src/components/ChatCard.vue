@@ -14,7 +14,7 @@
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
                   <div class="status">
-                    <icon name="circle" class="online"></icon> online
+                    <icon name="circle" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}
                   </div>
                 </div>
               </li>
@@ -181,6 +181,7 @@ export default {
     return {
       center: [10.5059, 7.4319],
       users: [],
+      userLocations: [],
       selectedIndex: 0,
       selectedUser: null,
       selectedConversation: null,
@@ -286,6 +287,38 @@ export default {
     },
   },
   methods: {
+    userIsOnline(user) {
+      if(!this.userLocations || this.userLocations.length === 0) {
+        return false;
+      }
+
+      const userStatus = this.getUserStatus(user);
+      if(!userStatus) {
+        return false;
+      }
+      
+      const now = moment();
+      const then = moment(user.timestamp);
+      const diff = now.diff(then, 'minutes');
+      return diff < 10;
+    },
+    userStatus(user) {
+      if (this.userIsOnline(user)) {
+        return 'online';
+      }
+
+      return 'offline';
+    },
+    getUserStatus(user) {
+      for(let i = 0; i < this.userLocations.length; i += 1) {
+        const userLocation = this.userLocations[i];
+        if (userLocation.$id === user.$id) {
+          return userLocation;
+        }
+      }
+
+      return null;
+    },
     selectConversationWithId(id) {
       console.log(`selectConversationWithId: ${id}`);
       for (let i = 0; i < this.conversations.length; i += 1) {
@@ -326,7 +359,10 @@ export default {
                 }
               }
               this.selectedIndex = actualIndex;
-              console.log(`Resolved parameters: ${this.selectedUser} ${this.selectedIndex}`);
+              console.log(
+                `Resolved parameters: ${this.selectedUser} ${this
+                  .selectedIndex}`
+              );
               this.clickUser(this.selectedUser, this.selectedIndex);
             }
           }
@@ -418,6 +454,21 @@ export default {
           this.selectedUser = user;
           this.clickUser(user, 0);
         }
+      });
+
+      ref.child('scannerUserLocation').on('value', snap => {
+        if (!snap) {
+          this.userLocations = [];
+          return;
+        }
+
+        const userLocations = [];
+        snap.forEach(child => {
+          const userLocation = child.val();
+          userLocation.$id = child.key;
+          userLocations.push(userLocation);
+        });
+        this.userLocations = userLocations;
       });
     },
     subscribeNewMessages() {
