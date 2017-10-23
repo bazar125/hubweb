@@ -4,14 +4,23 @@
       <div class="people-list d-flex flex-column" id="people-list">
         <ul class="list">
           <li @click="clickNotification(notification, index)" :class="{'active': selectedIndex === index, 'unread': notification.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
-            <img class="image" :src="notification.image" alt="avatar" />
+            <img class="image" :src="notification.image ? notification.image : photoPlaceholder" alt="avatar" />
             <div class="about">
               <div class="name">{{notification.description}}</div>
             </div>
           </li>
         </ul>
       </div>
-      <div v-if="this.selectedNotification" class="details-container d-flex">
+      <div v-if="this.selectedNotification" class="details-container d-flex justify-content-center align-items-center">
+          <!-- <div class="d-flex flex-column justify-content-center align-items-center" style="flex: 1; height: 100%;"> -->
+          <div class="d-flex flex-column justify-content-center align-items-center">
+            <modal-data-row label="Description" :text="this.selectedNotification.description"></modal-data-row>
+            <modal-data-row label="Location" :text="this.selectedNotification.location"></modal-data-row>
+            <modal-data-row label="Created" :text="getCreated(this.selectedNotification)"></modal-data-row>
+            <modal-data-row label="Expires" :text="getExpires(this.selectedNotification)"></modal-data-row>
+            <div ref="map" id="map" class="live-map"></div>
+          </div>
+        </div>
       </div>
     </div>
   </dark-card>
@@ -22,8 +31,12 @@ import * as moment from 'moment';
 import * as Firebase from 'firebase';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
+import ModalDataRow from '@/components/ModalDataRow';
 import UserService from '@/services/UserService';
 import ActivityService from '@/services/ActivityService';
+
+import PhotoPlaceholder from '../assets/photo_placeholder.png';
+import MapStyle from '../assets/mapstyle.json';
 
 export default {
   name: 'NotificationCard',
@@ -31,6 +44,7 @@ export default {
   components: {
     BaseBtn,
     DarkCard,
+    ModalDataRow,
   },
   data() {
     return {
@@ -39,7 +53,23 @@ export default {
       selectedIndex: 0,
       selectedNotification: null,
       notifications: [],
+      photoPlaceholder: PhotoPlaceholder,
+      map: null,
     };
+  },
+  watch: {
+    selectedNotification() {
+      this.$nextTick(() => {
+        if (!this.map) {
+          // eslint-disable-next-line no-undef
+          this.map = new google.maps.Map(this.$refs.map, {
+            center: { lat: this.center[0], lng: this.center[1] },
+            zoom: 13,
+            styles: MapStyle,
+          });
+        }
+      });
+    },
   },
   mounted() {
     UserService.loadUser()
@@ -49,13 +79,27 @@ export default {
       .then(() => {
         ActivityService.subscribeNotifications((count, notifications) => {
           this.notifications = notifications;
-          if (!this.selectedNotification) {
-            
+          if (!this.selectedNotification && this.notifications.length > 0) {
+            this.clickNotification(this.notifications[0], 0);
           }
         });
       });
   },
   methods: {
+    getCreated(notification) {
+      if (!notification || !notification.timestamp) {
+        return 'n/a';
+      }
+
+      return moment(notification.timestamp).format('D MMM, HH:mm');
+    },
+    getExpires(notification) {
+      if (!notification || !notification.expiryTimestamp) {
+        return 'n/a';
+      }
+
+      return moment(notification.expiryTimestamp).format('D MMM, HH:mm');
+    },
     clickNotification(notification, index) {
       this.selectedNotification = notification;
       this.selectedIndex = index;
@@ -229,5 +273,11 @@ export default {
   /* float: left; */
   background: #f2f5f8;
   color: #434651;
+}
+.live-map {
+  flex: 1;
+  height: 180px;
+  border-radius: 4px;
+  overflow: hidden;
 }
 </style>
