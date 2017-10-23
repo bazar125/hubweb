@@ -59,6 +59,12 @@ export default {
           icon: 'fire',
         },
         {
+          path: '/personnel',
+          name: 'Personnel',
+          // icon: IconPersonnel,
+          icon: 'users',
+        },
+        {
           path: '/chat',
           name: 'Messages',
           // icon: IconSettings,
@@ -72,18 +78,12 @@ export default {
           icon: 'bell',
           role: 'stateAdmin',
         },
-        {
-          path: '/reports',
-          name: 'Reports',
-          // icon: IconCitations,
-          icon: 'bar-chart',
-        },
-        {
-          path: '/personnel',
-          name: 'Personnel',
-          // icon: IconPersonnel,
-          icon: 'users',
-        },
+        // {
+        //   path: '/reports',
+        //   name: 'Reports',
+        //   // icon: IconCitations,
+        //   icon: 'bar-chart',
+        // },
         {
           path: '/manage',
           name: 'Admin',
@@ -91,12 +91,12 @@ export default {
           icon: 'user-plus',
           role: 'stateAdmin',
         },
-        {
-          path: '/settings',
-          name: 'Settings',
-          // icon: IconSettings,
-          icon: 'cog',
-        },
+        // {
+        //   path: '/settings',
+        //   name: 'Settings',
+        //   // icon: IconSettings,
+        //   icon: 'cog',
+        // },
       ],
     };
   },

@@ -6,77 +6,13 @@
           <li @click="clickNotification(notification, index)" :class="{'active': selectedIndex === index, 'unread': notification.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
             <img class="image" :src="notification.image" alt="avatar" />
             <div class="about">
-              <div class="name">{{notification.description}}</div>>
+              <div class="name">{{notification.description}}</div>
             </div>
           </li>
         </ul>
       </div>
-      <div v-if="!this.selectedNotification" class="chat d-flex flex-column">
+      <div v-if="this.selectedNotification" class="details-container d-flex">
       </div>
-      <div v-else class="chat d-flex flex-column">
-        <div class="chat-header d-flex justify-content-start align-items-center clearfix">
-          <img class="chat-user-image" :src="this.selectedNotifications.image" alt="avatar" />
-          <div class="chat-about d-flex flex-column justify-content-start align-items-start">
-            <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
-              <div class="chat-with">Officer {{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</div>
-              <icon name="circle" class="ml-auto online" style="width: 12px; height: 12px;"></icon> online
-            </div>
-            <div class="chat-num-messages">last seen 2 minutes ago</div>
-          </div>
-          <i class="fa fa-star"></i>
-        </div>
-        <!-- end chat-header -->
-
-        <div v-if="this.messages.length < 1" class="chat-history d-flex flex-column justify-content-center align-items-center">
-            <span class="txt-placeholder">Write a message to start a conversation with {{this.selectedUser.firstName}}</span>
-            <icon class="icon-placeholder" name="commenting-o"></icon>
-        </div>
-        <div v-else class="chat-history" v-chat-scroll>
-          <ul>
-            <template v-for="message in messages">
-            <li v-if="message.senderId !== currentUser.$id" :key="message.message" class="clearfix">
-              <div class="message-data align-right">
-                <span class="message-data-time">{{getTimeAgo(message.timestamp)}}</span> &nbsp; &nbsp;
-                <span class="message-data-name">{{message.senderName}}</span>
-                <icon name="circle" class="me"></icon>
-              </div>
-              <div class="message other-message float-right">
-                {{message.message}}
-              </div>
-            </li>
-            <li v-else :key="message.message">
-              <div class="d-flex justify-content-start align-items-center message-data">
-                <span class="message-data-name">
-                  <icon name="circle" class="online"></icon> {{message.senderName}}
-                </span>
-                <span class="message-data-time">{{getTimeAgo(message.timestamp)}}</span>
-              </div>
-              <div class="message my-message">
-                {{message.message}}
-              </div>
-            </li>
-            </template>
-          </ul>
-
-        </div>
-        <!-- end chat-history -->
-
-        <div class="chat-message clearfix">
-          <textarea @keyup.shift.enter="doNothing()" @keyup.enter="sendMessage" v-model="messageText" name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
-
-          <div class="d-flex justify-content-start align-items-center">
-            <!-- <icon class="fa-file-o" name="file-o"></icon> &nbsp;&nbsp;&nbsp;
-            <icon class="fa-file-image-o mr-auto" style="margin-left: 10px;" name="file-image-o"></icon> -->
-
-            <button class="ml-auto" :class="{'send-disabled': !this.messageText}" @click="sendMessage">Send</button>
-          </div>
-
-        </div>
-        <!-- end chat-message -->
-
-      </div>
-      <!-- end chat -->
-
     </div>
   </dark-card>
 </template>
@@ -111,14 +47,19 @@ export default {
         this.currentUser = user;
       })
       .then(() => {
-        ActivityService.subscribeNotifications(
-          (count, notifications) => {
-            this.notifications = notifications;
+        ActivityService.subscribeNotifications((count, notifications) => {
+          this.notifications = notifications;
+          if (!this.selectedNotification) {
+            
           }
-        );
+        });
       });
   },
   methods: {
+    clickNotification(notification, index) {
+      this.selectedNotification = notification;
+      this.selectedIndex = index;
+    },
     getTimeAgo(timestamp) {
       return moment(timestamp).fromNow();
     },
@@ -183,8 +124,7 @@ export default {
   /* max-height: 150px; */
   overflow-y: auto;
   margin-bottom: 0px;
-  padding: 0px;
-  padding-top: 10px;
+  padding: 10px;
 }
 
 .people-list input {
@@ -284,332 +224,10 @@ export default {
   text-align: start;
 }
 
-.chat {
+.details-container {
   flex: 1;
-  /* width: 490px; */
-  float: left;
+  /* float: left; */
   background: #f2f5f8;
-  /* border-top-right-radius: 5px; */
-  /* border-bottom-right-radius: 5px; */
-
   color: #434651;
-}
-
-.chat .chat-header {
-  padding: 10px 20px;
-  border-bottom: 2px solid white;
-}
-
-.chat .chat-header img {
-  float: left;
-}
-
-.chat .chat-header .chat-about {
-  padding-left: 10px;
-  flex: 1;
-}
-
-.chat .chat-header .chat-with {
-  font-weight: bold;
-  font-size: 16px;
-  text-align: start;
-}
-
-.chat .chat-header .chat-num-messages {
-  color: #92959e;
-  text-align: start;
-}
-
-.chat .chat-header .fa-star {
-  float: right;
-  color: #d8dadf;
-  font-size: 20px;
-  margin-top: 12px;
-}
-
-.chat .chat-history {
-  padding: 30px 30px 20px;
-  border-bottom: 2px solid white;
-  overflow-y: scroll;
-  flex: 1;
-}
-
-.chat .chat-history .message-data {
-  margin-bottom: 15px;
-}
-
-.chat .chat-history .message-data-time {
-  color: #a8aab1;
-  padding-left: 6px;
-}
-
-.chat .chat-history .message {
-  color: white;
-  /* padding: 18px 20px; */
-  padding: 8px 20px;
-  line-height: 26px;
-  font-size: 12px;
-  border-radius: 7px;
-  margin-bottom: 30px;
-  width: 90%;
-  position: relative;
-  text-align: start;
-}
-
-.chat .chat-history .message:after {
-  bottom: 100%;
-  left: 7%;
-  border: solid transparent;
-  content: ' ';
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-  /* border-bottom-color: #86bb71; */
-  border-bottom-color: #9a9bb1;
-  border-width: 10px;
-  margin-left: -10px;
-}
-
-.chat .chat-history .my-message {
-  /* background: #86bb71; */
-  background: #9a9bb1;
-}
-
-.chat .chat-history .other-message {
-  /* background: #a5a6b9; */
-  background: #4a59ad;
-}
-
-.chat .chat-history .other-message:after {
-  /* border-bottom-color: #a5a6b9; */
-  border-bottom-color: #4a59ad;
-  left: 93%;
-}
-
-.chat .chat-history ul {
-  list-style: none;
-}
-
-.chat .chat-message {
-  padding: 10px 30px;
-}
-
-.chat .chat-message textarea {
-  width: 100%;
-  border: none;
-  padding: 10px 20px;
-  font: 14px/22px 'Lato', Arial, sans-serif;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  resize: none;
-}
-
-.chat .chat-message .fa-file-o,
-.chat .chat-message .fa-file-image-o {
-  font-size: 16px;
-  color: gray;
-  cursor: pointer;
-}
-
-.chat .chat-message button {
-  float: right;
-  color: #94c2ed;
-  font-size: 16px;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  background: #f2f5f8;
-}
-
-.chat .chat-message button:hover {
-  color: #75b1e8;
-}
-
-.online,
-.offline,
-.me {
-  margin-right: 3px;
-  font-size: 10px;
-  width: 8px;
-  height: 8px;
-}
-
-.online {
-  color: #86bb71;
-}
-
-.offline {
-  color: #e38968;
-}
-
-.me {
-  color: #94c2ed;
-}
-
-.align-left {
-  text-align: left;
-}
-
-.align-right {
-  text-align: right;
-}
-
-.float-right {
-  float: right;
-}
-
-.clearfix:after {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: ' ';
-  clear: both;
-  height: 0;
-}
-
-.user-info {
-  position: relative;
-  /* 100% - width of chat + people list  */
-  /* width: calc(100% - 750px);*/
-  color: white;
-  border-top: 0.5px solid rgba(255, 255, 255, 0.5);
-}
-
-.chat-user-image {
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  border: 2px solid #585e8c;
-  object-fit: cover;
-  object-position: center;
-}
-
-.user-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  margin-right: 10px;
-  border: 2px solid #585e8c;
-  object-fit: cover;
-  object-position: center;
-}
-
-.user-name {
-  text-align: start;
-  font-weight: 700;
-  font-size: 12px;
-  margin-right: 10px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.user-zone {
-  text-align: start;
-  font-size: 11px;
-  margin-right: 10px;
-}
-
-.live-map {
-  flex: 1;
-  height: 180px;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.selected-user-overlay {
-  width: calc(100% - 20px);
-  z-index: 9999;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: rgba(36, 144, 204, 0.8);
-  padding: 6px;
-}
-
-.txt-user-information {
-  font-size: 10px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.overlay-content-container {
-  flex: 1;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  overflow: hidden;
-}
-
-.send-disabled {
-  color: #eceeef;
-}
-
-.txt-placeholder {
-  font-weight: 600;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-.icon-placeholder {
-  width: 60px;
-  height: 60px;
-}
-.chat-user-tabs {
-  flex: 1;
-  width: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-top: 10px;
-  overflow: hidden;
-}
-
-.chat-user-tabs>>>div {
-  width: 100%;
-}
-
-.chat-user-tabs>>>.nav {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.chat-user-tabs>>>.tab-content {
-  overflow-y: auto;
-}
-
-.chat-user-tabs>>>.nav .nav-link {
-  font-size: 10px;
-  border-bottom-color: #8f90a8;
-  border-radius: 0px;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.chat-user-tabs>>>.nav .nav-item:first-child .nav-link {
-  border-top-left-radius: 4px;
-}
-
-.chat-user-tabs>>>.nav .nav-item:last-child .nav-link {
-  border-top-right-radius: 4px;
-}
-
-.chat-user-tabs>>>.nav .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.34);
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-
-.chat-user-tabs>>>.nav .nav-link.active {
-  color: white;
-  background-color: #0275d8;
-  border-top-color: #0275d8;
-  border-left-color: #0275d8;
-  border-right-color: #0275d8;
-}
-
-.chat-user-tabs>>>.nav > * {
-  flex: 1;
 }
 </style>
