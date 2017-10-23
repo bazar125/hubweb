@@ -27,7 +27,7 @@
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
                   <div class="status">
-                    <icon name="circle" class="online"></icon> online
+                    <icon name="circle" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}
                   </div>
                 </div>
               </li>
@@ -38,7 +38,7 @@
           <div class="selected-user-overlay d-flex flex-column justify-content-start align-items-start">
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
                   <span class="txt-user-information">User Information</span>
-                  <span class="txt-user-information ml-auto"><icon name="circle" class="online"></icon> online</span>
+                  <span class="txt-user-information ml-auto"><icon name="circle" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}</span>
                 </div>
             <!-- <span class="txt-user-information">User Information</span> -->
             
@@ -67,7 +67,7 @@
           <div class="chat-about d-flex flex-column justify-content-start align-items-start">
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
               <div class="chat-with">Officer {{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</div>
-              <icon name="circle" class="ml-auto online" style="width: 12px; height: 12px;"></icon> online
+              <icon name="circle" class="ml-auto online" style="width: 12px; height: 12px;" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}
             </div>
             <div class="chat-num-messages">last seen 2 minutes ago</div>
           </div>
@@ -288,7 +288,7 @@ export default {
   },
   methods: {
     userIsOnline(user) {
-      if(!this.userLocations || this.userLocations.length === 0) {
+      if(!user || !this.userLocations || this.userLocations.length === 0) {
         return false;
       }
 
@@ -296,9 +296,9 @@ export default {
       if(!userStatus) {
         return false;
       }
-      
+
       const now = moment();
-      const then = moment(user.timestamp);
+      const then = moment(userStatus.timestamp);
       const diff = now.diff(then, 'minutes');
       return diff < 10;
     },
