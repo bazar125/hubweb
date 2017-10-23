@@ -1,6 +1,17 @@
 <template>
   <dark-card title="Notifications" class="current-notification-card">
-    <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; width: 100%;">
+    <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; width: 100%; overflow-y: auto;">
+      <b-list-group class="users-list">
+        <b-list-group-item @click.native="$router.push('/notifications')" class="user-list-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
+          <!-- <img class="img-avatar" :src="user.image"></img> -->
+          <img class="icon-item" src="../assets/user_placeholder.jpg"></icon>
+          <div class="content-container d-flex flex-column justify-content-center align-items-start">
+            <!-- <textarea rows="2" disabled v-model="notification.description" class="txt-description"></textarea> -->
+            <div class="txt-description">{{notification.description}}</div>
+            <span class="txt-zone">{{getTimeAgo(notification.timestamp)}}</span>
+          </div>
+        </b-list-group-item>
+      </b-list-group>
     </div>
   </dark-card>
 </template>
@@ -24,8 +35,7 @@ export default {
   },
   methods: {
     clickUser(user) {
-      // console.log('clickUser');
-      this.$root.$emit('map::centeronuser', user);
+      console.log(user);
     },
     userIsOnline(user) {
       const now = moment();
@@ -39,38 +49,13 @@ export default {
       }
       return moment(timestamp).fromNow();
     },
-    startCullingOfflineUsers() {
-      const cullingInterval = 4000; // ms
-      const cullOfflineUsers = () => {
-        // console.log('$forceUpdate');
-        for (let i = 0; i < this.users.length; i += 1) {
-          const user = this.users[i];
-          if (!this.userIsOnline(user)) {
-            const index = this.activeUsers.map(x => x.$id).indexOf(user.$id);
-            this.activeUsers.splice(index, 1);
-          }
-        }
-        // console.log(this.users);
-        this.$forceUpdate();
-        setTimeout(cullOfflineUsers, cullingInterval);
-      };
-      setTimeout(cullOfflineUsers);
-    },
-  },
-  computed: {
-    users() {
-      // console.log('computed users');
-      return this.activeUsers.slice().filter(x => this.userIsOnline(x));
-    },
-  },
-  mounted() {
-    this.startCullingOfflineUsers();
   },
 };
 </script>
 
 <style scoped>
-.current-notification-card {}
+.current-notification-card {
+}
 
 .input-search {
   /* border-color: #8f90a8; */
@@ -93,26 +78,20 @@ export default {
 }
 
 .users-list {
-  margin-top: 10px;
   width: 100%;
   flex: 1;
+  /* overflow-y: auto; */
 }
 
 .user-list-item {
   position: relative;
-  /* background: transparent; */
-  /* background-color: #2c2e4a; */
-  /* background-color: #1C2C81; */
-  /* border-color: rgba(255, 255, 255, 0.2); */
-  /* color: white; */
+  overflow: hidden;
   height: 50px;
   color: rgba(0, 0, 0, 0.87);
-  /* border: 0px solid; */
   border-radius: 4px;
-  /* padding: 0.75rem 1rem; */
-  padding: 0.5rem 0.5rem;
+  /* padding: 0.5rem 0.5rem; */
+  padding: 0.25rem 0.25rem;
   cursor: pointer;
-  /* box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); */
 }
 
 .user-list-item:hover {
@@ -120,33 +99,44 @@ export default {
 }
 
 .user-list-item.active {
-  background-color: #1C2C81;
+  background-color: #1c2c81;
 }
 
 .user-list-item:not(:last-child) {
   margin-bottom: 10px;
 }
 
-.img-avatar {
+.icon-item {
   width: 30px;
   height: 30px;
-  border-radius: 20px;
   margin-right: 10px;
+  margin-left: 5px;
+  border-radius: 15px;
+  pointer-events: none;
 }
 
-.txt-name {
+.txt-description {
+  pointer-events: none;
+  width: 100%;
+  background: transparent;
+  color: rgba(0,0,0,0.87);
+  box-shadow: none;
   text-align: start;
   /* text-transform: uppercase; */
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  border: none;
+  outline: none;
+  resize: none;
+  cursor: pointer;
+  /* text-overflow: ellipsis;
+  white-space: nowrap; */
+  /* overflow: hidden; */
 }
 
 .txt-zone {
   text-align: start;
-  font-size: 9px;
+  font-size: 8px;
 }
 
 .txt-timeago {
@@ -176,5 +166,9 @@ export default {
 .btn-view:hover {
   background-color: transparent !important;
   border: 1px solid rgba(0, 0, 0, 0.54) !important;
+}
+
+.content-container {
+  flex: 1;
 }
 </style>

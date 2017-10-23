@@ -47,6 +47,7 @@ import ActivePersonnelCard from '@/components/ActivePersonnelCard';
 import CurrentNotificationCard from '@/components/CurrentNotificationCard';
 // import TablePageLoader from '@/services/TablePageLoader';
 import MapOverlayFactory from '@/services/MapOverlayFactory';
+import ActivityService from '@/services/ActivityService';
 import Clock from 'vue-digital-clock';
 import * as d3 from 'd3';
 import * as Firebase from 'firebase';
@@ -151,6 +152,10 @@ export default {
         setTimeout(update, duration + Math.random() * 400);
       };
       setTimeout(update);
+
+      ActivityService.subscribeNotifications((count, notifications) => {
+        this.notifications = notifications;
+      });
 
       const ref = Firebase.database().ref('scannerUserLocation');
       ref.on('child_added', snap => {
@@ -635,6 +640,7 @@ circle.blue {
 #notificationContainer {
   flex: 0.4;
   width: 100%;
+  overflow: hidden;
   padding-right: 8px;
   padding-bottom: 8px;
 }
@@ -642,6 +648,7 @@ circle.blue {
 #activePersonnelContainer {
   flex: 0.6;
   width: 100%;
+  overflow: hidden;
   padding-right: 8px;
 }
 </style>

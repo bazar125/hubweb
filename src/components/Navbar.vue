@@ -17,8 +17,7 @@
         </b-button>
       </template>
       <b-dropdown-header>You have {{unreadNotifications.length}} new notifications</b-dropdown-header>
-      <!-- <b-dropdown-item @click="$router.push(`/notifications/${conversation.$id}`)" v-for="notification in unreadNotifications" :key="notification.$id"> -->
-      <b-dropdown-item v-for="notification in unreadNotifications" :key="notification.$id">
+      <b-dropdown-item @click="$router.push(`/notifications/${conversation.$id}`)" v-for="notification in unreadNotifications" :key="notification.$id">
         <!-- <b>John Doe</b>: Hello World -->
         <div class="d-flex justify-content-start align-items-center">
           <!-- <img class="img-chat" :src="notification.senderImage"></img> -->
@@ -28,8 +27,7 @@
           </div>
         </div>
       </b-dropdown-item>
-      <!-- <b-dropdown-item @click="$router.push('/notifications')"> -->
-      <b-dropdown-item>
+      <b-dropdown-item @click="$router.push('/notifications')">
         <div class="d-flex justify-content-center align-items-center">
           <span class="txt-view-messages">See All Notifications</span>
         </div>
@@ -107,16 +105,16 @@ export default {
     ActivityService.subscribeUnreadMessages((count, unreadConversations) => {
       this.unreadConversationCount = count;
       this.unreadConversations = unreadConversations;
-      console.log(this.unreadConversationCount);
-      console.log(this.unreadConversations);
+      // console.log(this.unreadConversationCount);
+      // console.log(this.unreadConversations);
     });
 
     ActivityService.subscribeNotifications((count, notifications) => {
       this.unreadNotificationCount = count;
       this.unreadNotifications = notifications;
-      console.log('subscribe notifications in navbar');
-      console.log(this.unreadNotificationCount);
-      console.log(this.unreadNotifications);
+      // console.log('subscribe notifications in navbar');
+      // console.log(this.unreadNotificationCount);
+      // console.log(this.unreadNotifications);
     });
   },
 };
