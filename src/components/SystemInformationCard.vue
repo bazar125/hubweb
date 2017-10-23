@@ -12,10 +12,10 @@
           <span class="txt-status">All systems are functioning normally</span>
         </div>
 
-        <div class="d-flex justify-content-start align-items-center">
+        <!-- <div class="d-flex justify-content-start align-items-center">
           <icon name="exclamation" class="icon-status" style="color: rgba(0,0,0,0.87);"></icon>
           <span class="txt-status">No pending notifications</span>
-        </div>
+        </div> -->
       </div>
     </div>
   </dark-card>
@@ -49,14 +49,14 @@ export default {
 }
 
 .icon-status {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   margin-right: 10px;
   /* color: white; */
 }
 
 .txt-status {
-  font-size: 11px;
+  font-size: 13px;
   /* color: white; */
   color: rgba(0,0,0,0.87);
 }
