@@ -2,68 +2,20 @@
   <dark-card title="Notifications" class="notification-card">
     <div class="container clearfix d-flex" style="flex: 1;">
       <div class="people-list d-flex flex-column" id="people-list">
-        <div class="search" style="position: relative">
-          <input v-model="searchInput" type="text" placeholder="search" />
-          <icon name="search" class="icon-search"></icon>
-        </div>
-        <b-tabs class="chat-user-tabs d-flex flex-column justify-content-start align-items-start">
-          <b-tab title="OFFICERS" active>
-             <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index, 'unread': user.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredOfficers" :key="user.$id">
-                <img class="image" :src="user.image" alt="avatar" />
-                <div class="about">
-                  <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
-                  <div class="status">
-                    <icon name="circle" class="online"></icon> online
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </b-tab>
-          <b-tab title="STAFF" >
-             <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index, 'unread': user.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredStaff" :key="user.$id">
-                <img class="image" :src="user.image" alt="avatar" />
-                <div class="about">
-                  <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
-                  <div class="status">
-                    <icon name="circle" class="online"></icon> online
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </b-tab>
-        </b-tabs>
-        <div v-if="this.selectedUser" class="user-info d-flex flex-column justify-content-center align-items-center">
-          <div class="selected-user-overlay d-flex flex-column justify-content-start align-items-start">
-            <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
-                  <span class="txt-user-information">User Information</span>
-                  <span class="txt-user-information ml-auto"><icon name="circle" class="online"></icon> online</span>
-                </div>
-            <!-- <span class="txt-user-information">User Information</span> -->
-            
-            <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
-              <img class="user-image" :src="selectedUser.image"></img>
-              <div class="d-flex flex-column overlay-content-container">
-                <span class="user-name">{{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</span>
-                <span class="user-zone mr-auto">Deployed to <span style="font-weight: 700;">Zone B23</span></span>
-                <!-- <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
-                  <span class="user-zone mr-auto">Deployed to Zone B23</span>
-                  <icon name="circle" class="ml-auto online"></icon> online
-                </div> -->
-              </div>
+        <ul class="list">
+          <li @click="clickNotification(notification, index)" :class="{'active': selectedIndex === index, 'unread': notification.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
+            <img class="image" :src="notification.image" alt="avatar" />
+            <div class="about">
+              <div class="name">{{notification.description}}</div>>
             </div>
-          </div>
-          <div class="d-flex" style="flex: 1; width: 100%; padding: 10px;">
-            <div ref="map" id="map" class="live-map"></div>
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
-      <div v-if="!this.selectedConversation" class="chat d-flex flex-column">
+      <div v-if="!this.selectedNotification" class="chat d-flex flex-column">
       </div>
       <div v-else class="chat d-flex flex-column">
         <div class="chat-header d-flex justify-content-start align-items-center clearfix">
-          <img class="chat-user-image" :src="this.selectedUser.image" alt="avatar" />
+          <img class="chat-user-image" :src="this.selectedNotifications.image" alt="avatar" />
           <div class="chat-about d-flex flex-column justify-content-start align-items-start">
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
               <div class="chat-with">Officer {{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</div>
@@ -126,38 +78,6 @@
       <!-- end chat -->
 
     </div>
-    <!-- end container -->
-
-    <!-- <script id="message-template" type="text/x-handlebars-template">
-                  <li class="clearfix">
-                    <div class="message-data align-right">
-                      <span class="message-data-time">{{time}}, Today</span> &nbsp; &nbsp;
-                      <span class="message-data-name">Olia</span>
-                      <icon name="circle" class="me"></icon>
-                    </div>
-                    <div class="message other-message float-right">
-                      {{messageOutput}}
-                    </div>
-                  </li>
-                </script>
-
-                <script id="message-response-template" type="text/x-handlebars-template">
-                  <li>
-                    <div class="message-data">
-                      <span class="message-data-name">
-                        <icon name="circle" class="online"></icon> Vincent</span>
-                      <span class="message-data-time">{{time}}, Today</span>
-                    </div>
-                    <div class="message my-message">
-                      {{response}}
-                    </div>
-                  </li>
-                </script> -->
-
-    <!-- <dark-card title="Users" class="invite-users-card">
-                    <div class="d-flex flex-column justify-content-start align-items-center">
-                    </div>
-                  </dark-card> -->
   </dark-card>
 </template>
 
@@ -166,12 +86,11 @@ import * as moment from 'moment';
 import * as Firebase from 'firebase';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
+import UserService from '@/services/UserService';
 import ActivityService from '@/services/ActivityService';
 
-import MapStyle from '../assets/mapstyle.json';
-
 export default {
-  name: 'ChatCard',
+  name: 'NotificationCard',
   props: ['conversationId'],
   components: {
     BaseBtn,
@@ -180,396 +99,41 @@ export default {
   data() {
     return {
       center: [10.5059, 7.4319],
-      users: [],
+      currentUser: null,
       selectedIndex: 0,
-      selectedUser: null,
-      selectedConversation: null,
-      ownUserId: '',
-      conversations: [],
-      messages: [],
-      messageSub: null,
-      messageText: '',
-      searchInput: '',
-      unreadConversationCount: 0,
-      unreadConversations: [],
+      selectedNotification: null,
+      notifications: [],
     };
   },
-  computed: {
-    officers() {
-      return this.users.filter(user => user.accountType === 'officer');
-    },
-    staff() {
-      return this.users.filter(
-        user =>
-          user.accountType === 'staff' || user.accountType === 'stateAdmin'
-      );
-    },
-    filteredOfficers() {
-      if (!this.searchInput) {
-        return this.officers;
-      }
-
-      return this.officers.filter(user => this.filterUser(user));
-    },
-    filteredStaff() {
-      if (!this.searchInput) {
-        return this.staff;
-      }
-
-      return this.staff.filter(user => this.filterUser(user));
-    },
-  },
   mounted() {
-    const uid = Firebase.auth().currentUser.uid;
-    const ref = Firebase.database().ref();
-    ref
-      .child(`users/${uid}`)
-      .once('value')
-      .then(snap => {
-        this.currentUser = snap.val();
-        this.currentUser.$id = snap.key;
-        return this.loadConversations();
+    UserService.loadUser()
+      .then(user => {
+        this.currentUser = user;
       })
       .then(() => {
-        if (this.conversationId) {
-          this.selectConversationWithId(this.conversationId);
-        }
-      })
-      .then(() => {
-        ActivityService.subscribeUnreadMessages(
-          (count, unreadConversations) => {
-            this.unreadConversationCount = count;
-            this.unreadConversations = unreadConversations;
+        ActivityService.subscribeNotifications(
+          (count, notifications) => {
+            this.notifications = notifications;
           }
         );
       });
-  },
-  watch: {
-    selectedConversation() {
-      this.loadMessages();
-    },
-    selectedUser() {
-      // Defer to next DOM update cycle so that the map's v-ref is ready
-      this.$nextTick(() => this.initMap());
-    },
-    conversationId(newValue) {
-      console.log('conversationId watcher triggered');
-      console.log(newValue);
-      if (!newValue) {
-        return;
-      }
-
-      this.selectConversationWithId(newValue);
-    },
-    unreadConversations() {
-      let updateRequired = false;
-      for (let i = 0; i < this.unreadConversations.length; i += 1) {
-        const conversation = this.unreadConversations[i];
-        const unreadUsers = Object.keys(conversation.users).filter(
-          x => x !== this.currentUser.$id
-        );
-        for (let j = 0; j < this.users.length; j += 1) {
-          const user = this.users[j];
-          if (user.$id === unreadUsers[0]) {
-            user.unread = true;
-            console.log('marked user as unread');
-            console.log(user.$id);
-            this.users[j] = user;
-            updateRequired = true;
-          }
-        }
-      }
-
-      if (updateRequired) {
-        this.$forceUpdate();
-      }
-    },
   },
   methods: {
-    selectConversationWithId(id) {
-      console.log(`selectConversationWithId: ${id}`);
-      for (let i = 0; i < this.conversations.length; i += 1) {
-        const conversation = this.conversations[i];
-        if (conversation.$id === id) {
-          this.selectedConversation = conversation;
-          const conversationUsers = Object.keys(conversation.users).filter(
-            x => x !== this.currentUser.$id
-          );
-          const userId = conversationUsers[0];
-          for (let j = 0; j < this.users.length; j += 1) {
-            const user = this.users[j];
-            console.log(`checking ${user.$id}`);
-            if (user.$id === userId) {
-              console.log('mapped to user');
-              console.log(user.$id);
-              console.log(j);
-              this.selectedUser = user;
-              // selectedindex is different because of filtering
-              // map j to actualindex
-              let actualIndex = 0;
-              if (this.selectedUser.accountType === 'officer') {
-                for (let l = 0; l < this.officers.length; l += 1) {
-                  const officer = this.officers[l];
-                  if (officer.$id === this.selectedUser.$id) {
-                    actualIndex = l;
-                  }
-                }
-              } else if (
-                this.selectedUser.accountType === 'scannerType' ||
-                this.selectedUser.accountType === 'staff'
-              ) {
-                for (let l = 0; l < this.staff.length; l += 1) {
-                  const staff = this.staff[l];
-                  if (staff.$id === this.selectedUser.$id) {
-                    actualIndex = l;
-                  }
-                }
-              }
-              this.selectedIndex = actualIndex;
-              console.log(`Resolved parameters: ${this.selectedUser} ${this.selectedIndex}`);
-              this.clickUser(this.selectedUser, this.selectedIndex);
-            }
-          }
-          // clickuser here
-          return;
-        }
-      }
-    },
-    clickUser(user, index) {
-      this.selectedUser = user;
-      this.selectedIndex = index;
-      this.selectedUser.unread = false;
-
-      let foundConversation = false;
-      for (let i = 0; i < this.conversations.length; i += 1) {
-        const conversation = this.conversations[i];
-        if (
-          conversation.users &&
-          conversation.users[this.currentUser.$id] &&
-          conversation.users[this.selectedUser.$id]
-        ) {
-          conversation.unread = false;
-          this.selectedConversation = conversation;
-          foundConversation = true;
-        }
-
-        if (foundConversation) {
-          break;
-        }
-      }
-
-      if (!foundConversation) {
-        this.createConversation();
-      }
-
-      this.markConversationSeen();
-    },
-    initMap() {
-      if (this.map) {
-        return;
-      }
-      // eslint-disable-next-line no-undef
-      this.map = new google.maps.Map(this.$refs.map, {
-        center: { lat: this.center[0], lng: this.center[1] },
-        zoom: 13,
-        styles: MapStyle,
-      });
-    },
-    loadConversations() {
-      const ref = Firebase.database().ref();
-      return ref
-        .child('conversations')
-        .orderByChild(`users/${this.currentUser.$id}`)
-        .equalTo(true)
-        .once('value')
-        .then(snap => {
-          const conversations = [];
-          snap.forEach(child => {
-            const conversation = child.val();
-            conversation.$id = child.key;
-            conversations.push(conversation);
-          });
-          this.conversations = conversations;
-          return this.loadUsers();
-        })
-        .then(() => {
-          this.$nextTick(() => this.initMap);
-        });
-      // .then(() => this.initMap());
-    },
-    loadUsers() {
-      const ref = Firebase.database().ref();
-      ref.child('users').on('value', snap => {
-        if (!snap) {
-          this.users = [];
-          return;
-        }
-
-        const users = [];
-        snap.forEach(child => {
-          const user = child.val();
-          user.$id = child.key;
-          users.push(user);
-        });
-        this.users = users;
-
-        if (!this.selectedUser) {
-          const user = this.users[0];
-          this.selectedUser = user;
-          this.clickUser(user, 0);
-        }
-      });
-    },
-    subscribeNewMessages() {
-      const ref = Firebase.database().ref();
-      this.messageUnsub = ref
-        .child('messages')
-        .orderByChild('conversation')
-        .equalTo(this.selectedConversation.$id)
-        .on('child_added', snap => {
-          if (!snap) {
-            return;
-          }
-
-          const message = snap.val();
-          message.$id = snap.key;
-          const lastMessage = this.messages[this.messages.length - 1];
-
-          if (!lastMessage || message.timestamp > lastMessage.timestamp) {
-            this.messages.push(message);
-          }
-        });
-    },
-    createConversation() {
-      const users = {};
-      users[this.currentUser.$id] = true;
-      users[this.selectedUser.$id] = true;
-
-      const seenBy = {};
-      seenBy[this.currentUser.$id] = true;
-
-      const conversation = {
-        lastMessage: '',
-        senderId: this.currentUser.$id,
-        senderImage: this.currentUser.image,
-        senderName: `${this.currentUser.firstName} ${this.currentUser
-          .lastName}`,
-        seenBy,
-        users,
-        timestamp: Firebase.database.ServerValue.TIMESTAMP,
-      };
-      const ref = Firebase.database().ref();
-      const conversationKey = ref.child('conversations').push(conversation).key;
-      conversation.$id = conversationKey;
-      this.selectedConversation = conversation;
-      this.conversations.push(conversation);
-    },
-    markConversationSeen() {
-      if (!this.selectedConversation || !this.currentUser) {
-        return;
-      }
-
-      const conversationKey = this.selectedConversation.$id;
-      console.log(`Marking conversation ${conversationKey} as seen`);
-      let seenBy = this.selectedConversation.seenBy;
-      if (!seenBy) {
-        seenBy = {};
-      }
-      seenBy[this.currentUser.$id] = true;
-
-      const ref = Firebase.database().ref();
-      const updates = {};
-      updates[`/conversations/${conversationKey}/seenBy`] = seenBy;
-      ref.update(updates);
-    },
-    loadMessages() {
-      if (this.messageUnsub) {
-        this.messageUnsub();
-      }
-
-      const ref = Firebase.database().ref();
-      ref
-        .child('messages')
-        .orderByChild('conversation')
-        .equalTo(this.selectedConversation.$id)
-        .limitToLast(20)
-        .once('value')
-        .then(snap => {
-          if (!snap) {
-            this.messages = [];
-            return;
-          }
-          const messages = [];
-          snap.forEach(child => {
-            const message = child.val();
-            messages.$id = child.key;
-            messages.push(message);
-          });
-
-          this.messages = messages;
-          this.subscribeNewMessages();
-        });
-    },
-    filterUser(user) {
-      const firstNameMatches = user.firstName
-        .toLowerCase()
-        .includes(this.searchInput.toLowerCase());
-
-      const lastNameMatches = user.lastName
-        .toLowerCase()
-        .includes(this.searchInput.toLowerCase());
-
-      return firstNameMatches || lastNameMatches;
-    },
     getTimeAgo(timestamp) {
       return moment(timestamp).fromNow();
     },
     sendMessage() {
-      if (
-        !this.messageText ||
-        !this.selectedConversation ||
-        !this.currentUser
-      ) {
-        return;
-      }
-
-      const message = {
-        conversation: this.selectedConversation.$id,
-        senderImage: this.currentUser.image,
-        senderId: this.currentUser.$id,
-        senderName: `${this.currentUser.firstName} ${this.currentUser
-          .lastName}`,
-        message: this.messageText,
-        timestamp: Firebase.database.ServerValue.TIMESTAMP,
-      };
-
       const ref = Firebase.database().ref();
-
-      const conversationKey = this.selectedConversation.$id;
-      const messageKey = ref.child('messages').push().key;
       const updates = {};
-      updates[`/messages/${messageKey}`] = message;
-
       updates[
-        `/conversations/${conversationKey}/lastMessage`
-      ] = this.messageText;
-
-      updates[
-        `/conversations/${conversationKey}/senderId`
-      ] = this.currentUser.$id;
-
-      updates[`/conversations/${conversationKey}/senderName`] = `${this
-        .currentUser.firstName} ${this.currentUser.lastName}`;
-
-      updates[
-        `/conversations/${conversationKey}/senderImage`
-      ] = this.currentUser.image;
-
-      updates[`/conversations/${conversationKey}/timestamp`] =
-        Firebase.database.ServerValue.TIMESTAMP;
-
+        `/globalNotificationSeen/${this.currentUser.$id}/${this
+          .selectedNotification.$id}`
+      ] = true;
       ref.update(updates).then(() => {
-        this.messageText = '';
+        console.log(
+          `${this.currentUser.$id} marked as seen ${this.selectedNotification
+            .$id}`
+        );
       });
     },
   },
