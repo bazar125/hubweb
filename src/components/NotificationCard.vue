@@ -10,16 +10,16 @@
             </div>
           </li>
         </ul>
+        <div v-if="this.selectedNotification" class="details-container d-flex flex-column justify-content-start align-items-start">
+          <modal-data-row label="Description" :text="this.selectedNotification.description"></modal-data-row>
+          <modal-data-row label="Location" :text="this.selectedNotification.location ? this.selectedNotification.location : 'n/a'"></modal-data-row>
+          <modal-data-row label="Created" :text="getCreated(this.selectedNotification)"></modal-data-row>
+          <modal-data-row label="Expires" :text="getExpires(this.selectedNotification)"></modal-data-row>
+        </div>
       </div>
-      <div v-if="this.selectedNotification" class="details-container d-flex justify-content-center align-items-center">
+      <div v-if="this.selectedNotification" class="d-flex justify-content-center align-items-center" style="flex: 1;">
           <!-- <div class="d-flex flex-column justify-content-center align-items-center" style="flex: 1; height: 100%;"> -->
-          <div class="d-flex flex-column justify-content-start align-items-start">
-            <modal-data-row label="Description" :text="this.selectedNotification.description"></modal-data-row>
-            <modal-data-row label="Location" :text="this.selectedNotification.location ? this.selectedNotification.location : 'n/a'"></modal-data-row>
-            <modal-data-row label="Created" :text="getCreated(this.selectedNotification)"></modal-data-row>
-            <modal-data-row label="Expires" :text="getExpires(this.selectedNotification)"></modal-data-row>
             <div ref="map" id="map" class="map"></div>
-          </div>
         </div>
       </div>
     </div>
@@ -34,6 +34,7 @@ import DarkCard from '@/components/DarkCard';
 import ModalDataRow from '@/components/ModalDataRow';
 import UserService from '@/services/UserService';
 import ActivityService from '@/services/ActivityService';
+import MapOverlayFactory from '@/services/MapOverlayFactory';
 
 import PhotoPlaceholder from '../assets/photo_placeholder.png';
 import MapStyle from '../assets/mapstyle.json';
@@ -54,6 +55,7 @@ export default {
       selectedNotification: null,
       notifications: [],
       photoPlaceholder: PhotoPlaceholder,
+      mapMarker: null,
       map: null,
     };
   },
@@ -67,6 +69,24 @@ export default {
             zoom: 13,
             styles: MapStyle,
           });
+        }
+
+        if (this.mapMarker) {
+          this.mapMarker.setMap(null);
+        }
+
+        if(this.selectedNotification && this.selectedNotification.coords) {
+          const lat = this.selectedNotification.coords.lat;
+          const lng = this.selectedNotification.coords.lng;
+          this.mapMarker = MapOverlayFactory.pulseMarker(
+            this.map,
+            lat,
+            lng,
+            'blue'
+          );
+
+          // eslint-disable-next-line no-undef
+          this.map.setCenter(new google.maps.LatLng(lat, lng));
         }
       });
     },
@@ -169,6 +189,7 @@ export default {
   overflow-y: auto;
   margin-bottom: 0px;
   padding: 10px;
+  flex: 1;
 }
 
 .people-list input {
@@ -269,15 +290,60 @@ export default {
 }
 
 .details-container {
-  flex: 1;
+  /* flex: 1; */
   /* float: left; */
+  margin: 8px;
+  padding: 8px;
   background: #f2f5f8;
   color: #434651;
 }
 .map {
-  height: 200px;
-  width: 260px;
+  flex: 1;
+  height: 100%;
   border-radius: 4px;
   overflow: hidden;
+}
+
+.notification-card>>>.ring-container {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  z-index: 999;
+  left: 40px;
+  top: 10px;
+}
+
+.notification-card>>>.ringring {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  border: 3px solid #62bd19;
+  border-radius: 30px;
+  height: 36px;
+  width: 36px;
+  animation: pulsate 1s ease-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
+}
+
+.notification-card>>>.ringring.blue {
+  border-color: #1565c0;
+}
+
+.notification-card>>>.ringring.red {
+  border-color: #c62828;
+}
+@keyframes pulsate {
+  0% {
+    transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
 }
 </style>
