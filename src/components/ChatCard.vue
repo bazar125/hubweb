@@ -67,9 +67,9 @@
           <div class="chat-about d-flex flex-column justify-content-start align-items-start">
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
               <div class="chat-with">Officer {{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</div>
-              <icon name="circle" class="ml-auto online" style="width: 12px; height: 12px;" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}
+              <icon name="circle" class="ml-auto online" style="width: 12px; height: 12px;" :class="{online: userIsOnline(this.selectedUser), offline: !userIsOnline(this.selectedUser)}"></icon> {{userStatus(this.selectedUser)}}
             </div>
-            <div class="chat-num-messages">last seen 2 minutes ago</div>
+            <div class="chat-num-messages">last seen {{getLastSeen(this.selectedUser)}}</div>
           </div>
           <i class="fa fa-star"></i>
         </div>
@@ -166,6 +166,7 @@ import * as moment from 'moment';
 import * as Firebase from 'firebase';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
+import MapOverlayFactory from '@/services/MapOverlayFactory';
 import ActivityService from '@/services/ActivityService';
 
 import MapStyle from '../assets/mapstyle.json';
@@ -184,6 +185,7 @@ export default {
       userLocations: [],
       selectedIndex: 0,
       selectedUser: null,
+      selectedUserMarker: null,
       selectedConversation: null,
       ownUserId: '',
       conversations: [],
@@ -288,12 +290,12 @@ export default {
   },
   methods: {
     userIsOnline(user) {
-      if(!user || !this.userLocations || this.userLocations.length === 0) {
+      if (!user || !this.userLocations || this.userLocations.length === 0) {
         return false;
       }
 
       const userStatus = this.getUserStatus(user);
-      if(!userStatus) {
+      if (!userStatus) {
         return false;
       }
 
@@ -310,7 +312,7 @@ export default {
       return 'offline';
     },
     getUserStatus(user) {
-      for(let i = 0; i < this.userLocations.length; i += 1) {
+      for (let i = 0; i < this.userLocations.length; i += 1) {
         const userLocation = this.userLocations[i];
         if (userLocation.$id === user.$id) {
           return userLocation;
@@ -399,6 +401,27 @@ export default {
       }
 
       this.markConversationSeen();
+      this.updateMapMarker(user);
+    },
+    updateMapMarker(user) {
+      const userStatus = this.getUserStatus(user);
+      if (!this.map || !userStatus) {
+        return;
+      }
+
+      if (this.selectedUserMarker) {
+        this.selectedUserMarker.setMap(null);
+      }
+      const lat = userStatus.coords.lat;
+      const lng = userStatus.coords.lng;
+      this.selectedUserMarker = MapOverlayFactory.pulseMarker(
+        this.map,
+        lat,
+        lng,
+        'blue'
+      );
+      // eslint-disable-next-line no-undef
+      this.map.setCenter(new google.maps.LatLng(lat, lng));
     },
     initMap() {
       if (this.map) {
@@ -574,6 +597,14 @@ export default {
     },
     getTimeAgo(timestamp) {
       return moment(timestamp).fromNow();
+    },
+    getLastSeen(user) {
+      const userStatus = this.getUserStatus(user);
+      if (!userStatus) {
+        return 'unknown';
+      }
+
+      return moment(userStatus.timestamp).fromNow();
     },
     sendMessage() {
       if (
@@ -1098,5 +1129,48 @@ export default {
 
 .chat-user-tabs>>>.nav > * {
   flex: 1;
+}
+
+.chat-card>>>.ring-container {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  z-index: 999;
+  left: 40px;
+  top: 10px;
+}
+
+.chat-card>>>.ringring {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  border: 3px solid #62bd19;
+  border-radius: 30px;
+  height: 36px;
+  width: 36px;
+  animation: pulsate 1s ease-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
+}
+
+.chat-card>>>.ringring.blue {
+  border-color: #1565c0;
+}
+
+.chat-card>>>.ringring.red {
+  border-color: #c62828;
+}
+@keyframes pulsate {
+  0% {
+    transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
 }
 </style>

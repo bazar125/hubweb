@@ -14,8 +14,8 @@
             <span class="txt-zone">Zone B23</span>
             <span class="txt-timeago">{{getTimeAgo(user.timestamp)}}</span>
           </div>
-          <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="comment-o"></base-btn>
-          <base-btn @click="clickEditUser(index)" class="btn-view" icon="search"></base-btn>
+          <!-- <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="comment-o"></base-btn> -->
+          <!-- <base-btn @click="clickEditUser(index)" class="btn-view" icon="search"></base-btn> -->
           <!-- <div class="d-flex flex-column">
                                           <b-badge pill variant="success">ACCEPTED</b-badge>
                                           <span class="txt-timeago">2 hours ago</span>

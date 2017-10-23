@@ -65,13 +65,13 @@ export default {
           icon: 'comments',
           role: 'stateAdmin',
         },
-        {
-          path: '/notifications',
-          name: 'Alerts',
-          // icon: IconSettings,
-          icon: 'bell',
-          role: 'stateAdmin',
-        },
+        // {
+        //   path: '/notifications',
+        //   name: 'Alerts',
+        //   // icon: IconSettings,
+        //   icon: 'bell',
+        //   role: 'stateAdmin',
+        // },
         // {
         //   path: '/reports',
         //   name: 'Reports',

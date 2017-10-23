@@ -17,7 +17,8 @@
         </b-button>
       </template>
       <b-dropdown-header>You have {{unreadNotifications.length}} new notifications</b-dropdown-header>
-      <b-dropdown-item @click="$router.push(`/notifications/${conversation.$id}`)" v-for="notification in unreadNotifications" :key="notification.$id">
+      <!-- <b-dropdown-item @click="$router.push(`/notifications/${conversation.$id}`)" v-for="notification in unreadNotifications" :key="notification.$id"> -->
+      <b-dropdown-item v-for="notification in unreadNotifications" :key="notification.$id">
         <!-- <b>John Doe</b>: Hello World -->
         <div class="d-flex justify-content-start align-items-center">
           <!-- <img class="img-chat" :src="notification.senderImage"></img> -->
@@ -27,7 +28,8 @@
           </div>
         </div>
       </b-dropdown-item>
-      <b-dropdown-item @click="$router.push('/notifications')">
+      <!-- <b-dropdown-item @click="$router.push('/notifications')"> -->
+      <b-dropdown-item>
         <div class="d-flex justify-content-center align-items-center">
           <span class="txt-view-messages">See All Notifications</span>
         </div>
