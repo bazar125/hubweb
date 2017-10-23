@@ -1,5 +1,5 @@
 <template>
-  <dark-card title="Messages" class="chat-card">
+  <dark-card title="Notifications" class="notification-card">
     <div class="container clearfix d-flex" style="flex: 1;">
       <div class="people-list d-flex flex-column" id="people-list">
         <div class="search" style="position: relative">
@@ -14,7 +14,7 @@
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
                   <div class="status">
-                    <icon name="circle" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}
+                    <icon name="circle" class="online"></icon> online
                   </div>
                 </div>
               </li>
@@ -27,7 +27,7 @@
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
                   <div class="status">
-                    <icon name="circle" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}
+                    <icon name="circle" class="online"></icon> online
                   </div>
                 </div>
               </li>
@@ -38,7 +38,7 @@
           <div class="selected-user-overlay d-flex flex-column justify-content-start align-items-start">
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
                   <span class="txt-user-information">User Information</span>
-                  <span class="txt-user-information ml-auto"><icon name="circle" :class="{online: userIsOnline(this.selectedUser), offline: !userIsOnline(this.selectedUser)}"></icon> {{userStatus(this.selectedUser)}}</span>
+                  <span class="txt-user-information ml-auto"><icon name="circle" class="online"></icon> online</span>
                 </div>
             <!-- <span class="txt-user-information">User Information</span> -->
             
@@ -67,7 +67,7 @@
           <div class="chat-about d-flex flex-column justify-content-start align-items-start">
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
               <div class="chat-with">Officer {{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</div>
-              <icon name="circle" class="ml-auto online" style="width: 12px; height: 12px;" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}
+              <icon name="circle" class="ml-auto online" style="width: 12px; height: 12px;"></icon> online
             </div>
             <div class="chat-num-messages">last seen 2 minutes ago</div>
           </div>
@@ -181,7 +181,6 @@ export default {
     return {
       center: [10.5059, 7.4319],
       users: [],
-      userLocations: [],
       selectedIndex: 0,
       selectedUser: null,
       selectedConversation: null,
@@ -287,38 +286,6 @@ export default {
     },
   },
   methods: {
-    userIsOnline(user) {
-      if(!user || !this.userLocations || this.userLocations.length === 0) {
-        return false;
-      }
-
-      const userStatus = this.getUserStatus(user);
-      if(!userStatus) {
-        return false;
-      }
-
-      const now = moment();
-      const then = moment(userStatus.timestamp);
-      const diff = now.diff(then, 'minutes');
-      return diff < 10;
-    },
-    userStatus(user) {
-      if (this.userIsOnline(user)) {
-        return 'online';
-      }
-
-      return 'offline';
-    },
-    getUserStatus(user) {
-      for(let i = 0; i < this.userLocations.length; i += 1) {
-        const userLocation = this.userLocations[i];
-        if (userLocation.$id === user.$id) {
-          return userLocation;
-        }
-      }
-
-      return null;
-    },
     selectConversationWithId(id) {
       console.log(`selectConversationWithId: ${id}`);
       for (let i = 0; i < this.conversations.length; i += 1) {
@@ -359,10 +326,7 @@ export default {
                 }
               }
               this.selectedIndex = actualIndex;
-              console.log(
-                `Resolved parameters: ${this.selectedUser} ${this
-                  .selectedIndex}`
-              );
+              console.log(`Resolved parameters: ${this.selectedUser} ${this.selectedIndex}`);
               this.clickUser(this.selectedUser, this.selectedIndex);
             }
           }
@@ -454,21 +418,6 @@ export default {
           this.selectedUser = user;
           this.clickUser(user, 0);
         }
-      });
-
-      ref.child('scannerUserLocation').on('value', snap => {
-        if (!snap) {
-          this.userLocations = [];
-          return;
-        }
-
-        const userLocations = [];
-        snap.forEach(child => {
-          const userLocation = child.val();
-          userLocation.$id = child.key;
-          userLocations.push(userLocation);
-        });
-        this.userLocations = userLocations;
       });
     },
     subscribeNewMessages() {
