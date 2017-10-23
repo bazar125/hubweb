@@ -13,12 +13,12 @@
       </div>
       <div v-if="this.selectedNotification" class="details-container d-flex justify-content-center align-items-center">
           <!-- <div class="d-flex flex-column justify-content-center align-items-center" style="flex: 1; height: 100%;"> -->
-          <div class="d-flex flex-column justify-content-center align-items-center">
+          <div class="d-flex flex-column justify-content-start align-items-start">
             <modal-data-row label="Description" :text="this.selectedNotification.description"></modal-data-row>
-            <modal-data-row label="Location" :text="this.selectedNotification.location"></modal-data-row>
+            <modal-data-row label="Location" :text="this.selectedNotification.location ? this.selectedNotification.location : 'n/a'"></modal-data-row>
             <modal-data-row label="Created" :text="getCreated(this.selectedNotification)"></modal-data-row>
             <modal-data-row label="Expires" :text="getExpires(this.selectedNotification)"></modal-data-row>
-            <div ref="map" id="map" class="live-map"></div>
+            <div ref="map" id="map" class="map"></div>
           </div>
         </div>
       </div>
@@ -274,9 +274,9 @@ export default {
   background: #f2f5f8;
   color: #434651;
 }
-.live-map {
-  flex: 1;
-  height: 180px;
+.map {
+  height: 200px;
+  width: 260px;
   border-radius: 4px;
   overflow: hidden;
 }
