@@ -10,12 +10,19 @@
             </div>
           </li>
         </ul>
-        <div v-if="this.selectedNotification" class="details-container d-flex flex-column justify-content-start align-items-start">
+        <dark-card v-if="this.selectedNotification" title="Notification Info" class="details-container d-flex flex-column justify-content-start align-items-start">
           <modal-data-row label="Description" :text="this.selectedNotification.description"></modal-data-row>
           <modal-data-row label="Location" :text="this.selectedNotification.location ? this.selectedNotification.location : 'n/a'"></modal-data-row>
           <modal-data-row label="Created" :text="getCreated(this.selectedNotification)"></modal-data-row>
           <modal-data-row label="Expires" :text="getExpires(this.selectedNotification)"></modal-data-row>
-        </div>
+        </dark-card>
+        <!-- <div v-if="this.selectedNotification" class="details-container d-flex flex-column justify-content-start align-items-start">
+          <span class="txt-heading">Notification Info</span>
+          <modal-data-row label="Description" :text="this.selectedNotification.description"></modal-data-row>
+          <modal-data-row label="Location" :text="this.selectedNotification.location ? this.selectedNotification.location : 'n/a'"></modal-data-row>
+          <modal-data-row label="Created" :text="getCreated(this.selectedNotification)"></modal-data-row>
+          <modal-data-row label="Expires" :text="getExpires(this.selectedNotification)"></modal-data-row>
+        </div> -->
       </div>
       <div v-if="this.selectedNotification" class="d-flex justify-content-center align-items-center" style="flex: 1;">
           <!-- <div class="d-flex flex-column justify-content-center align-items-center" style="flex: 1; height: 100%;"> -->
@@ -75,7 +82,7 @@ export default {
           this.mapMarker.setMap(null);
         }
 
-        if(this.selectedNotification && this.selectedNotification.coords) {
+        if (this.selectedNotification && this.selectedNotification.coords) {
           const lat = this.selectedNotification.coords.lat;
           const lng = this.selectedNotification.coords.lng;
           this.mapMarker = MapOverlayFactory.pulseMarker(
@@ -97,8 +104,9 @@ export default {
         this.currentUser = user;
       })
       .then(() => {
-        ActivityService.subscribeNotifications((count, notifications) => {
-          this.notifications = notifications;
+        ActivityService.subscribeNotifications((count, notifications, unfilteredNotifications) => {
+          // this.notifications = notifications;
+          this.notifications = unfilteredNotifications;
           if (!this.selectedNotification && this.notifications.length > 0) {
             this.clickNotification(this.notifications[0], 0);
           }
@@ -106,6 +114,20 @@ export default {
       });
   },
   methods: {
+    markNotificationSeen() {
+      if (!this.selectedNotification || !this.currentUser) {
+        return;
+      }
+
+      const notificationKey = this.selectedNotification.$id;
+      const userId = this.currentUser.$id;
+
+      console.log(`Marking notification ${notificationKey} as seen`);
+      const ref = Firebase.database().ref();
+      const updates = {};
+      updates[`/globalNotificationSeen/${userId}/${notificationKey}`] = true;
+      ref.update(updates);
+    },
     getCreated(notification) {
       if (!notification || !notification.timestamp) {
         return 'n/a';
@@ -123,6 +145,8 @@ export default {
     clickNotification(notification, index) {
       this.selectedNotification = notification;
       this.selectedIndex = index;
+      
+      this.markNotificationSeen();
     },
     getTimeAgo(timestamp) {
       return moment(timestamp).fromNow();
@@ -146,8 +170,8 @@ export default {
 </script>
 
 <style scoped>
-.chat-card>>>.main-container {
-  padding: 0px;
+.details-container>>>.main-container {
+  padding: 10px 0px;
 }
 
 .container {
@@ -345,5 +369,11 @@ export default {
     transform: scale(1.2, 1.2);
     opacity: 0;
   }
+}
+.txt-heading {
+  font-weight: 700;
+  font-size: 11px;
+  color: black;
+  margin-bottom: 5px;
 }
 </style>

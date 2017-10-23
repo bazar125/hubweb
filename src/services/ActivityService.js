@@ -46,8 +46,6 @@ export default {
             const val = snap.val();
             if (val) {
               notificationsSeen = Object.keys(val);
-              console.log('notifications seen');
-              console.log(notificationsSeen);
             }
           }
           this.notificationsSeen = notificationsSeen;
@@ -99,7 +97,7 @@ export default {
       }
     }
 
-    callback(count, unreadNotifications);
+    callback(count, unreadNotifications, this.notifications);
   },
   getConversationQuery() {
     return Firebase.database()
@@ -114,7 +112,7 @@ export default {
   },
   getNotificationSeenQuery() {
     return Firebase.database().ref(
-      `globalNotifications/${this.currentUser.$id}`,
+      `globalNotificationSeen/${this.currentUser.$id}`
     );
   },
 };
