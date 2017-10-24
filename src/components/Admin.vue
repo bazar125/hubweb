@@ -5,7 +5,7 @@
     </div>
 
     <div class="d-flex justify-content-start align-items-center" style="flex: 1; height: 100%;">
-      <new-notification-card></new-notification-card>
+      <!-- <new-notification-card></new-notification-card> -->
     </div>
     
     <!-- <span class="txt-heading mr-auto">Manage Users</span> -->

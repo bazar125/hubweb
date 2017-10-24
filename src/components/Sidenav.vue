@@ -143,7 +143,8 @@ export default {
 .nav-button {
   background-color: transparent;
   width: 130px;
-  color: rgba(0, 0, 0, 0.87);
+  /* color: rgba(0, 0, 0, 0.87); */
+  color: rgba(0, 0, 0, 0.54);
   /* color: rgb(137,146,198, 0.8); */
   /* color: rgb(255, 255, 255, 0.5); */
   /* color: rgba(197, 234, 142, 0.5); */
@@ -156,6 +157,7 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0);
   text-transform: uppercase;
   transition: ease-out 0.2s;
+  margin-bottom: 5px;
 }
 
 .nav-button:first-child {
@@ -164,10 +166,8 @@ export default {
 
 .nav-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  /* color: rgba(137, 146, 198, 0.1); */
-  /* color: rgba(255, 255, 255, 0.84); */
-  /* color: rgba(197, 234, 142, 0.5); */
-  color: rgb(137,146,198);
+  border: 1px solid #8992C6;
+  color: rgba(0, 0, 0, 0.84);
   transition: ease-out 0.2s;
 }
 

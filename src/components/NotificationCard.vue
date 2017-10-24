@@ -2,14 +2,42 @@
   <dark-card title="Notifications" class="notification-card">
     <div class="container clearfix d-flex" style="flex: 1;">
       <div class="people-list d-flex flex-column" id="people-list">
-        <ul class="list">
+
+        <b-tabs class="chat-user-tabs d-flex flex-column justify-content-start align-items-start">
+          <b-tab class="custom-tab" title="FEED" active>
+              <ul class="list">
+                <li @click="clickNotification(notification, index)" :class="{'active': selectedIndex === index, 'unread': notification.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
+                  <img class="image" :src="notification.senderImage ? notification.senderImage : photoPlaceholder" alt="avatar" />
+                  <div class="about">
+                    <div class="name">{{notification.description}}</div>
+                  </div>
+                </li>
+              </ul>
+          </b-tab>
+          <b-tab class="custom-tab" v-if="userIsAdmin" title="NEW" >
+             <div class="d-flex flex-column justify-content-start align-items-start" style="padding: 8px;">
+                <textarea class="form-control input-description" v-model="description" placeholder="Provide a description" rows="2"></textarea>
+                <!-- <span class="txt-label">Location</span> -->
+                <b-form-input class="input-form" v-model="location" size="sm" type="text" placeholder="Location"></b-form-input>
+                <!-- <b-form-input class="input-form" v-model="expires" size="sm" type="text" placeholder="Expires"></b-form-input> -->
+                <!-- <span class="txt-label">Expiry (Optional)</span> -->
+                <div class="d-flex justify-content-start align-items-center">
+                  <date-picker style="margin-bottom: 0px; width: 120px;" placeholder="Expires (Optional)" class="form-control-sm input-form" v-model="expires" :config="config"></date-picker>
+                  <base-btn @click="clickCreate" :class="{disabled: !createEnabled}" class="ml-auto btn-invite" text="Send" icon="plus"></base-btn>
+                </div>
+            </div>
+          </b-tab>
+        </b-tabs>
+
+
+        <!-- <ul class="list">
           <li @click="clickNotification(notification, index)" :class="{'active': selectedIndex === index, 'unread': notification.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
             <img class="image" :src="notification.senderImage ? notification.senderImage : photoPlaceholder" alt="avatar" />
             <div class="about">
               <div class="name">{{notification.description}}</div>
             </div>
           </li>
-        </ul>
+        </ul> -->
         <dark-card v-if="this.selectedNotification" title="Notification Info" class="details-container d-flex flex-column justify-content-start align-items-start">
           <modal-data-row label="Description" :text="this.selectedNotification.description"></modal-data-row>
           <modal-data-row label="Location" :text="this.selectedNotification.location ? this.selectedNotification.location : 'n/a'"></modal-data-row>
@@ -56,7 +84,7 @@ export default {
   },
   data() {
     return {
-      center: [10.5059, ],
+      center: [10.5059],
       currentUser: null,
       selectedIndex: 0,
       selectedNotification: null,
@@ -64,6 +92,19 @@ export default {
       photoPlaceholder: PhotoPlaceholder,
       mapMarker: null,
       map: null,
+      description: '',
+      location: '',
+      expires: '',
+      config: {
+        // format: 'YYYY-MM-DD, HH:MM',
+        format: 'YYYY-MM-DD',
+        useCurrent: false,
+        sideBySide: true,
+        widgetPositioning: {
+          horizontal: 'auto',
+          vertical: 'top',
+        },
+      },
     };
   },
   watch: {
@@ -98,22 +139,71 @@ export default {
       });
     },
   },
+  computed: {
+    userIsAdmin() {
+      if (!this.currentUser) {
+        return false;
+      }
+
+      if (this.currentUser.accountType === 'stateAdmin') {
+        return true;
+      }
+
+      return false;
+    },
+    createEnabled() {
+      if (!this.currentUser || !this.description) {
+        return false;
+      }
+
+      return true;
+    },
+  },
   mounted() {
     UserService.loadUser()
       .then(user => {
         this.currentUser = user;
       })
       .then(() => {
-        ActivityService.subscribeNotifications((count, notifications, unfilteredNotifications) => {
-          // this.notifications = notifications;
-          this.notifications = unfilteredNotifications;
-          if (!this.selectedNotification && this.notifications.length > 0) {
-            this.clickNotification(this.notifications[0], 0);
+        ActivityService.subscribeNotifications(
+          (count, notifications, unfilteredNotifications) => {
+            // this.notifications = notifications;
+            this.notifications = unfilteredNotifications;
+            if (!this.selectedNotification && this.notifications.length > 0) {
+              this.clickNotification(this.notifications[0], 0);
+            }
           }
-        });
+        );
       });
   },
   methods: {
+    clickCreate() {
+      const coords = {
+        lat: 10.5059,
+        lng: 7.4319,
+      };
+
+      const expiryTimestamp = moment()
+        .add(72, 'hours')
+        .valueOf();
+      const notification = {
+        coords,
+        location: this.location,
+        description: this.description,
+        timestamp: Firebase.database.ServerValue.TIMESTAMP,
+        expiryTimestamp,
+        senderId: this.currentUser.$id,
+        senderName: `${this.currentUser.firstName} ${this.currentUser
+          .lastName}`,
+        senderImage: this.currentUser.image,
+      };
+
+      const ref = Firebase.database().ref();
+      ref.child('globalNotifications').push(notification);
+      this.location = '';
+      this.description = '';
+      this.expires = null;
+    },
     markNotificationSeen() {
       if (!this.selectedNotification || !this.currentUser) {
         return;
@@ -145,7 +235,7 @@ export default {
     clickNotification(notification, index) {
       this.selectedNotification = notification;
       this.selectedIndex = index;
-      
+
       this.markNotificationSeen();
     },
     getTimeAgo(timestamp) {
@@ -185,6 +275,17 @@ export default {
   /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
   padding-left: 0px;
   padding-right: 0px;
+}
+
+.chat-user-tabs {
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+}
+
+.custom-tab {
+  flex: 1;
+  width: 100%;
 }
 
 .people-list {
@@ -375,5 +476,139 @@ export default {
   font-size: 11px;
   color: black;
   margin-bottom: 5px;
+}
+.chat-user-tabs>>>div {
+  width: 100%;
+}
+
+.chat-user-tabs>>>.nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.chat-user-tabs>>>.tab-content {
+  overflow-y: auto;
+}
+
+.chat-user-tabs>>>.nav .nav-link {
+  font-size: 10px;
+  border-bottom-color: #8f90a8;
+  /* border-bottom-color: #eceeef; */
+  border-radius: 0px;
+  color: rgba(255,255,255, 0.7);
+}
+
+.chat-user-tabs>>>.nav .nav-item:first-child .nav-link {
+  border-top-left-radius: 4px;
+}
+
+.chat-user-tabs>>>.nav .nav-item:last-child .nav-link {
+  border-top-right-radius: 4px;
+}
+
+.chat-user-tabs>>>.nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.34);
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+.chat-user-tabs>>>.nav .nav-link.active {
+  color: white;
+  background-color: #0275d8;
+  border-top-color: #0275d8;
+  border-left-color: #0275d8;
+  border-right-color: #0275d8;
+}
+
+.chat-user-tabs>>>.nav > * {
+  flex: 1;
+}
+
+.chat-user-tabs>>>.nav-tabs {
+  border-bottom: 1px solid #eceeef;
+  margin-bottom: 10px;
+}
+
+.input-email {
+  /* border-color: #8f90a8; */
+  width: 300px;
+  border-radius: 14px;
+  background-color: transparent;
+  /* color: white; */
+  /* color: rgba(0,0,0,0.87); */
+}
+
+.input-email:focus {
+  border-color: #5cb3fd;
+}
+
+.btn-invite.disabled {
+  background-color: darkgray !important;
+  border-color: darkgray !important;
+  color: rgba(0, 0, 0, 0.54) !important;
+  cursor: default;
+}
+.btn-invite:hover.disabled {
+  background-color: darkgray !important;
+  border-color: darkgray !important;
+  color: rgba(0, 0, 0, 0.54) !important;
+  cursor: default;
+}
+
+.btn-invite {
+  margin-left: 10px;
+  height: 23.75px !important;
+  padding: 3px !important;
+  padding: 0px 8px !important;
+  background-color: #63a54b !important;
+  border-color: #63a54b !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.btn-invite:hover {
+  background-color: #83bd6e !important;
+  border-color: #83bd6e !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.btn-invite.disabled>>>.btn-icon {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.btn-invite:hover.disabled>>>.btn-icon {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.input-description {
+  margin-bottom: 10px;
+  font-size: 12px;
+  resize: none;
+}
+
+.input-form {
+  margin-bottom: 10px;
+  /* width: 250px; */
+  font-size: 11px;
+}
+.txt-label {
+  font-weight: 600;
+  font-size: 10px;
+  margin-bottom: 5px;
+}
+
+.chat-user-tabs>>>.bootstrap-datetimepicker-widget {
+  font-size: 10px;
+  color: rgba(0,0,0,0.84) !important;
+}
+.notification-card>>>.content-container {
+  overflow: visible;
+}
+.notification-card>>>.main-container {
+  overflow: visible;
+}
+.notification-card.base-card {
+  overflow: visible;
 }
 </style>
