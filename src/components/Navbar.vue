@@ -192,7 +192,6 @@ export default {
 
 .btn-login {
   background-color: #63a54b;
-  /* border-color: #8f90a8; */
   border-color: #63a54b;
   color: rgba(255, 255, 255, 0.84);
   /* border-radius: 4px; */
