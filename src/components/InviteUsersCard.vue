@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       users: ['John Doe', 'Jane Doe', 'Bob Doe'],
+      email: '',
     };
   },
   methods: {

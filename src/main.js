@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
 import 'vue-awesome/icons';
 import 'jsoneditor/dist/jsoneditor.min.css';
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
@@ -10,6 +11,7 @@ import VideoBg from 'vue-videobg';
 import VueResource from 'vue-resource';
 import Viewer from 'v-viewer';
 import VueChatScroll from 'vue-chat-scroll';
+import DatePicker from 'vue-bootstrap-datetimepicker';
 
 import * as Firebase from 'firebase';
 
@@ -30,6 +32,7 @@ Vue.use(BootstrapVue);
 Vue.use(VueResource);
 Vue.use(Viewer);
 Vue.use(VueChatScroll);
+Vue.use(DatePicker);
 Vue.component('icon', Icon);
 Vue.component('video-bg', VideoBg);
 
