@@ -4,7 +4,7 @@
       <div class="people-list d-flex flex-column" id="people-list">
         <ul class="list">
           <li @click="clickNotification(notification, index)" :class="{'active': selectedIndex === index, 'unread': notification.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
-            <img class="image" :src="notification.image ? notification.image : photoPlaceholder" alt="avatar" />
+            <img class="image" :src="notification.senderImage ? notification.senderImage : photoPlaceholder" alt="avatar" />
             <div class="about">
               <div class="name">{{notification.description}}</div>
             </div>
@@ -56,7 +56,7 @@ export default {
   },
   data() {
     return {
-      center: [10.5059, 7.4319],
+      center: [10.5059, ],
       currentUser: null,
       selectedIndex: 0,
       selectedNotification: null,

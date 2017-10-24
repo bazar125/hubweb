@@ -20,7 +20,7 @@
       <b-dropdown-item @click="$router.push(`/notifications/${notification.$id}`)" v-for="notification in unreadNotifications" :key="notification.$id">
         <!-- <b>John Doe</b>: Hello World -->
         <div class="d-flex justify-content-start align-items-center">
-          <!-- <img class="img-chat" :src="notification.senderImage"></img> -->
+          <img class="img-chat" :src="notification.senderImage"></img>
           <div class="d-flex flex-column" style="overflow: hidden;">
             <span class="txt-name">{{notification.description}}</span>
             <span class="txt-message">{{getTimeAgo(notification.timestamp)}}</span>
