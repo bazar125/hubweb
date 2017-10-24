@@ -1,17 +1,19 @@
 <template>
   <dark-card title="Notifications" class="current-notification-card">
-    <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; width: 100%; overflow-y: auto;">
-      <b-list-group class="users-list">
-        <b-list-group-item @click.native="$router.push('/notifications')" class="user-list-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
-          <!-- <img class="img-avatar" :src="user.image"></img> -->
-          <img class="icon-item" src="../assets/user_placeholder.jpg"></icon>
-          <div class="content-container d-flex flex-column justify-content-center align-items-start">
-            <!-- <textarea rows="2" disabled v-model="notification.description" class="txt-description"></textarea> -->
-            <div class="txt-description">{{notification.description}}</div>
-            <span class="txt-zone">{{getTimeAgo(notification.timestamp)}}</span>
-          </div>
-        </b-list-group-item>
-      </b-list-group>
+    <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; width: 100%; overflow: hidden;">
+      <div style="max-height: 120px; width: 100%; overflow-y: auto;">
+        <b-list-group class="users-list">
+          <b-list-group-item @click.native="$router.push('/notifications')" class="user-list-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
+            <!-- <img class="img-avatar" :src="user.image"></img> -->
+            <img class="icon-item" src="../assets/user_placeholder.jpg"></icon>
+            <div class="content-container d-flex flex-column justify-content-center align-items-start">
+              <!-- <textarea rows="2" disabled v-model="notification.description" class="txt-description"></textarea> -->
+              <div class="txt-description">{{notification.description}}</div>
+              <span class="txt-zone">{{getTimeAgo(notification.timestamp)}}</span>
+            </div>
+          </b-list-group-item>
+        </b-list-group>
+      </div>
     </div>
   </dark-card>
 </template>
@@ -119,7 +121,7 @@ export default {
   pointer-events: none;
   width: 100%;
   background: transparent;
-  color: rgba(0,0,0,0.87);
+  color: rgba(0, 0, 0, 0.87);
   box-shadow: none;
   text-align: start;
   /* text-transform: uppercase; */

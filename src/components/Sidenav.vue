@@ -73,7 +73,7 @@ export default {
         },
         {
           path: '/notifications',
-          name: 'Alerts',
+          name: 'Notifications',
           // icon: IconSettings,
           icon: 'bell',
           role: 'stateAdmin',
@@ -132,8 +132,8 @@ export default {
   /* background-color: #3A3E5C; */
   /* background-color: #191970; */
   /* background-color: #4a59ad; */
-  width: 150px;
-  min-width: 150px;
+  width: 160px;
+  min-width: 160px;
   z-index: 999;
   /* box-shadow: 10px 0 2px -2px rgba(0,0,0,0.1);
   box-shadow: -60px 0px 100px -90px #000000, 60px 0px 100px -90px #000000; */
@@ -142,7 +142,7 @@ export default {
 
 .nav-button {
   background-color: transparent;
-  width: 120px;
+  width: 130px;
   color: rgba(0, 0, 0, 0.87);
   /* color: rgb(137,146,198, 0.8); */
   /* color: rgb(255, 255, 255, 0.5); */

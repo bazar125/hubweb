@@ -640,7 +640,6 @@ circle.blue {
 #notificationContainer {
   flex: 0.4;
   width: 100%;
-  overflow: hidden;
   padding-right: 8px;
   padding-bottom: 8px;
 }
@@ -648,7 +647,6 @@ circle.blue {
 #activePersonnelContainer {
   flex: 0.6;
   width: 100%;
-  overflow: hidden;
   padding-right: 8px;
 }
 </style>
