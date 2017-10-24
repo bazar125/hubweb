@@ -5,7 +5,10 @@
           <b-tab class="custom-tab" title="FEED" active>
               <div style="max-height: 80px; width: 100%; overflow-y: auto;">
                 <b-list-group class="users-list">
-                  <b-list-group-item @click.native="$router.push('/notifications')" class="user-list-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
+                  <b-list-group-item v-if="this.notifications && this.notifications.length === 0"class="user-list-item d-flex justify-content-center align-items-center">
+                    <div class="txt-no-notification">No active notifications</div>
+                  </b-list-group-item>
+                  <b-list-group-item v-else @click.native="$router.push('/notifications')" class="user-list-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
                     <!-- <img class="img-avatar" :src="user.image"></img> -->
                     <img class="icon-item" src="../assets/user_placeholder.jpg"></icon>
                     <div class="content-container d-flex flex-column justify-content-center align-items-start">
@@ -26,8 +29,10 @@
               <b-form-input class="input-form" v-model="location" size="sm" type="text" placeholder="Location"></b-form-input>
               <!-- <b-form-input class="input-form" v-model="expires" size="sm" type="text" placeholder="Expires"></b-form-input> -->
               <!-- <span class="txt-label">Expiry (Optional)</span> -->
-              <!-- <date-picker class="input-form" v-model="expires" :config="config"></date-picker> -->
-              <base-btn @click="clickCreate" :class="{disabled: !createEnabled}" class="mx-auto btn-invite" text="Send" icon="plus"></base-btn>
+              <div class="d-flex justify-content-start align-items-center">
+                <date-picker style="margin-bottom: 0px; width: 120px;" placeholder="Expires (Optional)" class="form-control-sm input-form" v-model="expires" :config="config"></date-picker>
+                <base-btn @click="clickCreate" :class="{disabled: !createEnabled}" class="ml-auto btn-invite" text="Send" icon="plus"></base-btn>
+              </div>
             </div>
           </b-tab>
         </b-tabs>
@@ -56,6 +61,16 @@ export default {
       description: '',
       location: '',
       expires: '',
+      config: {
+        // format: 'YYYY-MM-DD, HH:MM',
+        format: 'YYYY-MM-DD',
+        useCurrent: false,
+        sideBySide: true,
+        widgetPositioning: {
+          horizontal: 'auto',
+          vertical: 'top',
+        },
+      },
     };
   },
   computed: {
@@ -119,6 +134,7 @@ export default {
       ref.child('globalNotifications').push(notification);
       this.location = '';
       this.description = '';
+      this.expires = null;
     },
   },
   mounted() {
@@ -220,6 +236,11 @@ export default {
   /* text-overflow: ellipsis;
   white-space: nowrap; */
   /* overflow: hidden; */
+}
+
+.txt-no-notification {
+  font-size: 10px;
+  font-weight: 600;
 }
 
 .txt-zone {
@@ -344,7 +365,7 @@ export default {
 
 .btn-invite {
   margin-left: 10px;
-  height: 27.5px !important;
+  height: 23.75px !important;
   padding: 3px !important;
   padding: 0px 8px !important;
   background-color: #63a54b !important;
@@ -369,6 +390,7 @@ export default {
 .input-description {
   margin-bottom: 10px;
   font-size: 12px;
+  resize: none;
 }
 
 .input-form {
@@ -380,5 +402,19 @@ export default {
   font-weight: 600;
   font-size: 10px;
   margin-bottom: 5px;
+}
+
+.chat-user-tabs>>>.bootstrap-datetimepicker-widget {
+  font-size: 10px;
+  color: rgba(0,0,0,0.84) !important;
+}
+.current-notification-card>>>.content-container {
+  overflow: visible;
+}
+.current-notification-card>>>.main-container {
+  overflow: visible;
+}
+.current-notification-card.base-card {
+  overflow: visible;
 }
 </style>

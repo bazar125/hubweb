@@ -308,7 +308,7 @@ export default {
 
 .map-container {
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   flex: 1;
   /* padding-right: 8px; */
   padding-left: 8px;
