@@ -9,7 +9,7 @@
       <div class="activity-stream-inner">
         <div v-for="(activity, index) in activities" :key="activity.$id" class="d-flex flex-column justify-content-start align-items-center" style="position: relative;">
           <div :class="{'blink-title': activity.$animate, 'row-citation': activity.location && activity.completionStatus !== 'Warning', 'row-warning': activity.location && activity.completionStatus === 'Warning', 'row-collision': !activity.location}" class="activity-stream-row d-flex flex-column justify-content-start align-items-center">
-            <div class="container-title d-flex justify-content-start align-items-center">
+            <div :class="{'row-citation': activity.location && activity.completionStatus !== 'Warning', 'row-warning': activity.location && activity.completionStatus === 'Warning', 'row-collision': !activity.location}" class="container-title d-flex justify-content-start align-items-center">
               <!-- <icon :name="activity.location ? 'book' : 'fire' " class="icon-master icon-title"></icon> -->
               <icon :name="activity.location ? 'circle' : 'circle'" :class="{'circle-citation': activity.location, 'circle-collision': !activity.location}" class="icon-master icon-title"></icon>
               <span class="txt-title">{{getActivityTitle(activity)}}</span>
@@ -197,7 +197,8 @@ export default {
   font-size: 8px;
   /* font-style: italic; */
   /* color: white; */
-  color: rgba(255, 255, 255, 0.84);
+  /* color: rgba(255, 255, 255, 0.84); */
+  color: rgba(0, 0, 0, 0.84);
   margin-left: 5px;
 }
 
@@ -210,7 +211,8 @@ export default {
   text-overflow: ellipsis; */
   padding-right: 5px;
   margin-left: 5px;
-  color: rgba(255, 255, 255, 0.84);
+  /* color: rgba(255, 255, 255, 0.84); */
+  color: rgba(0, 0, 0, 0.84);
 }
 
 .txt-address {
@@ -221,14 +223,16 @@ export default {
   text-overflow: ellipsis; */
   padding-right: 5px;
   margin-left: 5px;
-  color: rgba(255, 255, 255, 0.84);
+  /* color: rgba(255, 255, 255, 0.84); */
+  color: rgba(0, 0, 0, 0.84);
 }
 
 .activity-stream-row {
   width: 100%;
   /* background-color: white; */
   /* background-color: #2c2e4a; */
-  background-color: #3a3d41;
+  /* background-color: #3a3d41; */
+  background-color: white;
   /* color: #8f90a8; */
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
@@ -240,15 +244,15 @@ export default {
 }
 
 .row-citation {
-  background-color: #1565c0;
+  /* background-color: #1565c0; */
 }
 
 .row-warning {
-  background-color: #b97310;
+  /* background-color: #b97310; */
 }
 
 .row-collision {
-  background-color: #c62828;
+  /* background-color: #c62828; */
 }
 
 .activity-stream-row:not(:last-child) {
@@ -370,8 +374,21 @@ export default {
   /* margin-bottom: 5px; */
   /* border-top-left-radius: 4px;
   border-top-right-radius: 4px; */
-  background-color: rgba(0, 0, 0, 0.3);
+  /* background-color: rgba(0, 0, 0, 0.3); */
+  background-color: #c62828;
   margin-bottom: 5px;
+}
+
+.container-title.row-citation {
+  background-color: #1565c0;
+}
+
+.container-title.row-collision {
+  background-color: #c62828;
+}
+
+.container-title.row-warning {
+  background-color: #b97310;
 }
 
 .blink-title {

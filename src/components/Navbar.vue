@@ -131,9 +131,9 @@ export default {
   padding-left: 0px;
 }
 
-.custom-navbar > * {
+/* .custom-navbar > * {
   z-index: 9999;
-}
+} */
 
 .logo {
   height: 100%;

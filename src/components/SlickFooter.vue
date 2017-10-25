@@ -22,7 +22,8 @@ export default {
 .slick-footer {
   /* background-color: #3D4A8B; */
   /* background-color: #212338; */
-  background-color: #31429E;
+  /* background-color: #31429E; */
+  background-color: #1a2353;
   height: 40px;
 }
 
