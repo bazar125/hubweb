@@ -10,7 +10,7 @@
                   </b-list-group-item>
                   <b-list-group-item v-else @click.native="$router.push('/notifications')" class="user-list-item d-flex justify-content-start align-items-center" v-for="(notification, index) in notifications" :key="notification.$id">
                     <!-- <img class="img-avatar" :src="user.image"></img> -->
-                    <img class="icon-item" src="../assets/user_placeholder.jpg"></icon>
+                    <img class="icon-item" :src="notification.senderImage"></icon>
                     <div class="content-container d-flex flex-column justify-content-center align-items-start">
                       <!-- <textarea rows="2" disabled v-model="notification.description" class="txt-description"></textarea> -->
                       <div class="txt-description">{{notification.description}}</div>
@@ -21,12 +21,12 @@
               </div>
             </ul>
           </b-tab>
-          <b-tab class="custom-tab" v-if="userIsAdmin" title="NEW" >
+          <b-tab class="custom-tab" v-if="userIsAdmin" title="CREATE" >
              <div class="d-flex flex-column justify-content-start align-items-start">
               <!-- <span class="txt-label">Description</span> -->
               <textarea class="form-control input-description" v-model="description" placeholder="Provide a description" rows="2"></textarea>
               <!-- <span class="txt-label">Location</span> -->
-              <b-form-input class="input-form" v-model="location" size="sm" type="text" placeholder="Location"></b-form-input>
+              <!-- <b-form-input class="input-form" v-model="location" size="sm" type="text" placeholder="Location"></b-form-input> -->
               <!-- <b-form-input class="input-form" v-model="expires" size="sm" type="text" placeholder="Expires"></b-form-input> -->
               <!-- <span class="txt-label">Expiry (Optional)</span> -->
               <div class="d-flex justify-content-start align-items-center">
@@ -46,6 +46,7 @@ import * as Firebase from 'firebase';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
 import UserService from '@/services/UserService';
+import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
   name: 'CurrentNotificationCard',
@@ -57,6 +58,7 @@ export default {
   data() {
     return {
       search: '',
+      photoPlaceholder: PhotoPlaceholder,
       currentUser: null,
       description: '',
       location: '',

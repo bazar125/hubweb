@@ -36,7 +36,8 @@ export default {
             notification.$id = child.key;
             notifications.push(notification);
           });
-          this.notifications = notifications;
+          // TODO: reverse...
+          this.notifications = notifications.reverse();
           this.notifyNotificationSubscriber(callback);
         });
 
@@ -108,7 +109,8 @@ export default {
   getNotificationQuery() {
     return Firebase.database()
       .ref('globalNotifications')
-      .orderByChild('timestamp');
+      .orderByChild('timestamp')
+      .limitToLast(20);
   },
   getNotificationSeenQuery() {
     return Firebase.database().ref(

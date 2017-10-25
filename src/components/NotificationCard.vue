@@ -14,17 +14,18 @@
                 </li>
               </ul>
           </b-tab>
-          <b-tab class="custom-tab" v-if="userIsAdmin" title="NEW" >
-             <div class="d-flex flex-column justify-content-start align-items-start" style="padding: 8px;">
+          <b-tab class="custom-tab" v-if="userIsAdmin" title="CREATE  " >
+             <div class="d-flex flex-column justify-content-start align-items-start" style="padding: 8px; padding-top: 0px;">
                 <textarea class="form-control input-description" v-model="description" placeholder="Provide a description" rows="2"></textarea>
                 <!-- <span class="txt-label">Location</span> -->
-                <b-form-input class="input-form" v-model="location" size="sm" type="text" placeholder="Location"></b-form-input>
+                <!-- <b-form-input class="input-form" v-model="location" size="sm" type="text" placeholder="Location"></b-form-input> -->
                 <!-- <b-form-input class="input-form" v-model="expires" size="sm" type="text" placeholder="Expires"></b-form-input> -->
                 <!-- <span class="txt-label">Expiry (Optional)</span> -->
-                <div class="d-flex justify-content-start align-items-center">
-                  <date-picker style="margin-bottom: 0px; width: 120px;" placeholder="Expires (Optional)" class="form-control-sm input-form" v-model="expires" :config="config"></date-picker>
-                  <base-btn @click="clickCreate" :class="{disabled: !createEnabled}" class="ml-auto btn-invite" text="Send" icon="plus"></base-btn>
-                </div>
+                <date-picker style="margin-bottom: 0px; width: 130px;" placeholder="Expires (Optional)" class="form-control-sm input-form" v-model="expires" :config="config"></date-picker>
+                <base-btn style="margin-top: 20px;" @click="clickCreate" :class="{disabled: !createEnabled}" class="mx-auto btn-invite" text="Send" icon="plus"></base-btn>
+                <!-- <div class="d-flex justify-content-start align-items-center">
+                  
+                </div> -->
             </div>
           </b-tab>
         </b-tabs>
@@ -84,7 +85,7 @@ export default {
   },
   data() {
     return {
-      center: [10.5059],
+      center: [10.5059, 7.4319],
       currentUser: null,
       selectedIndex: 0,
       selectedNotification: null,
@@ -271,7 +272,7 @@ export default {
   /* background: #444753; */
   background: #3a3e5c;
   /* border-radius: 5px; */
-  overflow: hidden;
+  /* overflow: hidden; */
   /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
   padding-left: 0px;
   padding-right: 0px;
@@ -280,12 +281,13 @@ export default {
 .chat-user-tabs {
   flex: 1;
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .custom-tab {
   flex: 1;
   width: 100%;
+  position: relative;
 }
 
 .people-list {
@@ -314,6 +316,7 @@ export default {
   overflow-y: auto;
   margin-bottom: 0px;
   padding: 10px;
+  padding-top: 0px;
   flex: 1;
 }
 
@@ -590,7 +593,8 @@ export default {
 .input-form {
   margin-bottom: 10px;
   /* width: 250px; */
-  font-size: 11px;
+  font-size: 11px !important;
+  background-color: white !important;
 }
 .txt-label {
   font-weight: 600;

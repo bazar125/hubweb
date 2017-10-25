@@ -4,7 +4,7 @@
       <span class="txt-label">Description</span>
       <textarea class="form-control input-description" v-model="description" placeholder="Provide a description" rows="2"></textarea>
       <span class="txt-label">Location</span>
-      <b-form-input class="input-form" v-model="location" size="sm" type="text" placeholder="Location"></b-form-input>
+      <!-- <b-form-input class="input-form" v-model="location" size="sm" type="text" placeholder="Location"></b-form-input> -->
       <!-- <b-form-input class="input-form" v-model="expires" size="sm" type="text" placeholder="Expires"></b-form-input> -->
       <span class="txt-label">Expiry (Optional)</span>
       <date-picker class="input-form" v-model="expires" :config="config"></date-picker>
