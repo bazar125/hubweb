@@ -1,6 +1,6 @@
 <template>
   <div class="datatable d-flex flex-column justify-content-start align-items-center">
-    <dark-card :title="title" class="dark-card-container d-flex flex-column justify-content-start align-items-center">
+    <dark-card :title="title" @clickClose="$emit('clickClose')" @clickNewTab="$emit('clickNewTab')" :showNavigation="showNavigation" class="dark-card-container d-flex flex-column justify-content-start align-items-center">
       <div class="container-pagination d-flex justify-content-end align-items-center">
         <!-- <span class="txt-rows-per-page">Rows Per Page</span>
               <b-form-select class="rows-per-page" size="sm" :options="pageOptions" v-model="perPage" />
@@ -33,7 +33,7 @@ import DarkCard from '@/components/DarkCard';
 
 export default {
   name: 'Datatable',
-  props: ['perPage', 'items', 'fields', 'totalRows', 'title', 'modalId', 'modalTitle'],
+  props: ['perPage', 'items', 'fields', 'totalRows', 'title', 'modalId', 'modalTitle', 'showNavigation'],
   components: {
     DarkCard,
     TableSearch,

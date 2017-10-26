@@ -8,7 +8,7 @@
 
       <b-modal id="citationModal" :no-close-on-backdrop="true" :hide-header="true" :hide-footer="true">
         <!-- <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @resetModal="resetModal()" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields"> -->
-        <datatable :title="citationModalTitle" modalTitle="Citation" @resetModal="resetModal()" @page-changed="loadCitationItems" :items="citations" :total-rows="totalCitations" :per-page="perPage" :fields="citationFields">
+        <datatable @clickClose="closeCitationModal" @clickNewTab="newCitationTab" :title="citationModalTitle" modalTitle="Citation" @resetModal="resetModal()" @page-changed="loadCitationItems" :items="citations" :total-rows="totalCitations" :per-page="perPage" :fields="citationFields" :showNavigation="true">
           <!-- <template slot="modal" scope="props">
             <citation-modal :data="props.data" modal-id="citationModal"></citation-modal>
           </template> -->
@@ -16,7 +16,7 @@
       </b-modal>
 
       <b-modal id="collisionModal" :no-close-on-backdrop="true" :hide-header="true" :hide-footer="true">
-        <datatable title="Collisions Today" modalTitle="Collision" @page-changed="loadCollisionItems" :items="collisions" :total-rows="totalCollisions" :per-page="perPage" :fields="collisionFields">
+        <datatable @clickClose="closeCollisionModal" @clickNewTab="newCollisionTab" title="Collisions Today" modalTitle="Collision" @page-changed="loadCollisionItems" :items="collisions" :total-rows="totalCollisions" :per-page="perPage" :fields="collisionFields" :showNavigation="true">
           <!-- <template slot="modal" scope="props">
             <collision-modal :data="props.data" modal-id="collisionModal"></collision-modal>
           </template> -->
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+/* eslint-disable no-underscore-dangle */
 import * as moment from 'moment';
 import StatsWidget from '@/components/StatsWidget';
 import BaseBtn from '@/components/BaseBtn';
@@ -206,11 +207,7 @@ export default {
         if (!page.items || page.items.count === 0) {
           return;
         }
-        const citations = [];
-        page.items.forEach(citation => {
-          citations.push(ModelFactory.citation(citation));
-        });
-        this.citations = citations;
+        this.citations = this.processCitations(page.items);
         this.totalCitations = page.totalRows;
       });
     },
@@ -230,8 +227,9 @@ export default {
     },
     getDailyQuery() {
       const now = moment().valueOf();
-      const yesterday = moment().add(-30, 'days').valueOf();
-      console.log(`range: ${yesterday} - ${now}`);
+      const yesterday = moment()
+        .add(-30, 'days')
+        .valueOf();
       return {
         bool: {
           filter: {
@@ -246,16 +244,44 @@ export default {
       };
     },
     getWarningQuery() {
-      return {};
-    },
-    getOverdueQuery() {
+      const now = moment().valueOf();
+      const yesterday = moment()
+        .add(-30, 'days')
+        .valueOf();
       return {
         bool: {
-          must: [
-            {
-              term: { paymentReference: this.reference },
+          must: {
+            match: { completionStatus: 'Warning' },
+          },
+          filter: {
+            range: {
+              timestamp: {
+                gte: yesterday,
+                lte: now,
+              },
             },
-          ],
+          },
+        },
+      };
+    },
+    getOverdueQuery() {
+      const now = moment().valueOf();
+      const yesterday = moment()
+        .add(-30, 'days')
+        .valueOf();
+      return {
+        bool: {
+          must: {
+            match: { completionStatus: 'Overdue' },
+          },
+          filter: {
+            range: {
+              timestamp: {
+                gte: yesterday,
+                lte: now,
+              },
+            },
+          },
         },
       };
     },
@@ -270,6 +296,44 @@ export default {
         },
       };
     },
+    processCitations(items) {
+      for (let i = 0; i < items.length; i += 1) {
+        const row = items[i];
+        ModelFactory.citation(row);
+
+        if (row.completionStatus === 'Overdue') {
+          row._dirtyClass = 'danger';
+          row._cellVariants = {
+            completionStatus: 'danger',
+          };
+        } else if (row.completionStatus === 'Awaiting Payment') {
+          row._dirtyClass = 'alert';
+          row._cellVariants = {
+            completionStatus: 'alert',
+          };
+        } else if (row.completionStatus === 'Warning') {
+          row._dirtyClass = 'wwarning';
+          row._cellVariants = {
+            completionStatus: 'wwarning',
+          };
+        } else if (row.completionStatus === 'Paid') {
+          row._dirtyClass = 'success';
+          row._cellVariants = {
+            completionStatus: 'success',
+          };
+        }
+      }
+
+      return items;
+    },
+    closeCitationModal() {
+      this.$root.$emit('hide::modal', 'citationModal');
+    },
+    newCitationTab() {},
+    closeCollisionModal() {
+      this.$root.$emit('hide::modal', 'collisionModal');
+    },
+    newCollisionTab() {},
   },
 };
 </script>
