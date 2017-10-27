@@ -1,6 +1,6 @@
 <template>
   <div class="datatable d-flex flex-column justify-content-start align-items-center">
-    <dark-card :title="title" @clickClose="$emit('clickClose')" @clickNewTab="$emit('clickNewTab')" :showNavigation="showNavigation" class="dark-card-container d-flex flex-column justify-content-start align-items-center">
+    <dark-card :title="title" @clickClose="clickClose" @clickNewTab="clickNewTab" :showNavigation="showNavigation" class="dark-card-container d-flex flex-column justify-content-start align-items-center">
       <div class="container-pagination d-flex justify-content-end align-items-center">
         <!-- <span class="txt-rows-per-page">Rows Per Page</span>
               <b-form-select class="rows-per-page" size="sm" :options="pageOptions" v-model="perPage" />
@@ -68,6 +68,14 @@ export default {
     },
     paginationChanged(page) {
       this.$emit('page-changed', page);
+    },
+    clickClose() {
+      console.log('datatable clickClose');
+      this.$emit('clickClose');
+    },
+    clickNewTab() {
+      console.log('datatable clickNewTab');
+      this.$emit('clickNewTab');
     },
   },
 };

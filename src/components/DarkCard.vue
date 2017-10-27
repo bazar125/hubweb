@@ -5,12 +5,12 @@
         <span class="txt-title">{{title}}</span>
 
         <div v-if="showNavigation" class="navigation-container d-flex justify-content-start align-items-center">
-          <div @click="$emit('clickClose')" class="ml-auto heading-btn-container d-flex justify-content-start align-items-center">
+          <div @click="clickNewTab" class="ml-auto heading-btn-container d-flex justify-content-start align-items-center">
             <span class="txt-heading">open in new tab</span>
             <icon class="icon-heading" name="external-link"></icon>
             <!-- <base-btn @click="clickDelete()" class="btn-heading" icon="external-link"></base-btn> -->
           </div>
-          <div @click="$emit('clickNewTab')" class="heading-btn-container d-flex justify-content-start align-items-center">
+          <div @click="clickClose" class="heading-btn-container d-flex justify-content-start align-items-center">
             <span class="txt-heading">close</span>
             <icon class="icon-heading" name="times-circle-o"></icon>
             <!-- <base-btn @click="clickClose()" class="btn-heading" icon="times-circle-o"></base-btn> -->
@@ -36,6 +36,14 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    clickClose() {
+      this.$emit('clickClose');
+    },
+    clickNewTab() {
+      this.$emit('clickNewTab');
+    },
   },
 };
 </script>

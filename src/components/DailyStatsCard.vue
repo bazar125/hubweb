@@ -6,7 +6,7 @@
       <stats-widget @click="clickCitations('warning')" type="Warnings" icon="exclamation" :value="statWarnings"></stats-widget>
       <stats-widget @click="clickCitations('overdue')" type="Overdue Fines" icon="exclamation" :value="statFines"></stats-widget>
 
-      <b-modal id="citationModal" :no-close-on-backdrop="true" :hide-header="true" :hide-footer="true">
+      <b-modal id="citationModal" :hide-header="true" :hide-footer="true">
         <!-- <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @resetModal="resetModal()" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields"> -->
         <datatable @clickClose="closeCitationModal" @clickNewTab="newCitationTab" :title="citationModalTitle" modalTitle="Citation" @resetModal="resetModal()" @page-changed="loadCitationItems" :items="citations" :total-rows="totalCitations" :per-page="perPage" :fields="citationFields" :showNavigation="true">
           <!-- <template slot="modal" scope="props">
@@ -15,7 +15,7 @@
         </datatable>
       </b-modal>
 
-      <b-modal id="collisionModal" :no-close-on-backdrop="true" :hide-header="true" :hide-footer="true">
+      <b-modal id="collisionModal" :hide-header="true" :hide-footer="true">
         <datatable @clickClose="closeCollisionModal" @clickNewTab="newCollisionTab" title="Collisions Today" modalTitle="Collision" @page-changed="loadCollisionItems" :items="collisions" :total-rows="totalCollisions" :per-page="perPage" :fields="collisionFields" :showNavigation="true">
           <!-- <template slot="modal" scope="props">
             <collision-modal :data="props.data" modal-id="collisionModal"></collision-modal>
@@ -39,6 +39,7 @@ import ModelFactory from '@/services/ModelFactory';
 
 const citationLoader = new TablePageLoader('citation');
 const collisionLoader = new TablePageLoader('collision');
+const RANGE_DAYS = -30;
 
 export default {
   name: 'DailyStatsCard',
@@ -51,14 +52,14 @@ export default {
   },
   data() {
     return {
-      statCitations: 24,
-      statCollisions: 3,
-      statWarnings: 4,
-      statFines: 37,
+      statCitations: 0,
+      statCollisions: 0,
+      statWarnings: 0,
+      statFines: 0,
       currentMode: '',
       citationModalTitle: '',
       citations: [],
-      collision: [],
+      collisions: [],
       totalCitations: 0,
       totalCollisions: 0,
       citationQuery: {},
@@ -173,7 +174,28 @@ export default {
       currentPage: 1,
     };
   },
+  mounted() {
+    this.loadStats();
+  },
   methods: {
+    loadStats() {
+      this.loadCitationItems(1, this.getDailyQuery())
+        .then(() => {
+          this.statCitations = this.totalCitations;
+          return this.loadCitationItems(1, this.getWarningQuery());
+        })
+        .then(() => {
+          this.statWarnings = this.totalCitations;
+          return this.loadCitationItems(1, this.getOverdueQuery());
+        })
+        .then(() => {
+          this.statFines = this.totalCitations;
+          return this.loadCollisionItems(1);
+        })
+        .then(() => {
+          this.statCollisions = this.totalCollisions;
+        });
+    },
     clickCitations(mode) {
       console.log(`click mode ${mode}`);
       this.currentMode = mode;
@@ -201,9 +223,13 @@ export default {
       // const win = window.open('/#/collisions', '_blank');
       // win.focus();
     },
-    loadCitationItems(newPage) {
+    loadCitationItems(newPage, q) {
+      let query = q;
+      if (!query) {
+        query = this.citationQuery;
+      }
       this.currentPage = newPage;
-      citationLoader.load(newPage, this.citationQuery).then(page => {
+      return citationLoader.load(newPage, query).then(page => {
         if (!page.items || page.items.count === 0) {
           return;
         }
@@ -213,10 +239,11 @@ export default {
     },
     loadCollisionItems(newPage) {
       this.currentPage = newPage;
-      collisionLoader.load(newPage, this.collisionQuery).then(page => {
+      return collisionLoader.load(newPage, this.collisionQuery).then(page => {
         if (!page.items || page.items.count === 0) {
           return;
         }
+
         const collisions = [];
         page.items.forEach(collision => {
           collisions.push(ModelFactory.collision(collision));
@@ -228,7 +255,7 @@ export default {
     getDailyQuery() {
       const now = moment().valueOf();
       const yesterday = moment()
-        .add(-30, 'days')
+        .add(RANGE_DAYS, 'days')
         .valueOf();
       return {
         bool: {
@@ -246,7 +273,7 @@ export default {
     getWarningQuery() {
       const now = moment().valueOf();
       const yesterday = moment()
-        .add(-30, 'days')
+        .add(RANGE_DAYS, 'days')
         .valueOf();
       return {
         bool: {
@@ -267,7 +294,7 @@ export default {
     getOverdueQuery() {
       const now = moment().valueOf();
       const yesterday = moment()
-        .add(-30, 'days')
+        .add(RANGE_DAYS, 'days')
         .valueOf();
       return {
         bool: {
@@ -286,13 +313,20 @@ export default {
       };
     },
     getCollisionQuery() {
+      const now = moment().valueOf();
+      const yesterday = moment()
+        .add(RANGE_DAYS, 'days')
+        .valueOf();
       return {
         bool: {
-          must: [
-            {
-              term: { paymentReference: this.reference },
+          filter: {
+            range: {
+              timestamp: {
+                gte: yesterday,
+                lte: now,
+              },
             },
-          ],
+          },
         },
       };
     },
@@ -327,10 +361,12 @@ export default {
       return items;
     },
     closeCitationModal() {
+      console.log('closeCitationModal');
       this.$root.$emit('hide::modal', 'citationModal');
     },
     newCitationTab() {},
     closeCollisionModal() {
+      console.log('closeCollisionModal');
       this.$root.$emit('hide::modal', 'collisionModal');
     },
     newCollisionTab() {},
@@ -344,6 +380,10 @@ export default {
 
 .stats-widget {
   flex: 1;
+}
+
+.daily-stats-card>>>.modal-dialog {
+  max-width: 80%;
 }
 
 .daily-stats-card>>>.modal-body {
