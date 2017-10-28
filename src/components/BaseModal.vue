@@ -358,11 +358,6 @@ export default {
           const ref = Firebase.database().ref();
           const updates = {};
           updates[`/drivers/${this.data.$id}/status`] = 'Verified';
-          updates[`/drivers/${this.data.$id}/status`] = 'Verified';
-          updates[`/drivers/${this.data.$id}/status`] = 'Verified';
-          updates[`/drivers/${this.data.$id}/status`] = 'Verified';
-          updates[`/drivers/${this.data.$id}/status`] = 'Verified';
-          updates[`/drivers/${this.data.$id}/status`] = 'Verified';
           ref.update(updates).then(() => {
             this.showAudit = false;
             this.showEdit = false;

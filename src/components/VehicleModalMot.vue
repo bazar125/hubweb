@@ -11,9 +11,7 @@
         <mot-history-card :vehicle="vehicle"></mot-history-card>
       </div>
       <div class="d-flex justify-content-start align-items-center" style="flex: 1; width: 100%; padding-top: 5px;">
-        <dark-card class="mot-add-card" title="Add MOT">
-
-        </dark-card>
+        <mot-add-card></mot-add-card>
       </div>
     </div>
   </div>
@@ -23,6 +21,7 @@
 import DarkCard from '@/components/DarkCard';
 import BaseBtn from '@/components/BaseBtn';
 import MotHistoryCard from '@/components/MotHistoryCard';
+import MotAddCard from '@/components/MotAddCard';
 
 export default {
   props: ['vehicle'],
@@ -31,6 +30,7 @@ export default {
     BaseBtn,
     DarkCard,
     MotHistoryCard,
+    MotAddCard,
   },
   data() {
     return {};
