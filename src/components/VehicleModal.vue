@@ -2,7 +2,8 @@
   <base-modal :hide-navigation="hideNavigation" :modalId="modalId" class="vehicle-modal d-flex flex-column justify-content-center align-items-start" type="vehicle" :data="data">
     <template slot="main" scope="props">
       <div class="d-flex flex-column justify-content-start align-items-center">
-        <div id="vehicle-modal-print-root" class="data-section d-flex justify-content-start align-items-start">
+        <vehicle-modal-mot v-if="showMot" @onHide="hideMot" style="width: 100%;"></vehicle-modal-mot>
+        <div v-else id="vehicle-modal-print-root" class="data-section d-flex justify-content-start align-items-start">
           <div class="data-container d-flex flex-column justify-content-start align-items-center">
             <modal-data-row label="Current Plate" :text="props.data.currentPlate"></modal-data-row>
             <modal-data-row label="Manufacturer" :text="props.data.manufacturer"></modal-data-row>
@@ -20,6 +21,7 @@
             <modal-data-row label="Import Date" :text="props.data.importDate"></modal-data-row>
             <modal-data-row label="Fuel Type" :text="props.data.fuelType"></modal-data-row>
             <modal-data-row label="Odometer History" :text="props.data.odometerHistory ? props.data.odometerHistory.join(', ') : ''"></modal-data-row>
+            <base-btn @click="clickViewMot" class="mr-auto btn-view" text="View Mot" icon="search"></base-btn>
           </div>
 
           <div class="data-container d-flex flex-column justify-content-start align-items-center">
@@ -36,21 +38,39 @@
 </template>
 
 <script>
+import BaseBtn from '@/components/BaseBtn';
 import BaseModal from '@/components/BaseModal';
 import ModalDataRow from '@/components/ModalDataRow';
+import VehicleModalMot from '@/components/VehicleModalMot';
 import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
   name: 'VehicleModal',
-  props: ['data', 'modalId', 'hideNavigation'],
+  props: ['data', 'modalId', 'hideNavigation', 'startShowMot'],
   components: {
+    BaseBtn,
     BaseModal,
     ModalDataRow,
+    VehicleModalMot,
   },
   data() {
     return {
       photoPlaceholder: PhotoPlaceholder,
+      showMot: false,
     };
+  },
+  mounted() {
+    if(this.startShowMot) {
+      this.showMot = true;
+    }
+  },
+  methods: {
+    clickViewMot() {
+      this.showMot = true;
+    },
+    hideMot() {
+      this.showMot = false;
+    },
   },
 };
 </script>
@@ -73,5 +93,18 @@ export default {
 .data-section {
   flex: 1;
   width: 100%;
+}
+
+.btn-view {
+  color: black !important;
+  margin-top: 10px !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  height: 30px !important;
+}
+
+.btn-view:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important;
 }
 </style>
