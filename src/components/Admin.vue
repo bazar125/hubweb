@@ -5,22 +5,20 @@
     </div>
 
     <div class="d-flex justify-content-start align-items-center" style="flex: 1; height: 100%;">
-      <!-- <new-notification-card></new-notification-card> -->
+      <settings-card></settings-card>
     </div>
-    
-    <!-- <span class="txt-heading mr-auto">Manage Users</span> -->
   </div>
 </template>
 
 <script>
 import InviteUsersCard from '@/components/InviteUsersCard';
-import NewNotificationCard from '@/components/NewNotificationCard';
+import SettingsCard from '@/components/SettingsCard';
 
 export default {
   name: 'ManageUsers',
   components: {
     InviteUsersCard,
-    NewNotificationCard,
+    SettingsCard,
   },
   data() {
     return {

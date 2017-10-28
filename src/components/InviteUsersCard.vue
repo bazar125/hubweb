@@ -1,29 +1,27 @@
 <template>
-  <dark-card title="Invite Users" class="invite-users-card">
-    <div class="d-flex flex-column justify-content-start align-items-center">
+  <dark-card title="User Management" class="invite-users-card">
+    <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; width: 100%;">
       <b-tabs class="chat-user-tabs d-flex flex-column justify-content-start align-items-start">
           <b-tab title="USERS" active>
              <ul class="list">
               <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index, 'unread': user.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
-                <!-- <img class="image" :src="user.image" alt="avatar" />
+                <!-- <img class="image" : src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
                   <div class="status">
                     <icon name="circle" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}
                   </div>
                 </div> -->
-                <b-list-group-item>
+                <b-list-group-item class="user-item">
                   <div class="d-flex justify-content-start align-items-center">
                     <img class="img-avatar" :src="user.image ? user.image : userAvatar"></img>
                     <div class="d-flex flex-column justify-content-start align-items-start" style="flex: 1;">
                       <span class="txt-username">{{`${user.firstName} ${user.lastName}`}}</span>
                       <span class="txt-userrole">{{getAccountType(user)}}</span>
                     </div>
-                    <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn>
-                    <div class="d-flex flex-column" style="width: initial;">
-                      <b-badge pill variant="success">ACCEPTED</b-badge>
-                      <span class="txt-timeago">2 hours ago</span>
-                    </div>
+                    <!-- tooltip -->
+                    <base-btn b-tooltip="asd" @click="clickPassword(index)" class="ml-auto btn-view" icon="lock"></base-btn>
+                    <base-btn @click="clickPrivileges(index)" class="ml-auto btn-view" icon="pencil"></base-btn>
                   </div>
                     <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
                 </b-list-group-item>
@@ -54,7 +52,7 @@
                       <span class="txt-username">{{`${user.firstName} ${user.lastName}`}}</span>
                       <span class="txt-userrole">{{getAccountType(user)}}</span>
                     </div>
-                    <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn>
+                    <!-- <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn> -->
                     <div class="d-flex flex-column" style="width: initial;">
                       <b-badge pill variant="success">ACCEPTED</b-badge>
                       <span class="txt-timeago">2 hours ago</span>
@@ -197,14 +195,18 @@ export default {
   padding: 0px !important;
   margin-left: 10px;
   color: white !important;
-  background-color: #63a54b !important;
-  border-color: #63a54b !important;
+  /* background-color: #63a54b !important;
+  border-color: #63a54b !important; */
+  background-color: #094977 !important;
+  border-color: #094977 !important;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .btn-invite:hover {
-  background-color: #83bd6e !important;
-  border-color: #83bd6e !important;
+  /* background-color: #83bd6e !important;
+  border-color: #83bd6e !important; */
+  background-color: #4869a4 !important;
+  border-color: #4869a4 !important;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
@@ -220,16 +222,17 @@ export default {
   /* border-color: #8f90a8;
   color: white; */
   padding: 0.75rem 1rem;
+  /* padding: 0.75rem 1rem; */
   border-radius: 4px;
 }
 
-.user-list-item:not(:last-child) {
+.chat-user-item:not(:last-child) {
   margin-bottom: 10px;
 }
 
 .img-avatar {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 20px;
   margin-right: 10px;
   object-fit: cover;
