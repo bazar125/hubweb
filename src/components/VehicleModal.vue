@@ -21,7 +21,7 @@
             <modal-data-row label="Import Date" :text="props.data.importDate"></modal-data-row>
             <modal-data-row label="Fuel Type" :text="props.data.fuelType"></modal-data-row>
             <modal-data-row label="Odometer History" :text="props.data.odometerHistory ? props.data.odometerHistory.join(', ') : ''"></modal-data-row>
-            <base-btn @click="clickViewMot" class="mr-auto btn-view" text="View Mot" icon="search"></base-btn>
+            <base-btn @click="clickViewMot" class="mr-auto btn-view" text="MOT Information" icon="search"></base-btn>
           </div>
 
           <div class="data-container d-flex flex-column justify-content-start align-items-center">
