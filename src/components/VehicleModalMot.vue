@@ -6,11 +6,11 @@
       <div></div>
     </div>
     
-    <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-top: 10px; margin-bottom: 10px;">
-      <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; padding-right: 5px;">
+    <div class="d-flex flex-column justify-content-start align-items-center" style="width: 100%; margin-top: 10px; margin-bottom: 10px;">
+      <div class="d-flex justify-content-start align-items-center" style="flex: 1; width: 100%; padding-bottom: 5px;">
         <mot-history-card :vehicle="vehicle"></mot-history-card>
       </div>
-      <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; padding-left: 5px;">
+      <div class="d-flex justify-content-start align-items-center" style="flex: 1; width: 100%; padding-top: 5px;">
         <dark-card class="mot-add-card" title="Add MOT">
 
         </dark-card>
