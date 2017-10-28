@@ -6,13 +6,28 @@
       <div></div>
     </div>
     
-    <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
-      <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1;">
-        <dark-card class="mot-history-card" title="History">
+    <div class="d-flex justify-content-start align-items-center" style="width: 100%; margin-top: 10px; margin-bottom: 10px;">
+      <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; padding-right: 5px;">
+
+        <dark-card class="mot-history-card" title="MOT History">
+          <b-list-group class="history-list">
+            <b-list-group-item class="history-list-item" v-for="(history, index) in users" :key="history">
+              <img class="img-avatar" src="../assets/user_avatar.jpg"></img>
+              {{user}}
+              <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn>
+              <div class="d-flex flex-column">
+                <b-badge pill variant="success">ACCEPTED</b-badge>
+                <span class="txt-timeago">2 hours ago</span>
+              </div>
+              <edit-user-modal :user="user" :index="index"></edit-user-modal>
+            </b-list-group-item>
+          </b-list-group>
         </dark-card>
+        
       </div>
-      <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1;">
-        <dark-card class="mot-add-card" title="Add">
+      <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; padding-left: 5px;">
+        <dark-card class="mot-add-card" title="Add MOT">
+          
         </dark-card>
       </div>
     </div>
@@ -30,8 +45,7 @@ export default {
     DarkCard,
   },
   data() {
-    return {
-    };
+    return {};
   },
 };
 </script>
@@ -49,7 +63,7 @@ export default {
 
 .btn-back:hover {
   background-color: rgba(0, 0, 0, 0.05);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .txt-title {

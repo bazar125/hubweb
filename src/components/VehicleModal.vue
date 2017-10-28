@@ -96,7 +96,10 @@ export default {
 }
 
 .btn-view {
-  color: black !important;
+  background-color: #b97310 !important;
+  border-color: #b97310 !important;
+  color: white !important;
+  /* color: black !important; */
   margin-top: 10px !important;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
@@ -104,7 +107,8 @@ export default {
 }
 
 .btn-view:hover {
-  background-color: rgba(0, 0, 0, 0.05) !important;
+  background-color: #ed9c2b !important;
+  border-color: #ed9c2b !important;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important;
 }
 </style>
