@@ -261,6 +261,9 @@ export default {
 </script>
 
 <style scoped>
+.notification-card>>>.main-container {
+  padding: 0px;
+}
 .details-container>>>.main-container {
   padding: 10px 0px;
 }
