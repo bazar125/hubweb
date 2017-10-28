@@ -20,7 +20,7 @@
         </template>
       </b-table>
 
-      <b-modal :title="modalTitle" :id="modalId" @hide="resetModal" :hide-header="true" :hide-footer="true">
+      <b-modal :title="modalTitle" :id="modalId" @hide="resetModal" :no-close-on-esc="true" :hide-header="true" :hide-footer="true">
         <slot name="modal" :data="modalDetails.data"></slot>
       </b-modal>
     </dark-card>

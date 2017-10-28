@@ -10,9 +10,11 @@
             <b-form-input :disabled="true" class="name-file" v-model="fileName" size="sm" type="text"></b-form-input>
             <base-btn @click="clickBrowse()" text="Browse" class="btn-browse"></base-btn>
           </div>
-          <base-btn :class="{'btn-disabled': !allowSubmitCertificate}" @click="clickSubmitCertificate()" text="Submit Certificate" class="ml-auto btn-submit-certificate"></base-btn>
+          <base-btn :class="{'btn-disabled': !allowSubmitCertificate}" @click="clickSubmitCertificate()" text="Submit Certificate" class="btn-submit-certificate"></base-btn>
         </div>
-        <img class="attachment-preview" :src="attachmentSource ? attachmentSource : PhotoPlaceholder" ></img>
+        <div v-viewer class="attachment-container d-flex justify-content-start align-items-center">
+          <img class="attachment-preview" :src="attachmentSource ? attachmentSource : photoPlaceholder"></img>
+        </div>
       </div>
     </dark-card>
   </div>
@@ -40,7 +42,7 @@ export default {
       fileName: '',
       file: '',
       attachmentSource: '',
-      PhotoPlaceholder,
+      photoPlaceholder: PhotoPlaceholder,
     };
   },
   mounted() {
@@ -81,6 +83,7 @@ export default {
         ref.update(updates).then(() => {
           this.file = '';
           this.fileName = '';
+          this.attachmentSource = '';
         });
       });
     },
@@ -97,6 +100,12 @@ export default {
     addFile(event) {
       this.file = event.target.files[0];
       this.fileName = this.file.name;
+
+      const fileReader = new FileReader();
+      fileReader.onload = e => {
+        this.attachmentSource = e.target.result;
+      };
+      fileReader.readAsDataURL(this.file);
     },
     clickBrowse() {
       this.$refs.fileInput.click();
@@ -171,7 +180,8 @@ export default {
 }
 
 .btn-submit-certificate {
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-left: 40px;
   width: 160px;
   height: 30px !important;
   background-color: #63a54b !important;
@@ -201,7 +211,22 @@ export default {
 }
 
 .attachment-preview {
+  margin-left: 20px;
+  flex: 1; 
+  height: 100px;
+  border: 1px solid #eceeef;
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+ }
+
+.attachment-container {
   flex: 1;
-  height: 100%;
+  width: 100%;
+  max-width: 100%;
+}
+
+.attachment-container:not(:last-child) {
+  margin-bottom: 5px;
 }
 </style>
