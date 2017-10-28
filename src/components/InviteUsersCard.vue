@@ -1,15 +1,8 @@
 <template>
   <dark-card title="Invite Users" class="invite-users-card">
     <div class="d-flex flex-column justify-content-start align-items-center">
-      <div class="d-flex justify-content-start align-items-center">
-        <b-input-group>
-          <b-form-input class="input-email" v-model="email" size="sm" type="email" placeholder="Email"></b-form-input>
-        </b-input-group>
-        <base-btn @click="clickInvite()" class="btn-invite" text="Invite" icon="plus"></base-btn>
-      </div>
-
       <b-tabs class="chat-user-tabs d-flex flex-column justify-content-start align-items-start">
-          <b-tab title="OFFICERS" active>
+          <b-tab title="USERS" active>
              <ul class="list">
               <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index, 'unread': user.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
                 <!-- <img class="image" :src="user.image" alt="avatar" />
@@ -22,7 +15,10 @@
                 <b-list-group-item>
                   <div class="d-flex justify-content-start align-items-center">
                     <img class="img-avatar" :src="user.image ? user.image : userAvatar"></img>
-                    <span class="txt-username">{{user}}</span>
+                    <div class="d-flex flex-column justify-content-start align-items-start" style="flex: 1;">
+                      <span class="txt-username">{{`${user.firstName} ${user.lastName}`}}</span>
+                      <span class="txt-userrole">{{getAccountType(user)}}</span>
+                    </div>
                     <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn>
                     <div class="d-flex flex-column" style="width: initial;">
                       <b-badge pill variant="success">ACCEPTED</b-badge>
@@ -34,18 +30,40 @@
               </li>
             </ul>
           </b-tab>
-          <b-tab title="STAFF" >
-             <!-- <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index, 'unread': user.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in filteredStaff" :key="user.$id">
-                <img class="image" :src="user.image" alt="avatar" />
+          <b-tab title="INVITE" >
+            <div class="d-flex justify-content-start align-items-center" style="padding-top: 10px;">
+              <b-input-group>
+                <b-form-input class="input-email" v-model="email" size="sm" type="email" placeholder="Email"></b-form-input>
+              </b-input-group>
+              <base-btn @click="clickInvite()" class="btn-invite" text="Invite" icon="plus"></base-btn>
+            </div>
+            
+             <ul class="list">
+              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index, 'unread': user.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
+                <!-- <img class="image" :src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
                   <div class="status">
                     <icon name="circle" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}
                   </div>
-                </div>
+                </div> -->
+                <b-list-group-item>
+                  <div class="d-flex justify-content-start align-items-center">
+                    <img class="img-avatar" :src="user.image ? user.image : userAvatar"></img>
+                    <div class="d-flex flex-column justify-content-start align-items-start" style="flex: 1;">
+                      <span class="txt-username">{{`${user.firstName} ${user.lastName}`}}</span>
+                      <span class="txt-userrole">{{getAccountType(user)}}</span>
+                    </div>
+                    <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn>
+                    <div class="d-flex flex-column" style="width: initial;">
+                      <b-badge pill variant="success">ACCEPTED</b-badge>
+                      <span class="txt-timeago">2 hours ago</span>
+                    </div>
+                  </div>
+                    <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
+                </b-list-group-item>
               </li>
-            </ul> -->
+            </ul>
           </b-tab>
         </b-tabs>
     </div>
@@ -53,6 +71,7 @@
 </template>
 
 <script>
+import * as Firebase from 'firebase';
 import EditUserModal from '@/components/EditUserModal';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
@@ -68,18 +87,62 @@ export default {
   },
   data() {
     return {
-      users: ['John Doe', 'Jane Doe', 'Bob Doe'],
+      users: [],
       email: '',
       userAvatar: UserAvatar,
     };
   },
+  mounted() {
+    this.loadUsers();
+  },
   methods: {
+    loadUsers() {
+      const ref = Firebase.database().ref();
+      ref.child('users').on('value', snap => {
+        if (!snap) {
+          this.users = [];
+          return;
+        }
+
+        const users = [];
+        snap.forEach(child => {
+          const user = child.val();
+          user.$id = child.key;
+          users.push(user);
+        });
+        this.users = users;
+
+        if (!this.selectedUser) {
+          const user = this.users[0];
+          this.selectedUser = user;
+          this.clickUser(user, 0);
+        }
+      });
+    },
     clickEditUser(index) {
       const modalId = `clickEditUserModal${index}`;
       console.log(modalId);
       this.$emit('show::modal', modalId, this);
     },
-    clickInvite() {
+    clickInvite() {},
+    getAccountType(user) {
+      if (!user) {
+        return '';
+      }
+
+      if (user.accountType === 'stateAdmin') {
+        return 'Administrator';
+      }
+
+      if (user.accountType === 'personnel') {
+        return 'Personnel';
+      }
+
+      if (user.accountType === 'officer') {
+        return 'Officer';
+      }
+
+      return '';
     },
   },
 };
@@ -93,7 +156,7 @@ export default {
 
 .input-email {
   /* border-color: #8f90a8; */
-  width: 300px;
+  /* width: 300px; */
   border-radius: 14px;
   background-color: transparent;
   /* color: white; */
@@ -156,7 +219,7 @@ export default {
   background: transparent;
   /* border-color: #8f90a8;
   color: white; */
-  padding: 0.75rem 1rem; 
+  padding: 0.75rem 1rem;
   border-radius: 4px;
 }
 
@@ -169,11 +232,19 @@ export default {
   height: 30px;
   border-radius: 20px;
   margin-right: 10px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .txt-username {
-  flex: 1;
   text-align: start;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.txt-userrole {
+  text-align: start;
+  font-size: 11px;
 }
 
 .txt-timeago {
@@ -183,7 +254,7 @@ export default {
   font-size: 8px;
   margin-top: 2px;
   /* color: rgba(255, 255, 255, 0.7); */
-  color: rgba(0,0,0, 0.7);
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .btn-view {
@@ -191,7 +262,7 @@ export default {
   width: 30px !important;
   margin-right: 10px;
   padding: 0px !important;
-  color: rgba(0,0,0, 0.84) !important;
+  color: rgba(0, 0, 0, 0.84) !important;
 }
 
 .chat-user-tabs {
@@ -219,7 +290,7 @@ export default {
   font-size: 10px;
   border-bottom-color: #8f90a8;
   border-radius: 0px;
-  color: rgba(0,0,0, 0.7);
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .chat-user-tabs>>>.nav .nav-item:first-child .nav-link {
