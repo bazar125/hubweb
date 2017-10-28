@@ -11,7 +11,7 @@
         <mot-history-card :vehicle="vehicle"></mot-history-card>
       </div>
       <div class="d-flex justify-content-start align-items-center" style="flex: 1; width: 100%; padding-top: 5px;">
-        <mot-add-card></mot-add-card>
+        <mot-add-card :vehicle="vehicle"></mot-add-card>
       </div>
     </div>
   </div>
@@ -96,6 +96,6 @@ export default {
 }
 
 .txt-red {
-  color: #ef3135
+  color: #ef3135;
 }
 </style>

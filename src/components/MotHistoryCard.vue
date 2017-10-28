@@ -1,7 +1,15 @@
 <template>
   <div class="mot-history-card d-flex justify-content-start align-items-center">
     <dark-card class="mot-history-card" title="MOT History">
-      <b-list-group class="history-list">
+      <b-list-group v-if="motSubmissions && motSubmissions.length === 0" class="history-list">
+        <b-list-group-item class="history-list-item d-flex flex-column justify-content-start align-items-start">
+          <div class="placeholder-row-container d-flex justify-content-start align-items-center">
+            <icon class="placeholder-icon" name="history"></icon>
+            <span class="placeholder-text">No active MOT or history available</span>
+          </div>
+        </b-list-group-item>
+      </b-list-group>
+      <b-list-group v-else class="history-list">
         <b-list-group-item class="history-list-item d-flex flex-column justify-content-start align-items-start" v-for="(mot, index) in motSubmissions" :key="mot.vehicleRegistration">
           <div class="data-row-container d-flex justify-content-start align-items-center">
             <modal-data-row label="MOT Reference" :text="mot.motReference"></modal-data-row>
@@ -52,7 +60,7 @@ export default {
     };
   },
   mounted() {
-    if(!this.vehicle) {
+    if (!this.vehicle) {
       return;
     }
 
@@ -81,7 +89,6 @@ export default {
 
 <style scoped>
 .mot-history-card {
-  
 }
 
 .history-list {
@@ -109,6 +116,21 @@ export default {
 }
 
 .data-row-container > *:first-child {
-  margin-right: 10px;  
+  margin-right: 10px;
+}
+
+.placeholder-row-container {
+  flex: 1;
+  width: 100%;
+}
+
+.placeholder-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
+}
+
+.placeholder-text {
+  font-size: 15px;
 }
 </style>

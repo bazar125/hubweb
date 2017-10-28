@@ -2,7 +2,7 @@
   <div class="mot-add-card d-flex justify-content-start align-items-center">
     <dark-card class="mot-add-card" title="Add MOT Certificate">
       <div class="d-flex justify-content-center align-items-center" style="width: 100%;">
-        <div class="d-flex flex-column justify-content-start align-items-start">
+        <div class="d-flex flex-column justify-content-start align-items-start" style="flex: 1;">
           <span>
             <b>Step 1:</b> Select MOT certificate from PC</span>
           <div class="d-flex">
@@ -10,9 +10,9 @@
             <b-form-input :disabled="true" class="name-file" v-model="fileName" size="sm" type="text"></b-form-input>
             <base-btn @click="clickBrowse()" text="Browse" class="btn-browse"></base-btn>
           </div>
+          <base-btn :class="{'btn-disabled': !allowSubmitCertificate}" @click="clickSubmitCertificate()" text="Submit Certificate" class="ml-auto btn-submit-certificate"></base-btn>
         </div>
-
-        <base-btn :class="{'btn-disabled': !allowSubmitCertificate}" @click="clickSubmitCertificate()" text="Submit Certificate" class="ml-auto btn-submit-certificate"></base-btn>
+        <img class="attachment-preview" :src="attachmentSource ? attachmentSource : PhotoPlaceholder" ></img>
       </div>
     </dark-card>
   </div>
@@ -23,6 +23,8 @@ import * as Firebase from 'firebase';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
 import ModalDataRow from '@/components/ModalDataRow';
+
+import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
 export default {
   props: ['vehicle'],
@@ -37,6 +39,8 @@ export default {
       motSubmissions: [],
       fileName: '',
       file: '',
+      attachmentSource: '',
+      PhotoPlaceholder,
     };
   },
   mounted() {
@@ -194,5 +198,10 @@ export default {
 .name-file {
   width: 250px;
   font-size: 11px;
+}
+
+.attachment-preview {
+  flex: 1;
+  height: 100%;
 }
 </style>
