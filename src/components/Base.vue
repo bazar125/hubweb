@@ -17,19 +17,19 @@
       </div>
       
       <dark-card title="Live Map" class="live-map-card">
-        <div class="map-overlay d-flex justify-content-start align-items-center">
-          <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
+        <div class="map-overlay d-flex justify-content-end align-items-center">
+          <!-- <div class="d-flex justify-content-start align-items-center" style="flex:1; overflow: hidden;">
             <span class="marquee-text">{{scrollHeadlines}}</span>
-          </div>
+          </div> -->
 
-          <icon name="circle-thin" class="ml-auto icon-status color-red" style="margin-left: 5px !important;"></icon>
+          <icon name="circle-thin" class="icon-status color-red" style="margin-top: 5px; margin-bottom: 5px; margin-left: 5px !important;"></icon>
           <span class="txt-status">Collision</span>
 
           <icon name="circle-thin" class="icon-status color-blue" style="margin-left: 15px;"></icon>
           <span class="txt-status" style="margin-right: 15px;">Citation</span>
 
-          <icon name="clock-o" class="icon-clock"></icon>
-          <clock class="custom-clock" :blink="true" :displaySeconds="false" />
+          <!-- <icon name="clock-o" class="icon-clock"></icon>
+          <clock class="custom-clock" :blink="true" :displaySeconds="false" /> -->
         </div>
 
         <div ref="map" class="live-map"></div>

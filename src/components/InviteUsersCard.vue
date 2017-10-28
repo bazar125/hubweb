@@ -4,7 +4,7 @@
       <b-tabs class="chat-user-tabs d-flex flex-column justify-content-start align-items-start">
           <b-tab title="USERS" active>
              <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index, 'unread': user.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
+              <li class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
                 <!-- <img class="image" : src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -15,13 +15,14 @@
                 <b-list-group-item class="user-item">
                   <div class="d-flex justify-content-start align-items-center">
                     <img class="img-avatar" :src="user.image ? user.image : userAvatar"></img>
+                    
                     <div class="d-flex flex-column justify-content-start align-items-start" style="flex: 1;">
                       <span class="txt-username">{{`${user.firstName} ${user.lastName}`}}</span>
                       <span class="txt-userrole">{{getAccountType(user)}}</span>
                     </div>
-                    <!-- tooltip -->
-                    <base-btn b-tooltip="asd" @click="clickPassword(index)" class="ml-auto btn-view" icon="lock"></base-btn>
-                    <base-btn @click="clickPrivileges(index)" class="ml-auto btn-view" icon="pencil"></base-btn>
+
+                    <base-btn id="btnPassword" @click="clickPassword(index)" class="ml-auto btn-view" icon="lock"></base-btn>
+                    <base-btn id="btnEdit" @click="clickPrivileges(index)" class="btn-view" icon="pencil"></base-btn>
                   </div>
                     <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
                 </b-list-group-item>
@@ -37,7 +38,7 @@
             </div>
             
              <ul class="list">
-              <li @click="clickUser(user, index)" :class="{'active': selectedIndex === index, 'unread': user.unread }" class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
+              <li class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
                 <!-- <img class="image" :src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -113,7 +114,7 @@ export default {
         if (!this.selectedUser) {
           const user = this.users[0];
           this.selectedUser = user;
-          this.clickUser(user, 0);
+          // this.clickUser(user, 0);
         }
       });
     },
@@ -226,13 +227,18 @@ export default {
   border-radius: 4px;
 }
 
+.user-item {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
 .chat-user-item:not(:last-child) {
   margin-bottom: 10px;
 }
 
 .img-avatar {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 20px;
   margin-right: 10px;
   object-fit: cover;
@@ -271,7 +277,7 @@ export default {
 .chat-user-tabs {
   flex: 1;
   width: 100%;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   overflow: hidden;
 }
 
