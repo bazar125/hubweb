@@ -21,8 +21,7 @@
                       <span class="txt-userrole">{{getAccountType(user)}}</span>
                     </div>
 
-                    <base-btn id="btnPassword" @click="clickPassword(index)" class="ml-auto btn-view" icon="lock"></base-btn>
-                    <base-btn id="btnEdit" @click="clickPrivileges(index)" class="btn-view" icon="pencil"></base-btn>
+                    <base-btn @click="clickViewDetails(index)" class="btn-view" icon="expand" text="View Details"></base-btn>
                   </div>
                     <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
                 </b-list-group-item>
@@ -66,6 +65,9 @@
           </b-tab>
         </b-tabs>
     </div>
+    <b-modal title="User Details" id="modalUserDetails" :no-close-on-esc="true" :hide-header="true" :hide-footer="true">
+      <modal-user-details></modal-user-details>
+    </b-modal>
   </dark-card>
 </template>
 
@@ -74,6 +76,7 @@ import * as Firebase from 'firebase';
 import EditUserModal from '@/components/EditUserModal';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
+import ModalUserDetails from '@/components/ModalUserDetails';
 
 import UserAvatar from '../assets/user_avatar.jpg';
 
@@ -83,6 +86,7 @@ export default {
     BaseBtn,
     DarkCard,
     EditUserModal,
+    ModalUserDetails,
   },
   data() {
     return {
@@ -95,6 +99,9 @@ export default {
     this.loadUsers();
   },
   methods: {
+    clickViewDetails() {
+      this.$root.$emit('show::modal', 'modalUserDetails');
+    },
     loadUsers() {
       const ref = Firebase.database().ref();
       ref.child('users').on('value', snap => {
@@ -268,10 +275,15 @@ export default {
 
 .btn-view {
   height: 30px !important;
-  width: 30px !important;
+  /* width: 30px !important; */
   margin-right: 10px;
-  padding: 0px !important;
+  padding: 0px 10px !important;
   color: rgba(0, 0, 0, 0.84) !important;
+}
+
+.btn-view:hover {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
 
 .chat-user-tabs {
