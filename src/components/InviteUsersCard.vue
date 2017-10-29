@@ -155,9 +155,8 @@ export default {
 </script>
 
 <style scoped>
-.invite-users-card {
-  /* width: 61.8%; */
-  /* margin: 20px; */
+.invite-users-card>>>.modal-body {
+  padding: 0px !important;
 }
 
 .input-email {
