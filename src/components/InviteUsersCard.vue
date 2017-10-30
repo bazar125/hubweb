@@ -21,7 +21,7 @@
                       <span class="txt-userrole">{{getAccountType(user)}}</span>
                     </div>
 
-                    <base-btn @click="clickViewDetails(index)" class="btn-view" icon="expand" text="View Details"></base-btn>
+                    <base-btn @click="clickViewDetails(user, index)" class="btn-view" icon="expand" text="View Details"></base-btn>
                   </div>
                     <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
                 </b-list-group-item>
@@ -66,7 +66,7 @@
         </b-tabs>
     </div>
     <b-modal title="User Details" id="modalUserDetails" :no-close-on-esc="true" :hide-header="true" :hide-footer="true">
-      <modal-user-details></modal-user-details>
+      <modal-user-details :user="selectedUser"></modal-user-details>
     </b-modal>
   </dark-card>
 </template>
@@ -91,6 +91,7 @@ export default {
   data() {
     return {
       users: [],
+      selectedUser: null,
       email: '',
       userAvatar: UserAvatar,
     };
@@ -99,7 +100,8 @@ export default {
     this.loadUsers();
   },
   methods: {
-    clickViewDetails() {
+    clickViewDetails(user) {
+      this.selectedUser = user;
       this.$root.$emit('show::modal', 'modalUserDetails');
     },
     loadUsers() {
