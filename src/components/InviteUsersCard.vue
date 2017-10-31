@@ -45,7 +45,7 @@
                     <icon name="circle" :class="{online: userIsOnline(user), offline: !userIsOnline(user)}"></icon> {{userStatus(user)}}
                   </div>
                 </div> -->
-                <b-list-group-item>
+                <b-list-group-item class="user-item">
                   <div class="d-flex justify-content-start align-items-center">
                     <img class="img-avatar" :src="user.image ? user.image : userAvatar"></img>
                     <div class="d-flex flex-column justify-content-start align-items-start" style="flex: 1;">
