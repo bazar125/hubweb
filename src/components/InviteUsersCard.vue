@@ -29,15 +29,22 @@
             </ul>
           </b-tab>
           <b-tab title="INVITE" >
-            <div class="d-flex justify-content-start align-items-center" style="padding-top: 10px;">
-              <b-input-group>
-                <b-form-input class="input-email" v-model="email" size="sm" type="email" placeholder="Email"></b-form-input>
+            <div class="d-flex flex-column justify-content-start align-items-center" style="padding-top: 10px;">
+              <b-input-group style="margin-bottom: 10px;">
+                <b-form-input class="input-email" v-model="firstName" size="sm" type="text" placeholder="First Name"></b-form-input>
+                <b-form-input class="input-email" v-model="middleName" size="sm" type="text" placeholder="Middle Name(s)"></b-form-input>
+                <b-form-input class="input-email" v-model="lastName" size="sm" type="text" placeholder="Last Name"></b-form-input>
               </b-input-group>
-              <base-btn @click="clickInvite()" class="btn-invite" text="Invite" icon="plus"></base-btn>
+              <div class="d-flex justify-content-start align-items-center">
+                <b-form-input class="input-email" v-model="email" size="sm" type="email" placeholder="Email"></b-form-input>
+                <base-btn @click="clickInvite()" class="btn-invite" text="Invite" icon="plus"></base-btn>
+              </div>
+
+              <span class="txt-invite-error" v-if="inviteErrorText">{{inviteErrorText}}</span>
             </div>
             
              <ul class="list">
-              <li class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in users" :key="user.$id">
+              <li class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in inviteUsers" :key="user.$id">
                 <!-- <img class="image" :src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -91,13 +98,16 @@ export default {
   data() {
     return {
       users: [],
+      inviteUsers: [],
       selectedUser: null,
       email: '',
       userAvatar: UserAvatar,
+      inviteErrorText: '',
     };
   },
   mounted() {
     this.loadUsers();
+    this.loadInvites();
   },
   methods: {
     clickViewDetails(user) {
@@ -127,12 +137,76 @@ export default {
         }
       });
     },
+    loadInvites() {
+      const ref = Firebase.database().ref();
+      ref.child('userInvites').on('value', snap => {
+        if (!snap) {
+          this.userInvites = [];
+          return;
+        }
+
+        const userInvites = [];
+        snap.forEach(child => {
+          const invite = child.val();
+          invite.$id = child.key;
+          userInvites.push(invite);
+        });
+        this.userInvites = userInvites;
+      });
+    },
     clickEditUser(index) {
       const modalId = `clickEditUserModal${index}`;
       console.log(modalId);
       this.$emit('show::modal', modalId, this);
     },
-    clickInvite() {},
+    clickInvite() {
+      if (!this.email || !this.firstName || !this.lastName) {
+        return;
+      }
+
+      const randomPassword =
+        Math.random()
+          .toString(36)
+          .substring(2, 15) +
+        Math.random()
+          .toString(36)
+          .substring(2, 15);
+
+      Firebase.auth()
+        .createUserWithEmailAndPassword(this.email, randomPassword)
+        .then(() => Firebase.auth().sendPasswordResetEmail(this.email))
+        .then(() => {
+          const user = {};
+          user.accountType = 'stateAdmin';
+          user.email = this.email;
+          user.firstName = this.firstName;
+          user.middleName = this.middleName;
+          user.lastName = this.lastName;
+          user.image = '';
+
+          const invite = {};
+          invite.email = this.email;
+          invite.firstName = this.firstName;
+          invite.middleName = this.middleName;
+          invite.lastName = this.lastName;
+          invite.status = 'Pending';
+          invite.acceptedAt = Firebase.database.ServerValue.TIMESTAMP;
+          invite.timestamp = Firebase.database.ServerValue.TIMESTAMP;
+
+          const ref = Firebase.database().ref();
+          const userKey = ref.child('users').push().key;
+          const userInviteKey = ref.child('userInvites').push().key;
+          const updates = {};
+          updates[`/users/${userKey}`] = user;
+          updates[`/userInvites/${userInviteKey}`] = invite;
+          ref.update(updates);
+          this.email = '';
+          this.inviteErrorText = '';
+        })
+        .catch(err => {
+          this.inviteErrorText = err.message;
+        });
+    },
     getAccountType(user) {
       if (!user) {
         return '';
@@ -349,5 +423,8 @@ export default {
   margin-bottom: 0px;
   padding: 0px;
   padding-top: 10px;
+}
+.txt-invite-error {
+  color: #ef3135;
 }
 </style>
