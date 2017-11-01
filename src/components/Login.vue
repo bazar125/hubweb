@@ -50,7 +50,9 @@ export default {
   created() {
     Firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        // update acceptedAt and status on userinvite
+        const updates = {};
+        updates[`/users/${user.uid}/lastLogin`] = Firebase.database.ServerValue.TIMESTAMP;
+        Firebase.database().ref().update(updates);
         this.$router.push('/');
       }
     });

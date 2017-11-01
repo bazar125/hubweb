@@ -61,7 +61,7 @@
                     </div>
                     <!-- <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn> -->
                     <div class="d-flex flex-column" style="width: initial;">
-                      <b-badge pill :variant="user.status === 'Pending' ? 'warning' : 'success'">{{user.status.toUpperCase()}}</b-badge>
+                      <b-badge pill variant="primary">PENDING</b-badge>
                       <span class="txt-timeago">{{getTimeAgo(user.timestamp)}}</span>
                     </div>
                   </div>
@@ -86,7 +86,7 @@ import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
 import ModalUserDetails from '@/components/ModalUserDetails';
 
-import UserAvatar from '../assets/user_avatar.jpg';
+import UserAvatar from '../assets/user_placeholder.jpg';
 
 export default {
   name: 'InviteUsers',
@@ -100,7 +100,7 @@ export default {
     return {
       users: [],
       userInvites: [],
-      selectedUser: null,
+      selectedUser: {},
       email: '',
       userAvatar: UserAvatar,
       inviteErrorText: '',
@@ -118,10 +118,16 @@ export default {
 
       return false;
     },
+    // userInvites() {
+    //   if(!this.users || this.users.length === 0) {
+    //     return [];
+    //   }
+
+    //   return this.users.slice().filter(x => x.lastLogin && x.lastLogin === 0);
+    // },
   },
   mounted() {
     this.loadUsers();
-    this.loadInvites();
   },
   methods: {
     getTimeAgo(timestamp) {
@@ -143,35 +149,24 @@ export default {
         }
 
         const users = [];
+        const userInvites = [];
         snap.forEach(child => {
           const user = child.val();
           user.$id = child.key;
-          users.push(user);
+          if(user.lastLogin && user.lastLogin === 0) {
+            userInvites.push(user);
+          } else {
+            users.push(user);
+          }
         });
         this.users = users;
+        this.userInvites = userInvites;
 
         if (!this.selectedUser) {
           const user = this.users[0];
           this.selectedUser = user;
           // this.clickUser(user, 0);
         }
-      });
-    },
-    loadInvites() {
-      const ref = Firebase.database().ref();
-      ref.child('userInvites').on('value', snap => {
-        if (!snap) {
-          this.userInvites = [];
-          return;
-        }
-
-        const userInvites = [];
-        snap.forEach(child => {
-          const invite = child.val();
-          invite.$id = child.key;
-          userInvites.push(invite);
-        });
-        this.userInvites = userInvites;
       });
     },
     clickEditUser(index) {
@@ -206,23 +201,12 @@ export default {
           user.middleName = this.middleName;
           user.lastName = this.lastName;
           user.image = '';
-
-          const invite = {};
-          invite.email = this.email;
-          invite.firstName = this.firstName;
-          invite.middleName = this.middleName;
-          invite.lastName = this.lastName;
-          invite.status = 'Pending';
-          invite.acceptedAt = Firebase.database.ServerValue.TIMESTAMP;
-          invite.timestamp = Firebase.database.ServerValue.TIMESTAMP;
-          invite.userId = this.createdUser.uid;
+          user.lastLogin = 0;
 
           const ref = Firebase.database().ref();
           const userKey = this.createdUser.uid;
-          const userInviteKey = ref.child('userInvites').push().key;
           const updates = {};
           updates[`/users/${userKey}`] = user;
-          updates[`/userInvites/${userInviteKey}`] = invite;
           ref.update(updates);
           this.email = '';
           this.firstName = '';
