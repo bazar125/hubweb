@@ -383,12 +383,12 @@ export default {
 }
 
 .btn-view {
-  height: 30px !important;
+  height: 25px !important;
   /* width: 30px !important; */
   margin-right: 10px;
   padding: 0px 10px !important;
   color: rgba(0, 0, 0, 0.84) !important;
-  font-size: 8px;
+  font-size: 9px !important;
 }
 
 .btn-view:hover {
