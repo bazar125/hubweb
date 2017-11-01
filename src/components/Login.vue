@@ -37,8 +37,7 @@ import VideoBg from '../assets/videobg.mp4';
 
 export default {
   name: 'Login',
-  components: {
-  },
+  components: {},
   data() {
     return {
       email: '',
@@ -48,23 +47,34 @@ export default {
     };
   },
   created() {
-    Firebase.auth().onAuthStateChanged((user) => {
+    Firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        const updates = {};
-        updates[`/users/${user.uid}/lastLogin`] = Firebase.database.ServerValue.TIMESTAMP;
-        Firebase.database().ref().update(updates);
-        Firebase.database().ref(`/users/${user.uid}`).on('value', snap => {
-          const actualUser = snap.val();
-          actualUser.$id = snap.key;
-          console.log('actual user');
-          console.log(actualUser);
-          console.log(actualUser.active);
-          if(actualUser.active) {
-            this.$router.push('/');
-          } else {
-            this.error = 'The specified account has been disabled.';
-          }
-        });
+        Firebase.database()
+          .ref(`/users/${user.uid}`)
+          .once('value')
+          .then(snap => {
+            const actualUser = snap.val();
+            actualUser.$id = snap.key;
+            if (actualUser.active) {
+              const updates = {};
+              updates[`/users/${user.uid}/lastLogin`] =
+                Firebase.database.ServerValue.TIMESTAMP;
+              Firebase.database()
+                .ref()
+                .update(updates);
+
+              this.$router.push('/');
+            } else {
+              Firebase.auth().signOut();
+              this.error = 'The specified account has been disabled.';
+            }
+          })
+          .catch(err => {
+            if (err) {
+              Firebase.auth().signOut();
+              this.error = 'The specified account has been disabled.';
+            }
+          });
       }
     });
   },
@@ -74,8 +84,9 @@ export default {
         return;
       }
 
-      Firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        .catch((error) => {
+      Firebase.auth()
+        .signInWithEmailAndPassword(this.email, this.password)
+        .catch(error => {
           // Handle Errors here.
           const errorCode = error.code;
           const errorMessage = error.message;
@@ -107,8 +118,8 @@ export default {
 }
 
 .btn-login {
-  background-color: #3D4A8B;
-  border-color: #3D4A8B;
+  background-color: #3d4a8b;
+  border-color: #3d4a8b;
   color: white;
   border-radius: 4px;
   font-weight: 600;
@@ -120,7 +131,7 @@ export default {
 }
 
 .btn-login:hover {
-  background-color: #5F6AA7;
+  background-color: #5f6aa7;
   transition: 0.2s;
 }
 

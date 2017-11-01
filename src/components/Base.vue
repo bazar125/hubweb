@@ -101,17 +101,17 @@ export default {
     this.initialize();
   },
   created() {
-    const apiKey = 'b145ac1c37d04657b72b1ce5097d48e6';
-    const source = 'bbc-news';
-    this.$http
-      .get(
-        `https://newsapi.org/v1/articles?source=${source}&sortBy=top&apiKey=${apiKey}`
-      )
-      .then(response => {
-        this.headlines = response.data.articles.map(
-          article => `${article.author} — ${article.description}`
-        );
-      });
+    // const apiKey = 'b145ac1c37d04657b72b1ce5097d48e6';
+    // const source = 'bbc-news';
+    // this.$http
+    //   .get(
+    //     `https://newsapi.org/v1/articles?source=${source}&sortBy=top&apiKey=${apiKey}`
+    //   )
+    //   .then(response => {
+    //     this.headlines = response.data.articles.map(
+    //       article => `${article.author} — ${article.description}`
+    //     );
+    //   });
   },
   methods: {
     initialize() {
