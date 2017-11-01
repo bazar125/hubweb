@@ -37,14 +37,14 @@
               </b-input-group>
               <div class="d-flex justify-content-start align-items-center">
                 <b-form-input class="input-email" v-model="email" size="sm" type="email" placeholder="Email"></b-form-input>
-                <base-btn @click="clickInvite()" class="btn-invite" text="Invite" icon="plus"></base-btn>
+                <base-btn @click="clickInvite()" :class="{disabled: inviteDisabled}" class="btn-invite" text="Invite" icon="plus"></base-btn>
               </div>
 
               <span class="txt-invite-error" v-if="inviteErrorText">{{inviteErrorText}}</span>
             </div>
             
              <ul class="list">
-              <li class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in inviteUsers" :key="user.$id">
+              <li class="clearfix chat-user-item d-flex justify-content-start align-items-center" v-for="(user, index) in userInvites" :key="user.$id">
                 <!-- <img class="image" :src="user.image" alt="avatar" />
                 <div class="about">
                   <div class="name">{{`${user.firstName} ${user.lastName}`}}</div>
@@ -98,12 +98,25 @@ export default {
   data() {
     return {
       users: [],
-      inviteUsers: [],
+      userInvites: [],
       selectedUser: null,
       email: '',
       userAvatar: UserAvatar,
       inviteErrorText: '',
+      createdUser: null,
+      firstName: '',
+      middleName: '',
+      lastName: '',
     };
+  },
+  computed: {
+    inviteDisabled() {
+      if (!this.firstName || !this.lastName || !this.email) {
+        return true;
+      }
+
+      return false;
+    },
   },
   mounted() {
     this.loadUsers();
@@ -174,7 +187,10 @@ export default {
 
       Firebase.auth()
         .createUserWithEmailAndPassword(this.email, randomPassword)
-        .then(() => Firebase.auth().sendPasswordResetEmail(this.email))
+        .then(user => {
+          this.createdUser = user;
+          return Firebase.auth().sendPasswordResetEmail(this.email);
+        })
         .then(() => {
           const user = {};
           user.accountType = 'stateAdmin';
@@ -192,9 +208,10 @@ export default {
           invite.status = 'Pending';
           invite.acceptedAt = Firebase.database.ServerValue.TIMESTAMP;
           invite.timestamp = Firebase.database.ServerValue.TIMESTAMP;
+          invite.userId = this.createdUser.uid;
 
           const ref = Firebase.database().ref();
-          const userKey = ref.child('users').push().key;
+          const userKey = this.createdUser.uid;
           const userInviteKey = ref.child('userInvites').push().key;
           const updates = {};
           updates[`/users/${userKey}`] = user;
