@@ -50,6 +50,7 @@ export default {
   created() {
     Firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        // update acceptedAt and status on userinvite
         this.$router.push('/');
       }
     });

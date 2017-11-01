@@ -37,7 +37,7 @@
               </b-input-group>
               <div class="d-flex justify-content-start align-items-center">
                 <b-form-input class="input-email" v-model="email" size="sm" type="email" placeholder="Email"></b-form-input>
-                <base-btn @click="clickInvite()" :class="{disabled: inviteDisabled}" class="btn-invite" text="Invite" icon="plus"></base-btn>
+                <base-btn @click="clickInvite()" :class="{'btn-disabled': inviteDisabled}" class="btn-invite" text="Invite" icon="plus"></base-btn>
               </div>
 
               <span class="txt-invite-error" v-if="inviteErrorText">{{inviteErrorText}}</span>
@@ -57,12 +57,12 @@
                     <img class="img-avatar" :src="user.image ? user.image : userAvatar"></img>
                     <div class="d-flex flex-column justify-content-start align-items-start" style="flex: 1;">
                       <span class="txt-username">{{`${user.firstName} ${user.lastName}`}}</span>
-                      <span class="txt-userrole">{{getAccountType(user)}}</span>
+                      <span class="txt-userrole">{{user.email}}</span>
                     </div>
                     <!-- <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="pencil"></base-btn> -->
                     <div class="d-flex flex-column" style="width: initial;">
-                      <b-badge pill variant="success">ACCEPTED</b-badge>
-                      <span class="txt-timeago">2 hours ago</span>
+                      <b-badge pill :variant="user.status === 'Pending' ? 'warning' : 'success'">{{user.status.toUpperCase()}}</b-badge>
+                      <span class="txt-timeago">{{getTimeAgo(user.timestamp)}}</span>
                     </div>
                   </div>
                     <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
@@ -79,7 +79,8 @@
 </template>
 
 <script>
-import * as Firebase from 'firebase';
+import * as Firebase from 'firebase'
+import * as moment from 'moment';
 import EditUserModal from '@/components/EditUserModal';
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
@@ -123,6 +124,12 @@ export default {
     this.loadInvites();
   },
   methods: {
+    getTimeAgo(timestamp) {
+      if (!timestamp) {
+        return '';
+      }
+      return moment(timestamp).fromNow();
+    },
     clickViewDetails(user) {
       this.selectedUser = user;
       this.$root.$emit('show::modal', 'modalUserDetails');
@@ -218,6 +225,9 @@ export default {
           updates[`/userInvites/${userInviteKey}`] = invite;
           ref.update(updates);
           this.email = '';
+          this.firstName = '';
+          this.middleName = '';
+          this.lastName = '';
           this.inviteErrorText = '';
         })
         .catch(err => {
@@ -288,6 +298,18 @@ export default {
   color: rgba(0,0,0,0.84) !important;
   transition: ease-out 0.2s;
 } */
+
+.btn-invite.btn-disabled {
+  background-color: #888888 !important;
+  border-color: #888888 !important;
+  cursor: default !important;
+}
+
+.btn-invite.btn-disabled:hover {
+  background-color: #888888 !important;
+  border-color: #888888 !important;
+  cursor: default !important;
+}
 
 .btn-invite {
   height: 30px !important;
