@@ -1,7 +1,7 @@
 <template>
   <dark-card title="Account Settings" class="settings-card">
     <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1; width: 100%;">
-      Stuff here
+      <!-- avatar upload -->
     </div>
   </dark-card>
 </template>

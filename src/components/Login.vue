@@ -53,7 +53,18 @@ export default {
         const updates = {};
         updates[`/users/${user.uid}/lastLogin`] = Firebase.database.ServerValue.TIMESTAMP;
         Firebase.database().ref().update(updates);
-        this.$router.push('/');
+        Firebase.database().ref(`/users/${user.uid}`).on('value', snap => {
+          const actualUser = snap.val();
+          actualUser.$id = snap.key;
+          console.log('actual user');
+          console.log(actualUser);
+          console.log(actualUser.active);
+          if(actualUser.active) {
+            this.$router.push('/');
+          } else {
+            this.error = 'The specified account has been disabled.';
+          }
+        });
       }
     });
   },

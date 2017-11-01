@@ -153,7 +153,7 @@ export default {
         snap.forEach(child => {
           const user = child.val();
           user.$id = child.key;
-          if(user.lastLogin && user.lastLogin === 0) {
+          if(user.lastLogin === 0) {
             userInvites.push(user);
           } else {
             users.push(user);
@@ -202,6 +202,7 @@ export default {
           user.lastName = this.lastName;
           user.image = '';
           user.lastLogin = 0;
+          user.active = true;
 
           const ref = Firebase.database().ref();
           const userKey = this.createdUser.uid;
