@@ -14,6 +14,11 @@
           <div class="d-flex justify-content-start align-items-start" style="flex: 1; width: 100%;">
             <modal-data-row label="Email" :text="user.email" style="flex: 0.33;"></modal-data-row>
             <modal-data-row label="Account Type" :text="accountType" style="flex: 0.33;"></modal-data-row>
+
+            <div class="d-flex flex-column" style="flex: 0.33;">
+              <b-btn @click="enableUser" size="sm" class="btn-action btn-green" style="margin-bottom: 5px;">Enable User</b-btn>
+              <b-btn @click="disableUser" size="sm" class="btn-action btn-red">Disable User</b-btn>
+            </div>
           </div>
         </div>
       </div> 
@@ -22,6 +27,8 @@
 </template>
 
 <script>
+import * as Firebase from 'firebase';
+
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
 import ModalDataRow from '@/components/ModalDataRow';
@@ -79,6 +86,20 @@ export default {
       this.$root.$emit('hide::modal', 'modalUserDetails');
     },
     clickNewTab() {},
+    enableUser() {
+      const updates = {};
+      updates[`users/${this.user.$id}/active`] = true;
+      Firebase.database()
+        .ref()
+        .update(updates);
+    },
+    disableUser() {
+      const updates = {};
+      updates[`users/${this.user.$id}/active`] = false;
+      Firebase.database()
+        .ref()
+        .update(updates);
+    },
   },
 };
 </script>
@@ -114,5 +135,30 @@ export default {
   object-fit: cover;
   object-position: center;
   cursor: pointer;
+}
+
+.btn-action {
+  background-color: #0275d8;
+  border-color: #0275d8;
+  color: white;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.btn-action:hover {
+  background-color: #01559e;
+  border-color: #01559e;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.btn-red {
+  background-color: #ef3135;
+  border-color: #ef3135;
+}
+
+.btn-red:hover {
+  background-color: #f3686b;
+  border-color: #f3686b;
 }
 </style>
