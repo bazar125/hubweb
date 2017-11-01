@@ -9,7 +9,9 @@
       <b-badge class="custom-badge" pill variant="danger">1</b-badge>
     </b-button> -->
 
-    <b-dropdown id="ddown2" variant="link" class="ml-auto message-dropdown">
+  <table-search class="ml-auto custom-table-search" v-model="searchFilter"></table-search>
+
+    <b-dropdown id="ddown2" variant="link" class="message-dropdown">
       <template slot="button-content">
         <b-button size="sm" class="btn-notification">
           <icon name="bell-o"></icon>
@@ -71,10 +73,13 @@
 import * as Firebase from 'firebase';
 import * as moment from 'moment';
 import ActivityService from '@/services/ActivityService';
+import TableSearch from '@/components/TableSearch';
 
 export default {
   name: 'Navbar',
-  components: {},
+  components: {
+    TableSearch,
+  },
   data() {
     return {
       unreadConversationCount: 0,
@@ -317,5 +322,16 @@ export default {
   /* color: rgba(255, 255, 255, 0.7); */
   color: rgba(0, 0, 0, 0.87);
   outline: none;
+}
+
+.custom-navbar>>>.search-icon {
+  color: rgba(255,255,255,0.84);
+}
+
+.custom-table-search {
+  margin-right: 10px;
+}
+.custom-table-search>>>.search-input{
+  background-color: white;
 }
 </style>

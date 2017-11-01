@@ -21,6 +21,7 @@
                       <span class="txt-userrole">{{getAccountType(user)}}</span>
                     </div>
 
+                    <base-btn @click="clickResetPassword(user, index)" class="btn-view" icon="lock" text="Reset Password"></base-btn>
                     <base-btn @click="clickViewDetails(user, index)" class="btn-view" icon="expand" text="View Details"></base-btn>
                   </div>
                     <!-- <edit-user-modal :user="user" :index="index"></edit-user-modal> -->
@@ -135,6 +136,13 @@ export default {
         return '';
       }
       return moment(timestamp).fromNow();
+    },
+    clickResetPassword(user) {
+      if(!user || !user.email) {
+        return;
+      }
+
+      Firebase.auth().sendPasswordResetEmail(user.email);
     },
     clickViewDetails(user) {
       this.selectedUser = user;
@@ -336,6 +344,8 @@ export default {
 .user-item {
   padding-top: 7px;
   padding-bottom: 7px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .chat-user-item:not(:last-child) {
@@ -378,6 +388,7 @@ export default {
   margin-right: 10px;
   padding: 0px 10px !important;
   color: rgba(0, 0, 0, 0.84) !important;
+  font-size: 8px;
 }
 
 .btn-view:hover {
