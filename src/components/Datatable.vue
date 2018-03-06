@@ -14,7 +14,7 @@
       <b-table class="custom-table" bordered hover show-empty :items="items" :fields="fields" :per-page="perPage" :filter="searchFilter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @filtered="onFiltered">
         <!-- <template slot="name" scope="row">{{row.value.first}} {{row.value.last}}</template>
                 <template slot="isActive" scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
-        <template slot="actions" scope="row">
+        <template slot="actions" slot-scope="row">
           <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
           <b-btn size="sm" class="btn-action" :class="{'btn-danger': row.item._dirtyClass === 'danger', 'btn-warning': row.item._dirtyClass === 'alert', 'btn-wwarning': row.item._dirtyClass === 'wwarning', 'btn-success': row.item._dirtyClass === 'success'}" @click.stop="details(row.item,row.index,$event.target)">VIEW</b-btn>
         </template>

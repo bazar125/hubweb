@@ -1,7 +1,7 @@
 <template>
   <div class="drivers d-flex flex-column">
     <datatable title="Drivers" modalId="driverModal" modalTitle="Driver" @page-changed="pageChanged" :items="driverItems" :total-rows="driverTotalRows" :per-page="perPage" :fields="driverFields">
-      <template slot="modal" scope="props">
+      <template slot="modal" slot-scope="props">
         <driver-modal :data="props.data" modal-id="driverModal"></driver-modal>
       </template>
     </datatable>

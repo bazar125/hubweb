@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import * as Firebase from 'firebase';
+import * as Firebase from "firebase";
 // import IconOverview from '../assets/overview_icon.png';
 // import IconDrivers from '../assets/drivers_icon.png';
 // import IconVehicles from '../assets/vehicles_icon.png';
@@ -20,84 +20,84 @@ import * as Firebase from 'firebase';
 // import IconSettings from '../assets/settings_icon.png';
 
 export default {
-  name: 'Sidenav',
+  name: "Sidenav",
   components: {
-    currentUser: {},
+    currentUser: {}
   },
   data() {
     return {
       links: [
         {
           // path: 'drivers',
-          path: '/',
-          name: 'Base',
+          path: "/",
+          name: "Base",
           // icon: IconOverview,
-          icon: 'home',
+          icon: "home"
         },
         {
-          path: '/drivers',
-          name: 'Drivers',
+          path: "/drivers",
+          name: "Drivers",
           // icon: IconDrivers,
-          icon: 'id-card',
+          icon: "id-card"
         },
         {
-          path: '/vehicles',
-          name: 'Vehicles',
+          path: "/vehicles",
+          name: "Vehicles",
           // icon: IconVehicles,
-          icon: 'car',
+          icon: "car"
         },
         {
-          path: '/citations',
-          name: 'Citations',
+          path: "/citations",
+          name: "Citations",
           // icon: IconCitations,
-          icon: 'book',
+          icon: "book"
         },
         {
-          path: '/collisions',
-          name: 'Collisions',
+          path: "/collisions",
+          name: "Collisions",
           // icon: IconCitations,
-          icon: 'fire',
+          icon: "fire"
         },
         {
-          path: '/personnel',
-          name: 'Personnel',
+          path: "/personnel",
+          name: "Personnel",
           // icon: IconPersonnel,
-          icon: 'users',
+          icon: "users"
         },
         {
-          path: '/chat',
-          name: 'Messages',
+          path: "/chat",
+          name: "Messages",
           // icon: IconSettings,
-          icon: 'comments',
-          role: 'stateAdmin',
+          icon: "comments",
+          role: "stateAdmin"
         },
         {
-          path: '/notifications',
-          name: 'Notifications',
+          path: "/notifications",
+          name: "Notifications",
           // icon: IconSettings,
-          icon: 'bell',
-          role: 'stateAdmin',
+          icon: "bell",
+          role: "stateAdmin"
         },
-        // {
-        //   path: '/reports',
-        //   name: 'Reports',
-        //   // icon: IconCitations,
-        //   icon: 'bar-chart',
-        // },
         {
-          path: '/manage',
-          name: 'Admin',
-          // icon: IconSettings,
-          icon: 'user-plus',
-          role: 'stateAdmin',
+          path: "/reports",
+          name: "Reports",
+          // icon: IconCitations,
+          icon: "bar-chart"
         },
+        {
+          path: "/manage",
+          name: "Admin",
+          // icon: IconSettings,
+          icon: "user-plus",
+          role: "stateAdmin"
+        }
         // {
         //   path: '/settings',
         //   name: 'Settings',
         //   // icon: IconSettings,
         //   icon: 'cog',
         // },
-      ],
+      ]
     };
   },
   methods: {
@@ -112,17 +112,17 @@ export default {
       }
 
       return link.role === this.currentUser.accountType;
-    },
+    }
   },
   mounted() {
     const ref = Firebase.database().ref();
     const uid = Firebase.auth().currentUser.uid;
-    ref.child(`users/${uid}`).once('value', (snap) => {
+    ref.child(`users/${uid}`).once("value", snap => {
       const val = snap.val();
       this.currentUser = val;
       this.$forceUpdate();
     });
-  },
+  }
 };
 </script>
 
@@ -166,14 +166,14 @@ export default {
 
 .nav-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid #8992C6;
+  border: 1px solid #8992c6;
   color: rgba(0, 0, 0, 0.84);
   transition: ease-out 0.2s;
 }
 
 .nav-button.router-link-exact-active {
-  border: 1px solid #8992C6;
-  color: #8992C6;
+  border: 1px solid #8992c6;
+  color: #8992c6;
   font-weight: 700;
   font-size: 11px;
   transition: ease-out 0.2s;
@@ -188,6 +188,6 @@ export default {
 }
 
 .nav-button.router-link-exact-active .nav-icon {
-  color: #8992C6;
+  color: #8992c6;
 }
 </style>

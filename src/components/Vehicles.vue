@@ -1,7 +1,7 @@
 <template>
   <div class="vehicles d-flex flex-column">
     <datatable title="Vehicles" modalId="vehicleModal" modalTitle="Vehicle" @page-changed="pageChanged" :items="vehicleItems" :total-rows="vehicleTotalRows" :per-page="perPage" :fields="vehicleFields">
-      <template slot="modal" scope="props">
+      <template slot="modal" slot-scope="props">
         <vehicle-modal :data="props.data" modal-id="vehicleModal"></vehicle-modal>
       </template>
     </datatable>

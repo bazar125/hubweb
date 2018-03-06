@@ -9,7 +9,7 @@
       <b-modal id="citationModal" :no-close-on-backdrop="true" :hide-header="true" :hide-footer="true">
         <!-- <datatable title="Citations" modalId="citationModal" modalTitle="Citation" @resetModal="resetModal()" @page-changed="pageChanged" :items="items" :total-rows="totalRows" :per-page="perPage" :fields="fields"> -->
         <datatable @clickClose="closeCitationModal" @clickNewTab="newCitationTab" :title="citationModalTitle" modalTitle="Citation" @resetModal="resetModal()" @page-changed="loadCitationItems" :items="citations" :total-rows="totalCitations" :per-page="perPage" :fields="citationFields" :showNavigation="true">
-          <!-- <template slot="modal" scope="props">
+          <!-- <template slot="modal" slot-scope="props">
             <citation-modal :data="props.data" modal-id="citationModal"></citation-modal>
           </template> -->
         </datatable>
@@ -17,7 +17,7 @@
 
       <b-modal id="collisionModal" :no-close-on-backdrop="true" :hide-header="true" :hide-footer="true">
         <datatable @clickClose="closeCollisionModal" @clickNewTab="newCollisionTab" title="Collisions Today" modalTitle="Collision" @page-changed="loadCollisionItems" :items="collisions" :total-rows="totalCollisions" :per-page="perPage" :fields="collisionFields" :showNavigation="true">
-          <!-- <template slot="modal" scope="props">
+          <!-- <template slot="modal" slot-scope="props">
             <collision-modal :data="props.data" modal-id="collisionModal"></collision-modal>
           </template> -->
         </datatable>

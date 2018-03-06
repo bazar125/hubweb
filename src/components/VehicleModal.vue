@@ -1,6 +1,6 @@
 <template>
   <base-modal :hide-navigation="hideNavigation" :modalId="modalId" class="vehicle-modal d-flex flex-column justify-content-center align-items-start" type="vehicle" :data="data">
-    <template slot="main" scope="props">
+    <template slot="main" slot-scope="props">
       <div class="d-flex flex-column justify-content-start align-items-center">
         <vehicle-modal-mot v-if="showMot" @onHide="hideMot" :vehicle="props.data" style="width: 100%;"></vehicle-modal-mot>
         <div v-else id="vehicle-modal-print-root" class="data-section d-flex justify-content-start align-items-start">

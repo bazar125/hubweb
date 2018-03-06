@@ -1,6 +1,6 @@
 <template>
   <base-modal :hide-navigation="hideNavigation" :modalId="modalId" class="driver-modal d-flex flex-column justify-content-center align-items-start" type="driver" :data="data">
-    <template slot="main" scope="props">
+    <template slot="main" slot-scope="props">
       <div class="d-flex flex-column justify-content-start align-items-center">
         <div id="driver-modal-print-root" class="data-section d-flex justify-content-start align-items-start">
           <div class="data-container d-flex flex-column justify-content-start align-items-center">
