@@ -1,6 +1,7 @@
 <template>
   <div class="slick-footer d-flex justify-content-start align-items-center">
-    <span class="ml-auto copyright-text">Copyright © 2017 MotoHub. All rights reserved.</span>
+    <span class="copyright-text" style="margin-left: 8px;">This platform is regulated by the Federal Republic of Nigeria. All access is monitored.</span>
+    <span class="ml-auto copyright-text">Copyright © 2018 MotoHub. All rights reserved.</span>
   </div>
 </template>
 
