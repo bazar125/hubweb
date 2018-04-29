@@ -96,7 +96,7 @@ export default {
       <img class="scanner-user-marker-image" src="${scannerUser.image}"></img>
       <div class="d-flex flex-column justify-content-start align-items-start" style="flex: 1;">
         <span class="scanner-user-marker-name">${scannerUser.name}</span>
-        <span class="scanner-user-marker-zone">Zone B23</span>
+        <span class="scanner-user-marker-zone">Deployed</span>
       </div>
     </div>`;
     // <span class="scanner-user-marker-timeago">${moment(scannerUser.timestamp).fromNow()}</span>

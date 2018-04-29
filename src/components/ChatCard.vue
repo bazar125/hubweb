@@ -43,10 +43,11 @@
             <!-- <span class="txt-user-information">User Information</span> -->
             
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
-              <img class="user-image" :src="this.selectedUser.image"></img>
+              <img class="user-image" :src="this.selectedUser && this.selectedUser.image ? this.selectedUser.image : UserPlaceholder">
               <div class="d-flex flex-column overlay-content-container">
                 <span class="user-name">{{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</span>
-                <span class="user-zone mr-auto">Deployed to <span style="font-weight: 700;">Zone B23</span></span>
+                <span class="user-zone mr-auto">Deployed to <span style="font-weight: 700;">Kaduna</span></span>
+                <!-- <span class="user-zone mr-auto">Deployed to <span style="font-weight: 700;">Zone B23</span></span> -->
                 <!-- <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
                   <span class="user-zone mr-auto">Deployed to Zone B23</span>
                   <icon name="circle" class="ml-auto online"></icon> online
@@ -63,7 +64,7 @@
       </div>
       <div v-else class="chat d-flex flex-column">
         <div class="chat-header d-flex justify-content-start align-items-center clearfix">
-          <img class="chat-user-image" :src="this.selectedUser.image" alt="avatar" />
+          <img class="chat-user-image" :src="this.selectedUser && this.selectedUser.image ? this.selectedUser.image : UserPlaceholder" alt="avatar" />
           <div class="chat-about d-flex flex-column justify-content-start align-items-start">
             <div class="d-flex justify-content-start align-items-center" style="width: 100%;">
               <div class="chat-with">Officer {{this.selectedUser.firstName}} {{this.selectedUser.lastName}}</div>
@@ -168,6 +169,7 @@ import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
 import MapOverlayFactory from '@/services/MapOverlayFactory';
 import ActivityService from '@/services/ActivityService';
+import UserPlaceholder from '../assets/user_placeholder.jpg';
 
 import MapStyle from '../assets/mapstyle.json';
 
@@ -195,6 +197,7 @@ export default {
       searchInput: '',
       unreadConversationCount: 0,
       unreadConversations: [],
+      UserPlaceholder,
     };
   },
   computed: {

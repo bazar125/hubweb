@@ -79,12 +79,12 @@ export default {
           class: 'text-center vertical-middle',
           tdClass: 'custom-datatable-cell',
         },
-        currentDeploymentZone: {
-          label: 'Zone',
-          sortable: true,
-          class: 'text-center vertical-middle',
-          tdClass: 'custom-datatable-cell',
-        },
+        // currentDeploymentZone: {
+        //   label: 'Zone',
+        //   sortable: true,
+        //   class: 'text-center vertical-middle',
+        //   tdClass: 'custom-datatable-cell',
+        // },
         actions: {
           label: 'Actions',
           class: 'text-center vertical-middle',

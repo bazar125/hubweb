@@ -11,7 +11,8 @@
           <img class="img-avatar" :src="user.image"></img>
           <div class="d-flex flex-column">
             <span class="txt-name">{{user.name}}</span>
-            <span class="txt-zone">Zone B23</span>
+            <!-- <span class="txt-zone">Zone B23</span> -->
+            <span class="txt-zone">Deployed</span>
             <span class="txt-timeago">{{getTimeAgo(user.timestamp)}}</span>
           </div>
           <!-- <base-btn @click="clickEditUser(index)" class="ml-auto btn-view" icon="comment-o"></base-btn> -->

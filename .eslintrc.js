@@ -29,6 +29,8 @@ module.exports = {
       'js': 'never',
       'vue': 'never'
     }],
+    // TODO: Remove at some point
+    'no-console': 'off',
     // allow optionalDependencies
     'import/no-extraneous-dependencies': ['error', {
       'optionalDependencies': ['test/unit/index.js']
