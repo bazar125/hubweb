@@ -5,7 +5,7 @@
         <span class="txt-title">{{title}}</span>
 
         <div v-if="showNavigation" class="navigation-container d-flex justify-content-start align-items-center">
-          <div @click="clickNewTab" class="ml-auto heading-btn-container d-flex justify-content-start align-items-center">
+          <div v-if="!hideNewTab" @click="clickNewTab" class="ml-auto heading-btn-container d-flex justify-content-start align-items-center">
             <span class="txt-heading">open in new tab</span>
             <icon class="icon-heading" name="external-link"></icon>
             <!-- <base-btn @click="clickDelete()" class="btn-heading" icon="external-link"></base-btn> -->
@@ -30,7 +30,7 @@ import BaseCard from '@/components/BaseCard';
 
 export default {
   name: 'DarkCard',
-  props: ['title', 'showPulse', 'showNavigation'],
+  props: ['title', 'showPulse', 'showNavigation', 'hideNewTab'],
   components: {
     BaseCard,
   },

@@ -1,10 +1,9 @@
 <template>
-  <div class="report-data-table d-flex flex-column justify-content-center align-items-center">
+  <div ref="rootView" class="report-data-table d-flex flex-column justify-content-center align-items-center">
     <table class="table-fill d-flex flex-column">
       <thead class="custom-thead" :style="{'margin-right': scrollBarWidth + 'px'}">
         <tr>
-          <th class="text-left">Statistic</th>
-          <th class="text-left">Value</th>
+          <th v-for="label in labels" :key="label" class="text-left">{{label}}</th>
         </tr>
       </thead>
       <tbody ref="tbody" class="table-hover custom-tbody">
@@ -20,7 +19,7 @@
 <script>
 export default {
   name: "ReportDataTable",
-  props: ["items"],
+  props: ["labels", "items"],
   components: {},
   data() {
     return {
@@ -33,7 +32,7 @@ export default {
       return;
     }
 
-    if(tbody.scrollHeight > this.height()) {
+    if(tbody.scrollHeight > this.height) {
       this.scrollBarWidth = this.getScrollbarWidth();
     }
   },

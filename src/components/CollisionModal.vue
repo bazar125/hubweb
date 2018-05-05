@@ -1,5 +1,5 @@
 <template>
-  <base-modal :hide-navigation="hideNavigation" class="collision-modal d-flex flex-column justify-content-center align-items-start" title="Collision" type="collision" :modalId="modalId" :data="data">
+  <boot-base-modal :hide-navigation="hideNavigation" class="collision-modal d-flex flex-column justify-content-center align-items-start" title="Collision" type="collision" :modalId="modalId" :data="data">
     <template slot="main" slot-scope="props">
       <div class="d-flex flex-column justify-content-start align-items-center">
         <div id="collision-modal-print-root" class="data-section d-flex justify-content-start align-items-start">
@@ -23,11 +23,11 @@
         </div>
       </div>
     </template>
-  </base-modal>
+  </boot-base-modal>
 </template>
 
 <script>
-import BaseModal from '@/components/BaseModal';
+import BootBaseModal from '@/components/BootBaseModal';
 import ModalDataRow from '@/components/ModalDataRow';
 import ModalDataAttachments from '@/components/ModalDataAttachments';
 import PhotoPlaceholder from '../assets/photo_placeholder.png';
@@ -36,7 +36,7 @@ export default {
   name: 'CollisionModal',
   props: ['data', 'modalId', 'hideNavigation'],
   components: {
-    BaseModal,
+    BootBaseModal,
     ModalDataRow,
     ModalDataAttachments,
   },

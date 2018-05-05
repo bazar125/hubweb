@@ -1,5 +1,5 @@
 <template>
-  <dark-card :title="'Report Viewer'" class="daily-report-card">
+  <dark-card :title="'Report Viewer'" show-navigation="true" hide-new-tab="true" class="daily-report-card" @clickClose="$emit('close')">
     <div class="root-container d-flex flex-column justify-content-start align-items-center">
 
       <div class="top-container d-flex justify-content-start align-items-center">
@@ -38,11 +38,14 @@
 
       <div class="bottom-container d-flex flex-column justify-content-start align-items-center">
         <div class="table-container d-flex flex-column justify-content-start align-items-center">
-          <report-data-table :items="items"></report-data-table>
+          <report-data-table :labels="labels" :items="items"></report-data-table>
+        </div>
+        <div class="table-container d-flex flex-column justify-content-start align-items-center">
+          <report-data-table :labels="['Charts', '']" :items="[]"></report-data-table>
         </div>
         <div class="stats-container d-flex justify-content-start align-items-center">
-          <!-- <recorded-events-chart class="recorded-events-chart"></recorded-events-chart>
-          <revenue-chart class="revenue-chart"></revenue-chart> -->
+          <recorded-events-chart class="recorded-events-chart"></recorded-events-chart>
+          <revenue-chart class="revenue-chart"></revenue-chart>
         </div>
       </div>
     </div>
@@ -68,6 +71,10 @@ export default {
   },
   data() {
     return {
+      labels: [
+        "Statistic",
+        "Value",
+      ],
       items: [
         {
           label: "Collisions",

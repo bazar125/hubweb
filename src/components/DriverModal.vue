@@ -1,5 +1,5 @@
 <template>
-  <base-modal :hide-navigation="hideNavigation" :modalId="modalId" class="driver-modal d-flex flex-column justify-content-center align-items-start" type="driver" :data="data">
+  <boot-base-modal :hide-navigation="hideNavigation" :modalId="modalId" class="driver-modal d-flex flex-column justify-content-center align-items-start" type="driver" :data="data">
     <template slot="main" slot-scope="props">
       <div class="d-flex flex-column justify-content-start align-items-center">
         <div id="driver-modal-print-root" class="data-section d-flex justify-content-start align-items-start">
@@ -31,11 +31,11 @@
         </div>
       </div>
     </template>
-  </base-modal>
+  </boot-base-modal>
 </template>
 
 <script>
-import BaseModal from '@/components/BaseModal';
+import BootBaseModal from '@/components/BootBaseModal';
 import ModalDataRow from '@/components/ModalDataRow';
 import PhotoPlaceholder from '../assets/photo_placeholder.png';
 
@@ -43,7 +43,7 @@ export default {
   name: 'DriverModal',
   props: ['data', 'modalId', 'hideNavigation'],
   components: {
-    BaseModal,
+    BootBaseModal,
     ModalDataRow,
   },
   data() {

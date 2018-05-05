@@ -6,11 +6,11 @@
         <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1;">
           <div class="top-data-container d-flex justify-content-start align-items-center">
             <span class="top-label">Preset Time Range</span>
-            <base-btn @click="clickToday()" v-b-modal.report-viewer-modal class="btn-print" text="Today" icon="history"></base-btn>
+            <base-btn @click="clickToday()" class="btn-print" text="Today" icon="history"></base-btn>
             <base-btn @click="clickWeek()" class="btn-print btn-disabled" text="This Week" icon="history"></base-btn>
-            <base-btn @click="clickFortniht()" class="btn-print btn-disabled" text="This Fortnight" icon="history"></base-btn>
-            <base-btn @click="clickMonthly()" class="btn-print btn-disabled" text="This Month" icon="history"></base-btn>
-            <base-btn @click="clickFortnightly()" class="btn-print btn-disabled" text="This Year" icon="history"></base-btn>
+            <base-btn @click="clickFortnight()" class="btn-print btn-disabled" text="This Fortnight" icon="history"></base-btn>
+            <base-btn @click="clickMonth()" class="btn-print btn-disabled" text="This Month" icon="history"></base-btn>
+            <base-btn @click="clickYear()" class="btn-print btn-disabled" text="This Year" icon="history"></base-btn>
           </div>
           <div class="top-data-container d-flex justify-content-start align-items-center" style="margin-bottom: 0px;">
             <span class="top-label">Custom Report</span>
@@ -37,9 +37,13 @@
 
       </div>
 
-      <b-modal id="report-viewer-modal" :hide-header="true" :hide-footer="true">
-        <report-viewer></report-viewer>
-      </b-modal>
+      <b-modal ref="reportViewerModal" hide-header hide-footer>
+        <report-viewer @close="$refs.reportViewerModal.hide()"></report-viewer>
+      </b-modal>   
+
+      <!-- <base-modal v-if="showReportViewer" @close="showReportViewer = false">
+        <report-viewer slot="body"></report-viewer>
+      </base-modal> -->
     </div>
   </dark-card>
 </template>
@@ -49,6 +53,7 @@ import BaseBtn from "@/components/BaseBtn";
 import DarkCard from "@/components/DarkCard";
 import ReportBrowserCard from "@/components/Reports/ReportBrowserCard";
 import ReportViewer from "@/components/Reports/ReportViewer";
+import BaseModal from "@/components/BaseModal";
 
 export default {
   name: "ReportBrowser",
@@ -57,12 +62,28 @@ export default {
     DarkCard,
     BaseBtn,
     ReportBrowserCard,
-    ReportViewer
+    ReportViewer,
+    BaseModal,
   },
   data() {
-    return {};
+    return {
+      showReportViewer: false,
+    };
   },
-  mounted() {}
+  mounted() {},
+  methods: {
+    clickToday() {
+      this.$refs.reportViewerModal.show();
+      this.showReport();
+    },
+    clickWeek() {},
+    clickFortnight() {},
+    clickMonth() {},
+    clickYear() {},
+    showReport() {
+      this.showReportViewer = !this.showReportViewer;
+    },
+  }
 };
 </script>
 

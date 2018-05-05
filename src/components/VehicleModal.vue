@@ -1,5 +1,5 @@
 <template>
-  <base-modal :hide-navigation="hideNavigation" :modalId="modalId" class="vehicle-modal d-flex flex-column justify-content-center align-items-start" type="vehicle" :data="data">
+  <boot-base-modal :hide-navigation="hideNavigation" :modalId="modalId" class="vehicle-modal d-flex flex-column justify-content-center align-items-start" type="vehicle" :data="data">
     <template slot="main" slot-scope="props">
       <div class="d-flex flex-column justify-content-start align-items-center">
         <vehicle-modal-mot v-if="showMot" @onHide="hideMot" :vehicle="props.data" style="width: 100%;"></vehicle-modal-mot>
@@ -34,12 +34,12 @@
         </div>
       </div>
     </template>
-  </base-modal>
+  </boot-base-modal>
 </template>
 
 <script>
 import BaseBtn from '@/components/BaseBtn';
-import BaseModal from '@/components/BaseModal';
+import BootBaseModal from '@/components/BootBaseModal';
 import ModalDataRow from '@/components/ModalDataRow';
 import VehicleModalMot from '@/components/VehicleModalMot';
 import PhotoPlaceholder from '../assets/photo_placeholder.png';
@@ -49,7 +49,7 @@ export default {
   props: ['data', 'modalId', 'hideNavigation', 'startShowMot'],
   components: {
     BaseBtn,
-    BaseModal,
+    BootBaseModal,
     ModalDataRow,
     VehicleModalMot,
   },
