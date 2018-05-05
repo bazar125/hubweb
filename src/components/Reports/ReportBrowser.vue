@@ -6,7 +6,7 @@
         <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1;">
           <div class="top-data-container d-flex justify-content-start align-items-center">
             <span class="top-label">Preset Time Range</span>
-            <base-btn @click="clickToday()" class="btn-print" text="Today" icon="history"></base-btn>
+            <base-btn @click="clickToday()" v-b-modal.report-viewer-modal class="btn-print" text="Today" icon="history"></base-btn>
             <base-btn @click="clickWeek()" class="btn-print btn-disabled" text="This Week" icon="history"></base-btn>
             <base-btn @click="clickFortniht()" class="btn-print btn-disabled" text="This Fortnight" icon="history"></base-btn>
             <base-btn @click="clickMonthly()" class="btn-print btn-disabled" text="This Month" icon="history"></base-btn>
@@ -23,7 +23,6 @@
       </div>
 
       <div class="bottom-container d-flex flex-column justify-content-start align-items-center">
-
         <div v-if="!reports || reports.length === 0" class="placeholder-container d-flex flex-column align-items-center justify-content-center">
           <span class="txt-placeholder">You don't currently have any saved reports</span>
           <icon class="icon-placeholder" name="bar-chart"></icon>
@@ -37,6 +36,10 @@
         </div>
 
       </div>
+
+      <b-modal id="report-viewer-modal" :hide-header="true" :hide-footer="true">
+        <report-viewer></report-viewer>
+      </b-modal>
     </div>
   </dark-card>
 </template>
@@ -45,6 +48,7 @@
 import BaseBtn from "@/components/BaseBtn";
 import DarkCard from "@/components/DarkCard";
 import ReportBrowserCard from "@/components/Reports/ReportBrowserCard";
+import ReportViewer from "@/components/Reports/ReportViewer";
 
 export default {
   name: "ReportBrowser",
@@ -52,7 +56,8 @@ export default {
   components: {
     DarkCard,
     BaseBtn,
-    ReportBrowserCard
+    ReportBrowserCard,
+    ReportViewer
   },
   data() {
     return {};
@@ -282,5 +287,17 @@ export default {
   height: 60px;
   color: rgba(0, 0, 0, 0.64);
   margin: 16px 0px;
+}
+
+.report-browser>>>.modal-dialog {
+  max-width: 80%;
+  background: transparent;
+  overflow: hidden;
+}
+
+.report-browser>>>.modal-body {
+  padding: 0px !important;
+  background: transparent;
+  overflow: hidden;
 }
 </style>

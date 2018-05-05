@@ -102,8 +102,7 @@ export default {
   width: calc(100% - 150px);
   background-color: #ececec;
   /* background-color: #2c2e4a; */
-  padding: 10px;
-  padding-right: 0px;
+  padding: 8px;
 }
 
 .datatable {

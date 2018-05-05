@@ -152,7 +152,6 @@ export default {
   min-width: 200px;
   z-index: 999;
   /* box-shadow: -2px 0px 8px 2px rgba(0, 0, 0, 0.1); */
-  padding-left: 8px;
   position: relative;
 }
 .activity-stream>>>.title-container {

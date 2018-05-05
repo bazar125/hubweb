@@ -417,6 +417,6 @@ export default {
   overflow: visible;
 }
 .current-notification-card.base-card {
-  overflow: visible;
+  /* overflow: visible; */
 }
 </style>

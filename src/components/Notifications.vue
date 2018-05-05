@@ -32,7 +32,6 @@ export default {
   /* background-color: #2c2e4a; */
   background-color: #ececec;
   padding: 8px;
-  padding-right: 0px;
   overflow: hidden;
 }
 

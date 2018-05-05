@@ -310,10 +310,8 @@ export default {
   position: relative;
   /* overflow: hidden; */
   flex: 1;
-  /* padding-right: 8px; */
-  padding-left: 8px;
-  /* padding-right: 8px; */
-  padding-bottom: 8px;
+  padding: 8px;
+  padding-top: 0px;
   /* background-color: #2c2e4a; */
   background-color: #ececec;
   /* padding: 10px 20px; */
@@ -338,9 +336,7 @@ export default {
 .stats-container {
   background-color: #ececec;
   /* background-color: #2c2e4a; */
-  padding-top: 8px;
-  padding-left: 8px;
-  padding-bottom: 8px;
+  padding: 8px;
 }
 
 .stats-container>>>.daily-stats-card {

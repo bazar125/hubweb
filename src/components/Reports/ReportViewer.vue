@@ -1,5 +1,5 @@
 <template>
-  <dark-card :title="'Daily Report'" class="daily-report-card">
+  <dark-card :title="'Report Viewer'" class="daily-report-card">
     <div class="root-container d-flex flex-column justify-content-start align-items-center">
 
       <div class="top-container d-flex justify-content-start align-items-center">
@@ -41,8 +41,8 @@
           <report-data-table :items="items"></report-data-table>
         </div>
         <div class="stats-container d-flex justify-content-start align-items-center">
-          <recorded-events-chart class="recorded-events-chart"></recorded-events-chart>
-          <revenue-chart class="revenue-chart"></revenue-chart>
+          <!-- <recorded-events-chart class="recorded-events-chart"></recorded-events-chart>
+          <revenue-chart class="revenue-chart"></revenue-chart> -->
         </div>
       </div>
     </div>
@@ -57,7 +57,7 @@ import RecordedEventsChart from '@/components/RecordedEventsChart';
 import RevenueChart from '@/components/RevenueChart';
 
 export default {
-  name: "DailyReportCard",
+  name: "ReportViewer",
   props: [],
   components: {
     DarkCard,

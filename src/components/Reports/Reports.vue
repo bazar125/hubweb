@@ -83,7 +83,6 @@ export default {
   /* flex: 0.6; */
   flex: 1;
   padding: 8px;
-  padding-right: 0px;
 }
 
 .daily-report-card {

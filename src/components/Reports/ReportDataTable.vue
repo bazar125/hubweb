@@ -7,7 +7,7 @@
           <th class="text-left">Value</th>
         </tr>
       </thead>
-      <tbody class="table-hover custom-tbody">
+      <tbody ref="tbody" class="table-hover custom-tbody">
         <tr v-for="(item, index) in items" :key="item">
           <td class="text-left">{{item.label}}</td>
           <td class="text-left">{{item.value}}</td>
@@ -28,7 +28,14 @@ export default {
     };
   },
   mounted() {
-    this.scrollBarWidth = this.getScrollbarWidth();
+    const tbody = this.$refs.tbody;
+    if (!tbody) {
+      return;
+    }
+
+    if(tbody.scrollHeight > this.height()) {
+      this.scrollBarWidth = this.getScrollbarWidth();
+    }
   },
   methods: {
     getScrollbarWidth() {
