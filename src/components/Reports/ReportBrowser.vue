@@ -39,11 +39,7 @@
 
       <b-modal ref="reportViewerModal" hide-header hide-footer>
         <report-viewer @close="$refs.reportViewerModal.hide()"></report-viewer>
-      </b-modal>   
-
-      <!-- <base-modal v-if="showReportViewer" @close="showReportViewer = false">
-        <report-viewer slot="body"></report-viewer>
-      </base-modal> -->
+      </b-modal>
     </div>
   </dark-card>
 </template>
@@ -53,7 +49,6 @@ import BaseBtn from "@/components/BaseBtn";
 import DarkCard from "@/components/DarkCard";
 import ReportBrowserCard from "@/components/Reports/ReportBrowserCard";
 import ReportViewer from "@/components/Reports/ReportViewer";
-import BaseModal from "@/components/BaseModal";
 
 export default {
   name: "ReportBrowser",
@@ -62,27 +57,21 @@ export default {
     DarkCard,
     BaseBtn,
     ReportBrowserCard,
-    ReportViewer,
-    BaseModal,
+    ReportViewer
   },
   data() {
-    return {
-      showReportViewer: false,
-    };
+    return {};
   },
   mounted() {},
   methods: {
     clickToday() {
       this.$refs.reportViewerModal.show();
-      this.showReport();
     },
     clickWeek() {},
     clickFortnight() {},
     clickMonth() {},
     clickYear() {},
-    showReport() {
-      this.showReportViewer = !this.showReportViewer;
-    },
+    showReport() {}
   }
 };
 </script>
