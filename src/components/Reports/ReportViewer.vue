@@ -41,7 +41,7 @@
           <report-data-table :labels="labels" :items="items"></report-data-table>
         </div>
         <div class="table-container d-flex flex-column justify-content-start align-items-center">
-          <report-data-table :labels="['Charts', '']" :items="[]"></report-data-table>
+          <report-data-table :labels="['Charts']" :items="[]"></report-data-table>
         </div>
         <div class="stats-container d-flex justify-content-start align-items-center">
           <recorded-events-chart class="recorded-events-chart"></recorded-events-chart>
