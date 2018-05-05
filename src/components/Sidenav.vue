@@ -78,12 +78,12 @@ export default {
           icon: "bell",
           role: "stateAdmin"
         },
-        // {
-        //   path: "/reports",
-        //   name: "Reports",
+        {
+          path: "/reports",
+          name: "Reports",
           // icon: IconCitations,
-        //   icon: "bar-chart"
-        // },
+          icon: "bar-chart"
+        },
         {
           path: "/manage",
           name: "Admin",

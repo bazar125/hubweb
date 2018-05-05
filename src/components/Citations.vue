@@ -31,9 +31,9 @@ export default {
       items: [],
       fields: {
         completionStatus: { label: 'Status', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
+        paymentReference: { label: 'Reference', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         date: { label: 'Date', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         time: { label: 'Time', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
-        paymentReference: { label: 'Reference', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         fineAmount: { label: 'Fine', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         driverName: { label: 'Name', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },
         vehicleRegistration: { label: 'Plate', sortable: true, class: 'text-center vertical-middle', tdClass: 'custom-datatable-cell' },

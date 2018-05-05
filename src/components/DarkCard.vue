@@ -73,7 +73,7 @@ export default {
 .title-container {
   position: relative;
   width: 100%;
-  background-color: #4a59ad;
+  background-color: #31429E;
 }
 
 .txt-title {

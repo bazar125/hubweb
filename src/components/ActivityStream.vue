@@ -146,13 +146,24 @@ export default {
 <style scoped>
 .activity-stream {
   /* background-color: #2c2e4a; */
-  background-color: #ececec;
+  /* background-color: #ececec; */
+  background-color: #f4f4f4;
   width: 200px;
   min-width: 200px;
   z-index: 999;
   /* box-shadow: -2px 0px 8px 2px rgba(0, 0, 0, 0.1); */
-  padding: 8px;
+  padding-left: 8px;
   position: relative;
+}
+.activity-stream>>>.title-container {
+  /* background-color: #31429e; */
+  background-color: #263238;
+  box-shadow: -2px 0px 8px 2px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.activity-stream>>>.base-card {
+  border-radius: 0px;
 }
 
 .activity-stream>>>.main-container {
@@ -417,7 +428,7 @@ export default {
   height: 25px;
   z-index: 999;
   left: 40px;
-  top: 10px;
+  top: 2.5px;
 }
 
 .circle {

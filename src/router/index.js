@@ -8,7 +8,7 @@ import Vehicles from '@/components/Vehicles';
 import Citations from '@/components/Citations';
 import Collisions from '@/components/Collisions';
 import Personnel from '@/components/Personnel';
-import Reports from '@/components/Reports';
+import Reports from '@/components/Reports/Reports';
 import Admin from '@/components/Admin';
 import Chat from '@/components/Chat';
 import Notifications from '@/components/Notifications';
