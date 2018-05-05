@@ -91,8 +91,14 @@ export default {
 }
 
 /* TODO: Customize these for each data table type?*/
-td,th {
-  width: 50%;
+td:nth-child(1),
+th:nth-child(1) {
+  width: 60%;
+}
+
+td:nth-child(2),
+th:nth-child(2) {
+  width: 40%;
 }
 
 th {
