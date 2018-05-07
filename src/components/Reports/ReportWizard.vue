@@ -1,26 +1,51 @@
 <template>
-  <dark-card :title="'Preset Reports'" class="preset-reports">
+  <dark-card :title="'Report Wizard'" show-navigation="true" hide-new-tab="true" class="daily-report-card" @clickClose="$emit('close')">
     <div class="root-container d-flex flex-column justify-content-start align-items-center">
 
-      <!-- <div class="top-container d-flex justify-content-start align-items-center">
+      <div class="top-container d-flex justify-content-start align-items-center">
+        <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1;">
+          <div class="top-data-container d-flex justify-content-start align-items-center">
+            <span class="top-label">Report Type</span>
+            <span class="top-data">Full Daily Report</span>
+          </div>
+          <div class="top-data-container d-flex justify-content-start align-items-center">
+            <span class="top-label">Date Range</span>
+            <span class="top-data">6 April 2018 (00:01-23:59)</span>
+          </div>
+          <div class="top-data-container d-flex justify-content-start align-items-center">
+            <span class="top-label">Data Coverage</span>
+            <span class="top-data">All states, Federal Republic of Nigeria</span>
+          </div>
+          <div class="top-data-container d-flex justify-content-start align-items-center">
+            <span class="top-label">Author</span>
+            <span class="top-data">Full Daily Report</span>
+          </div>
+          <div class="top-data-container d-flex justify-content-start align-items-center" style="margin-bottom: 0px;">
+            <span class="top-label">Report Reference</span>
+            <span class="top-data">MOTOM/FRN/KAD/110413224</span>
+          </div>
+        </div>
 
         <div class="divider"></div>
 
         <div class="top-action-container d-flex flex-column justify-content-start align-items-center">
           <span class="action-title">Actions</span>
-          <base-btn @click="clickToday()" class="btn-print" text="Today" icon="print" style="margin-bottom: 6px;"></base-btn>
-          <base-btn @click="clickWeek()" class="btn-email" text="Week" icon="envelope-o" style="margin-bottom: 6px;"></base-btn>
-          <base-btn @click="clickFortniht()" class="btn-pdf" text="Fortnight" icon="file-pdf-o"></base-btn>
-          <base-btn @click="clickMonthly()" class="btn-pdf" text="Month" icon="file-pdf-o"></base-btn>
-          <base-btn @click="clickFortnightly()" class="btn-pdf" text="Year" icon="file-pdf-o"></base-btn>
+          <base-btn @click="clickPrint()" class="btn-print" text="Print" icon="print" style="margin-bottom: 6px;"></base-btn>
+          <base-btn @click="clickEmail()" class="btn-email" text="Email" icon="envelope-o" style="margin-bottom: 6px;"></base-btn>
+          <base-btn @click="clickPdf()" class="btn-pdf" text="PDF" icon="file-pdf-o"></base-btn>
         </div>
-
-        <div class="divider"></div>
-      </div> -->
+      </div>
 
       <div class="bottom-container d-flex flex-column justify-content-start align-items-center">
         <div class="table-container d-flex flex-column justify-content-start align-items-center">
-
+          <report-data-table :labels="labels" :items="items"></report-data-table>
+        </div>
+        <div class="table-container d-flex flex-column justify-content-start align-items-center">
+          <report-data-table :labels="['Charts']" :items="[]"></report-data-table>
+        </div>
+        <div class="stats-container d-flex justify-content-start align-items-center">
+          <recorded-events-chart class="recorded-events-chart"></recorded-events-chart>
+          <revenue-chart class="revenue-chart"></revenue-chart>
         </div>
       </div>
     </div>
@@ -35,7 +60,7 @@ import RecordedEventsChart from '@/components/RecordedEventsChart';
 import RevenueChart from '@/components/RevenueChart';
 
 export default {
-  name: "PresetReports",
+  name: "ReportWizard",
   props: [],
   components: {
     DarkCard,
@@ -46,6 +71,10 @@ export default {
   },
   data() {
     return {
+      labels: [
+        "Statistic",
+        "Value",
+      ],
       items: [
         {
           label: "Collisions",
@@ -91,11 +120,11 @@ export default {
 </script>
 
 <style scoped>
-.preset-reports>>>.main-container {
+.daily-report-card>>>.main-container {
   padding: 0px;
 }
 
-.preset-reports >>> .root-container {
+.daily-report-card >>> .root-container {
   overflow: hidden;
 }
 

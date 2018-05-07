@@ -3,24 +3,13 @@
     <div class="root-container d-flex flex-column justify-content-start align-items-center">
       <div class="bottom-container d-flex flex-column justify-content-start align-items-center">
         <div v-if="!reports || reports.length === 0" class="placeholder-container d-flex flex-column align-items-center justify-content-center">
-          <!-- <div class="d-flex align-items-center justify-content-center">
-              <span class="txt-placeholder txt-placeholder-title">Launch Report Wizard</span>
-              <icon class="icon-placeholder" name="plus-square-o"></icon>
-          </div> -->
           <base-btn @click="clickCustomReport()" class="btn-email" text="Launch Report Wizard" icon="plus-square"></base-btn>
           <span class="txt-placeholder txt-placeholder-subtitle">Your custom report will appear in the Report Browser</span>
         </div>
-
-        <!-- <div v-if="reports && reports.length > 0" class="cards-container d-flex flex-wrap justify-content-start">
-          <div v-for="(report, index) in reports" :key="report.id" class="card-container d-flex justify-content-center align-items-center">
-            <report-browser-card @click.native="$emit('clickCard', index)" :report="report" :class="{'active': report === selectedReport, 'pulsate': report !== selectedReport}"></report-browser-card>
-          </div>
-        </div> -->
-
       </div>
 
-      <b-modal ref="reportViewerModal" hide-header hide-footer>
-        <report-viewer @close="$refs.reportViewerModal.hide()"></report-viewer>
+      <b-modal ref="reportWizardModal" hide-header hide-footer>
+        <report-wizard @close="$refs.reportWizardModal.hide()"></report-wizard>
       </b-modal>
     </div>
   </dark-card>
@@ -29,9 +18,7 @@
 <script>
 import BaseBtn from "@/components/BaseBtn";
 import DarkCard from "@/components/DarkCard";
-import ReportDataTable from "@/components/Reports/ReportDataTable";
-import RecordedEventsChart from '@/components/RecordedEventsChart';
-import RevenueChart from '@/components/RevenueChart';
+import ReportWizard from '@/components/Reports/ReportWizard';
 
 export default {
   name: "CustomReports",
@@ -39,9 +26,7 @@ export default {
   components: {
     DarkCard,
     BaseBtn,
-    ReportDataTable,
-    RecordedEventsChart,
-    RevenueChart,
+    ReportWizard,
   },
   data() {
     return {
@@ -85,7 +70,12 @@ export default {
       ]
     };
   },
-  mounted() {}
+  mounted() {},
+  methods: {
+    clickCustomReport() {
+      this.$refs.reportWizardModal.show();
+    },
+  },
 };
 </script>
 
@@ -115,28 +105,6 @@ export default {
   flex: 1;
   width: 100%;
   overflow: hidden;
-}
-
-.table-container {
-  flex: 1;
-  width: 100%;
-  overflow: hidden;
-}
-
-.stats-container {
-  height: 200px;
-  width: 100%;
-  overflow: hidden;
-}
-
-.report-data-table >>> th {
-  border-top-left-radius: 0px !important;
-  border-top-right-radius: 0px !important;
-}
-
-.report-data-table >>> td {
-  border-bottom-left-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
 }
 
 .top-data-container {
@@ -280,5 +248,17 @@ export default {
   color: rgba(0, 0, 0, 0.64);
   /* color: rgba(255, 255, 255, 0.64); */
   margin: 16px 0px;
+}
+
+.custom-reports>>>.modal-dialog {
+  max-width: 80%;
+  background: transparent;
+  overflow: hidden;
+}
+
+.custom-reports>>>.modal-body {
+  padding: 0px !important;
+  background: transparent;
+  overflow: hidden;
 }
 </style>
