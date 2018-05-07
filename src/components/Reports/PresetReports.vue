@@ -1,5 +1,5 @@
 <template>
-  <dark-card :title="'Report Presets'" class="daily-report-card">
+  <dark-card :title="'Preset Reports'" class="preset-reports">
     <div class="root-container d-flex flex-column justify-content-start align-items-center">
 
       <div class="top-container d-flex justify-content-start align-items-center">
@@ -91,11 +91,11 @@ export default {
 </script>
 
 <style scoped>
-.daily-report-card>>>.main-container {
+.preset-reports>>>.main-container {
   padding: 0px;
 }
 
-.daily-report-card >>> .root-container {
+.preset-reports >>> .root-container {
   overflow: hidden;
 }
 

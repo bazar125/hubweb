@@ -58,7 +58,6 @@
             <div ref="map" id="map" class="map"></div>
         </div>
       </div>
-    </div>
   </dark-card>
 </template>
 
@@ -194,8 +193,9 @@ export default {
         timestamp: Firebase.database.ServerValue.TIMESTAMP,
         expiryTimestamp,
         senderId: this.currentUser.$id,
-        senderName: `${this.currentUser.firstName} ${this.currentUser
-          .lastName}`,
+        senderName: `${this.currentUser.firstName} ${
+          this.currentUser.lastName
+        }`,
         senderImage: this.currentUser.image,
       };
 
@@ -246,13 +246,15 @@ export default {
       const ref = Firebase.database().ref();
       const updates = {};
       updates[
-        `/globalNotificationSeen/${this.currentUser.$id}/${this
-          .selectedNotification.$id}`
+        `/globalNotificationSeen/${this.currentUser.$id}/${
+          this.selectedNotification.$id
+        }`
       ] = true;
       ref.update(updates).then(() => {
         console.log(
-          `${this.currentUser.$id} marked as seen ${this.selectedNotification
-            .$id}`
+          `${this.currentUser.$id} marked as seen ${
+            this.selectedNotification.$id
+          }`
         );
       });
     },
@@ -502,7 +504,7 @@ export default {
   border-bottom-color: #8f90a8;
   /* border-bottom-color: #eceeef; */
   border-radius: 0px;
-  color: rgba(255,255,255, 0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .chat-user-tabs>>>.nav .nav-item:first-child .nav-link {
@@ -607,7 +609,7 @@ export default {
 
 .chat-user-tabs>>>.bootstrap-datetimepicker-widget {
   font-size: 10px;
-  color: rgba(0,0,0,0.84) !important;
+  color: rgba(0, 0, 0, 0.84) !important;
 }
 .notification-card>>>.content-container {
   overflow: visible;

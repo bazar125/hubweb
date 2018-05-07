@@ -16,7 +16,7 @@ export default {
     }
 
     const lat = val.coords ? val.coords.lat : 10.3080;
-    const lng = val.coords ? val.coords.lng : 7.0142;
+    const lng = val.coords ? val.coords.lon : 7.0142;
     const width = 800;
     const height = 200;
     const zoom = 14;
@@ -57,7 +57,7 @@ export default {
     val.allVehicles = val.allVehicles.join(', ');
 
     const lat = val.coords ? val.coords.lat : 10.3080;
-    const lng = val.coords ? val.coords.lng : 7.0142;
+    const lng = val.coords ? val.coords.lon : 7.0142;
     const width = 800;
     const height = 200;
     const zoom = 14;

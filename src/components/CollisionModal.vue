@@ -2,23 +2,34 @@
   <boot-base-modal :hide-navigation="hideNavigation" class="collision-modal d-flex flex-column justify-content-center align-items-start" title="Collision" type="collision" :modalId="modalId" :data="data">
     <template slot="main" slot-scope="props">
       <div class="d-flex flex-column justify-content-start align-items-center">
-        <div id="collision-modal-print-root" class="data-section d-flex justify-content-start align-items-start">
-          <div class="data-container d-flex flex-column justify-content-start align-items-center">
-            <modal-data-row label="Date" :text="props.data.date"></modal-data-row>
-            <modal-data-row label="Time" :text="props.data.time"></modal-data-row>
-            <modal-data-row label="Address" :text="props.data.address"></modal-data-row>
+        <div id="collision-modal-print-root" class="d-flex flex-column justify-content-start align-items-start">
+          <div class="data-section d-flex justify-content-start align-items-start">
+            <div class="data-container d-flex flex-column justify-content-start align-items-center">
+              <modal-data-row label="Date" :text="props.data.date"></modal-data-row>
+              <modal-data-row label="Time" :text="props.data.time"></modal-data-row>
+              <modal-data-row label="Address" :text="props.data.address"></modal-data-row>
+            </div>
+
+            <div class="data-container d-flex flex-column justify-content-start align-items-center">
+              <modal-data-row label="Location Description" :text="props.data.attendingOfficer"></modal-data-row>
+              <modal-data-row label="Attending Officer" :text="props.data.attendingOfficer"></modal-data-row>
+              <modal-data-row label="Reference" :text="props.data.reference"></modal-data-row>
+              <modal-data-row label="Description" :text="props.data.description"></modal-data-row>
+            </div>
+
+            <div class="data-container d-flex flex-column justify-content-start align-items-center">
+              <img class="img-main" :src="data.image ? data.image : photoPlaceholder"></img>
+              <modal-data-attachments @clickImage="clickImage" :data="data"></modal-data-attachments>
+            </div>
           </div>
 
-          <div class="data-container d-flex flex-column justify-content-start align-items-center">
-            <modal-data-row label="Location Description" :text="props.data.attendingOfficer"></modal-data-row>
-            <modal-data-row label="Attending Officer" :text="props.data.attendingOfficer"></modal-data-row>
-            <modal-data-row label="Reference" :text="props.data.reference"></modal-data-row>
-            <modal-data-row label="Description" :text="props.data.description"></modal-data-row>
-          </div>
-
-          <div class="data-container d-flex flex-column justify-content-start align-items-center">
-            <img class="img-main" :src="data.image ? data.image : photoPlaceholder"></img>
-            <modal-data-attachments @clickImage="clickImage" :data="data"></modal-data-attachments>
+           <div v-if="(props.data.audio && props.data.audio.length > 0)" class="data-section d-flex justify-content-start align-items-start">
+            <div class="data-container d-flex flex-column justify-content-start align-items-center">
+              <span class="data-label">Audio Attachments</span>
+              <audio v-for="audioUrl in props.data.audio" :key="audioUrl" controls preload="none" class="audio-controls">
+                <source :src="audioUrl" type="audio/mp4" />
+              </audio>
+            </div>
           </div>
         </div>
       </div>
@@ -77,5 +88,19 @@ export default {
 .data-section {
   flex: 1;
   width: 100%;
+}
+
+.audio-controls {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.data-label {
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: start;
+  color: rgba(0, 0, 0, 0.87);
 }
 </style>

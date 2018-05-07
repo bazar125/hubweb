@@ -416,7 +416,7 @@ export default {
         this.selectedUserMarker.setMap(null);
       }
       const lat = userStatus.coords.lat;
-      const lng = userStatus.coords.lng;
+      const lng = userStatus.coords.lng ? userStatus.coords.lng : userStatus.coords.lon;
       this.selectedUserMarker = MapOverlayFactory.pulseMarker(
         this.map,
         lat,

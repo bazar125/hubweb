@@ -1,36 +1,21 @@
 <template>
-  <dark-card :title="'Report Browser'" class="report-browser">
+  <dark-card :title="'Custom Reports'" class="custom-reports">
     <div class="root-container d-flex flex-column justify-content-start align-items-center">
-
-      <!-- <div class="top-container d-flex justify-content-start align-items-center">
-        <div class="d-flex flex-column justify-content-start align-items-center" style="flex: 1;">
-          <div class="top-data-container d-flex justify-content-start align-items-center">
-            <span class="top-label">Preset Time Range</span>
-            <base-btn @click="clickToday()" class="btn-print" text="Today" icon="history"></base-btn>
-            <base-btn @click="clickWeek()" class="btn-print btn-disabled" text="This Week" icon="history"></base-btn>
-            <base-btn @click="clickFortnight()" class="btn-print btn-disabled" text="This Fortnight" icon="history"></base-btn>
-            <base-btn @click="clickMonth()" class="btn-print btn-disabled" text="This Month" icon="history"></base-btn>
-            <base-btn @click="clickYear()" class="btn-print btn-disabled" text="This Year" icon="history"></base-btn>
-          </div>
-          <div class="top-data-container d-flex justify-content-start align-items-center" style="margin-bottom: 0px;">
-            <span class="top-label">Custom Report</span>
-            <base-btn @click="clickCustomReport()" class="btn-email" text="Launch Wizard" icon="plus-square" style="margin-right: 50px;"></base-btn>
-          </div>
-        </div>
-      </div> -->
-
       <div class="bottom-container d-flex flex-column justify-content-start align-items-center">
         <div v-if="!reports || reports.length === 0" class="placeholder-container d-flex flex-column align-items-center justify-content-center">
-          <span class="txt-placeholder">You don't currently have any saved reports</span>
-          <icon class="icon-placeholder" name="bar-chart"></icon>
-          <span class="txt-placeholder txt-placeholder-subtitle">Create a custom report or use a preset to get started</span>
+          <!-- <div class="d-flex align-items-center justify-content-center">
+              <span class="txt-placeholder txt-placeholder-title">Launch Report Wizard</span>
+              <icon class="icon-placeholder" name="plus-square-o"></icon>
+          </div> -->
+          <base-btn @click="clickCustomReport()" class="btn-email" text="Launch Report Wizard" icon="plus-square"></base-btn>
+          <span class="txt-placeholder txt-placeholder-subtitle">Your custom report will appear in the Report Browser</span>
         </div>
 
-        <div v-if="reports && reports.length > 0" class="cards-container d-flex flex-wrap justify-content-start">
+        <!-- <div v-if="reports && reports.length > 0" class="cards-container d-flex flex-wrap justify-content-start">
           <div v-for="(report, index) in reports" :key="report.id" class="card-container d-flex justify-content-center align-items-center">
             <report-browser-card @click.native="$emit('clickCard', index)" :report="report" :class="{'active': report === selectedReport, 'pulsate': report !== selectedReport}"></report-browser-card>
           </div>
-        </div>
+        </div> -->
 
       </div>
 
@@ -44,45 +29,72 @@
 <script>
 import BaseBtn from "@/components/BaseBtn";
 import DarkCard from "@/components/DarkCard";
-import ReportBrowserCard from "@/components/Reports/ReportBrowserCard";
-import ReportViewer from "@/components/Reports/ReportViewer";
+import ReportDataTable from "@/components/Reports/ReportDataTable";
+import RecordedEventsChart from '@/components/RecordedEventsChart';
+import RevenueChart from '@/components/RevenueChart';
 
 export default {
-  name: "ReportBrowser",
-  props: ["reports", "selectedReport"],
+  name: "CustomReports",
+  props: [],
   components: {
     DarkCard,
     BaseBtn,
-    ReportBrowserCard,
-    ReportViewer
+    ReportDataTable,
+    RecordedEventsChart,
+    RevenueChart,
   },
   data() {
-    return {};
+    return {
+      items: [
+        {
+          label: "Collisions",
+          value: "4"
+        },
+        {
+          label: "Citations",
+          value: "4",
+        },
+        {
+          label: "Warnings",
+          value: "12",
+        },
+        {
+          label: "Total Registered Vehicles",
+          value: "414,152",
+        },
+        {
+          label: "Total Registered Drivers",
+          value: "1,253,152",
+        },
+        {
+          label: "Citations Paid",
+          value: "470",
+        },
+        {
+          label: "Citations Unpaid",
+          value: "3",
+        },
+        {
+          label: "Citations Revenue",
+          value: "₦1,340,000",
+        },
+        {
+          label: "Driver Identification Submissions",
+          value: "125",
+        },
+      ]
+    };
   },
-  mounted() {},
-  methods: {
-    clickToday() {
-      this.$refs.reportViewerModal.show();
-    },
-    clickWeek() {},
-    clickFortnight() {},
-    clickMonth() {},
-    clickYear() {},
-    showReport() {}
-  }
+  mounted() {}
 };
 </script>
 
 <style scoped>
-.report-browser {
-  width: 100%;
-}
-
-.report-browser>>>.main-container {
+.custom-reports>>>.main-container {
   padding: 0px;
 }
 
-.report-browser>>>.root-container {
+.custom-reports >>> .root-container {
   overflow: hidden;
 }
 
@@ -100,7 +112,6 @@ export default {
 }
 
 .bottom-container {
-  position: relative;
   flex: 1;
   width: 100%;
   overflow: hidden;
@@ -118,12 +129,12 @@ export default {
   overflow: hidden;
 }
 
-.report-data-table>>>th {
+.report-data-table >>> th {
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
 }
 
-.report-data-table>>>td {
+.report-data-table >>> td {
   border-bottom-left-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
 }
@@ -157,22 +168,32 @@ export default {
   transition: ease-out 0.2;
 }
 
-.btn-print {
-  margin-bottom: 6px;
-}
-
-.btn-print:not(:last-child) {
-  margin-right: 6px;
-}
-
 .btn-print:hover {
   background-color: #5751da !important;
   border-color: #5751da !important;
   transition: ease-out 0.2;
 }
 
+/* .btn-email {
+  flex: 1;
+  height: 30px !important;
+  width: 100%;
+  padding: 0px !important;
+  color: white !important;
+  background-color: #63a54b !important;
+  border-color: #63a54b !important;
+  transition: ease-out 0.2;
+}
+
+.btn-email:hover {
+  background-color: #9ac98f !important;
+  border-color: #9ac98f !important;
+  transition: ease-out 0.2;
+} */
+
 .btn-email {
   /* flex: 1; */
+  margin: 16px 0px;
   height: 30px !important;
   width: 300px;
   padding: 0px !important;
@@ -189,9 +210,9 @@ export default {
 }
 
 .btn-pdf {
-  /* flex: 0.5; */
+  flex: 1;
   height: 30px !important;
-  width: 300px;
+  width: 100%;
   padding: 0px !important;
   color: white !important;
   background-color: #094977 !important;
@@ -203,18 +224,6 @@ export default {
   background-color: #0d6bae !important;
   border-color: #0d6bae !important;
   transition: ease-out 0.2 !important;
-}
-
-.btn-disabled {
-  background-color: #888888 !important;
-  border-color: #888888 !important;
-  cursor: default !important;
-}
-
-.btn-disabled:hover {
-  background-color: #888888 !important;
-  border-color: #888888 !important;
-  cursor: default !important;
 }
 
 .top-action-container {
@@ -244,45 +253,21 @@ export default {
   overflow: hidden;
 }
 
-.cards-container {
-  flex: 1;
-  width: 100%;
-  margin-bottom: 10px;
-  /* overflow-y: auto; */
-}
-
-.input-search {
-  margin-bottom: 8px;
-}
-
-.card-container {
-  /* height: auto; */
-  width: calc(100% / 9);
-  /* flex: 0 0 11.1%; */
-  padding-bottom: 8px;
-  padding-right: 4px;
-  padding-left: 4px;
-}
-
-.report-browser>>>.main-container {
-  overflow-y: auto;
-}
-
-.card-container:last-child {
-  padding-bottom: 0px;
-}
-
-.card-container:nth-child(9n) {
-  padding-right: 0px;
-}
-.card-container:nth-child(9n + 1) {
-  padding-left: 0px;
+.placeholder-container {
+  /* background-color: #263238; */
 }
 
 .txt-placeholder {
   font-size: 18px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.64);
+  /* color: rgba(255, 255, 255, 0.64); */
+}
+
+.txt-placeholder-title {
+  /* font-weight: 600; */
+  font-size: 22px;
+  font-weight: 300;
 }
 
 .txt-placeholder-subtitle {
@@ -293,18 +278,7 @@ export default {
   width: auto;
   height: 60px;
   color: rgba(0, 0, 0, 0.64);
+  /* color: rgba(255, 255, 255, 0.64); */
   margin: 16px 0px;
-}
-
-.report-browser>>>.modal-dialog {
-  max-width: 80%;
-  background: transparent;
-  overflow: hidden;
-}
-
-.report-browser>>>.modal-body {
-  padding: 0px !important;
-  background: transparent;
-  overflow: hidden;
 }
 </style>

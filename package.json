@@ -34,6 +34,7 @@
     "vue": "^2.3.3",
     "vue-awesome": "^2.3.1",
     "vue-bootstrap-datetimepicker": "^4.0.0",
+    "vue-carousel": "^0.7.3",
     "vue-chartjs": "^2.8.7",
     "vue-chat-scroll": "^1.2.1",
     "vue-digital-clock": "^1.5.0",

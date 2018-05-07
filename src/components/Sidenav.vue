@@ -1,6 +1,6 @@
 <template>
   <div class="custom-sidenav d-flex flex-column justify-content-start align-items-center">
-    <router-link v-for="(link, index) in links" :key="link.path" :to="link.path" v-show="showForRole(link)" tag="div" class="nav-button">
+    <router-link v-for="link in links" :key="link.path" :to="link.path" v-show="showForRole(link)" tag="div" class="nav-button">
       <div class="d-flex justify-content-start align-items-center">
         <!-- <img class="nav-icon" :src="link.icon"></img> -->
         <icon class="nav-icon" :name="link.icon"></icon>

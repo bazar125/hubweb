@@ -1,21 +1,26 @@
 <template>
  <div class="reports d-flex">
     <div class="left-side-container d-flex flex-column align-items-center">
-        <report-browser :reports="reports" :selectedReport="selectedReport"></report-browser>
+        <preset-reports></preset-reports>
       </div> 
-     <!-- <div class="right-side-container d-flex flex-column align-items-center">
-       <report-presets></report-presets>
-      </div> -->
+     <div class="right-side-container d-flex flex-column align-items-center">
+       <report-browser :reports="reports" :selectedReport="selectedReport"></report-browser>
+       <custom-reports></custom-reports>
+      </div>
   </div>
 </template>
 
 <script>
 import ReportBrowser from '@/components/Reports/ReportBrowser';
+import PresetReports from '@/components/Reports/PresetReports';
+import CustomReports from '@/components/Reports/CustomReports';
 
 export default {
   name: 'Reports',
   components: {
     ReportBrowser,
+    PresetReports,
+    CustomReports,
   },
   data() {
     return {
@@ -80,12 +85,13 @@ export default {
 
 .left-side-container {
   overflow: hidden;
-  /* flex: 0.6; */
-  flex: 1;
+  flex: 0.55;
+  /* flex: 1; */
   padding: 8px;
+  padding-right: 4px;
 }
 
-.daily-report-card {
+.preset-reports {
   width: 100%;
   height: 100%;
   flex: 1;
@@ -94,12 +100,20 @@ export default {
 .right-side-container {
   overflow: hidden;
   padding: 8px;
-  padding-left: 0px;
-  padding-right: 0px;
-  flex: 0.4;
+  padding-left: 4px;
+  flex: 0.45;
 }
 
 .right-side-container >>> .base-card {
   width: 100%;
+}
+
+.right-side-container>>>.report-browser {
+  flex: 0.7;
+}
+
+.right-side-container>>>.custom-reports {
+  flex: 0.3;
+  margin-top: 8px;
 }
 </style>

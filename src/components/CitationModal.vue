@@ -21,7 +21,7 @@
           </div>
 
           <div class="data-container d-flex flex-column justify-content-start align-items-center">
-            <img class="img-main" :src="data.image ? data.image : photoPlaceholder"></img>
+            <img class="img-main" :src="data.image ? data.image : photoPlaceholder"/>
             <!-- <modal-data-row label="Attachments" :text="props.data.completionStatus"></modal-data-row> -->
             <modal-data-attachments @clickImage="clickImage" :data="data"></modal-data-attachments>
           </div>
