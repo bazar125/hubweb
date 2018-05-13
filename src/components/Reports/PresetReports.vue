@@ -1,23 +1,23 @@
 <template>
   <dark-card :title="'Preset Reports'" class="preset-reports">
     <div class="root-container d-flex flex-column justify-content-start align-items-center">
-      <div class="preset-container d-flex flex-column justify-content-start align-items-center">
+      <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Daily</span>
         <report-carousel :reports="dailyReports"></report-carousel>
       </div>
-      <div class="preset-container d-flex flex-column justify-content-start align-items-center">
+      <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Weekly</span>
         <report-carousel :reports="weeklyReports"></report-carousel>
       </div>
-      <div class="preset-container d-flex flex-column justify-content-start align-items-center">
+      <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Fortnightly</span>
         <report-carousel :reports="fortnightlyReports"></report-carousel>
       </div>
-      <div class="preset-container d-flex flex-column justify-content-start align-items-center">
+      <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Monthly</span>
         <report-carousel :reports="monthlyReports"></report-carousel>
       </div>
-      <div class="preset-container d-flex flex-column justify-content-start align-items-center">
+      <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Yearly</span>
         <report-carousel :reports="yearlyReports"></report-carousel>
       </div>
@@ -28,9 +28,14 @@
 <script>
 import BaseBtn from '@/components/BaseBtn';
 import DarkCard from '@/components/DarkCard';
-import ReportDataTable from '@/components/Reports/ReportDataTable';
 import RecordedEventsChart from '@/components/RecordedEventsChart';
 import RevenueChart from '@/components/RevenueChart';
+import ReportDataTable from '@/components/Reports/ReportDataTable';
+import ReportCarousel from '@/components/Reports/ReportCarousel';
+
+import Slide1 from '../../assets/refueling_stock_photo.jpg';
+import Slide2 from '../../assets/fleet_stock_photo.jpg';
+import Slide3 from '../../assets/petrol_station_stock_photo.jpg';
 
 export default {
   name: 'PresetReports',
@@ -38,9 +43,10 @@ export default {
   components: {
     DarkCard,
     BaseBtn,
-    ReportDataTable,
     RecordedEventsChart,
     RevenueChart,
+    ReportDataTable,
+    ReportCarousel,
   },
   data() {
     return {
@@ -302,5 +308,22 @@ export default {
 .report-data-table {
   width: 100%;
   overflow: hidden;
+}
+
+.preset-container {
+  flex: 1;
+  width: 100%;
+  padding: 8px;
+  padding-top: 4px;
+}
+
+.preset-container:not(:last-child) {
+  padding-bottom: 0px;
+}
+
+.carousel-label {
+  font-weight: 600;
+  color: rgba(0,0,0,.84);
+  margin-bottom: 4px;
 }
 </style>

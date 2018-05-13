@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import ReportCarouselSlide from '@/components/ReportCarouselSlide';
+import ReportCarouselSlide from '@/components/Reports/ReportCarouselSlide';
 
 export default {
   name: 'ReportCarousel',
