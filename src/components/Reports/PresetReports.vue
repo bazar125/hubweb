@@ -1,41 +1,39 @@
 <template>
   <dark-card :title="'Preset Reports'" class="preset-reports">
     <div class="root-container d-flex flex-column justify-content-start align-items-center">
-
-      <!-- <div class="top-container d-flex justify-content-start align-items-center">
-
-        <div class="divider"></div>
-
-        <div class="top-action-container d-flex flex-column justify-content-start align-items-center">
-          <span class="action-title">Actions</span>
-          <base-btn @click="clickToday()" class="btn-print" text="Today" icon="print" style="margin-bottom: 6px;"></base-btn>
-          <base-btn @click="clickWeek()" class="btn-email" text="Week" icon="envelope-o" style="margin-bottom: 6px;"></base-btn>
-          <base-btn @click="clickFortniht()" class="btn-pdf" text="Fortnight" icon="file-pdf-o"></base-btn>
-          <base-btn @click="clickMonthly()" class="btn-pdf" text="Month" icon="file-pdf-o"></base-btn>
-          <base-btn @click="clickFortnightly()" class="btn-pdf" text="Year" icon="file-pdf-o"></base-btn>
-        </div>
-
-        <div class="divider"></div>
-      </div> -->
-
-      <div class="bottom-container d-flex flex-column justify-content-start align-items-center">
-        <div class="table-container d-flex flex-column justify-content-start align-items-center">
-
-        </div>
+      <div class="preset-container d-flex flex-column justify-content-start align-items-center">
+        <span class="carousel-label">Daily</span>
+        <report-carousel :reports="dailyReports"></report-carousel>
+      </div>
+      <div class="preset-container d-flex flex-column justify-content-start align-items-center">
+        <span class="carousel-label">Weekly</span>
+        <report-carousel :reports="weeklyReports"></report-carousel>
+      </div>
+      <div class="preset-container d-flex flex-column justify-content-start align-items-center">
+        <span class="carousel-label">Fortnightly</span>
+        <report-carousel :reports="fortnightlyReports"></report-carousel>
+      </div>
+      <div class="preset-container d-flex flex-column justify-content-start align-items-center">
+        <span class="carousel-label">Monthly</span>
+        <report-carousel :reports="monthlyReports"></report-carousel>
+      </div>
+      <div class="preset-container d-flex flex-column justify-content-start align-items-center">
+        <span class="carousel-label">Yearly</span>
+        <report-carousel :reports="yearlyReports"></report-carousel>
       </div>
     </div>
   </dark-card>
 </template>
 
 <script>
-import BaseBtn from "@/components/BaseBtn";
-import DarkCard from "@/components/DarkCard";
-import ReportDataTable from "@/components/Reports/ReportDataTable";
+import BaseBtn from '@/components/BaseBtn';
+import DarkCard from '@/components/DarkCard';
+import ReportDataTable from '@/components/Reports/ReportDataTable';
 import RecordedEventsChart from '@/components/RecordedEventsChart';
 import RevenueChart from '@/components/RevenueChart';
 
 export default {
-  name: "PresetReports",
+  name: 'PresetReports',
   props: [],
   components: {
     DarkCard,
@@ -48,45 +46,115 @@ export default {
     return {
       items: [
         {
-          label: "Collisions",
-          value: "4"
+          label: 'Collisions',
+          value: '4',
         },
         {
-          label: "Citations",
-          value: "4",
+          label: 'Citations',
+          value: '4',
         },
         {
-          label: "Warnings",
-          value: "12",
+          label: 'Warnings',
+          value: '12',
         },
         {
-          label: "Total Registered Vehicles",
-          value: "414,152",
+          label: 'Total Registered Vehicles',
+          value: '414,152',
         },
         {
-          label: "Total Registered Drivers",
-          value: "1,253,152",
+          label: 'Total Registered Drivers',
+          value: '1,253,152',
         },
         {
-          label: "Citations Paid",
-          value: "470",
+          label: 'Citations Paid',
+          value: '470',
         },
         {
-          label: "Citations Unpaid",
-          value: "3",
+          label: 'Citations Unpaid',
+          value: '3',
         },
         {
-          label: "Citations Revenue",
-          value: "₦1,340,000",
+          label: 'Citations Revenue',
+          value: '₦1,340,000',
         },
         {
-          label: "Driver Identification Submissions",
-          value: "125",
+          label: 'Driver Identification Submissions',
+          value: '125',
         },
-      ]
+      ],
+      dailyReports: [
+        {
+          text: 'Make Savings On Your Fuelling & Protect Against Fuel Theft',
+          background: Slide3,
+        },
+        {
+          text: 'Second Slide',
+          background: Slide1,
+        },
+        {
+          text: 'Third Slide',
+          background: Slide2,
+        },
+      ],
+      weeklyReports: [
+        {
+          text: 'Make Savings On Your Fuelling & Protect Against Fuel Theft',
+          background: Slide3,
+        },
+        {
+          text: 'Second Slide',
+          background: Slide1,
+        },
+        {
+          text: 'Third Slide',
+          background: Slide2,
+        },
+      ],
+      fortnightlyReports: [
+        {
+          text: 'Make Savings On Your Fuelling & Protect Against Fuel Theft',
+          background: Slide3,
+        },
+        {
+          text: 'Second Slide',
+          background: Slide1,
+        },
+        {
+          text: 'Third Slide',
+          background: Slide2,
+        },
+      ],
+      monthlyReports: [
+        {
+          text: 'Make Savings On Your Fuelling & Protect Against Fuel Theft',
+          background: Slide3,
+        },
+        {
+          text: 'Second Slide',
+          background: Slide1,
+        },
+        {
+          text: 'Third Slide',
+          background: Slide2,
+        },
+      ],
+      yearlyReports: [
+        {
+          text: 'Make Savings On Your Fuelling & Protect Against Fuel Theft',
+          background: Slide3,
+        },
+        {
+          text: 'Second Slide',
+          background: Slide1,
+        },
+        {
+          text: 'Third Slide',
+          background: Slide2,
+        },
+      ],
     };
   },
-  mounted() {}
+  mounted() {},
 };
 </script>
 
@@ -95,7 +163,7 @@ export default {
   padding: 0px;
 }
 
-.preset-reports >>> .root-container {
+.preset-reports>>>.root-container {
   overflow: hidden;
 }
 
@@ -130,12 +198,12 @@ export default {
   overflow: hidden;
 }
 
-.report-data-table >>> th {
+.report-data-table>>>th {
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
 }
 
-.report-data-table >>> td {
+.report-data-table>>>td {
   border-bottom-left-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
 }

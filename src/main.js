@@ -12,6 +12,7 @@ import VueResource from 'vue-resource';
 import Viewer from 'v-viewer';
 import VueChatScroll from 'vue-chat-scroll';
 import DatePicker from 'vue-bootstrap-datetimepicker';
+import VueCarousel from 'vue-carousel';
 
 import * as Firebase from 'firebase';
 
@@ -33,6 +34,7 @@ Vue.use(VueResource);
 Vue.use(Viewer);
 Vue.use(VueChatScroll);
 Vue.use(DatePicker);
+Vue.use(VueCarousel);
 Vue.component('icon', Icon);
 Vue.component('video-bg', VideoBg);
 
