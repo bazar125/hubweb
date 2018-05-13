@@ -10,10 +10,6 @@
         <preset-report-list :reports="weeklyReports"></preset-report-list>
       </div>
       <div class="preset-container d-flex flex-column justify-content-start align-items-start">
-        <span class="carousel-label">Fortnightly</span>
-        <preset-report-list :reports="fortnightlyReports"></preset-report-list>
-      </div>
-      <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Monthly</span>
         <preset-report-list :reports="monthlyReports"></preset-report-list>
       </div>
@@ -85,9 +81,6 @@ export default {
         },
       ],
       dailyReports: [
-        // TODO: Generate hours of the day
-      ],
-      weeklyReports: [
         {
           title: 'Monday',
         },
@@ -110,10 +103,18 @@ export default {
           title: 'Sunday',
         },
       ],
-      fortnightlyReports: [
-        // TODO: Generate this on the fly
+      weeklyReports: [
         {
-          title: '30 Apr - 13 May',
+          title: 'Week 49 (2 Apr - 9 Apr)',
+        },
+        {
+          title: 'Week 50 (9 Apr - 16 Apr)',
+        },
+        {
+          title: 'Week 51 (23 Apr - 1 May)',
+        },
+        {
+          title: 'Week 52 (8 May - 15 Apr)',
         },
       ],
       monthlyReports: [

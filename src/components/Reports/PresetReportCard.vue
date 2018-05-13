@@ -4,6 +4,7 @@
       <span class="header-text">{{report.title}}</span>
     </div>
     <div class="state-img-container d-flex justify-content-center align-items-center">
+      <icon class="icon-placeholder" name="bar-chart"></icon>
       <!-- <svg class="state-img" xmlns="http://www.w3.org/2000/svg" version="1.1" :viewBox="state.viewBox">
         <path :d="state.d" :title="state.title" :id="state.id"/>
       </svg> -->
@@ -118,6 +119,7 @@ export default {
 
 .state-img-container {
   flex: 1;
+  padding: 8px;
 }
 
 .state-img {
@@ -145,6 +147,13 @@ body path {
   vector-effect: non-scaling-stroke;
   fill: #008751;
   stroke: rgb(255, 255, 255);
+}
+
+.icon-placeholder {
+  width: auto;
+  height: 25px;
+  color: rgba(0, 0, 0, 0.64);
+  /* margin: 16px 0px; */
 }
 
 </style>
