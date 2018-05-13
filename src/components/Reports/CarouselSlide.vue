@@ -1,5 +1,5 @@
 <template>
-  <div class="report-carousel-slide">
+  <div class="carousel-slide">
     <div class="slide-background-container" :style="{'background-image': `url(${background})`}"></div>
     <div class="slide-content-container d-flex flex-column justify-content-start align-items-start">
       <span class="slide-text">{{text}}</span>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'ReportCarouselSlide',
+  name: 'CarouselSlide',
   props: ['text', 'background', 'actionTitle'],
   components: {
 
@@ -27,7 +27,7 @@ export default {
 
 <style scoped>
 
-.report-carousel-slide {
+.carousel-slide {
   position: relative;
   height: 100%;
   border: solid #ececec;

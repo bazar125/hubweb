@@ -3,23 +3,23 @@
     <div class="root-container d-flex flex-column justify-content-start align-items-center">
       <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Daily</span>
-        <report-carousel :reports="dailyReports"></report-carousel>
+        <preset-report-list :reports="dailyReports"></preset-report-list>
       </div>
       <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Weekly</span>
-        <report-carousel :reports="weeklyReports"></report-carousel>
+        <preset-report-list :reports="weeklyReports"></preset-report-list>
       </div>
       <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Fortnightly</span>
-        <report-carousel :reports="fortnightlyReports"></report-carousel>
+        <preset-report-list :reports="fortnightlyReports"></preset-report-list>
       </div>
       <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Monthly</span>
-        <report-carousel :reports="monthlyReports"></report-carousel>
+        <preset-report-list :reports="monthlyReports"></preset-report-list>
       </div>
       <div class="preset-container d-flex flex-column justify-content-start align-items-start">
         <span class="carousel-label">Yearly</span>
-        <report-carousel :reports="yearlyReports"></report-carousel>
+        <preset-report-list :reports="yearlyReports"></preset-report-list>
       </div>
     </div>
   </dark-card>
@@ -31,11 +31,7 @@ import DarkCard from '@/components/DarkCard';
 import RecordedEventsChart from '@/components/RecordedEventsChart';
 import RevenueChart from '@/components/RevenueChart';
 import ReportDataTable from '@/components/Reports/ReportDataTable';
-import ReportCarousel from '@/components/Reports/ReportCarousel';
-
-import Slide1 from '../../assets/refueling_stock_photo.jpg';
-import Slide2 from '../../assets/fleet_stock_photo.jpg';
-import Slide3 from '../../assets/petrol_station_stock_photo.jpg';
+import PresetReportList from '@/components/Reports/PresetReportList';
 
 export default {
   name: 'PresetReports',
@@ -46,7 +42,7 @@ export default {
     RecordedEventsChart,
     RevenueChart,
     ReportDataTable,
-    ReportCarousel,
+    PresetReportList,
   },
   data() {
     return {
@@ -89,73 +85,78 @@ export default {
         },
       ],
       dailyReports: [
-        {
-          text: 'Make Savings On Your Fuelling & Protect Against Fuel Theft',
-          background: Slide3,
-        },
-        {
-          text: 'Second Slide',
-          background: Slide1,
-        },
-        {
-          text: 'Third Slide',
-          background: Slide2,
-        },
+        // TODO: Generate hours of the day
       ],
       weeklyReports: [
         {
-          text: 'Make Savings On Your Fuelling & Protect Against Fuel Theft',
-          background: Slide3,
+          title: 'Monday',
         },
         {
-          text: 'Second Slide',
-          background: Slide1,
+          title: 'Tuesday',
         },
         {
-          text: 'Third Slide',
-          background: Slide2,
+          title: 'Wednesday',
+        },
+        {
+          title: 'Thursday',
+        },
+        {
+          title: 'Friday',
+        },
+        {
+          title: 'Saturday',
+        },
+        {
+          title: 'Sunday',
         },
       ],
       fortnightlyReports: [
+        // TODO: Generate this on the fly
         {
-          text: 'Make Savings On Your Fuelling & Protect Against Fuel Theft',
-          background: Slide3,
-        },
-        {
-          text: 'Second Slide',
-          background: Slide1,
-        },
-        {
-          text: 'Third Slide',
-          background: Slide2,
+          title: '30 Apr - 13 May',
         },
       ],
       monthlyReports: [
         {
-          text: 'Make Savings On Your Fuelling & Protect Against Fuel Theft',
-          background: Slide3,
+          title: 'January',
         },
         {
-          text: 'Second Slide',
-          background: Slide1,
+          title: 'February',
         },
         {
-          text: 'Third Slide',
-          background: Slide2,
+          title: 'March',
+        },
+        {
+          title: 'April',
+        },
+        {
+          title: 'May',
+        },
+        {
+          title: 'June',
+        },
+        {
+          title: 'July',
+        },
+        {
+          title: 'August',
+        },
+        {
+          title: 'September',
+        },
+        {
+          title: 'October',
+        },
+        {
+          title: 'November',
+        },
+        {
+          title: 'December',
         },
       ],
       yearlyReports: [
         {
-          text: 'Make Savings On Your Fuelling & Protect Against Fuel Theft',
-          background: Slide3,
-        },
-        {
-          text: 'Second Slide',
-          background: Slide1,
-        },
-        {
-          text: 'Third Slide',
-          background: Slide2,
+          title: '2018',
         },
       ],
     };
@@ -323,7 +324,7 @@ export default {
 
 .carousel-label {
   font-weight: 600;
-  color: rgba(0,0,0,.84);
+  color: rgba(0, 0, 0, 0.84);
   margin-bottom: 4px;
 }
 </style>

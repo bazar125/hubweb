@@ -1,21 +1,21 @@
 <template>
-  <div class="root-container report-carousel d-flex flex-column">
+  <div class="root-container preset-report-carousel d-flex flex-column">
     <carousel class="custom-carousel" :per-page="1" :pagination-active-color="'#508fca'">
       <slide v-for="(slide, index) in reports" :key="slide.text">
-        <report-carousel-slide class="slide-background" :background="slide.background" :text="slide.text"></report-carousel-slide>
+        <carousel-slide class="slide-background" :background="slide.background" :text="slide.text"></carousel-slide>
       </slide>
     </carousel>
   </div>
 </template>
 
 <script>
-import ReportCarouselSlide from '@/components/Reports/ReportCarouselSlide';
+import CarouselSlide from '@/components/Reports/CarouselSlide';
 
 export default {
-  name: 'ReportCarousel',
+  name: 'CarouselSlide',
   props: ['reports'],
   components: {
-    ReportCarouselSlide,
+    CarouselSlide,
   },
   data() {
     return {
@@ -29,7 +29,7 @@ export default {
 
 
 <style scoped>
-.report-carousel {
+.preset-report-carousel {
   /* 20px top margin */
   height: calc(100% - 20px);
   position: relative;
@@ -55,12 +55,12 @@ export default {
 </style>
 
 <style>
-.report-carousel .VueCarousel-wrapper,
-.report-carousel .VueCarousel-inner {
+.preset-report-carousel .VueCarousel-wrapper,
+.preset-report-carousel .VueCarousel-inner {
   height: 100%;
 }
 
-.report-carousel .VueCarousel-pagination {
+.preset-report-carousel .VueCarousel-pagination {
   position: absolute;
   bottom: 0;
 }
