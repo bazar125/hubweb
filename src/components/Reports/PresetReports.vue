@@ -327,5 +327,11 @@ export default {
   font-weight: 600;
   color: rgba(0, 0, 0, 0.84);
   margin-bottom: 4px;
+  /* border-bottom: 2px solid rgba(0, 0, 0, 0.34); */
+  padding: 0px 4px;
+}
+
+.preset-report-list {
+  flex: 1;
 }
 </style>

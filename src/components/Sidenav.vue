@@ -128,8 +128,9 @@ export default {
 
 <style scoped>
 .custom-sidenav {
-  background-color: white;
-  /* background-color: #3A3E5C; */
+  /* background-color: white; */
+  /* background-color: #263238; */
+  background-color: #3A3E5C;
   /* background-color: #191970; */
   /* background-color: #4a59ad; */
   width: 160px;
@@ -144,7 +145,9 @@ export default {
   background-color: transparent;
   width: 130px;
   /* color: rgba(0, 0, 0, 0.87); */
-  color: rgba(0, 0, 0, 0.54);
+  /* color: rgba(0, 0, 0, 0.54); */
+  /* color: rgb(137,146,198, .64); */
+  color: rgb(255,255,255, .54);
   /* color: rgb(137,146,198, 0.8); */
   /* color: rgb(255, 255, 255, 0.5); */
   /* color: rgba(197, 234, 142, 0.5); */
@@ -167,7 +170,9 @@ export default {
 .nav-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid #8992c6;
-  color: rgba(0, 0, 0, 0.84);
+  /* color: rgba(0, 0, 0, 0.84); */
+  color: rgb(137,146,198, .84);
+  /* color: rgb(255,255,255, .84); */
   transition: ease-out 0.2s;
 }
 

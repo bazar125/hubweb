@@ -4,21 +4,21 @@
         <preset-reports></preset-reports>
       </div> 
      <div class="right-side-container d-flex flex-column align-items-center">
-       <report-browser :reports="reports" :selectedReport="selectedReport"></report-browser>
+       <saved-reports :savedReports="savedReports" :selectedReport="selectedReport"></saved-reports>
        <custom-reports></custom-reports>
       </div>
   </div>
 </template>
 
 <script>
-import ReportBrowser from '@/components/Reports/ReportBrowser';
+import SavedReports from '@/components/Reports/SavedReports';
 import PresetReports from '@/components/Reports/PresetReports';
 import CustomReports from '@/components/Reports/CustomReports';
 
 export default {
   name: 'Reports',
   components: {
-    ReportBrowser,
+    SavedReports,
     PresetReports,
     CustomReports,
   },
@@ -26,7 +26,7 @@ export default {
     return {
       selectedIndex: 0,
       selectedReport: {},
-      reports: [],
+      savedReports: [],
       // reports: [
       //   {
       //     id: "1",

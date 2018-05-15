@@ -1,5 +1,5 @@
 <template>
-  <dark-card :title="'Report Browser'" class="report-browser">
+  <dark-card :title="'Saved Reports'" class="report-browser">
     <div class="root-container d-flex flex-column justify-content-start align-items-center">
 
       <!-- <div class="top-container d-flex justify-content-start align-items-center">
@@ -48,8 +48,8 @@ import ReportBrowserCard from "@/components/Reports/ReportBrowserCard";
 import ReportViewer from "@/components/Reports/ReportViewer";
 
 export default {
-  name: "ReportBrowser",
-  props: ["reports", "selectedReport"],
+  name: "SavedReports",
+  props: ["savedReports", "selectedReport"],
   components: {
     DarkCard,
     BaseBtn,

@@ -1,12 +1,12 @@
 <template>
   <div ref="rootView" class="report-data-table d-flex flex-column justify-content-center align-items-center">
     <table class="table-fill d-flex flex-column">
-      <thead class="custom-thead" :style="{'margin-right': scrollBarWidth + 'px'}">
+      <thead class="custom-thead" :style="{'margin-right': scrollBarWidth + 'px'}" :class="{'collapse-view': hideHead}">
         <tr>
           <th v-for="label in labels" :key="label" class="text-left">{{label}}</th>
         </tr>
       </thead>
-      <tbody ref="tbody" class="table-hover custom-tbody">
+      <tbody ref="tbody" class="table-hover custom-tbody" :class="{'hide-hover': hideHover}">
         <tr v-for="(item, index) in items" :key="item">
           <td class="text-left">{{item.label}}</td>
           <td class="text-left">{{item.value}}</td>
@@ -19,7 +19,15 @@
 <script>
 export default {
   name: "ReportDataTable",
-  props: ["labels", "items"],
+  props: {
+    labels: null,
+    items: {
+      type: null,
+      required: true
+    },
+    hideHead: Boolean,
+    hideHover: Boolean
+  },
   components: {},
   data() {
     return {
@@ -32,7 +40,7 @@ export default {
       return;
     }
 
-    if(tbody.scrollHeight > this.height) {
+    if (tbody.scrollHeight > this.height) {
       this.scrollBarWidth = this.getScrollbarWidth();
     }
   },
@@ -61,7 +69,7 @@ export default {
 
       return widthNoScroll - widthWithScroll;
     }
-  },
+  }
 };
 </script>
 
@@ -140,7 +148,7 @@ tr {
   /* text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1); */
 }
 
-tr:hover td {
+tbody:not(.hide-hover) tr:hover td {
   background: #4e5066;
   color: #ffffff;
   /* border-top: 1px solid #22262e; */
@@ -159,7 +167,7 @@ tr:nth-child(odd) td {
   background: #ebebeb;
 }
 
-tr:nth-child(odd):hover td {
+tbody:not(.hide-hover) tr:nth-child(odd):hover td {
   background: #4e5066;
 }
 
@@ -210,5 +218,9 @@ td.text-center {
 
 td.text-right {
   text-align: right;
+}
+
+.collapse-view {
+  visibility: collapse;
 }
 </style>

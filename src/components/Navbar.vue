@@ -128,7 +128,8 @@ export default {
 <style scoped>
 .custom-navbar {
   /* background-color: #212338; */
-  background-color: #31429e;
+  /* background-color: #31429e; */
+  background-color: #1a2353;
   /* color: white; */
   color: white;
   height: 50px;
