@@ -10,10 +10,10 @@
         <path :d="state.d" :title="state.title" :id="state.id"/>
       </svg> -->
     </div>
-    <div class="footer-container d-flex justify-content-center align-items-center">
+    <!-- <div class="footer-container d-flex justify-content-center align-items-center">
       <icon class="ic-check" name="check-circle-o"></icon>
       <span class="footer-text">No alerts</span>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -28,17 +28,25 @@ export default {
   },
   data() {
     return {
-      presetReports: [
-        { label: "Starts", value: "15 May 2018, 00:00" },
-        { label: "Ends", value: "15 May 2018, 23:59" },
-        { label: "Coverage", value: "All States" },
-        { label: "Data Types", value: "All" },
-        { label: "Data Types", value: "All" },
-        { label: "Data Types", value: "All" },
-        { label: "Data Types", value: "All" },
-        { label: "Data Types", value: "All" },
-      ]
+      presetReports: []
     };
+  },
+  methods: {
+    createTableData() {
+      if (!this.report) {
+        return [];
+      }
+
+      return [
+        { label: "Starts", value: `${this.report.startDate}, ${this.report.startTime}` },
+        { label: "Ends", value: `${this.report.endDate} ${this.report.endTime}` },
+        { label: "Coverage", value: `${this.report.coverage}` },
+        { label: "Data Types", value: `${this.report.dataTypes}` }
+      ];
+    }
+  },
+  mounted() {
+    this.presetReports = this.createTableData();
   }
 };
 </script>
@@ -48,7 +56,7 @@ export default {
   position: relative;
   width: 200px;
   /* flex: 1; */
-  height: 100%;
+  /* height: 100%; */
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -154,7 +162,7 @@ export default {
 .report-data-table >>> td {
   padding: 4px 4px;
   font-size: 10px;
-  border-radius: 0px;
+  border-radius: 0px !important;
 }
 /* TODO: Should probably be able to customize these ratios as a prop to the component */
 .report-data-table >>> td:nth-child(1) {
@@ -163,33 +171,6 @@ export default {
 }
 .report-data-table >>> td:nth-child(2) {
   width: 60%;
-}
-
-.state-img {
-  flex: 1;
-  height: 100%;
-}
-
-path,
-circle {
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-path:hover,
-circle:hover {
-  /*   stroke: #002868 !important; */
-  /*   stroke-width:2px; */
-  stroke-width: 1px;
-  stroke-linejoin: round;
-  fill: #3a53bf !important;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-body path {
-  vector-effect: non-scaling-stroke;
-  fill: #008751;
-  stroke: rgb(255, 255, 255);
 }
 
 .icon-placeholder {

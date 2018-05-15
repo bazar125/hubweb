@@ -83,6 +83,10 @@ export default {
       dailyReports: [
         {
           title: 'Monday',
+          startDate: "15 May 2018",
+          startTime: "00:00",
+          endDate: "15 May 2018",
+          endTime: "23:59"
         },
         {
           title: 'Tuesday',
