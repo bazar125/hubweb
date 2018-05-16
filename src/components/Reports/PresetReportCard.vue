@@ -1,9 +1,13 @@
 <template>
-  <div class="preset-report-card d-flex flex-column justify-content-center align-items-center">
+  <div class="preset-report-card d-flex flex-column justify-content-center align-items-center" :class="{'disabled-card': !report.active}">
     <div class="header-container d-flex justify-content-center align-items-center">
       <span class="header-text">{{report.title}}</span>
     </div>
-    <div class="content-container d-flex flex-column justify-content-center align-items-center">
+    <div class="card-content-container d-flex flex-column justify-content-center align-items-center">
+      <div v-if="!report.active" class="disabled-overlay d-flex justify-content-center align-items-center">
+        <icon class="disabled-icon" name="hourglass-half"></icon>
+        <span class="disabled-text">Report is not ready</span>
+      </div>
       <report-data-table hide-head hide-hover :items="presetReports"></report-data-table>
       <!-- <icon class="icon-placeholder" name="bar-chart"></icon> -->
       <!-- <svg class="state-img" xmlns="http://www.w3.org/2000/svg" version="1.1" :viewBox="state.viewBox">
@@ -38,8 +42,14 @@ export default {
       }
 
       return [
-        { label: "Starts", value: `${this.report.startDate}, ${this.report.startTime}` },
-        { label: "Ends", value: `${this.report.endDate} ${this.report.endTime}` },
+        {
+          label: "Starts",
+          value: `${this.report.startDate}, ${this.report.startTime}`
+        },
+        {
+          label: "Ends",
+          value: `${this.report.endDate} ${this.report.endTime}`
+        },
         { label: "Coverage", value: `${this.report.coverage}` },
         { label: "Data Types", value: `${this.report.dataTypes}` }
       ];
@@ -66,17 +76,49 @@ export default {
   border: 3px solid #ececec;
 }
 
-.preset-report-card:hover {
+.preset-report-card.disabled-card {
+  cursor: default;
+}
+
+.preset-report-card:not(.disabled-card):hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-.preset-report-card.active {
+.preset-report-card:not(.disabled-card).active {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   border: 3px solid #007aff;
 }
 
 .preset-report-card.pulsate {
   animation: border-pulsate 2s infinite;
+}
+
+.disabled-overlay {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.64);
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  display: table;
+}
+
+.disabled-text-container {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.disabled-text {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 12px;
+}
+
+.disabled-icon {
+  color: rgba(255, 255, 255, 0.84);
+  width: 15px;
+  height: 15px;
+  margin-right: 8px;
 }
 
 @keyframes border-pulsate {
@@ -143,10 +185,11 @@ export default {
   /* overflow: hidden !important; */
 }
 
-.content-container {
+.card-content-container {
+  position: relative;
   flex: 1;
   width: 100%;
-  padding: 8px;
+  padding: 0px;
   overflow: hidden;
 }
 

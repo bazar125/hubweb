@@ -22,15 +22,17 @@
 </template>
 
 <script>
-import BaseBtn from '@/components/BaseBtn';
-import DarkCard from '@/components/DarkCard';
-import RecordedEventsChart from '@/components/RecordedEventsChart';
-import RevenueChart from '@/components/RevenueChart';
-import ReportDataTable from '@/components/Reports/ReportDataTable';
-import PresetReportList from '@/components/Reports/PresetReportList';
+import BaseBtn from "@/components/BaseBtn";
+import DarkCard from "@/components/DarkCard";
+import RecordedEventsChart from "@/components/RecordedEventsChart";
+import RevenueChart from "@/components/RevenueChart";
+import ReportDataTable from "@/components/Reports/ReportDataTable";
+import PresetReportList from "@/components/Reports/PresetReportList";
+
+import ReportService from '@/services/ReportService';
 
 export default {
-  name: 'PresetReports',
+  name: "PresetReports",
   props: [],
   components: {
     DarkCard,
@@ -38,144 +40,69 @@ export default {
     RecordedEventsChart,
     RevenueChart,
     ReportDataTable,
-    PresetReportList,
+    PresetReportList
   },
   data() {
     return {
       items: [
         {
-          label: 'Collisions',
-          value: '4',
+          label: "Collisions",
+          value: "4"
         },
         {
-          label: 'Citations',
-          value: '4',
+          label: "Citations",
+          value: "4"
         },
         {
-          label: 'Warnings',
-          value: '12',
+          label: "Warnings",
+          value: "12"
         },
         {
-          label: 'Total Registered Vehicles',
-          value: '414,152',
+          label: "Total Registered Vehicles",
+          value: "414,152"
         },
         {
-          label: 'Total Registered Drivers',
-          value: '1,253,152',
+          label: "Total Registered Drivers",
+          value: "1,253,152"
         },
         {
-          label: 'Citations Paid',
-          value: '470',
+          label: "Citations Paid",
+          value: "470"
         },
         {
-          label: 'Citations Unpaid',
-          value: '3',
+          label: "Citations Unpaid",
+          value: "3"
         },
         {
-          label: 'Citations Revenue',
-          value: '₦1,340,000',
+          label: "Citations Revenue",
+          value: "₦1,340,000"
         },
         {
-          label: 'Driver Identification Submissions',
-          value: '125',
-        },
+          label: "Driver Identification Submissions",
+          value: "125"
+        }
       ],
-      dailyReports: [
-        {
-          title: 'Monday',
-          startDate: "15 May 2018",
-          startTime: "00:00",
-          endDate: "15 May 2018",
-          endTime: "23:59"
-        },
-        {
-          title: 'Tuesday',
-        },
-        {
-          title: 'Wednesday',
-        },
-        {
-          title: 'Thursday',
-        },
-        {
-          title: 'Friday',
-        },
-        {
-          title: 'Saturday',
-        },
-        {
-          title: 'Sunday',
-        },
-      ],
-      weeklyReports: [
-        {
-          title: 'Week 49 (2 Apr - 9 Apr)',
-        },
-        {
-          title: 'Week 50 (9 Apr - 16 Apr)',
-        },
-        {
-          title: 'Week 51 (23 Apr - 1 May)',
-        },
-        {
-          title: 'Week 52 (8 May - 15 Apr)',
-        },
-      ],
-      monthlyReports: [
-        {
-          title: 'January',
-        },
-        {
-          title: 'February',
-        },
-        {
-          title: 'March',
-        },
-        {
-          title: 'April',
-        },
-        {
-          title: 'May',
-        },
-        {
-          title: 'June',
-        },
-        {
-          title: 'July',
-        },
-        {
-          title: 'August',
-        },
-        {
-          title: 'September',
-        },
-        {
-          title: 'October',
-        },
-        {
-          title: 'November',
-        },
-        {
-          title: 'December',
-        },
-      ],
-      yearlyReports: [
-        {
-          title: '2018',
-        },
-      ],
+      dailyReports: [],
+      weeklyReports: [],
+      monthlyReports: [],
+      yearlyReports: [],
     };
   },
-  mounted() {},
+  mounted() {
+    this.dailyReports = ReportService.createDailyReports();
+    this.weeklyReports = ReportService.createWeeklyReports();
+    this.monthlyReports = ReportService.createMonthlyReports();
+    this.yearlyReports = ReportService.createYearlyReports();
+  }
 };
 </script>
 
 <style scoped>
-.preset-reports>>>.main-container {
+.preset-reports >>> .main-container {
   padding: 0px;
 }
 
-.preset-reports>>>.root-container {
+.preset-reports >>> .root-container {
   overflow: hidden;
 }
 
@@ -210,12 +137,12 @@ export default {
   overflow: hidden;
 }
 
-.report-data-table>>>th {
+.report-data-table >>> th {
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
 }
 
-.report-data-table>>>td {
+.report-data-table >>> td {
   border-bottom-left-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
 }
