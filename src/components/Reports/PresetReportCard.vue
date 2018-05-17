@@ -48,7 +48,7 @@ export default {
         },
         {
           label: "Ends",
-          value: `${this.report.endDate} ${this.report.endTime}`
+          value: `${this.report.endDate}, ${this.report.endTime}`
         },
         { label: "Coverage", value: `${this.report.coverage}` },
         { label: "Data Types", value: `${this.report.dataTypes}` }
